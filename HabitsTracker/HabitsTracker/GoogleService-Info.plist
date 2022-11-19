@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>346850588416-cg4ks3snk2rou6v1p0r8j9vt1409931t.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.346850588416-cg4ks3snk2rou6v1p0r8j9vt1409931t</string>
+	<key>API_KEY</key>
+	<string>AIzaSyD74WkVissOBLylAC1DWwZg7atsY0OfKmw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>346850588416</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>it.polimi.HabitsTracker</string>
+	<key>PROJECT_ID</key>
+	<string>habits-tracker-6f818</string>
+	<key>STORAGE_BUCKET</key>
+	<string>habits-tracker-6f818.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:346850588416:ios:64330e252d004ec2bb65e5</string>
+</dict>
+</plist>
