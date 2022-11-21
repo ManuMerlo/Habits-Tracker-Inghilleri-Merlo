@@ -7,9 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		DD127A3C2929475900075A8B /* Signin.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3B2929475900075A8B /* Signin.swift */; };
+		DD127A3C2929475900075A8B /* SigninView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3B2929475900075A8B /* SigninView.swift */; };
 		DD127A3E2929476800075A8B /* SigninViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3D2929476800075A8B /* SigninViewModel.swift */; };
-		DD127A402929477700075A8B /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3F2929477700075A8B /* Home.swift */; };
+		DD127A402929477700075A8B /* GeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3F2929477700075A8B /* GeneralView.swift */; };
 		DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A41292947FA00075A8B /* CustomTextField.swift */; };
 		DD25AA2629293E7300EF2FEB /* HabitsTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */; };
 		DD25AA2829293E7300EF2FEB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD25AA2729293E7300EF2FEB /* ContentView.swift */; };
@@ -20,12 +20,16 @@
 		DD25AA39292941BE00EF2FEB /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DD25AA38292941BE00EF2FEB /* FirebaseAuth */; };
 		DD33E5F1292944B700B299BD /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = DD33E5F0292944B700B299BD /* GoogleSignIn */; };
 		DD33E5F3292944B700B299BD /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD33E5F2292944B700B299BD /* GoogleSignInSwift */; };
+		DDC33528292BA0A000C27566 /* VCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33527292BA0A000C27566 /* VCard.swift */; };
+		DDC33531292BB96C00C27566 /* HCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33530292BB96C00C27566 /* HCard.swift */; };
+		DDD723AF292A73AC00012461 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD723AE292A73AC00012461 /* SettingsView.swift */; };
+		DDD723B1292A87E100012461 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD723B0292A87E100012461 /* HomeView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		DD127A3B2929475900075A8B /* Signin.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Signin.swift; sourceTree = "<group>"; };
+		DD127A3B2929475900075A8B /* SigninView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninView.swift; sourceTree = "<group>"; };
 		DD127A3D2929476800075A8B /* SigninViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninViewModel.swift; sourceTree = "<group>"; };
-		DD127A3F2929477700075A8B /* Home.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
+		DD127A3F2929477700075A8B /* GeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralView.swift; sourceTree = "<group>"; };
 		DD127A41292947FA00075A8B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		DD25AA2229293E7300EF2FEB /* HabitsTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabitsTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsTrackerApp.swift; sourceTree = "<group>"; };
@@ -34,6 +38,10 @@
 		DD25AA2C29293E7300EF2FEB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DD25AA33292940EC00EF2FEB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DD33E5F42929457C00B299BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		DDC33527292BA0A000C27566 /* VCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCard.swift; sourceTree = "<group>"; };
+		DDC33530292BB96C00C27566 /* HCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCard.swift; sourceTree = "<group>"; };
+		DDD723AE292A73AC00012461 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		DDD723B0292A87E100012461 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -61,9 +69,13 @@
 		DD127A39292946E800075A8B /* View */ = {
 			isa = PBXGroup;
 			children = (
-				DD127A3B2929475900075A8B /* Signin.swift */,
-				DD127A3F2929477700075A8B /* Home.swift */,
+				DD127A3B2929475900075A8B /* SigninView.swift */,
+				DD127A3F2929477700075A8B /* GeneralView.swift */,
 				DD127A41292947FA00075A8B /* CustomTextField.swift */,
+				DDD723AE292A73AC00012461 /* SettingsView.swift */,
+				DDD723B0292A87E100012461 /* HomeView.swift */,
+				DDC33527292BA0A000C27566 /* VCard.swift */,
+				DDC33530292BB96C00C27566 /* HCard.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -197,12 +209,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDC33531292BB96C00C27566 /* HCard.swift in Sources */,
+				DDC33528292BA0A000C27566 /* VCard.swift in Sources */,
+				DDD723AF292A73AC00012461 /* SettingsView.swift in Sources */,
 				DD127A3E2929476800075A8B /* SigninViewModel.swift in Sources */,
 				DD25AA2829293E7300EF2FEB /* ContentView.swift in Sources */,
 				DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */,
-				DD127A402929477700075A8B /* Home.swift in Sources */,
+				DD127A402929477700075A8B /* GeneralView.swift in Sources */,
+				DDD723B1292A87E100012461 /* HomeView.swift in Sources */,
 				DD25AA2629293E7300EF2FEB /* HabitsTrackerApp.swift in Sources */,
-				DD127A3C2929475900075A8B /* Signin.swift in Sources */,
+				DD127A3C2929475900075A8B /* SigninView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -10,7 +10,7 @@ import Firebase
 import GoogleSignIn
 import GoogleSignInSwift
 
-struct Signin: View {
+struct SigninView: View {
     @StateObject private var signinViewModel = SigninViewModel()
     var body: some View {
         
@@ -123,7 +123,7 @@ struct Signin: View {
     }
 }
 
-struct signin_Previews: PreviewProvider {
+struct signinView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView()
     }
