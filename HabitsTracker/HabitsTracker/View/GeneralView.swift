@@ -12,28 +12,13 @@ import GoogleSignIn
 
 struct GeneralView: View {
     var body: some View {
-        /*NavigationStack {
-         Text("Signed In")
-         .navigationTitle("Habits Tracker")
-         .toolbar {
-         ToolbarItem {
-         Button("Logout") {
-         try? Auth.auth().signOut()
-         GIDSignIn.sharedInstance.signOut()
-         withAnimation(.easeInOut) {
-         logStatus = false
-         }
-         }
-         }
-         }
-         }*/
         TabView {
             HomeView()
                 .tabItem {
                     Image(systemName: "house")
                     Text("Home")
                 }
-            Text("Planning")
+            PlanningView()
                 .tabItem {
                     Image(systemName: "calendar")
                     Text("Planning")
