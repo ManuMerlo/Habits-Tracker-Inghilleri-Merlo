@@ -24,10 +24,10 @@
 		DDC33528292BA0A000C27566 /* VCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33527292BA0A000C27566 /* VCard.swift */; };
 		DDC33531292BB96C00C27566 /* HCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33530292BB96C00C27566 /* HCard.swift */; };
 		DDC33533292BF38A00C27566 /* PlanningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33532292BF38A00C27566 /* PlanningView.swift */; };
-		DDC33535292BF5B800C27566 /* CustomDataPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33534292BF5B800C27566 /* CustomDataPicker.swift */; };
 		DDC33537292BFC8700C27566 /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33536292BFC8700C27566 /* DateValue.swift */; };
 		DDD723AF292A73AC00012461 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD723AE292A73AC00012461 /* SettingsView.swift */; };
 		DDD723B1292A87E100012461 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD723B0292A87E100012461 /* HomeView.swift */; };
+		DDDDFA70292CEC290033B3D3 /* PlanningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDDFA6F292CEC290033B3D3 /* PlanningViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -46,10 +46,10 @@
 		DDC33527292BA0A000C27566 /* VCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCard.swift; sourceTree = "<group>"; };
 		DDC33530292BB96C00C27566 /* HCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCard.swift; sourceTree = "<group>"; };
 		DDC33532292BF38A00C27566 /* PlanningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanningView.swift; sourceTree = "<group>"; };
-		DDC33534292BF5B800C27566 /* CustomDataPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDataPicker.swift; sourceTree = "<group>"; };
 		DDC33536292BFC8700C27566 /* DateValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateValue.swift; sourceTree = "<group>"; };
 		DDD723AE292A73AC00012461 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DDD723B0292A87E100012461 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
+		DDDDFA6F292CEC290033B3D3 /* PlanningViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanningViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,7 +87,6 @@
 				DDC33527292BA0A000C27566 /* VCard.swift */,
 				DDC33530292BB96C00C27566 /* HCard.swift */,
 				DDC33532292BF38A00C27566 /* PlanningView.swift */,
-				DDC33534292BF5B800C27566 /* CustomDataPicker.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -96,6 +95,7 @@
 			isa = PBXGroup;
 			children = (
 				DD127A3D2929476800075A8B /* SigninViewModel.swift */,
+				DDDDFA6F292CEC290033B3D3 /* PlanningViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -221,12 +221,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DDC33535292BF5B800C27566 /* CustomDataPicker.swift in Sources */,
 				DDC33531292BB96C00C27566 /* HCard.swift in Sources */,
 				DD7C69B5292C254500E0D9ED /* Activity.swift in Sources */,
 				DDC33528292BA0A000C27566 /* VCard.swift in Sources */,
 				DDD723AF292A73AC00012461 /* SettingsView.swift in Sources */,
 				DD127A3E2929476800075A8B /* SigninViewModel.swift in Sources */,
+				DDDDFA70292CEC290033B3D3 /* PlanningViewModel.swift in Sources */,
 				DDC33537292BFC8700C27566 /* DateValue.swift in Sources */,
 				DD25AA2829293E7300EF2FEB /* ContentView.swift in Sources */,
 				DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */,
