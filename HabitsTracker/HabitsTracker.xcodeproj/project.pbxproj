@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		09179CD529314D3700B389C2 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09179CD429314D3700B389C2 /* SignupView.swift */; };
 		09652B76293116BE002CC615 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 09652B75293116BE002CC615 /* Lottie */; };
 		09652B79293117B6002CC615 /* login.json in Resources */ = {isa = PBXBuildFile; fileRef = 09652B78293117B6002CC615 /* login.json */; };
 		09652B7B293117C2002CC615 /* notes.json in Resources */ = {isa = PBXBuildFile; fileRef = 09652B7A293117C2002CC615 /* notes.json */; };
@@ -40,6 +41,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		09179CD429314D3700B389C2 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
 		09652B78293117B6002CC615 /* login.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = login.json; sourceTree = "<group>"; };
 		09652B7A293117C2002CC615 /* notes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = notes.json; sourceTree = "<group>"; };
 		09652B7C293117D1002CC615 /* plan_activities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = plan_activities.json; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				DDC33532292BF38A00C27566 /* PlanningView.swift */,
 				09652B84293119F9002CC615 /* IntroView.swift */,
 				09652B8629311B19002CC615 /* LottieView.swift */,
+				09179CD429314D3700B389C2 /* SignupView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -262,6 +265,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				09179CD529314D3700B389C2 /* SignupView.swift in Sources */,
 				DDC33531292BB96C00C27566 /* HCard.swift in Sources */,
 				09652B8729311B19002CC615 /* LottieView.swift in Sources */,
 				09652B85293119F9002CC615 /* IntroView.swift in Sources */,

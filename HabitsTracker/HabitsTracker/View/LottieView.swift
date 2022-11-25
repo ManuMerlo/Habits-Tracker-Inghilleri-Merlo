@@ -24,7 +24,7 @@ func makeUIView(context:
          animationView.play(fromProgress: 0, //Start
                             toProgress: 1, //End
                             loopMode: LottieLoopMode.repeat(15),//Number of Times
-                            completion: { (finished) in
+                            completion: { finished in
                              if finished {
                                  print("Animation Complete")
                                } else {
@@ -41,7 +41,7 @@ func makeUIView(context:
       }
 
     func updateUIView( _ uiView: UIView, context:
-        UIViewRepresentableContext<LottieView>){
+    UIViewRepresentableContext<LottieView>){
             }
       }
 

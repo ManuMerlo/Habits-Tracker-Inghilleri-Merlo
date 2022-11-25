@@ -12,6 +12,7 @@ import GoogleSignIn
 final class SigninViewModel: ObservableObject {
     //MARK: View Properties
     //TODO: Non so se queste variabili email e password è meglio metterle qui o nel model
+    @Published var username: String = ""
     @Published var emailAddress: String = ""
     @Published var password: String = ""
     

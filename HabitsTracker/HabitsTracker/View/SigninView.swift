@@ -100,7 +100,7 @@ struct SigninView: View {
                 
                 
                 NavigationLink {
-                    //SignupView()
+                    SignupView()
                 } label: {
                     Text("Don't have an account? Sign up")
                 }
