@@ -31,6 +31,8 @@
 		DD33E5F1292944B700B299BD /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = DD33E5F0292944B700B299BD /* GoogleSignIn */; };
 		DD33E5F3292944B700B299BD /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD33E5F2292944B700B299BD /* GoogleSignInSwift */; };
 		DD7C69B5292C254500E0D9ED /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C69B4292C254500E0D9ED /* Activity.swift */; };
+		DDC2F89329311548003653F1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2F89229311548003653F1 /* User.swift */; };
+		DDC2F89529311CAD003653F1 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2F89429311CAD003653F1 /* Goal.swift */; };
 		DDC33528292BA0A000C27566 /* VCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33527292BA0A000C27566 /* VCard.swift */; };
 		DDC33531292BB96C00C27566 /* HCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33530292BB96C00C27566 /* HCard.swift */; };
 		DDC33533292BF38A00C27566 /* PlanningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33532292BF38A00C27566 /* PlanningView.swift */; };
@@ -62,6 +64,8 @@
 		DD25AA33292940EC00EF2FEB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DD33E5F42929457C00B299BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DD7C69B4292C254500E0D9ED /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
+		DDC2F89229311548003653F1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		DDC2F89429311CAD003653F1 /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		DDC33527292BA0A000C27566 /* VCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCard.swift; sourceTree = "<group>"; };
 		DDC33530292BB96C00C27566 /* HCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCard.swift; sourceTree = "<group>"; };
 		DDC33532292BF38A00C27566 /* PlanningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanningView.swift; sourceTree = "<group>"; };
@@ -104,6 +108,8 @@
 			children = (
 				DDC33536292BFC8700C27566 /* DateValue.swift */,
 				DD7C69B4292C254500E0D9ED /* Activity.swift */,
+				DDC2F89229311548003653F1 /* User.swift */,
+				DDC2F89429311CAD003653F1 /* Goal.swift */,
 				09652B8229311942002CC615 /* CardIntro.swift */,
 			);
 			path = Model;
@@ -277,6 +283,8 @@
 				DDDDFA70292CEC290033B3D3 /* PlanningViewModel.swift in Sources */,
 				DDC33537292BFC8700C27566 /* DateValue.swift in Sources */,
 				DD25AA2829293E7300EF2FEB /* ContentView.swift in Sources */,
+				DDC2F89529311CAD003653F1 /* Goal.swift in Sources */,
+				DDC2F89329311548003653F1 /* User.swift in Sources */,
 				DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */,
 				DD127A402929477700075A8B /* GeneralView.swift in Sources */,
 				DDD723B1292A87E100012461 /* HomeView.swift in Sources */,
