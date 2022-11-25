@@ -13,43 +13,53 @@ import GoogleSignInSwift
 struct SigninView: View {
     @StateObject private var signinViewModel = SigninViewModel()
     var body: some View {
-        
         ScrollView(.vertical, showsIndicators: false){
             
-            VStack(alignment: .center,
-                   spacing: 17.0) {
+            VStack(alignment: .center, spacing: 15) {
                 
-                Image(systemName: "figure.run.square.stack.fill")
-                    .font(.system(size:50))
+                ZStack{
+                    LottieView(filename: "login")
+                        .frame(width:330, height: 280)
+                        .clipShape(Circle())
+                        .shadow(color: .orange, radius: 1, x: 0, y: 0)
+                }
                 
-                (Text("Welcome") +
-                 Text(signinViewModel.register ? "\nSign up to start" :"\nSign in to continue")
-                ).font(.title)
-                    .multilineTextAlignment(.center)
+                Text("Sign in").font(.title)
                     .fontWeight(.semibold)
-                    .lineSpacing(10)
-                    .padding(.top,20)
+                    .padding(.bottom, 10)
+                    .offset(y: -8)
                 
-                // MARK: Custom TextField
-                CustomTextField(hint: "Email", text: $signinViewModel.emailAddress)
-                    .padding(.top,50)
-                CustomTextField(hint: "Password", text: $signinViewModel.password)
-                    .padding(.top,20)
+                HStack {
+                    Image(systemName: "envelope")
+                    CustomTextField(isSecure: false,hint: "Email", text: $signinViewModel.emailAddress)
+                }
+                .padding()
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 2))
                 
-                Button{
+                HStack {
+                    Image(systemName: "lock")
+                    CustomTextField(isSecure:true,hint: "Password", text: $signinViewModel.password)
+                }
+                .padding()
+                .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 2))
+                NavigationLink {
+                    //TODO recupera password
+                } label: {
+                    Text("Forgot the password?")
+                }
+                .padding(.vertical, 6)
+                Button {
                     guard !signinViewModel.emailAddress.isEmpty, !signinViewModel.password.isEmpty else {
                         print("Empty email or password")
                         return
                     }
-                    signinViewModel.sign(emailAddress: signinViewModel.emailAddress, password: signinViewModel.password)
+                    signinViewModel.signIn()
                 } label: {
-                    HStack(spacing: 15) {
-                        Text(signinViewModel.register ? "Sign up": "Sign in")
+                    HStack() {
+                        Text("Sign in")
                             .fontWeight(.semibold)
                             .contentTransition(.identity)
-                        Image(systemName: "line.diagonal.arrow")
-                            .font(.title3)
-                            .rotationEffect(.init(degrees: 45))
+                        
                     }
                     .foregroundColor(.black)
                     .padding(.horizontal,25)
@@ -58,46 +68,48 @@ struct SigninView: View {
                         RoundedRectangle(cornerRadius: 10,style: .continuous).fill(.black.opacity(0.05))
                     }
                 }
-                .padding(.top,40)
                 
-                Text("(OR)").foregroundColor(.gray)
-                    .frame(maxWidth: .infinity)
-                    .padding(.top,30)
-                    .padding(.bottom,25)
                 
-            //MARK: Custom Google Sign in Button
-                if !signinViewModel.register {
-                    CustomButton()
-                        .overlay {
-                            if let clientID = FirebaseApp.app()?.options.clientID {
-                                GoogleSignInButton {
-                                    GIDSignIn.sharedInstance.signIn(with: .init(clientID: clientID), presenting: UIApplication.shared.rootController()) {user, err in
-                                        if let error = err {
-                                            print(error.localizedDescription)
-                                            return
-                                        }
-                                        //MARK: Logging Google User into Firebase
-                                        if let user {
-                                            signinViewModel.logGoogleUser(user: user)
-                                        }
-                                    }
-                                }
-                                .blendMode(.overlay)
-                            }
-                        }
-                        .clipped()
+                HStack {
+                    VStack { Divider().background(Color.gray) }.padding(.horizontal, 20)
+                    Text("or").foregroundColor(Color.gray)
+                    VStack { Divider().background(Color.gray) }.padding(.horizontal, 20)
                 }
                 
-                //TODO: Non so se è meglio usare qualcos'altro invece di un button (tipo navigationlink)
-                Button(signinViewModel.register ? "Return to signin page" : "Not already have an account? Sign up Now!") {
-                    withAnimation(.easeInOut){
-                        signinViewModel.register.toggle()
+                
+                //MARK: Custom Google Sign in Button
+                CustomButton()
+                    .overlay {
+                        if let clientID = FirebaseApp.app()?.options.clientID {
+                            GoogleSignInButton {
+                                GIDSignIn.sharedInstance.signIn(with: .init(clientID: clientID), presenting: UIApplication.shared.rootController()) {user, err in
+                                    if let error = err {
+                                        print(error.localizedDescription)
+                                        return
+                                    }
+                                    //MARK: Logging Google User into Firebase
+                                    if let user {
+                                        signinViewModel.logGoogleUser(user: user)
+                                    }
+                                }
+                            }
+                            .blendMode(.overlay)
+                        }
                     }
-                }.font(.subheadline).padding(.horizontal)
+                    .clipped()
+                
+                
+                NavigationLink {
+                    //SignupView()
+                } label: {
+                    Text("Don't have an account? Sign up")
+                }
+                .padding(.top, 5)
                 
             }
-                   .padding(.horizontal, 50)
-                   .padding(.vertical,25)
+            .padding(.horizontal, 50)
+            .padding(.vertical,25)
+            .offset(y:-30)
         }
         .alert(signinViewModel.errorMessage, isPresented: $signinViewModel.showError) {
         }
@@ -113,8 +125,8 @@ struct SigninView: View {
             Text("Continue with Google")
                 .font(.callout)
                 .lineLimit(1)
+                .foregroundColor(.white)
         }
-        .foregroundColor(.white)
         .padding(.horizontal,15)
         .background {
             RoundedRectangle(cornerRadius: 10, style: .continuous)
@@ -125,6 +137,6 @@ struct SigninView: View {
 
 struct signinView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        SigninView()
     }
 }

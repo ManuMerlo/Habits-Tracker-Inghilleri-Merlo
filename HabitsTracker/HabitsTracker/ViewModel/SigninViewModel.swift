@@ -24,16 +24,13 @@ final class SigninViewModel: ObservableObject {
     //MARK: App Log Status
     @AppStorage("log_status") var logStatus: Bool = false
     
-    /*var isSignedIn: Bool {
-        return Auth.auth().currentUser != nil
-    }*/
-    
+    /*
     func sign(emailAddress: String, password: String) {
         register ? signUp(emailAddress: emailAddress, password: password) : signIn(emailAddress: emailAddress, password: password)
         
-    }
+    }*/
     
-    func signIn(emailAddress: String, password: String){
+    func signIn(){
         //TODO: colseKeyboard() serve per chiudere la tastiera, ma non dovrebbe essere necessario perchè si chiude in automatico
         //UIApplication.shared.closeKeyboard()
         Auth.auth().signIn(withEmail: emailAddress, password: password) { result, err in
@@ -47,7 +44,7 @@ final class SigninViewModel: ObservableObject {
         }
     }
     
-    func signUp(emailAddress: String, password: String){
+    func signUp(){
         //UIApplication.shared.closeKeyboard()
         /*Auth.auth().createUser(withEmail: emailAddress, password: password) { result, error in
             guard result != nil, error == nil else {

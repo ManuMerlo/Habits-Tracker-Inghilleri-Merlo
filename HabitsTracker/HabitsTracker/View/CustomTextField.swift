@@ -8,32 +8,41 @@
 import SwiftUI
 
 struct CustomTextField: View {
+    @State var isSecure : Bool
     var hint: String
     @Binding var text: String
-    //MARK: View Properties
     @FocusState var isEnabled: Bool
     var body: some View {
         VStack(alignment: .leading, spacing: 15) {
-            if(hint == "Password") {
-                SecureField(hint, text: $text)
-                    .textContentType(.password)
-                    .focused($isEnabled).autocorrectionDisabled(true).textInputAutocapitalization(.none)
+            if hint.lowercased().contains("password") {
+                HStack{
+                    if isSecure {
+                        SecureField(hint, text: $text)
+                            .textContentType(.password)
+                            .focused($isEnabled)
+                            .autocorrectionDisabled(true)
+                            .textInputAutocapitalization(.none)
+                    }
+                    else {
+                        TextField(hint, text: $text)
+                            .textContentType(.password)
+                            .focused($isEnabled)
+                            .autocorrectionDisabled(true)
+                            .textInputAutocapitalization(.none)
+                    }
+                    Button(action: {
+                        isSecure.toggle()
+                    }, label: {
+                        Image(systemName: !isSecure ? "eye.slash" : "eye" ).foregroundColor(.black)
+                        
+                    })}
             } else {
                 TextField(hint, text: $text)
                     .keyboardType(.emailAddress)
                     .textContentType(.emailAddress)
-                    .focused($isEnabled).autocorrectionDisabled(true).textInputAutocapitalization(.none)
+                    .focused($isEnabled)
+                    .autocorrectionDisabled(true).textInputAutocapitalization(.none)
             }
-            ZStack(alignment: .leading){
-                Rectangle()
-                    .fill(.black.opacity(0.2))
-                
-                Rectangle()
-                    .fill(.black)
-                    .frame(width: isEnabled ? nil : 0, alignment: .leading)
-                    .animation(.easeInOut(duration: 0.3), value: isEnabled)
-            }
-            .frame(height: 2)
         }
     }
 }
