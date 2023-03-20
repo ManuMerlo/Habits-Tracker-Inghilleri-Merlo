@@ -25,10 +25,11 @@ final class SigninViewModel: ObservableObject {
     //MARK: App Log Status
     @AppStorage("log_status") var logStatus: Bool = false
     
+    private var userViewModel = UserViewModel()
+    
     /*
     func sign(emailAddress: String, password: String) {
         register ? signUp(emailAddress: emailAddress, password: password) : signIn(emailAddress: emailAddress, password: password)
-        
     }*/
     
     func signIn(){
@@ -56,7 +57,14 @@ final class SigninViewModel: ObservableObject {
                 print(error.localizedDescription)
                 return
             }
-            //Success
+            // Success
+            // Insert in Firestore
+            if let result = result {
+                // Add user to the database
+                self.userViewModel.addUser(uid: result.user.uid, username: self.username, emailAddress: self.emailAddress)
+                print("User added in Firestore")
+            }
+            //self.userViewModel.getUser(emailAddress: self.emailAddress)
             print("Signed Up with email and password Success")
             withAnimation(.easeInOut){self.logStatus = true}
         }
@@ -78,7 +86,12 @@ final class SigninViewModel: ObservableObject {
                 let accessToken = user.authentication.accessToken
                 let credentials = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
                 try await Auth.auth().signIn(with: credentials)
-                
+                // Insert in firestore
+                let currentUser = Auth.auth().currentUser
+                if let currentUser = currentUser {
+                    self.userViewModel.addUser(uid: currentUser.uid, username: String(currentUser.email?.split(separator:"@")[0] ?? ""), emailAddress: currentUser.email ?? "")
+                    print("User added in Firestore")
+                }
                 print("Success Google!")
                 await MainActor.run(body: {
                     withAnimation(.easeInOut) {logStatus = true}

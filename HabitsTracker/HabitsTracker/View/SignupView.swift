@@ -9,7 +9,7 @@ import SwiftUI
 
 struct SignupView: View {
     @StateObject private var signinViewModel = SigninViewModel()
-    @State var repeatPassword : String = ""
+    @State var repeatPassword: String = "" // Togliere State o mettere nel viewmodel?
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
             
