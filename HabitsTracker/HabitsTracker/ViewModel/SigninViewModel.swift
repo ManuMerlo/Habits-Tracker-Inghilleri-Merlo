@@ -90,7 +90,6 @@ final class SigninViewModel: ObservableObject {
                 let currentUser = Auth.auth().currentUser
                 if let currentUser = currentUser {
                     self.userViewModel.addUser(uid: currentUser.uid, username: String(currentUser.email?.split(separator:"@")[0] ?? ""), emailAddress: currentUser.email ?? "")
-                    print("User added in Firestore")
                 }
                 print("Success Google!")
                 await MainActor.run(body: {

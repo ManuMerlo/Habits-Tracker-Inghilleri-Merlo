@@ -9,6 +9,7 @@ import Foundation
 import SwiftUI
 import Firebase
 import FirebaseFirestore
+import GoogleSignIn
 
 final class UserViewModel: ObservableObject {
     
@@ -16,8 +17,10 @@ final class UserViewModel: ObservableObject {
     //var found: Bool = false
     let db = Firestore.firestore()
     
+    @AppStorage("log_status") var logStatus: Bool = true
+    
     func addUser(uid: String, username: String, emailAddress: String) {
-        // Check that the user doesn't exist
+        // Check that the user doesn't exist (Testare meglio)
         db.collection("users").document(uid).getDocument { document, error in
             if let document = document, document.exists {
                     // print("exist not added")
@@ -27,10 +30,49 @@ final class UserViewModel: ObservableObject {
                         "username": username,
                         "emailAddress": emailAddress
                         ])
-                    // print("google added")
+                    print("added in firestore")
                 }
         }
     }
+    
+    func logout(delete: Bool){
+        /*if delete { // TODO: Must be atomic the deletion in firestore and in authenticator
+            let user = Auth.auth().currentUser
+            if let user = user {
+                db.collection("users").document(user.uid).delete() { err in
+                    if let err = err {
+                        print("Error removing document: \(err)")
+                        return
+                    } else {
+                        print("Document successfully removed!")
+                    }
+                }
+                db.collection("users").document(user.uid).getDocument { document, error in
+                    if let document = document, document.exists {
+                            // print("exist not added")
+                            return
+                        } else {
+                            user.delete { error in
+                              if let error = error {
+                                  print(error.localizedDescription)
+                                  return
+                              } else {
+                                  print("Account deleted")
+                              }
+                            }
+                        }
+                }
+                
+            }
+        }*/
+        try? Auth.auth().signOut()
+        GIDSignIn.sharedInstance.signOut()
+        withAnimation(.easeInOut) {
+            logStatus = false
+        }
+    }
+    
+    
     
     /*func getAllUsers() {
         // Read the documents of the database

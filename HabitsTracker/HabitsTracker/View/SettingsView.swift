@@ -7,22 +7,29 @@
 
 import SwiftUI
 import Firebase
-import GoogleSignIn
+
 
 struct SettingsView: View {
-    @AppStorage("log_status") var logStatus: Bool = true
+    private var userViewModel = UserViewModel()
     var body: some View {
-        VStack (alignment: .center){
-            Text("Info Account")
+        VStack {
+            Image("Avatar 1")
+                .resizable()
+                .frame(width: 120, height: 120)
+            .mask(Circle())
             
-            Button("Logout") {
-                try? Auth.auth().signOut()
-                GIDSignIn.sharedInstance.signOut()
-                withAnimation(.easeInOut) {
-                    logStatus = false
+            Text("Username").font(.title)
+            
+            List {
+                Button("Delete Account") {
+                    userViewModel.logout(delete: true)
+                }.foregroundColor(Color.red)
+                
+                Button("Logout") {
+                    userViewModel.logout(delete: false)
                 }
             }
-        }
+        }.padding(.top, 15.0)
     }
 }
 
