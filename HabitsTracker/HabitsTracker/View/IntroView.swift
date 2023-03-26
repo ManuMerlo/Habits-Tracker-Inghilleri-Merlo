@@ -79,7 +79,7 @@ struct IntroView: View {
                     
                 }
                 
-                NavigationLink {
+                NavigationLink { // sostituire con navigationstack
                     SigninView()
                 } label: {
                     Text("Skip")
