@@ -7,7 +7,10 @@
 
 import SwiftUI
 
+
 struct LeaderboardView: View {
+    
+    @State private var selectedTimeFrame : TimeFrame = .daily
     var body: some View {
         GeometryReader { geometry in
             VStack {
@@ -16,6 +19,21 @@ struct LeaderboardView: View {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.horizontal, 20)
+                Picker("Choose a time frame",selection: $selectedTimeFrame) {
+                    ForEach(TimeFrame.allCases,id: \.self){
+                        Text($0.rawValue)
+                    }
+                }.pickerStyle(SegmentedPickerStyle())
+                    .padding([.leading, .bottom, .trailing])
+               
+                //TODO : da implementare
+                /*switch selectedTimeFrame {
+                case .weekly:
+                    users = viewModel.weeklyUsers
+                case .daily:
+                    users = viewModel.dailyUsers
+                }*/
+                
                 HStack (spacing: 7) {
                     RankingCard(position: "2nd",
                                 image_path: "Avatar 2",
@@ -63,7 +81,10 @@ struct LeaderboardView: View {
     }
 }
 
-
+enum TimeFrame : String, CaseIterable {
+    case weekly = "Weekly"
+    case daily = "Daily"
+}
 
 struct LeaderboardView_Previews: PreviewProvider {
     static var previews: some View {
