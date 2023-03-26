@@ -23,7 +23,7 @@ struct GeneralView: View {
                     Image(systemName: "calendar")
                     Text("Planning")
                 }
-            Text("Leaderboard")
+            LeaderboardView()
                 .tabItem {
                     Image(systemName: "trophy")
                     Text("Leaderboard")
@@ -39,6 +39,7 @@ struct GeneralView: View {
                     Text("Settings")
                 }
         }
+        .padding(.top, 1.0)
     }
 }
 
