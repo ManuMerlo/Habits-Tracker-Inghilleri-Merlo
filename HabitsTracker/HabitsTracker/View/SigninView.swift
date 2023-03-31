@@ -9,6 +9,7 @@ import SwiftUI
 import Firebase
 import GoogleSignIn
 import GoogleSignInSwift
+import FacebookLogin
 
 struct SigninView: View {
     @StateObject private var signinViewModel = SigninViewModel()
@@ -69,7 +70,6 @@ struct SigninView: View {
                     }
                 }
                 
-                
                 HStack {
                     VStack { Divider().background(Color.gray) }.padding(.horizontal, 20)
                     Text("or").foregroundColor(Color.gray)
@@ -78,7 +78,7 @@ struct SigninView: View {
                 
                 
                 //MARK: Custom Google Sign in Button
-                CustomButton()
+                CustomButton(logo: "googlelogo")
                     .overlay {
                         if let clientID = FirebaseApp.app()?.options.clientID {
                             GoogleSignInButton {
@@ -98,6 +98,9 @@ struct SigninView: View {
                     }
                     .clipped()
                 
+                Button("Continue with Facebook") {
+                    // TODO: Action
+                }
                 
                 NavigationLink {
                     SignupView()
@@ -116,9 +119,9 @@ struct SigninView: View {
     }
     
     @ViewBuilder
-    func CustomButton() -> some View {
+    func CustomButton(logo: String) -> some View {
         HStack{
-            Image("googlelogo").resizable()
+            Image(logo).resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 25, height: 25)
                 .frame(height: 45)

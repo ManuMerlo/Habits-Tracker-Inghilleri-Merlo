@@ -31,6 +31,7 @@
 		DD33E5F1292944B700B299BD /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = DD33E5F0292944B700B299BD /* GoogleSignIn */; };
 		DD33E5F3292944B700B299BD /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD33E5F2292944B700B299BD /* GoogleSignInSwift */; };
 		DD7C69B5292C254500E0D9ED /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C69B4292C254500E0D9ED /* Activity.swift */; };
+		DD8D0D5229D5E5ED0045009C /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = DD8D0D5129D5E5ED0045009C /* FacebookLogin */; };
 		DDC2F89329311548003653F1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2F89229311548003653F1 /* User.swift */; };
 		DDC2F89529311CAD003653F1 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2F89429311CAD003653F1 /* Goal.swift */; };
 		DDC33528292BA0A000C27566 /* VCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33527292BA0A000C27566 /* VCard.swift */; };
@@ -55,6 +56,7 @@
 		09652B8229311942002CC615 /* CardIntro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardIntro.swift; sourceTree = "<group>"; };
 		09652B84293119F9002CC615 /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		09652B8629311B19002CC615 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		DD07DFB529D0B99400633248 /* HabitsTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HabitsTracker.entitlements; sourceTree = "<group>"; };
 		DD127A3B2929475900075A8B /* SigninView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninView.swift; sourceTree = "<group>"; };
 		DD127A3D2929476800075A8B /* SigninViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninViewModel.swift; sourceTree = "<group>"; };
 		DD127A3F2929477700075A8B /* GeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralView.swift; sourceTree = "<group>"; };
@@ -84,6 +86,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD8D0D5229D5E5ED0045009C /* FacebookLogin in Frameworks */,
 				09652B76293116BE002CC615 /* Lottie in Frameworks */,
 				DD25AA37292941BE00EF2FEB /* FirebaseAnalytics in Frameworks */,
 				DD25AA39292941BE00EF2FEB /* FirebaseAuth in Frameworks */,
@@ -169,6 +172,7 @@
 		DD25AA2429293E7300EF2FEB /* HabitsTracker */ = {
 			isa = PBXGroup;
 			children = (
+				DD07DFB529D0B99400633248 /* HabitsTracker.entitlements */,
 				09652B7729311723002CC615 /* Lottie */,
 				DD127A38292946E100075A8B /* Model */,
 				DD127A39292946E800075A8B /* View */,
@@ -222,6 +226,7 @@
 				09652B75293116BE002CC615 /* Lottie */,
 				DDF9364729C76518002B965A /* FirebaseFirestore */,
 				DDF9364929C76521002B965A /* FirebaseFirestoreSwift */,
+				DD8D0D5129D5E5ED0045009C /* FacebookLogin */,
 			);
 			productName = HabitsTracker;
 			productReference = DD25AA2229293E7300EF2FEB /* HabitsTracker.app */;
@@ -255,6 +260,7 @@
 				DD25AA35292941BE00EF2FEB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				DD33E5EF292944B700B299BD /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */,
 				09652B74293116BE002CC615 /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				DD8D0D5029D5E5ED0045009C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */,
 			);
 			productRefGroup = DD25AA2329293E7300EF2FEB /* Products */;
 			projectDirPath = "";
@@ -365,7 +371,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -419,7 +425,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.2;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -434,6 +440,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HabitsTracker/HabitsTracker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HabitsTracker/Preview Content\"";
@@ -464,6 +471,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = HabitsTracker/HabitsTracker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"HabitsTracker/Preview Content\"";
@@ -537,6 +545,14 @@
 				minimumVersion = 6.0.0;
 			};
 		};
+		DD8D0D5029D5E5ED0045009C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/facebook/facebook-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.0.0;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -564,6 +580,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DD33E5EF292944B700B299BD /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		DD8D0D5129D5E5ED0045009C /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD8D0D5029D5E5ED0045009C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
 		};
 		DDF9364729C76518002B965A /* FirebaseFirestore */ = {
 			isa = XCSwiftPackageProductDependency;

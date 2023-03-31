@@ -8,6 +8,7 @@
 import SwiftUI
 import FirebaseAuth
 import GoogleSignIn
+import FBSDKLoginKit
 
 final class SigninViewModel: ObservableObject {
     //MARK: View Properties
@@ -45,6 +46,7 @@ final class SigninViewModel: ObservableObject {
             withAnimation(.easeInOut){self.logStatus = true}
         }
     }
+    
     
     func signUp(){
         //UIApplication.shared.closeKeyboard()
@@ -99,6 +101,10 @@ final class SigninViewModel: ObservableObject {
                 await handleError(error: error)
             }
         }
+    }
+    
+    func logFacebookUser() {
+        
     }
 }
 

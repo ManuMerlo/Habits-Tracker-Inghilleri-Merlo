@@ -15,6 +15,7 @@ struct User: Identifiable, Codable {
     var age: Int?
     var sex: Sex?
     var weight: Float?
+    var friends: [String]?
 }
 
 enum Sex: Codable {

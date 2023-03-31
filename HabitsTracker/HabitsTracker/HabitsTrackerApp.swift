@@ -7,13 +7,14 @@
 
 import SwiftUI
 import FirebaseCore
+import FBSDKCoreKit
 
 class AppDelegate: NSObject, UIApplicationDelegate {
-  func application(_ application: UIApplication,
-                   didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-    FirebaseApp.configure()
-    return true
-  }
+    func application(_ application: UIApplication,
+                     didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+        FirebaseApp.configure()
+        return true
+    }
 }
 
 @main
@@ -22,6 +23,10 @@ struct HabitsTrackerApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()
+            // MARK: Facebook
+                /*.onOpenURL { url in
+                    ApplicationDelegate.shared.application(UIApplication.shared, open: url, sourceApplication: nil, annotation: UIApplication.OpenURLOptionsKey.annotation)
+                }*/
         }
     }
 }
