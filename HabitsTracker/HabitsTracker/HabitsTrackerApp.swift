@@ -7,7 +7,7 @@
 
 import SwiftUI
 import FirebaseCore
-import FBSDKCoreKit
+import FacebookLogin
 
 class AppDelegate: NSObject, UIApplicationDelegate {
     func application(_ application: UIApplication,

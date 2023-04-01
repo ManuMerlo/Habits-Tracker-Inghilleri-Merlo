@@ -9,8 +9,8 @@
 
 import SwiftUI
 import FirebaseAuth
-import GoogleSignIn
-import FBSDKLoginKit
+//import GoogleSignIn
+//import FBSDKLoginKit
 
 final class SigninViewModel: ObservableObject {
     //MARK: View Properties
@@ -83,7 +83,7 @@ final class SigninViewModel: ObservableObject {
     }
     
     // MARK: Logging Google User into Firebase
-    func logGoogleUser(user: GIDGoogleUser) {
+    /*func logGoogleUser(user: GIDGoogleUser) {
         Task {
             do {
                 guard let idToken = user.authentication.idToken else {return}
@@ -103,11 +103,7 @@ final class SigninViewModel: ObservableObject {
                 await handleError(error: error)
             }
         }
-    }
-    
-    func logFacebookUser() {
-        
-    }
+    }*/
 }
 
 extension UIApplication {

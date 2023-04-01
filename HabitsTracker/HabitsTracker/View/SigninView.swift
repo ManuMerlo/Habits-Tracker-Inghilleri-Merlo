@@ -7,8 +7,8 @@
 
 import SwiftUI
 import Firebase
-import GoogleSignIn
-import GoogleSignInSwift
+//import GoogleSignIn
+//import GoogleSignInSwift
 import FacebookLogin
 
 struct SigninView: View {
@@ -74,6 +74,7 @@ struct SigninView: View {
                             RoundedRectangle(cornerRadius: 10,style: .continuous).fill(.black.opacity(0.05))
                         }
                     }
+                    // TODO: it must disappear.
                     if let messageError = authenticationViewModel.messageError {
                         Text(messageError)
                             .font(.body)
@@ -91,7 +92,7 @@ struct SigninView: View {
                     
                     
                     //MARK: Custom Google Sign in Button
-                    CustomButton(logo: "googlelogo")
+                    /*CustomButton(logo: "googlelogo")
                         .overlay {
                             if let clientID = FirebaseApp.app()?.options.clientID {
                                 GoogleSignInButton {
@@ -109,10 +110,12 @@ struct SigninView: View {
                                 .blendMode(.overlay)
                             }
                         }
-                        .clipped()
+                        .clipped()*/
                     
-                    Button("Continue with Facebook") {
-                        // TODO: Action
+                    Button {
+                        authenticationViewModel.loginFacebook()
+                    } label: {
+                        Text("Continue with Facebook")
                     }
                     
                     NavigationLink {

@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Firebase
 import FirebaseFirestore
-import GoogleSignIn
+//import GoogleSignIn
 
 final class UserViewModel: ObservableObject {
     
@@ -35,7 +35,7 @@ final class UserViewModel: ObservableObject {
         }
     }
     
-    func logout(delete: Bool){
+    /*func logout(delete: Bool){
         /*if delete { // TODO: Must be atomic the deletion in firestore and in authenticator
             let user = Auth.auth().currentUser
             if let user = user {
@@ -70,7 +70,7 @@ final class UserViewModel: ObservableObject {
         withAnimation(.easeInOut) {
             logStatus = false
         }
-    }
+    }*/
     
     
     

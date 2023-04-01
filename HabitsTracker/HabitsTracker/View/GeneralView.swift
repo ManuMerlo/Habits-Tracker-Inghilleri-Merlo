@@ -7,7 +7,7 @@
 
 import SwiftUI
 import Firebase
-import GoogleSignIn
+//import GoogleSignIn
 
 
 struct GeneralView: View {
@@ -40,6 +40,11 @@ struct GeneralView: View {
                     Image(systemName: "gear")
                     Text("Settings")
                 }
+        }
+        .onAppear {
+            store.requestAuthorization { success in
+                print("Auth success? \(success)")
+            }
         }
     }
 }
