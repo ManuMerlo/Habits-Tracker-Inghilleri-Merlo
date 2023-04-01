@@ -10,6 +10,7 @@ import FirebaseAuth
 
 final class AuthenticationFirebaseDataSource {
     private let facebookAuthentication = FacebookAuthentication()
+    private let googleAuthentication = GoogleAuthentication()
     
     func getCurrentUser() -> User? {
         guard let email = Auth.auth().currentUser?.email else {
@@ -63,6 +64,30 @@ final class AuthenticationFirebaseDataSource {
                 }
             case .failure(let error):
                 print("Error login with Facebook \(error.localizedDescription)")
+                completionBlock(.failure(error))
+            }
+        }
+    }
+    
+    func loginGoogle(completionBlock: @escaping (Result<User, Error>) -> Void) {
+        googleAuthentication.loginGoogle { result in
+            switch result {
+            case .success(let user):
+                let idToken = user?.authentication.idToken ?? "No idToken"
+                let accessToken = user?.authentication.accessToken ?? "No accessToken"
+                let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
+                Auth.auth().signIn(with: credential) { authDataResult, error in
+                    if let error = error {
+                        print("Error creating a new user \(error.localizedDescription)")
+                        completionBlock(.failure(error))
+                        return
+                    }
+                    let email = authDataResult?.user.email ?? "No email google"
+                    print("New user 'created' with info \(email)")
+                    completionBlock(.success(.init(email: email)))
+                }
+            case .failure(let error):
+                print("Error login with Google \(error.localizedDescription)")
                 completionBlock(.failure(error))
             }
         }

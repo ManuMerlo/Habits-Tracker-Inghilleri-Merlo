@@ -6,10 +6,10 @@
 //
 
 import SwiftUI
-import Firebase
+//import Firebase
 //import GoogleSignIn
 //import GoogleSignInSwift
-import FacebookLogin
+//import FacebookLogin
 
 struct SigninView: View {
     //@StateObject private var signinViewModel = SigninViewModel()
@@ -111,6 +111,11 @@ struct SigninView: View {
                             }
                         }
                         .clipped()*/
+                    Button {
+                        authenticationViewModel.loginGoogle()
+                    } label: {
+                        Text("Continue with Google")
+                    }
                     
                     Button {
                         authenticationViewModel.loginFacebook()

@@ -32,6 +32,7 @@
 		DD33E5F3292944B700B299BD /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD33E5F2292944B700B299BD /* GoogleSignInSwift */; };
 		DD7C69B5292C254500E0D9ED /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C69B4292C254500E0D9ED /* Activity.swift */; };
 		DD4FC73829D7EDDC00414C2B /* FacebookAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FC73729D7EDDC00414C2B /* FacebookAuthentication.swift */; };
+		DD4FC73B29D8291300414C2B /* GoogleAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FC73A29D8291300414C2B /* GoogleAuthentication.swift */; };
 		DD8D0D5229D5E5ED0045009C /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = DD8D0D5129D5E5ED0045009C /* FacebookLogin */; };
 		DDC2F89329311548003653F1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2F89229311548003653F1 /* User.swift */; };
 		DDC2F89529311CAD003653F1 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2F89429311CAD003653F1 /* Goal.swift */; };
@@ -74,6 +75,7 @@
 		DD33E5F42929457C00B299BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DD7C69B4292C254500E0D9ED /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		DD4FC73729D7EDDC00414C2B /* FacebookAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookAuthentication.swift; sourceTree = "<group>"; };
+		DD4FC73A29D8291300414C2B /* GoogleAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthentication.swift; sourceTree = "<group>"; };
 		DDC2F89229311548003653F1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DDC2F89429311CAD003653F1 /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		DDC33527292BA0A000C27566 /* VCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCard.swift; sourceTree = "<group>"; };
@@ -204,18 +206,19 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		DD4FC73529D7ED5900414C2B /* FacebookAuthentication */ = {
+		DD4FC73529D7ED5900414C2B /* ProvidersAuthentication */ = {
 			isa = PBXGroup;
 			children = (
 				DD4FC73729D7EDDC00414C2B /* FacebookAuthentication.swift */,
+				DD4FC73A29D8291300414C2B /* GoogleAuthentication.swift */,
 			);
-			path = FacebookAuthentication;
+			path = ProvidersAuthentication;
 			sourceTree = "<group>";
 		};
 		DD4FC73629D7ED8400414C2B /* Repository */ = {
 			isa = PBXGroup;
 			children = (
-				DD4FC73529D7ED5900414C2B /* FacebookAuthentication */,
+				DD4FC73529D7ED5900414C2B /* ProvidersAuthentication */,
 				DDEB8AEA29D6F210001693C8 /* AuthenticationRepository.swift */,
 				DDEB8AE829D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift */,
 			);
@@ -330,6 +333,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD4FC73B29D8291300414C2B /* GoogleAuthentication.swift in Sources */,
 				09179CD529314D3700B389C2 /* SignupView.swift in Sources */,
 				DDC33531292BB96C00C27566 /* HCard.swift in Sources */,
 				09652B8729311B19002CC615 /* LottieView.swift in Sources */,

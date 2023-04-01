@@ -34,6 +34,10 @@ final class AuthenticationRepository {
         authenticationFirebaseDataSource.loginFacebook(completionBlock: completionBlock)
     }
     
+    func loginGoogle(completionBlock: @escaping (Result<User, Error>) -> Void) {
+        authenticationFirebaseDataSource.loginGoogle(completionBlock: completionBlock)
+    }
+    
     func logout() throws {
         try authenticationFirebaseDataSource.logout()
     }
