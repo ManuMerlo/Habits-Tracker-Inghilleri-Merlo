@@ -7,15 +7,15 @@
 
 import Foundation
 
-struct User: Identifiable, Codable {
+struct User /*:Identifiable, Codable*/ {
 
-    let id: String // documentID == uid
-    let username: String
-    let emailAddress: String
-    var age: Int?
-    var sex: Sex?
-    var weight: Float?
-    var friends: [String]?
+    //let id: String // documentID == uid
+    //let username: String
+    let email: String
+    //var age: Int?
+    //var sex: Sex?
+    //var weight: Float?
+    //var friends: [String]?
 }
 
 enum Sex: Codable {

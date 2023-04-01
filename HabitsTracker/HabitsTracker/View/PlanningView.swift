@@ -186,6 +186,6 @@ struct PlanningView: View {
 
 struct PlanningView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneralView()
+        GeneralView(authenticationViewModel: AuthenticationViewModel())
     }
 }

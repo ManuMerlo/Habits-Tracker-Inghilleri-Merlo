@@ -9,6 +9,7 @@ import SwiftUI
 
 struct IntroView: View {
     @State private var selectedPage = 0
+    @ObservedObject var authenticationViewModel: AuthenticationViewModel
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
     var body: some View {
         NavigationView {
@@ -80,7 +81,7 @@ struct IntroView: View {
                 }
                 
                 NavigationLink {
-                    SigninView()
+                    SigninView(authenticationViewModel: authenticationViewModel)
                 } label: {
                     Text("Skip")
                         .fontWeight(.semibold)
@@ -115,6 +116,6 @@ struct IntroView: View {
 
 struct IntroView_Previews: PreviewProvider {
     static var previews: some View {
-        IntroView()
+        IntroView(authenticationViewModel: AuthenticationViewModel())
     }
 }

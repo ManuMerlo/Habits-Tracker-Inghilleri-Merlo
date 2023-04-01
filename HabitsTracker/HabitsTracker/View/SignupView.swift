@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct SignupView: View {
-    @StateObject private var signinViewModel = SigninViewModel()
+    // @StateObject private var signinViewModel = SigninViewModel()
+    @ObservedObject var authenticationViewModel: AuthenticationViewModel
+    @State var textfieldUsername: String = ""
+    @State var textFieldEmail: String = ""
+    @State var textFieldPassword: String = ""
     @State var repeatPassword: String = "" // Togliere State o mettere nel viewmodel?
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
@@ -31,21 +35,21 @@ struct SignupView: View {
                 
                 HStack {
                     Image(systemName: "person")
-                    CustomTextField(isSecure: false, hint: "username", text: $signinViewModel.username)
+                    CustomTextField(isSecure: false, hint: "username", text: $textfieldUsername)
                 }
                 .padding()
                 .overlay(RoundedRectangle(cornerRadius:10).stroke(lineWidth: 2))
                 
                 HStack {
                     Image(systemName: "envelope")
-                    CustomTextField(isSecure: false,hint: "email", text: $signinViewModel.emailAddress)
+                    CustomTextField(isSecure: false,hint: "email", text: $textFieldEmail)
                 }
                 .padding()
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 2))
                 
                 HStack {
                     Image(systemName: "lock")
-                    CustomTextField(isSecure:true,hint: "password", text: $signinViewModel.password)
+                    CustomTextField(isSecure:true,hint: "password", text: $textFieldPassword)
                 }
                 .padding()
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 2))
@@ -56,15 +60,18 @@ struct SignupView: View {
                 .padding()
                 .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 2))
                 Button {
-                    guard !signinViewModel.emailAddress.isEmpty, !signinViewModel.password.isEmpty else {
+                    // Maybe these checks are not necessary
+                    guard !textFieldEmail.isEmpty, !textFieldPassword.isEmpty else {
                         print("Empty email or password")
                         return
                     }
-                    guard signinViewModel.password == repeatPassword else {
+                    guard textFieldPassword == repeatPassword else {
                         print("Passwords do not match")
                         return
                     }
-                    signinViewModel.signUp()
+                    authenticationViewModel.createNewUser(email: textFieldEmail,
+                                                          password: textFieldPassword)
+                    // TODO: manage the username
                 } label: {
                     HStack() {
                         Text("Sign up")
@@ -80,18 +87,24 @@ struct SignupView: View {
                     }
                 }
                 .padding(.top,20)
+                if let messageError = authenticationViewModel.messageError {
+                    Text(messageError)
+                        .font(.body)
+                        .foregroundColor(.red)
+                        .padding()
+                }
                 
             }
                    .padding(.horizontal, 50)
                    .padding(.vertical,25)
         }
-        .alert(signinViewModel.errorMessage, isPresented: $signinViewModel.showError) {
-        }
+        /*.alert(signinViewModel.errorMessage, isPresented: $signinViewModel.showError) {
+        }*/
     }
 }
 
 struct SignupView_Previews: PreviewProvider {
     static var previews: some View {
-        SignupView()
+        SignupView(authenticationViewModel: AuthenticationViewModel())
     }
 }

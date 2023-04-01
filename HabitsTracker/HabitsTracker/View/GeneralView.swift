@@ -11,6 +11,8 @@ import GoogleSignIn
 
 
 struct GeneralView: View {
+    /*private*/var store = HealthStore()
+    @ObservedObject var authenticationViewModel: AuthenticationViewModel
     var body: some View {
         TabView {
             HomeView()
@@ -33,7 +35,7 @@ struct GeneralView: View {
                     Image(systemName: "medal")
                     Text("Goals")
                 }
-            SettingsView()
+            SettingsView(authenticationViewModel: authenticationViewModel)
                 .tabItem {
                     Image(systemName: "gear")
                     Text("Settings")
@@ -44,6 +46,6 @@ struct GeneralView: View {
 
 struct GeneralView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneralView()
+        GeneralView(authenticationViewModel: AuthenticationViewModel())
     }
 }

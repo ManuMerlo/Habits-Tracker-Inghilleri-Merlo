@@ -41,6 +41,9 @@
 		DDD723AF292A73AC00012461 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD723AE292A73AC00012461 /* SettingsView.swift */; };
 		DDD723B1292A87E100012461 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD723B0292A87E100012461 /* HomeView.swift */; };
 		DDDDFA70292CEC290033B3D3 /* PlanningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDDFA6F292CEC290033B3D3 /* PlanningViewModel.swift */; };
+		DDEB8AE929D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEB8AE829D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift */; };
+		DDEB8AEB29D6F210001693C8 /* AuthenticationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEB8AEA29D6F210001693C8 /* AuthenticationRepository.swift */; };
+		DDEB8AED29D6F301001693C8 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEB8AEC29D6F301001693C8 /* AuthenticationViewModel.swift */; };
 		DDF9364529C76330002B965A /* UserViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF9364429C76330002B965A /* UserViewModel.swift */; };
 		DDF9364829C76518002B965A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DDF9364729C76518002B965A /* FirebaseFirestore */; };
 		DDF9364A29C76521002B965A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DDF9364929C76521002B965A /* FirebaseFirestoreSwift */; };
@@ -78,6 +81,9 @@
 		DDD723AE292A73AC00012461 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DDD723B0292A87E100012461 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
 		DDDDFA6F292CEC290033B3D3 /* PlanningViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanningViewModel.swift; sourceTree = "<group>"; };
+		DDEB8AE829D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationFirebaseDataSource.swift; sourceTree = "<group>"; };
+		DDEB8AEA29D6F210001693C8 /* AuthenticationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationRepository.swift; sourceTree = "<group>"; };
+		DDEB8AEC29D6F301001693C8 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
 		DDF9364429C76330002B965A /* UserViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -177,6 +183,7 @@
 				DD127A38292946E100075A8B /* Model */,
 				DD127A39292946E800075A8B /* View */,
 				DD127A3A292946EF00075A8B /* ViewModel */,
+				DDBDA92C29D778F900B81D6F /* Authentication */,
 				DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */,
 				DD25AA2729293E7300EF2FEB /* ContentView.swift */,
 				DD33E5F42929457C00B299BD /* Info.plist */,
@@ -193,6 +200,16 @@
 				DD25AA2C29293E7300EF2FEB /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		DDBDA92C29D778F900B81D6F /* Authentication */ = {
+			isa = PBXGroup;
+			children = (
+				DDEB8AEC29D6F301001693C8 /* AuthenticationViewModel.swift */,
+				DDEB8AEA29D6F210001693C8 /* AuthenticationRepository.swift */,
+				DDEB8AE829D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift */,
+			);
+			path = Authentication;
 			sourceTree = "<group>";
 		};
 		DDF9364629C76518002B965A /* Frameworks */ = {
@@ -302,10 +319,13 @@
 				DDC33528292BA0A000C27566 /* VCard.swift in Sources */,
 				09652B8329311942002CC615 /* CardIntro.swift in Sources */,
 				DDD723AF292A73AC00012461 /* SettingsView.swift in Sources */,
+				DDEB8AE929D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift in Sources */,
 				DD127A3E2929476800075A8B /* SigninViewModel.swift in Sources */,
 				DDDDFA70292CEC290033B3D3 /* PlanningViewModel.swift in Sources */,
+				DDEB8AEB29D6F210001693C8 /* AuthenticationRepository.swift in Sources */,
 				DDC33537292BFC8700C27566 /* DateValue.swift in Sources */,
 				DD25AA2829293E7300EF2FEB /* ContentView.swift in Sources */,
+				DDEB8AED29D6F301001693C8 /* AuthenticationViewModel.swift in Sources */,
 				DDC2F89529311CAD003653F1 /* Goal.swift in Sources */,
 				DDC2F89329311548003653F1 /* User.swift in Sources */,
 				DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */,

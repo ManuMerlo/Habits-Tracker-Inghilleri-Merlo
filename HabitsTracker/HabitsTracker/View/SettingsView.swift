@@ -10,7 +10,8 @@ import Firebase
 
 
 struct SettingsView: View {
-    private var userViewModel = UserViewModel()
+    @ObservedObject var authenticationViewModel: AuthenticationViewModel
+    // private var userViewModel = UserViewModel()
     var body: some View {
         VStack {
             Image("Avatar 1")
@@ -22,19 +23,20 @@ struct SettingsView: View {
             
             List {
                 Button("Delete Account") {
-                    userViewModel.logout(delete: true)
+                    // userViewModel.logout(delete: true)
                 }.foregroundColor(Color.red)
                 
                 Button("Logout") {
-                    userViewModel.logout(delete: false)
+                    authenticationViewModel.logout()
                 }
             }
         }.padding(.top, 15.0)
+        
     }
 }
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView()
+        SettingsView(authenticationViewModel: AuthenticationViewModel())
     }
 }

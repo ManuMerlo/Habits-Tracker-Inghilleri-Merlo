@@ -4,16 +4,16 @@
 //
 //  Created by Riccardo Inghilleri on 19/11/22.
 //
-
+/*
 import SwiftUI
 
 struct ContentView: View {
     @AppStorage("log_status") var logStatus: Bool = false
     var body: some View {
         if logStatus {
-            GeneralView()
+            //GeneralView()
         } else {
-            IntroView()
+            //IntroView()
         }
     }
 }
@@ -23,3 +23,4 @@ struct ContentView_Previews: PreviewProvider {
         ContentView()
     }
 }
+*/
