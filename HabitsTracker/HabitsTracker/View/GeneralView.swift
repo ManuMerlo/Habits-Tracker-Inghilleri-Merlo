@@ -11,11 +11,11 @@ import Firebase
 
 
 struct GeneralView: View {
-    /* private var store = HealthStore()*/
+    @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     var body: some View {
         TabView {
-            HomeView()
+            HomeView(healthViewModel: healthViewModel)
                 .tabItem {
                     Image(systemName: "house")
                     Text("Home")
@@ -41,17 +41,11 @@ struct GeneralView: View {
                     Text("Settings")
                 }
         }
-        /*
-        .onAppear {
-            store.requestAuthorization { success in
-                print("Auth success? \(success)")
-            }
-        } */
     }
 }
 
 struct GeneralView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneralView(authenticationViewModel: AuthenticationViewModel())
+        GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel())
     }
 }

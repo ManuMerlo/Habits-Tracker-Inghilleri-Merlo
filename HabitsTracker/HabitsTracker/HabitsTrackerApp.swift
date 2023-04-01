@@ -22,12 +22,13 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 struct HabitsTrackerApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var authenticationViewModel = AuthenticationViewModel() // Here authenticationViewModel is a @StateObject instead in the others view is only an @ObservedObject. For more details see (*1)
+    @StateObject var healthViewModel = HealthViewModel()
     var body: some Scene {
         WindowGroup {
             if let _ = authenticationViewModel.user {
-                GeneralView(authenticationViewModel: authenticationViewModel)
+                GeneralView(healthViewModel: healthViewModel, authenticationViewModel: authenticationViewModel)
             } else {
-                IntroView(authenticationViewModel: authenticationViewModel)
+                IntroView(healthViewModel: healthViewModel, authenticationViewModel: authenticationViewModel)
             }
             // ContentView()
             // MARK: Facebook
@@ -35,5 +36,6 @@ struct HabitsTrackerApp: App {
                     ApplicationDelegate.shared.application(UIApplication.shared, open: url, sourceApplication: nil, annotation: UIApplication.OpenURLOptionsKey.annotation)
                 }*/
         }
+        
     }
 }

@@ -22,6 +22,7 @@
 		DD127A3E2929476800075A8B /* SigninViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3D2929476800075A8B /* SigninViewModel.swift */; };
 		DD127A402929477700075A8B /* GeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3F2929477700075A8B /* GeneralView.swift */; };
 		DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A41292947FA00075A8B /* CustomTextField.swift */; };
+		DD1FAFDA29D8DA2A0084178F /* HealthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1FAFD929D8DA2A0084178F /* HealthViewModel.swift */; };
 		DD25AA2629293E7300EF2FEB /* HabitsTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */; };
 		DD25AA2829293E7300EF2FEB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD25AA2729293E7300EF2FEB /* ContentView.swift */; };
 		DD25AA2A29293E7300EF2FEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD25AA2929293E7300EF2FEB /* Assets.xcassets */; };
@@ -68,6 +69,7 @@
 		DD127A3D2929476800075A8B /* SigninViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninViewModel.swift; sourceTree = "<group>"; };
 		DD127A3F2929477700075A8B /* GeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralView.swift; sourceTree = "<group>"; };
 		DD127A41292947FA00075A8B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
+		DD1FAFD929D8DA2A0084178F /* HealthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthViewModel.swift; sourceTree = "<group>"; };
 		DD25AA2229293E7300EF2FEB /* HabitsTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabitsTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsTrackerApp.swift; sourceTree = "<group>"; };
 		DD25AA2729293E7300EF2FEB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -165,6 +167,14 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
+		DD1FAFD829D8DA0E0084178F /* HealthKit */ = {
+			isa = PBXGroup;
+			children = (
+				DD1FAFD929D8DA2A0084178F /* HealthViewModel.swift */,
+			);
+			path = HealthKit;
+			sourceTree = "<group>";
+		};
 		DD25AA1929293E7200EF2FEB = {
 			isa = PBXGroup;
 			children = (
@@ -191,6 +201,7 @@
 				DD127A39292946E800075A8B /* View */,
 				DD127A3A292946EF00075A8B /* ViewModel */,
 				DDBDA92C29D778F900B81D6F /* Authentication */,
+				DD1FAFD829D8DA0E0084178F /* HealthKit */,
 				DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */,
 				DD25AA2729293E7300EF2FEB /* ContentView.swift */,
 				DD33E5F42929457C00B299BD /* Info.plist */,
@@ -358,6 +369,7 @@
 				DDC2F89329311548003653F1 /* User.swift in Sources */,
 				DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */,
 				DD127A402929477700075A8B /* GeneralView.swift in Sources */,
+				DD1FAFDA29D8DA2A0084178F /* HealthViewModel.swift in Sources */,
 				DDD723B1292A87E100012461 /* HomeView.swift in Sources */,
 				DD25AA2629293E7300EF2FEB /* HabitsTrackerApp.swift in Sources */,
 				DDC33533292BF38A00C27566 /* PlanningView.swift in Sources */,
@@ -496,7 +508,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HabitsTracker/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app requires to acces your health stats";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app requires to access your Health Data";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
@@ -528,7 +540,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = HabitsTracker/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
-				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app requires to acces your health stats";
+				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app requires to access your Health Data";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;

@@ -8,11 +8,11 @@
 import SwiftUI
 
 struct HomeView: View {
+    @ObservedObject var healthViewModel: HealthViewModel
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             content
         }
-        
     }
     
     var content: some View {
@@ -37,8 +37,9 @@ struct HomeView: View {
                 .padding(.horizontal, 20)
             
             VStack(spacing: 20) {
-                ForEach(0 ..< 3) { item in
-                    HCard()
+                HCard(activityType: "Steps", quantity: healthViewModel.allMySteps, image: "figure.walk")
+                ForEach(0 ..< 2) { item in
+                    HCard(activityType: "ActivityType", quantity: "Quantity", image: "figure.walk")
                 }
             }
             .padding(20)
@@ -48,6 +49,6 @@ struct HomeView: View {
 }
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneralView(authenticationViewModel: AuthenticationViewModel())
+        GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel())
     }
 }

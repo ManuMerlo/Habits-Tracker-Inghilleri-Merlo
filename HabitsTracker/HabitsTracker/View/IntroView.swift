@@ -9,6 +9,7 @@ import SwiftUI
 
 struct IntroView: View {
     @State private var selectedPage = 0
+    @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
     var body: some View {
@@ -93,6 +94,9 @@ struct IntroView: View {
                 .padding(.bottom)
             }
         }
+        .task {
+            healthViewModel.requestAccessToHealthData()
+        }
     }
     
     @ViewBuilder
@@ -116,6 +120,6 @@ struct IntroView: View {
 
 struct IntroView_Previews: PreviewProvider {
     static var previews: some View {
-        IntroView(authenticationViewModel: AuthenticationViewModel())
+        IntroView(healthViewModel: HealthViewModel(),authenticationViewModel: AuthenticationViewModel())
     }
 }
