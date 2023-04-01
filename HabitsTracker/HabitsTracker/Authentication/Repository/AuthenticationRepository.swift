@@ -50,6 +50,9 @@ final class AuthenticationRepository {
         authenticationFirebaseDataSource.linkFacebook(completionBlock: completionBlock)
     }
     
+    func linkGoogle(completionBlock: @escaping (Bool) -> Void) {
+        authenticationFirebaseDataSource.linkGoogle(completionBlock: completionBlock)
+    }
     
     func linkEmailAndPassword(email:String ,password:String,completionBlock: @escaping (Bool) -> Void){
         authenticationFirebaseDataSource.linkEmailAndPassword(email:email,

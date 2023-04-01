@@ -26,4 +26,9 @@ final class GoogleAuthentication {
             completionBlock(.success(user ?? nil))
         }
     }
+
+    func getUser() -> GIDGoogleUser? {
+        GIDSignIn.sharedInstance.currentUser
+    }
+    
 }

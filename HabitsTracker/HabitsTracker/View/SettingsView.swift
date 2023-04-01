@@ -63,6 +63,11 @@ struct SettingsView: View {
                         Text("Connect with Facebook")
                     }.disabled(authenticationViewModel.isFacebookLinked())
                     
+                    Button{
+                        authenticationViewModel.linkGoogle()
+                    } label: {
+                        Text("Connect with Google")
+                    }.disabled(authenticationViewModel.isGoogleLinked())
                     
                 }
                 Button("Delete Account") {
@@ -86,7 +91,6 @@ struct SettingsView: View {
                 } message: {
                     Text(authenticationViewModel.isAccountLinked ? "Success" : "Error")
                 }
-         // to do alert google
         }
     }
 }

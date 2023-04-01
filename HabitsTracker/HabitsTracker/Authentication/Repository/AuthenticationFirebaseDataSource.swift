@@ -130,6 +130,29 @@ final class AuthenticationFirebaseDataSource {
         }
     }
     
+    func linkGoogle(completionBlock: @escaping (Bool) -> Void){
+        googleAuthentication.loginGoogle { result in
+            switch result {
+            case .success(let user):
+                let idToken = user?.authentication.idToken ?? "No idToken"
+                let accessToken = user?.authentication.accessToken ?? "No accessToken"
+                let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
+                Auth.auth().currentUser?.link(with: credential, completion: { authDataResult, error in
+                    if let error = error {
+                        print("Error linking a new user \(error.localizedDescription)")
+                        completionBlock(false)
+                        return
+                    }
+                    let email = authDataResult?.user.email ?? "No email google"
+                    print("New user linked with info \(email)")
+                    completionBlock(true)
+                })
+            case .failure(let error):
+                print("Error linking with Google \(error.localizedDescription)")
+                completionBlock(false)
+            }
+        }
+    }
     
     func getCurrentCredential() -> AuthCredential? {
         guard let providerId = getCurrentProvider().last else {
@@ -144,7 +167,16 @@ final class AuthenticationFirebaseDataSource {
             let credential = FacebookAuthProvider.credential(withAccessToken: accessToken)
             return credential
             
-        case .emailAndPassword,.unknown,.google:
+        case .google:
+            guard let user = googleAuthentication.getUser() else{
+                return nil
+            }
+            let idToken = user.authentication.idToken ?? "No idToken"
+            let accessToken = user.authentication.accessToken
+            let credential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
+            return credential
+            
+        case .emailAndPassword,.unknown:
             return nil
         }
     }

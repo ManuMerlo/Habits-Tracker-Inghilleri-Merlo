@@ -93,6 +93,9 @@ final class AuthenticationViewModel: ObservableObject {
         linkedAccounts.contains(where: { $0.rawValue == "facebook.com"})
     }
     
+    func isGoogleLinked() -> Bool{
+        linkedAccounts.contains(where: { $0.rawValue == "google.com"})
+    }
     
     func linkFacebook () {
         authenticationRepository.linkFacebook { [weak self] isSuccess in
@@ -103,6 +106,14 @@ final class AuthenticationViewModel: ObservableObject {
         }
     }
     
+    func linkGoogle () {
+        authenticationRepository.linkGoogle { [weak self] isSuccess in
+            print("Linked Google \(isSuccess.description)")
+            self?.isAccountLinked = isSuccess
+            self?.showAlert.toggle()
+            self?.getCurrentProvider()
+        }
+    }
     
     func linkEmailAndPassword(email:String, password:String) {
         authenticationRepository.linkEmailAndPassword(email: email,
