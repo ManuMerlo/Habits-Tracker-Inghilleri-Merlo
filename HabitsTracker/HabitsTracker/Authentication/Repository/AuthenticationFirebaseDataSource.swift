@@ -97,4 +97,85 @@ final class AuthenticationFirebaseDataSource {
         try Auth.auth().signOut()
     }
     
+    func getCurrentProvider() -> [LinkedAccounts]{
+        // We could use getCurrentUser
+        guard let currentUser = Auth.auth().currentUser else{
+            return []
+        }
+        let linkedAccounts = currentUser.providerData.map{ userInfo in
+            LinkedAccounts(rawValue: userInfo.providerID)
+        }.compactMap{$0}
+        return linkedAccounts
+    }
+    
+    func linkFacebook(completionBlock: @escaping (Bool) -> Void){
+        facebookAuthentication.loginFacebook { result in
+            switch result {
+            case .success(let accessToken):
+                let credential = FacebookAuthProvider.credential(withAccessToken: accessToken)
+                Auth.auth().currentUser?.link(with: credential, completion: { authDataResult, error in
+                    if let error = error {
+                        print("Error linking new user \(error.localizedDescription)")
+                        completionBlock(false)
+                        return
+                    }
+                    let email = authDataResult?.user.email ?? "No email facebook"
+                    print("New user linked with info \(email)")
+                    completionBlock(true)
+                })
+            case .failure(let error):
+                print("Error linking a new user with Facebook \(error.localizedDescription)")
+                completionBlock(false)
+            }
+        }
+    }
+    
+    
+    func getCurrentCredential() -> AuthCredential? {
+        guard let providerId = getCurrentProvider().last else {
+            return nil
+        }
+        
+        switch providerId{
+        case .facebook:
+            guard let accessToken = facebookAuthentication.getAccessToken() else {
+                return nil
+            }
+            let credential = FacebookAuthProvider.credential(withAccessToken: accessToken)
+            return credential
+            
+        case .emailAndPassword,.unknown,.google:
+            return nil
+        }
+    }
+    
+    func linkEmailAndPassword(email:String ,password:String,completionBlock: @escaping (Bool) -> Void){
+        guard let credential = getCurrentCredential() else {
+            print("Error creating credential")
+            completionBlock(false)
+            return
+        }
+        Auth.auth().currentUser?.reauthenticate(with: credential,completion: { authDataResult, error in
+            if let error = error{
+                print("Error reauthenticating a user \(error.localizedDescription)")
+                completionBlock(false)
+                return
+            }
+            
+            let emailAndPasswordCredential = EmailAuthProvider.credential(withEmail: email, password: password)
+            Auth.auth().currentUser?.link(with: emailAndPasswordCredential, completion: { authDataResult, error in
+                if let error = error {
+                    print("Error linking new user \(error.localizedDescription)")
+                    completionBlock(false)
+                    return
+                }
+                let email = authDataResult?.user.email ?? "No email"
+                print("New user linked with info \(email)")
+                completionBlock(true)
+            })
+        
+        })
+    }
+    
 }
+

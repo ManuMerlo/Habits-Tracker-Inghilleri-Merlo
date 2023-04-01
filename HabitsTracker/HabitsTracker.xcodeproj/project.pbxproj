@@ -17,6 +17,7 @@
 		09652B8329311942002CC615 /* CardIntro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09652B8229311942002CC615 /* CardIntro.swift */; };
 		09652B85293119F9002CC615 /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09652B84293119F9002CC615 /* IntroView.swift */; };
 		09652B8729311B19002CC615 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09652B8629311B19002CC615 /* LottieView.swift */; };
+		099BCA3229D8782200E9836F /* LinkedAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099BCA3129D8782200E9836F /* LinkedAccounts.swift */; };
 		DD127A3C2929475900075A8B /* SigninView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3B2929475900075A8B /* SigninView.swift */; };
 		DD127A3E2929476800075A8B /* SigninViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3D2929476800075A8B /* SigninViewModel.swift */; };
 		DD127A402929477700075A8B /* GeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3F2929477700075A8B /* GeneralView.swift */; };
@@ -30,9 +31,9 @@
 		DD25AA39292941BE00EF2FEB /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DD25AA38292941BE00EF2FEB /* FirebaseAuth */; };
 		DD33E5F1292944B700B299BD /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = DD33E5F0292944B700B299BD /* GoogleSignIn */; };
 		DD33E5F3292944B700B299BD /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD33E5F2292944B700B299BD /* GoogleSignInSwift */; };
-		DD7C69B5292C254500E0D9ED /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C69B4292C254500E0D9ED /* Activity.swift */; };
 		DD4FC73829D7EDDC00414C2B /* FacebookAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FC73729D7EDDC00414C2B /* FacebookAuthentication.swift */; };
 		DD4FC73B29D8291300414C2B /* GoogleAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FC73A29D8291300414C2B /* GoogleAuthentication.swift */; };
+		DD7C69B5292C254500E0D9ED /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C69B4292C254500E0D9ED /* Activity.swift */; };
 		DD8D0D5229D5E5ED0045009C /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = DD8D0D5129D5E5ED0045009C /* FacebookLogin */; };
 		DDC2F89329311548003653F1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2F89229311548003653F1 /* User.swift */; };
 		DDC2F89529311CAD003653F1 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2F89429311CAD003653F1 /* Goal.swift */; };
@@ -61,6 +62,7 @@
 		09652B8229311942002CC615 /* CardIntro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardIntro.swift; sourceTree = "<group>"; };
 		09652B84293119F9002CC615 /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		09652B8629311B19002CC615 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		099BCA3129D8782200E9836F /* LinkedAccounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedAccounts.swift; sourceTree = "<group>"; };
 		DD07DFB529D0B99400633248 /* HabitsTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HabitsTracker.entitlements; sourceTree = "<group>"; };
 		DD127A3B2929475900075A8B /* SigninView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninView.swift; sourceTree = "<group>"; };
 		DD127A3D2929476800075A8B /* SigninViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninViewModel.swift; sourceTree = "<group>"; };
@@ -73,9 +75,9 @@
 		DD25AA2C29293E7300EF2FEB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DD25AA33292940EC00EF2FEB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DD33E5F42929457C00B299BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		DD7C69B4292C254500E0D9ED /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		DD4FC73729D7EDDC00414C2B /* FacebookAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookAuthentication.swift; sourceTree = "<group>"; };
 		DD4FC73A29D8291300414C2B /* GoogleAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthentication.swift; sourceTree = "<group>"; };
+		DD7C69B4292C254500E0D9ED /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		DDC2F89229311548003653F1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DDC2F89429311CAD003653F1 /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
 		DDC33527292BA0A000C27566 /* VCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCard.swift; sourceTree = "<group>"; };
@@ -125,6 +127,7 @@
 		DD127A38292946E100075A8B /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				099BCA3129D8782200E9836F /* LinkedAccounts.swift */,
 				DDC33536292BFC8700C27566 /* DateValue.swift */,
 				DD7C69B4292C254500E0D9ED /* Activity.swift */,
 				DDC2F89229311548003653F1 /* User.swift */,
@@ -336,6 +339,7 @@
 				DD4FC73B29D8291300414C2B /* GoogleAuthentication.swift in Sources */,
 				09179CD529314D3700B389C2 /* SignupView.swift in Sources */,
 				DDC33531292BB96C00C27566 /* HCard.swift in Sources */,
+				099BCA3229D8782200E9836F /* LinkedAccounts.swift in Sources */,
 				09652B8729311B19002CC615 /* LottieView.swift in Sources */,
 				09652B85293119F9002CC615 /* IntroView.swift in Sources */,
 				DD7C69B5292C254500E0D9ED /* Activity.swift in Sources */,

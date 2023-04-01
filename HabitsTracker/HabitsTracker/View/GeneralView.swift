@@ -11,7 +11,7 @@ import Firebase
 
 
 struct GeneralView: View {
-    /*private*/var store = HealthStore()
+    /* private var store = HealthStore()*/
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     var body: some View {
         TabView {
@@ -25,7 +25,7 @@ struct GeneralView: View {
                     Image(systemName: "calendar")
                     Text("Planning")
                 }
-            Text("Leaderboard")
+            Text("Leaderboard") 
                 .tabItem {
                     Image(systemName: "trophy")
                     Text("Leaderboard")
@@ -41,11 +41,12 @@ struct GeneralView: View {
                     Text("Settings")
                 }
         }
+        /*
         .onAppear {
             store.requestAuthorization { success in
                 print("Auth success? \(success)")
             }
-        }
+        } */
     }
 }
 
