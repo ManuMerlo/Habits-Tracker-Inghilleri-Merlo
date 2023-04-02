@@ -37,9 +37,9 @@ struct HomeView: View {
                 .padding(.horizontal, 20)
             
             VStack(spacing: 20) {
-                HCard(activityType: "Steps", quantity: healthViewModel.allMySteps, image: "figure.walk")
-                ForEach(0 ..< 2) { item in
-                    HCard(activityType: "ActivityType", quantity: "Quantity", image: "figure.walk")
+                //HCard(activityType: "Steps", quantity: healthViewModel.allMyTypes, image: "figure.walk")
+                ForEach(Activity.allActivities()) { activity in
+                    HCard(activityType: activity.name, quantity: healthViewModel.allMyTypes[activity.id] ?? "not found", image: activity.image)
                 }
             }
             .padding(20)

@@ -111,11 +111,11 @@ struct PlanningView: View {
                         .font(.title2.bold())
                         .frame(maxWidth: .infinity, alignment: .leading)
                     
-                    if let activity = activities.first(where: { activity in
+                    if let activity = activitiesPlanned.first(where: { activity in
                         return planningViewModel.isSameDay(date1: activity.activityDate, date2: planningViewModel.currentDate)
                     }) {
                         
-                        ForEach(activity.activity) { activity in
+                        ForEach(activity.activityPlanned) { activity in
                             
                             VStack(alignment: .leading, spacing: 10) {
                                 
@@ -156,7 +156,7 @@ struct PlanningView: View {
     func CardView(value: DateValue)->some View{
         VStack {
             if value.day != -1 {
-                if let activity = activities.first(where: { activity in
+                if let activity = activitiesPlanned.first(where: { activity in
                     return planningViewModel.isSameDay(date1: activity.activityDate, date2: value.date)
                 }){
                     Text("\(value.day)")

@@ -41,6 +41,9 @@ struct GeneralView: View {
                     Text("Settings")
                 }
         }
+        .task {
+            healthViewModel.requestAccessToHealthData()
+        }
     }
 }
 

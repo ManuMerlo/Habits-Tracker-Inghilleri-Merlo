@@ -94,9 +94,7 @@ struct IntroView: View {
                 .padding(.bottom)
             }
         }
-        .task {
-            healthViewModel.requestAccessToHealthData()
-        }
+        
     }
     
     @ViewBuilder

@@ -30,12 +30,6 @@ struct HabitsTrackerApp: App {
             } else {
                 IntroView(healthViewModel: healthViewModel, authenticationViewModel: authenticationViewModel)
             }
-            // ContentView()
-            // MARK: Facebook
-                /*.onOpenURL { url in
-                    ApplicationDelegate.shared.application(UIApplication.shared, open: url, sourceApplication: nil, annotation: UIApplication.OpenURLOptionsKey.annotation)
-                }*/
         }
-        
     }
 }
