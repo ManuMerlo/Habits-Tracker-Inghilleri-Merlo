@@ -94,7 +94,6 @@ struct IntroView: View {
                 .padding(.bottom)
             }
         }
-        
     }
     
     @ViewBuilder

@@ -21,16 +21,19 @@ struct GeneralView: View {
                     Image(systemName: "house")
                     Text("Home")
                 }
+            
             PlanningView()
                 .tabItem {
                     Image(systemName: "calendar")
                     Text("Planning")
                 }
-            Text("Leaderboard") 
+            
+            LeaderboardView()
                 .tabItem {
                     Image(systemName: "trophy")
                     Text("Leaderboard")
                 }
+            
             Text("Goals")
                 .tabItem {
                     Image(systemName: "medal")
