@@ -13,6 +13,7 @@ import Firebase
 struct GeneralView: View {
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
+    @StateObject var firestoreViewModel = FirestoreViewModel() // to pass to the leaderboardview
     var body: some View {
         TabView {
             HomeView(healthViewModel: healthViewModel)

@@ -17,7 +17,7 @@ final class UserViewModel: ObservableObject {
     //var found: Bool = false
     let db = Firestore.firestore()
     
-    @AppStorage("log_status") var logStatus: Bool = true
+    //@AppStorage("log_status") var logStatus: Bool = true
     
     func addUser(uid: String, username: String, emailAddress: String) {
         // Check that the user doesn't exist (Testare meglio)
