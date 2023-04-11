@@ -5,111 +5,128 @@
 //  Created by Riccardo Inghilleri on 26/03/23.
 //
 
+//TODO : da implementare
+/*switch selectedTimeFrame {
+ case .weekly:
+ users = viewModel.weeklyUsers
+ case .daily:
+ users = viewModel.dailyUsers
+ }*/
+
 import SwiftUI
 
 
 struct LeaderboardView: View {
-    
+    @State private var global : Bool = true
     @State private var selectedTimeFrame : TimeFrame = .daily
+    @State var users : [User] = UserList.usersGlobal
+    
     var body: some View {
         
-        GeometryReader { geometry in
-
-            VStack {
-                
-                Text("Leaderboard")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 20)
-                
-                
-                Picker("Choose a time frame",selection: $selectedTimeFrame) {
-                    ForEach(TimeFrame.allCases,id: \.self){
-                        Text($0.rawValue)
+        NavigationStack {
+            GeometryReader { geometry in
+                VStack{
+                    Picker("Choose a time frame", selection: $selectedTimeFrame) {
+                        ForEach(TimeFrame.allCases,id: \.self){
+                            Text($0.rawValue)
+                        }
+                    }.onChange(of: selectedTimeFrame , perform: { newValue in
+                        sortUsers(timeFrame: newValue)
+                    })
+                    .pickerStyle(SegmentedPickerStyle())
+                    .padding(.bottom,30)
+                    
+                    
+                    ZStack{
+                        NavigationLink(value: users[1] ){
+                            RankingPodiumView(user: users[1],
+                                              selectedTimeFrame: selectedTimeFrame,
+                                              position: "2",
+                                              width: (geometry.size.width - 70) * 0.4,
+                                              color: CommodityColor.silver.linearGradient,
+                                              squareSide: geometry.size.width - 290)
+                            .offset(x:-geometry.size.width/4,y: 10)
+                        }
+                        
+                        
+                        NavigationLink(value: users[2]){
+                            RankingPodiumView(user: users[2],
+                                              selectedTimeFrame: selectedTimeFrame,
+                                              position: "3",
+                                              width: (geometry.size.width - 70) * 0.4,
+                                              color: CommodityColor.bronze.linearGradient,
+                                              squareSide:geometry.size.width - 290)
+                            .offset(x:geometry.size.width/4,y: 10)
+                        }
+                        
+                        NavigationLink(value: users[0]){
+                            RankingPodiumView(user: users[0],
+                                              selectedTimeFrame: selectedTimeFrame,
+                                              position: "1",
+                                              width: (geometry.size.width - 70) * 0.5,
+                                              color: CommodityColor.gold.linearGradient,
+                                              squareSide:geometry.size.width - 260)
+                            .offset(y:-geometry.size.height/12)
+                        }
                     }
-                }.pickerStyle(SegmentedPickerStyle())
-                .padding(.bottom,30)
-                .padding(.horizontal,20)
-               
-                //TODO : da implementare
-                /*switch selectedTimeFrame {
-                case .weekly:
-                    users = viewModel.weeklyUsers
-                case .daily:
-                    users = viewModel.dailyUsers
-                }*/
-                
-                HStack{
-                    RankingCard(position: "2",
-                                image_path: "Avatar 2",
-                                username: "Player 2",
-                                score: 400,
-                                width: (geometry.size.width - 70) * 0.4,
-                                color: CommodityColor.silver.linearGradient,
-                                squareSide: geometry.size.width - 290)
-                    .position(x:geometry.size.width/4,
-                              y:geometry.size.height/4.8)
-                    
-                    RankingCard(position: "3",
-                                image_path: "Avatar 3",
-                                username: "Player 3",
-                                score: 300,
-                                width: (geometry.size.width - 70) * 0.4,
-                                color: CommodityColor.bronze.linearGradient,
-                                squareSide:geometry.size.width - 290)
-                    .position(x:geometry.size.width/2.4,
-                              y:geometry.size.height/4.8)
-                    
-                    RankingCard(position: "1",
-                                image_path: "Avatar 4",
-                                username: "Player 1",
-                                score: 500,
-                                width: (geometry.size.width - 70) * 0.5,
-                                color: CommodityColor.gold.linearGradient,
-                                squareSide:geometry.size.width - 260)
-                    .position(x:-geometry.size.width/5.6,
-                              y:geometry.size.height/8)
-                    
-                }
-               
-                ScrollView {
-                    LazyVStack {
-                        ForEach(0..<20) { item in
-                            HStack(spacing: 20) {
-                                
-                                VStack {
-                                    Text("\(item + 4)")
-                                        .font(.callout)
-                                        .fontWeight(.bold)
-                                        .frame(width: geometry.size.width / 15)
-                                    Text("⏷")
-                                }.padding(.horizontal,10)
-                                
-                                Image("Avatar 1")
-                                    .resizable()
-                                    .frame(width: 50, height: 50)
-                                    .mask(Circle())
-                                Text("username")
-                                    .font(.body)
-                                    .fontWeight(.bold)
-                                Divider()
-                                Text("300 ")
-                                    .fontWeight(.bold)
-                            
+                    .padding(.top,30)
+                                    
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(4..<users.count) { item in
+                                NavigationLink(value: users[item - 1]){
+                                    RankingItemView(user : users[item-1],
+                                                    selectedTimeFrame: selectedTimeFrame,
+                                                    position: item )
+                                }
                             }
-                            .padding(.vertical,10)
-                            .frame(maxWidth: .infinity, maxHeight: 80)
-                            .background(item % 2 == 0 ? Color.green : .purple)
-                            .foregroundColor(.white)
-                            .mask(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                        }.padding(.horizontal,20)
+                        }
+                    }.padding(.top,10)
+                    
+                } .toolbar {
+                    Button {
+                        global.toggle()
+                    } label: {
+                        if global {
+                            Text("Global")
+                            Image(systemName: "globe")
+                        } else {
+                            Text("Private")
+                            Image(systemName: "person")
+                        }
+                    }.onChange(of: global) { newValue in
+                        setUsers(global: newValue)
                     }
-                }
-            
+                }.padding(20)
+                    .navigationTitle("Leaderboard")
+                    .navigationDestination(for: User.self) { user in
+                        DetailUserView(user: user)
+                    }
+            }
+        }.onAppear(){
+            sortUsers(timeFrame: selectedTimeFrame)
+        }
+    }
+    
+    func sortUsers(timeFrame: TimeFrame){
+        if timeFrame == .daily{
+            users.sort { user1, user2 in
+                user1.daily_score ?? 0 > user2.daily_score ?? 0  //MARK: fix score optional
+            }
+        } else {
+            users.sort { user1, user2 in
+                user1.weekly_score ?? 0 > user2.weekly_score ?? 0   //MARK: fix score optional
             }
         }
-        
+    }
+    
+    func setUsers( global: Bool){
+        if global == true {
+            users = UserList.usersGlobal
+        }else {
+            users = UserList.usersFriends
+        }
+        sortUsers(timeFrame: selectedTimeFrame)
     }
 }
 
@@ -118,17 +135,44 @@ enum TimeFrame : String, CaseIterable {
     case daily = "Daily"
 }
 
-struct LeaderboardView_Previews: PreviewProvider {
-    static var previews: some View {
-        LeaderboardView()
+struct DetailUserView: View{
+    var user: User
+    var body: some View {
+        VStack{
+            if let background = user.background {
+                Image(background)
+                    .resizable()
+                    .aspectRatio(contentMode: ContentMode.fill)
+                    .frame(height: 200, alignment: .center)
+                    .clipped()
+                    .clipShape(RoundedRectangle(cornerRadius:10))
+                    .padding([.leading,.trailing])
+            }
+            VStack{
+                if let image = user.image{
+                    Image(image)
+                        .resizable()
+                        .clipped()
+                        .clipShape(Circle())
+                        .aspectRatio(contentMode: ContentMode.fill)
+                        .frame(width: 120,height: 120)
+                }
+                if let username = user.username{
+                    Text(username)
+                        .font(.title3)
+                        .bold()
+                }
+            }.offset(y:-60)
+            Spacer()
+        }
     }
+    
 }
 
-struct RankingCard: View {
+struct RankingPodiumView: View {
+    let user : User
+    var selectedTimeFrame : TimeFrame
     let position: String
-    let image_path: String
-    let username: String
-    let score: Int
     let width: CGFloat
     let color: LinearGradient
     let squareSide: CGFloat
@@ -136,7 +180,6 @@ struct RankingCard: View {
     var body: some View {
         
         VStack {
-           
             if position == "1"{
                 Image("crown")
                     .resizable()
@@ -146,22 +189,64 @@ struct RankingCard: View {
                 Text(position)
                     .foregroundColor(.black)
                     .font(.title3)
-                .bold()
+                    .bold()
             }
-                
-            ImageOnCircle(icon: image_path, radius: width/2.2, circleColor: color, imageColor: .white,squareSide: squareSide)
-            Text(username)
-                .foregroundColor(.black)
-                .font(.title3)
-                .bold()
-            Text("\(score)")
+
+            
+            ImageOnCircle(icon: user.image ?? "user", radius: width/2.2, circleColor: color, imageColor: .white,squareSide: squareSide)
+            
+            Text(user.username ?? user.email)
+                    .foregroundColor(.black)
+                    .font(.title3)
+                    .bold()
+            
+            
+            Text( selectedTimeFrame == .daily ? "\(user.daily_score ?? 0)" : "\(user.weekly_score ?? 0)")
                 .foregroundColor(.black)
                 .font(.callout)
                 .bold()
         }
-       
+        
     }
     
+}
+
+struct RankingItemView: View {
+    var user : User
+    var selectedTimeFrame : TimeFrame
+    var position : Int
+    
+    var body: some View {
+        HStack(spacing: 20) {
+            VStack {
+                Text("\(position)")
+                    .font(.callout)
+                    .fontWeight(.bold)
+                Text("⏷")
+            }.padding(.horizontal,10)
+            
+            Image(user.image ?? "user")
+                .resizable()
+                .frame(width: 50, height: 50)
+                .mask(Circle())
+            
+            Text(user.username ?? user.email)
+                .font(.body)
+                .fontWeight(.bold)
+                .frame(width: 100)
+            
+            Divider()
+            Text(selectedTimeFrame == .daily ? "\(user.daily_score ?? 0)" : "\(user.weekly_score ?? 0)")
+                .fontWeight(.bold)
+            
+        }
+        .padding(.vertical,10)
+        .frame(maxWidth: .infinity, maxHeight: 80)
+        .background(position % 2 == 0 ? LinearGradient(colors: [Color.green, Color.green.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing)
+                    : LinearGradient(colors: [Color.purple, Color.purple.opacity(0.6)], startPoint: .topLeading, endPoint: .bottomTrailing))
+        .foregroundColor(.white)
+        .mask(RoundedRectangle(cornerRadius: 20, style: .continuous))
+    }
 }
 
 struct ImageOnCircle: View {
@@ -177,14 +262,14 @@ struct ImageOnCircle: View {
             Circle()
                 .fill(circleColor)
                 .frame(width: radius * 2, height: radius * 2)
-
+            
             Image(icon)
-               .resizable()
-               .mask(Circle())
-               .shadow(color: Color.gray.opacity(0.3), radius: 8, x: 0, y: 12)
-               .shadow(color: Color.gray.opacity(0.3), radius: 2, x: 0, y: 1)
-               .aspectRatio(1.0, contentMode: .fit)
-               .frame(width: squareSide, height: squareSide)
+                .resizable()
+                .mask(Circle())
+                .shadow(color: Color.gray.opacity(0.3), radius: 8, x: 0, y: 12)
+                .shadow(color: Color.gray.opacity(0.3), radius: 2, x: 0, y: 1)
+                .aspectRatio(1.0, contentMode: .fit)
+                .frame(width: squareSide, height: squareSide)
         }
     }
 }
@@ -229,3 +314,12 @@ enum CommodityColor {
         )
     }
 }
+
+struct LeaderboardView_Previews: PreviewProvider {
+    static var previews: some View {
+        LeaderboardView()
+    }
+}
+
+
+
