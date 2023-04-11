@@ -19,7 +19,8 @@ import SwiftUI
 struct LeaderboardView: View {
     @State private var global : Bool = true
     @State private var selectedTimeFrame : TimeFrame = .daily
-    @State var users : [User] = UserList.usersGlobal
+    @State var users: [User] = UserList.usersGlobal
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
     
     var body: some View {
         
@@ -103,8 +104,11 @@ struct LeaderboardView: View {
                         DetailUserView(user: user)
                     }
             }
-        }.onAppear(){
+        }/*.onAppear(){
             sortUsers(timeFrame: selectedTimeFrame)
+        }*/.task {
+            firestoreViewModel.getAllUsers()
+            // TODO: sorting
         }
     }
     
@@ -317,7 +321,7 @@ enum CommodityColor {
 
 struct LeaderboardView_Previews: PreviewProvider {
     static var previews: some View {
-        LeaderboardView()
+        LeaderboardView(firestoreViewModel: FirestoreViewModel())
     }
 }
 

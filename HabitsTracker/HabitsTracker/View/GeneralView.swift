@@ -13,7 +13,7 @@ import Firebase
 struct GeneralView: View {
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    @StateObject var firestoreViewModel = FirestoreViewModel() // to pass to the leaderboardview
+    @StateObject var firestoreViewModel = FirestoreViewModel()
     var body: some View {
         TabView {
             HomeView(healthViewModel: healthViewModel)
@@ -28,7 +28,7 @@ struct GeneralView: View {
                     Text("Planning")
                 }
             
-            LeaderboardView()
+            LeaderboardView(firestoreViewModel: firestoreViewModel)
                 .tabItem {
                     Image(systemName: "trophy")
                     Text("Leaderboard")
