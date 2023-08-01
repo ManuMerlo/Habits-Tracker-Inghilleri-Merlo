@@ -151,15 +151,31 @@ struct RankingItemView: View {
         
         GeometryReader {  geometry in
             HStack(spacing: 20) {
-                
-                Image(user.image ?? "user")
-                    .resizable()
-                    .frame(width: geometry.size.width/6, height: geometry.size.width/6)
-                    .mask(Circle())
+                ZStack{
+                    
+                    Image(user.image ?? "user")
+                        .resizable()
+                        .frame(width: geometry.size.width/5, height: geometry.size.width/5)
+                        .mask(Circle())
+                    
+                    ZStack{
+                        Circle()
+                            .frame(width: 35, height: 35)
+                            .foregroundColor(.white)
+                        Text("\(position)")
+                            .foregroundColor(.black)
+                            .fontDesign(.serif)
+                            .fontWeight(.bold)
+                            .font(.callout)
+                        
+                    }.offset(x: -geometry.size.width/10, y: -geometry.size.width/13)
+                        
+    
+                }
                 
                 VStack(alignment: .leading){
                     Text(user.username ?? user.email)
-                        .font(.title3)
+                        .font(.title2)
                         .fontWeight(.bold)
                     
                     Spacer()
@@ -174,27 +190,19 @@ struct RankingItemView: View {
                     
                 }.frame( width: geometry.size.width/3 , height: 50)
                 
-                VStack(){
-                    
-                    HStack{
-                        Text("Score: ")
-                            .font(.body)
-                            .fontWeight(.bold)
-                        Text(selectedTimeFrame == .daily ? "\(user.daily_score ?? 0)" : "\(user.weekly_score ?? 0)")
-                            .font(.body)
-                    }
+                VStack(alignment: .center){
+                    Text("Score: ")
+                        .font(.title3)
+                        .fontWeight(.bold)
                     
                     Spacer()
                     
-                    HStack(){
-                        Text("\(position)")
-                            .font(.title)
-                            .fontWeight(.bold)
-                        Text("⏷")
-                    }
+                    Text(selectedTimeFrame == .daily ? "\(user.daily_score ?? 0)" : "\(user.weekly_score ?? 0)")
+                        .font(.body)
                     
-                }.frame(width: geometry.size.width/3.8,height: 50)
-                
+                }.frame( width: geometry.size.width/4.5, height: 50)
+                    
+
             }.padding(.vertical,10)
                 .frame(maxWidth: .infinity,minHeight: 100)
                 .background(ItemColor(number:position).opacity(0.65))
