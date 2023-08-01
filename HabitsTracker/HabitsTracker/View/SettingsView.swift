@@ -15,6 +15,7 @@ struct SettingsView: View {
     @State var textFieldEmail: String = ""
     @State var textFieldPassword: String = ""
     // private var userViewModel = UserViewModel()
+    
     var body: some View {
         VStack {
             Image("Avatar 1")
@@ -28,38 +29,31 @@ struct SettingsView: View {
                 Section(header: Text("Providers")){
                     HStack{
                         Button(action:{
-                            expandVerificationWithEmailFrom.toggle()
+                            withAnimation{
+                                self.expandVerificationWithEmailFrom.toggle()
+                            }
                         },label: {
                             HStack{
-                                Image(systemName: "envelope.fill")
+                                //Image(systemName: "envelope.fill")
                                 Text("Connect with Email")
+                                Spacer()
+                                Image(systemName: self.expandVerificationWithEmailFrom ? "chevron.down": "chevron.up")
                             }
                         })
                         .disabled(authenticationViewModel.isEmailandPasswordLinked())
-                        
-                        Spacer()
-                        if(expandVerificationWithEmailFrom){
-                            Button(action:{
-                                expandVerificationWithEmailFrom.toggle()
-                            },label: {
-                                Image(systemName: "xmark.app" )
-                            })
-                        }
                     }
                     
                     if expandVerificationWithEmailFrom {
                         Group{
-                            Text("Link with Email and Password")
-                                .tint(.secondary)
-                                .multilineTextAlignment(.center)
-                                .padding(.vertical, 2)
                             TextField("Insert email", text:$textFieldEmail)
                             SecureField("Insert password", text:$textFieldPassword)
                             Button("Accept"){
                                 authenticationViewModel.linkEmailAndPassword(email: textFieldEmail, password: textFieldPassword)
-                            }.padding(.top,18)
-                                .buttonStyle(.bordered)
-                                .tint(.blue)
+                            }
+                            .padding(5)
+                            .buttonStyle(.bordered)
+                            .tint(.blue)
+                           
                             if let messageError = authenticationViewModel.messageError {
                                 Text(messageError)
                                     .font(.body)
