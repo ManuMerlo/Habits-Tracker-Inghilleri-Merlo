@@ -21,24 +21,22 @@ struct GeneralView: View {
                     Image(systemName: "house")
                     Text("Home")
                 }
-            
-            PlanningView()
+            /*PlanningView()
                 .tabItem {
                     Image(systemName: "calendar")
                     Text("Planning")
-                }
+                }*/
             
             LeaderboardView(firestoreViewModel: firestoreViewModel)
                 .tabItem {
                     Image(systemName: "trophy")
                     Text("Leaderboard")
                 }
-            
-            Text("Goals")
+            /*Text("Goals")
                 .tabItem {
                     Image(systemName: "medal")
                     Text("Goals")
-                }
+                }*/
             SettingsView(authenticationViewModel: authenticationViewModel)
                 .tabItem {
                     Image(systemName: "gear")
