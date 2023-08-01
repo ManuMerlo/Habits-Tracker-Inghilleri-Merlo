@@ -20,7 +20,7 @@
 		099BCA3229D8782200E9836F /* LinkedAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099BCA3129D8782200E9836F /* LinkedAccounts.swift */; };
 		DD09A10329D9FA0D00CEBE15 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD09A10229D9FA0D00CEBE15 /* Activity.swift */; };
 		DD127A3C2929475900075A8B /* SigninView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3B2929475900075A8B /* SigninView.swift */; };
-		DD127A3E2929476800075A8B /* SigninViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3D2929476800075A8B /* SigninViewModel.swift */; };
+		DD127A3E2929476800075A8B /* SigninViewModel_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3D2929476800075A8B /* SigninViewModel_old.swift */; };
 		DD127A402929477700075A8B /* GeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3F2929477700075A8B /* GeneralView.swift */; };
 		DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A41292947FA00075A8B /* CustomTextField.swift */; };
 		DD1FAFDA29D8DA2A0084178F /* HealthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1FAFD929D8DA2A0084178F /* HealthViewModel.swift */; };
@@ -72,7 +72,7 @@
 		DD07DFB529D0B99400633248 /* HabitsTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HabitsTracker.entitlements; sourceTree = "<group>"; };
 		DD09A10229D9FA0D00CEBE15 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		DD127A3B2929475900075A8B /* SigninView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninView.swift; sourceTree = "<group>"; };
-		DD127A3D2929476800075A8B /* SigninViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninViewModel.swift; sourceTree = "<group>"; };
+		DD127A3D2929476800075A8B /* SigninViewModel_old.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninViewModel_old.swift; sourceTree = "<group>"; };
 		DD127A3F2929477700075A8B /* GeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralView.swift; sourceTree = "<group>"; };
 		DD127A41292947FA00075A8B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		DD1FAFD929D8DA2A0084178F /* HealthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthViewModel.swift; sourceTree = "<group>"; };
@@ -172,7 +172,7 @@
 		DD127A3A292946EF00075A8B /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				DD127A3D2929476800075A8B /* SigninViewModel.swift */,
+				DD127A3D2929476800075A8B /* SigninViewModel_old.swift */,
 				DDDDFA6F292CEC290033B3D3 /* PlanningViewModel.swift */,
 				DDF9364429C76330002B965A /* UserViewModel_old.swift */,
 			);
@@ -391,7 +391,7 @@
 				DDEACC1129DB747200F39F4B /* FirestoreRepository.swift in Sources */,
 				DDD723AF292A73AC00012461 /* SettingsView.swift in Sources */,
 				DDEB8AE929D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift in Sources */,
-				DD127A3E2929476800075A8B /* SigninViewModel.swift in Sources */,
+				DD127A3E2929476800075A8B /* SigninViewModel_old.swift in Sources */,
 				DD4FC73829D7EDDC00414C2B /* FacebookAuthentication.swift in Sources */,
 				DDDDFA70292CEC290033B3D3 /* PlanningViewModel.swift in Sources */,
 				DDEB8AEB29D6F210001693C8 /* AuthenticationRepository.swift in Sources */,

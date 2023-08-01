@@ -33,32 +33,15 @@ struct SignupView: View {
                     .padding(.bottom, 10)
                     .offset(y: -4)
                 
-                HStack {
-                    Image(systemName: "person")
-                    CustomTextField(isSecure: false, hint: "username", text: $textfieldUsername)
-                }
-                .padding()
-                .overlay(RoundedRectangle(cornerRadius:10).stroke(lineWidth: 2))
-                
-                HStack {
-                    Image(systemName: "envelope")
-                    CustomTextField(isSecure: false,hint: "email", text: $textFieldEmail)
-                }
-                .padding()
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 2))
-                
-                HStack {
-                    Image(systemName: "lock")
-                    CustomTextField(isSecure:true,hint: "password", text: $textFieldPassword)
-                }
-                .padding()
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 2))
-                HStack {
-                    Image(systemName: "lock")
-                    CustomTextField(isSecure:true,hint: "repeat password", text: $repeatPassword)
-                }
-                .padding()
-                .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 2))
+                    
+                CustomTextField(isSecure: false, hint: "username", imageName: "person", text: $textfieldUsername)
+               
+                CustomTextField(isSecure: false, hint: "email", imageName:"envelope", text: $textFieldEmail)
+        
+                CustomTextField(isSecure:true, hint: "password", imageName: "lock", text: $textFieldPassword)
+            
+                CustomTextField(isSecure:true,hint: "repeat password", imageName: "lock",text: $repeatPassword)
+               
                 Button {
                     // Maybe these checks are not necessary
                     guard !textFieldEmail.isEmpty, !textFieldPassword.isEmpty else {
@@ -87,6 +70,7 @@ struct SignupView: View {
                     }
                 }
                 .padding(.top,20)
+                
                 if let messageError = authenticationViewModel.messageError {
                     Text(messageError)
                         .font(.body)

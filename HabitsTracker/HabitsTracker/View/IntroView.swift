@@ -12,22 +12,16 @@ struct IntroView: View {
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
+    
     var body: some View {
         NavigationView {
             VStack{
                 ZStack{
-                    let circle = Circle().frame(width: 500, height: 500)
-                        .offset(x: 0, y: -190)
-                    
-                    let white_circle = Circle()
-                        .frame(width: 600, height: 600)
-                        .foregroundColor(.white)
-                        .offset(x: 0, y: -290)
                     
                     TabView(selection: $selectedPage)
                     {
                         ForEach(0..<3) {
-                            index in Card(card: data[index]).tag(index).offset(y:25)
+                            index in DescriptionCard(card: data[index]).tag(index).offset(y:25)
                         }
                         
                     }
@@ -43,40 +37,15 @@ struct IntroView: View {
                     
                     //Selected Pages
                     if selectedPage == 0 {
-                        circle.foregroundColor(.blue)
-                        white_circle
-                        ZStack{
-                            LottieView(filename: "notes")
-                                .frame(width:450, height: 450)
-                                .clipShape(Circle())
-                                .shadow(color: .orange, radius: 1, x: 0, y: 0)
-                                .offset(x: 0, y: -180)
-                        }
+                        UpperImage(background: .blue, filename: "notes")
                     }
                     
                     if selectedPage == 1 {
-                        circle.foregroundColor(.purple)
-                        white_circle
-                        ZStack{
-                            LottieView(filename: "share")
-                                .frame(width: 450, height: 450)
-                                .shadow(color: .orange, radius: 1, x: 0, y: 0)
-                                .clipShape(Circle())
-                                .offset(x: 10, y: -180)
-                        }
-                        
+                        UpperImage(background: .purple, filename: "share")
                     }
                     
                     if selectedPage == 2 {
-                        circle.foregroundColor(.pink)
-                        white_circle
-                        ZStack {
-                            LottieView(filename: "plan_activities")
-                                .frame(width: 450, height: 450)
-                                .shadow(color: .orange, radius: 1, x: 0, y: 0)
-                                .clipShape(Circle())
-                                .offset(x: 0, y: -180)
-                        }
+                        UpperImage(background: .pink, filename: "plan_activities")
                     }
                     
                 }
@@ -97,7 +66,7 @@ struct IntroView: View {
     }
     
     @ViewBuilder
-    func Card(card : Card) -> some View {
+    func DescriptionCard(card : Card) -> some View {
         VStack(alignment: .center, spacing: 17.0) {
             Text(card.title)
                 .font(.title)
@@ -112,6 +81,26 @@ struct IntroView: View {
             
         }.padding(.horizontal, 40)
             .offset(y: 160)
+    }
+    
+    @ViewBuilder
+    func UpperImage(background: Color , filename: String) -> some View {
+        ZStack {
+            Circle().frame(width: 500, height: 500)
+                .offset(x: 0, y: -190)
+                .foregroundColor(background)
+            
+            Circle()
+               .frame(width: 600, height: 600)
+               .foregroundColor(.white)
+               .offset(x: 0, y: -290)
+            
+            LottieView(filename: filename)
+                .frame(width: 450, height: 450)
+                .shadow(color: .orange, radius: 1, x: 0, y: 0)
+                .clipShape(Circle())
+                .offset(x: 0, y: -180)
+        }
     }
 }
 

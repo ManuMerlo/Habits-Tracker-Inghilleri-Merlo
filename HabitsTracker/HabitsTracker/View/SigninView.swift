@@ -34,19 +34,10 @@ struct SigninView: View {
                         .padding(.bottom, 10)
                         .offset(y: -8)
                     
-                    HStack {
-                        Image(systemName: "envelope")
-                        CustomTextField(isSecure: false, hint: "Email", text: $textFieldEmail)
-                    }
-                    .padding()
-                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 2))
+                    CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $textFieldEmail)
+
+                    CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $textFieldPassword)
                     
-                    HStack {
-                        Image(systemName: "lock")
-                        CustomTextField(isSecure:true, hint: "Password", text: $textFieldPassword)
-                    }
-                    .padding()
-                    .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 2))
                     NavigationLink {
                         //TODO recupera password
                     } label: {
@@ -140,7 +131,7 @@ struct SigninView: View {
         }*/
     }
     
-    @ViewBuilder
+    /*@ViewBuilder
     func CustomButton(logo: String) -> some View {
         HStack{
             Image(logo).resizable()
@@ -157,7 +148,7 @@ struct SigninView: View {
             RoundedRectangle(cornerRadius: 10, style: .continuous)
                 .fill(.black)
         }
-    }
+    }*/
 }
 
 struct signinView_Previews: PreviewProvider {

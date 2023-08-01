@@ -26,23 +26,35 @@ struct SettingsView: View {
             
             List {
                 Section(header: Text("Providers")){
-                    Button(action:{
-                        expandVerificationWithEmailFrom.toggle()
-                    },label: {
-                        HStack{
-                            Image(systemName: "envelope.fill")
-                            Text("Connect with Email")
+                    HStack{
+                        Button(action:{
+                            expandVerificationWithEmailFrom.toggle()
+                        },label: {
+                            HStack{
+                                Image(systemName: "envelope.fill")
+                                Text("Connect with Email")
+                            }
+                        })
+                        .disabled(authenticationViewModel.isEmailandPasswordLinked())
+                        
+                        Spacer()
+                        if(expandVerificationWithEmailFrom){
+                            Button(action:{
+                                expandVerificationWithEmailFrom.toggle()
+                            },label: {
+                                Image(systemName: "xmark.app" )
+                            })
                         }
-                    })
-                    .disabled(authenticationViewModel.isEmailandPasswordLinked())
+                    }
+                    
                     if expandVerificationWithEmailFrom {
                         Group{
                             Text("Link with Email and Password")
                                 .tint(.secondary)
                                 .multilineTextAlignment(.center)
                                 .padding(.vertical, 2)
-                            TextField("Inser email", text:$textFieldEmail)
-                            TextField("Inser password", text:$textFieldPassword)
+                            TextField("Insert email", text:$textFieldEmail)
+                            SecureField("Insert password", text:$textFieldPassword)
                             Button("Accept"){
                                 authenticationViewModel.linkEmailAndPassword(email: textFieldEmail, password: textFieldPassword)
                             }.padding(.top,18)
@@ -71,6 +83,7 @@ struct SettingsView: View {
                     
                 }
                 Button("Delete Account") {
+                    //TODO: delete account
                     // userViewModel.logout(delete: true)
                 }.foregroundColor(Color.red)
                 
