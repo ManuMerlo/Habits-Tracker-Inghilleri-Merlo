@@ -7,99 +7,199 @@
 
 import SwiftUI
 import Firebase
+import UserNotifications
 
 
 struct SettingsView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
+    
+    @StateObject var settingViewModel = SettingsViewModel()
+    
     @State var expandVerificationWithEmailFrom : Bool = false
     @State var textFieldEmail: String = ""
     @State var textFieldPassword: String = ""
     // private var userViewModel = UserViewModel()
     
     var body: some View {
-        VStack {
-            Image("Avatar 1")
-                .resizable()
-                .frame(width: 120, height: 120)
-                .mask(Circle())
-            
-            Text("Username").font(.title)
-            
-            List {
-                Section(header: Text("Providers")){
-                    HStack{
-                        Button(action:{
-                            withAnimation{
-                                self.expandVerificationWithEmailFrom.toggle()
-                            }
-                        },label: {
-                            HStack{
-                                //Image(systemName: "envelope.fill")
-                                Text("Connect with Email")
-                                Spacer()
-                                Image(systemName: self.expandVerificationWithEmailFrom ? "chevron.down": "chevron.up")
-                            }
-                        })
-                        .disabled(authenticationViewModel.isEmailandPasswordLinked())
-                    }
-                    
-                    if expandVerificationWithEmailFrom {
-                        Group{
-                            TextField("Insert email", text:$textFieldEmail)
-                            SecureField("Insert password", text:$textFieldPassword)
-                            Button("Accept"){
-                                authenticationViewModel.linkEmailAndPassword(email: textFieldEmail, password: textFieldPassword)
-                            }
-                            .padding(5)
-                            .buttonStyle(.bordered)
-                            .tint(.blue)
-                           
-                            if let messageError = authenticationViewModel.messageError {
-                                Text(messageError)
-                                    .font(.body)
-                                    .foregroundColor(.red)
-                                    .padding()
-                            }
-                        }
-                    }
-                    
-                    Button{
-                        authenticationViewModel.linkFacebook()
-                    } label: {
-                        Text("Connect with Facebook")
-                    }.disabled(authenticationViewModel.isFacebookLinked())
-                    
-                    Button{
-                        authenticationViewModel.linkGoogle()
-                    } label: {
-                        Text("Connect with Google")
-                    }.disabled(authenticationViewModel.isGoogleLinked())
-                    
-                }
-                Button("Delete Account") {
-                    //TODO: delete account
-                    // userViewModel.logout(delete: true)
-                }.foregroundColor(Color.red)
+        NavigationStack{
+            VStack {
+                Image("Avatar 1")
+                    .resizable()
+                    .frame(width: 120, height: 120)
+                    .mask(Circle())
                 
-                Button("Logout") {
-                    authenticationViewModel.logout()
-                }
-            }.padding(.top, 15.0)
-                .task {
-                    authenticationViewModel.getCurrentProvider()
-                }
-                .alert(authenticationViewModel.isAccountLinked ? "Link successful" : "Error", isPresented: $authenticationViewModel.showAlert) {
-                    Button("Accept"){
-                        print("Dismiss alert")
-                        if authenticationViewModel.isAccountLinked{
-                            expandVerificationWithEmailFrom = false
+                Text("Username").font(.title)
+                
+                
+                List {
+                    Section() {
+                        NavigationLink {
+                            ProvidersDetailView()
+                        } label: {
+                            Image(systemName: "person.crop.circle.badge.plus")
+                            Text("Providers")
+                        }
+                        
+                        NavigationLink {
+                            NotificationDetailView(settingViewModel: settingViewModel)
+                        } label: {
+                            Image(systemName: "bell")
+                            Text("Notifications")
                         }
                     }
-                } message: {
-                    Text(authenticationViewModel.isAccountLinked ? "Success" : "Error")
+                    
+                    Button{
+                        //TODO: delete account
+                        // userViewModel.logout(delete: true)
+                    } label: {
+                        
+                        Text("Delete Account")
+                    }.foregroundColor(.red)
+                    
+                    Button("Logout") {
+                        authenticationViewModel.logout()
+                    }
+                    
                 }
+            }
         }
     }
+    
+    
+    @ViewBuilder
+    func ProvidersDetailView() -> some View {
+        List{
+            HStack{
+                Button(action:{
+                    withAnimation{
+                        self.expandVerificationWithEmailFrom.toggle()
+                    }
+                },label: {
+                    HStack{
+                        //Image(systemName: "envelope.fill")
+                        Text("Connect with Email")
+                        Spacer()
+                        Image(systemName: self.expandVerificationWithEmailFrom ? "chevron.down": "chevron.up")
+                    }
+                })
+                .disabled(authenticationViewModel.isEmailandPasswordLinked())
+            }
+            
+            if expandVerificationWithEmailFrom {
+                Group{
+                    TextField("Insert email", text:$textFieldEmail)
+                    SecureField("Insert password", text:$textFieldPassword)
+                    Button("Accept"){
+                        authenticationViewModel.linkEmailAndPassword(email: textFieldEmail, password: textFieldPassword)
+                    }
+                    .padding(5)
+                    .buttonStyle(.bordered)
+                    .tint(.blue)
+                    
+                    if let messageError = authenticationViewModel.messageError {
+                        Text(messageError)
+                            .font(.body)
+                            .foregroundColor(.red)
+                            .padding()
+                    }
+                }
+            }
+            
+            Button{
+                authenticationViewModel.linkFacebook()
+            } label: {
+                Text("Connect with Facebook")
+            }.disabled(authenticationViewModel.isFacebookLinked())
+            
+            Button{
+                authenticationViewModel.linkGoogle()
+            } label: {
+                Text("Connect with Google")
+            }.disabled(authenticationViewModel.isGoogleLinked())
+            
+        }.task {
+            authenticationViewModel.getCurrentProvider()
+        }
+        .alert(authenticationViewModel.isAccountLinked ? "Link successful" : "Error", isPresented: $authenticationViewModel.showAlert) {
+            Button("Accept"){
+                print("Dismiss alert")
+                if authenticationViewModel.isAccountLinked{
+                    expandVerificationWithEmailFrom = false
+                }
+            }
+        } message: {
+            Text(authenticationViewModel.isAccountLinked ? "Success" : "Error")
+        }
+    }
+    
+    
+}
+
+struct NotificationDetailView: View {
+    @ObservedObject var settingViewModel : SettingsViewModel
+    
+    var body: some View {
+        Form {
+            Section {
+                
+                Toggle(isOn: $settingViewModel.agreedToTerms, label: {
+                    Text("Allow Notification")
+                })
+                .onChange(of: settingViewModel.agreedToTerms, perform: { newValue in
+                    if !newValue {
+                        if settingViewModel.dailyNotification {
+                            settingViewModel.dailyNotification.toggle()
+                        }
+                        if settingViewModel.weeklyNotification {
+                            settingViewModel.weeklyNotification.toggle()
+                        }
+                    }else{
+                        UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.badge,.sound]){ success, error in
+                            if success {
+                                print("success")
+                            }
+                            else if let error = error {
+                                print(error.localizedDescription)
+                            }
+                        }
+                    }
+                    
+                })
+            }
+            
+            Section {
+                
+                Toggle(isOn: $settingViewModel.dailyNotification, label: {
+                    Text("Daily Notification")
+                })
+                .onChange(of: settingViewModel.dailyNotification, perform: { newValue in
+                    print("success daily")
+                    if(newValue){
+                        settingViewModel.dailyNotificationIdentifier = settingViewModel.scheduleNotifications(title: "Daily Notification", subtitle: "you are doing great", timeInterval: 86400, repeats: true)
+                    }else{
+                        print("Stop Notification")
+                        settingViewModel.dailyNotificationIdentifier = settingViewModel.stopNotifications(identifier: settingViewModel.dailyNotificationIdentifier)
+                    }
+                }) .disabled(!settingViewModel.agreedToTerms)
+                
+                Toggle(isOn:  $settingViewModel.weeklyNotification, label: {
+                    Text("Weakly Notifications")
+                })
+                .onChange(of: settingViewModel.weeklyNotification, perform: { newValue in
+                    if(newValue){
+                        settingViewModel.weeklyNotificationIdentifier = settingViewModel.scheduleNotifications(title: "Daily Notification", subtitle: "you are doing great", timeInterval: 86400*7, repeats: true)
+                    }
+                    else{
+                        settingViewModel.weeklyNotificationIdentifier = settingViewModel.stopNotifications(identifier: settingViewModel.weeklyNotificationIdentifier)
+                    }
+                })
+                .disabled(!settingViewModel.agreedToTerms)
+                
+            }
+            
+        }
+    }
+    
 }
 
 struct SettingsView_Previews: PreviewProvider {

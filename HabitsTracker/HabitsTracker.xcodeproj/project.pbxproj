@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		09179CD529314D3700B389C2 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09179CD429314D3700B389C2 /* SignupView.swift */; };
+		0944AB2D2A7AB61900C73278 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */; };
 		094A32432A796F570008403C /* SearchFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094A32422A796F570008403C /* SearchFriendView.swift */; };
 		094A32452A798AF90008403C /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094A32442A798AF90008403C /* UserProfileView.swift */; };
 		09652B76293116BE002CC615 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 09652B75293116BE002CC615 /* Lottie */; };
@@ -62,6 +63,7 @@
 
 /* Begin PBXFileReference section */
 		09179CD429314D3700B389C2 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
+		0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		094A32422A796F570008403C /* SearchFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFriendView.swift; sourceTree = "<group>"; };
 		094A32442A798AF90008403C /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		09652B78293117B6002CC615 /* login.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = login.json; sourceTree = "<group>"; };
@@ -181,6 +183,7 @@
 				DD127A3D2929476800075A8B /* SigninViewModel_old.swift */,
 				DDDDFA6F292CEC290033B3D3 /* PlanningViewModel.swift */,
 				DDF9364429C76330002B965A /* UserViewModel_old.swift */,
+				0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -419,6 +422,7 @@
 				DDC33533292BF38A00C27566 /* PlanningView.swift in Sources */,
 				DDF9364529C76330002B965A /* UserViewModel_old.swift in Sources */,
 				DD127A3C2929475900075A8B /* SigninView.swift in Sources */,
+				0944AB2D2A7AB61900C73278 /* SettingsViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
