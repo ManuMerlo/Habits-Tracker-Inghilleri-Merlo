@@ -20,16 +20,46 @@ struct SettingsView: View {
     @State var textFieldPassword: String = ""
     // private var userViewModel = UserViewModel()
     
+    @State private var image : UIImage?
+    @State private var showSheet = false
+    
     var body: some View {
         NavigationStack{
             VStack {
-                Image("Avatar 1")
-                    .resizable()
-                    .frame(width: 120, height: 120)
-                    .mask(Circle())
                 
-                Text("Username").font(.title)
+                Button{
+                    showSheet.toggle()
+                }label:{
+                    VStack {
+                        if let image = self.image{
+                            Image(uiImage: image )
+                                .resizable()
+                                .frame(width: 90, height: 90)
+                                .mask(Circle())
+                            
+                        } else{
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .frame(width: 90, height: 90)
+                                .mask(Circle())
+                                .foregroundColor(.gray)
+                                
+                        }
+                        
+                        Text("Change photo")
+                            .font(.footnote)
+                            .foregroundColor(.blue)
+                            .padding(.horizontal, 20)
+                    }
+                    .padding(.horizontal, 20)
+                    
+                }.padding(3)
                 
+                Text("Manuela Merlo").font(.title)
+                
+                Text("merlomanu1999@gmail.com")
+                    .font(.title3)
+                    .accentColor(.gray)
                 
                 List {
                     Section() {
@@ -62,6 +92,8 @@ struct SettingsView: View {
                     
                 }
             }
+        }.fullScreenCover(isPresented: $showSheet,onDismiss: nil) {
+            SettingsViewModel.ImagePicker(selectedImage:$image)
         }
     }
     
