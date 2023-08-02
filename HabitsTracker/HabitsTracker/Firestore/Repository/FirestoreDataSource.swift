@@ -19,7 +19,8 @@ final class FirestoreDataSource {
                 completionBlock(.failure(error))
                 return
             }
-            // MARK: If the query success but the array of users is empty
+            // MARK: If the query success but the array of users is only one element
+            // MARK: compactmap $0 remove null alements
             guard let documents = query?.documents.compactMap({ $0 }) else {
                 completionBlock(.success([]))
                 return
