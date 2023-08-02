@@ -27,6 +27,12 @@ struct GeneralView: View {
                     Text("Planning")
                 }*/
             
+            SearchFriendView(firestoreViewModel:firestoreViewModel)
+                .tabItem {
+                    Image(systemName: "magnifyingglass")
+                    Text("Search")
+                }
+            
             LeaderboardView(firestoreViewModel: firestoreViewModel)
                 .tabItem {
                     Image(systemName: "trophy")

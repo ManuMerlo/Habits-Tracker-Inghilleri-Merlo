@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		09179CD529314D3700B389C2 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09179CD429314D3700B389C2 /* SignupView.swift */; };
+		094A32432A796F570008403C /* SearchFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094A32422A796F570008403C /* SearchFriendView.swift */; };
+		094A32452A798AF90008403C /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094A32442A798AF90008403C /* UserProfileView.swift */; };
 		09652B76293116BE002CC615 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 09652B75293116BE002CC615 /* Lottie */; };
 		09652B79293117B6002CC615 /* login.json in Resources */ = {isa = PBXBuildFile; fileRef = 09652B78293117B6002CC615 /* login.json */; };
 		09652B7B293117C2002CC615 /* notes.json in Resources */ = {isa = PBXBuildFile; fileRef = 09652B7A293117C2002CC615 /* notes.json */; };
@@ -60,6 +62,8 @@
 
 /* Begin PBXFileReference section */
 		09179CD429314D3700B389C2 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
+		094A32422A796F570008403C /* SearchFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFriendView.swift; sourceTree = "<group>"; };
+		094A32442A798AF90008403C /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
 		09652B78293117B6002CC615 /* login.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = login.json; sourceTree = "<group>"; };
 		09652B7A293117C2002CC615 /* notes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = notes.json; sourceTree = "<group>"; };
 		09652B7C293117D1002CC615 /* plan_activities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = plan_activities.json; sourceTree = "<group>"; };
@@ -165,6 +169,8 @@
 				09652B8629311B19002CC615 /* LottieView.swift */,
 				09179CD429314D3700B389C2 /* SignupView.swift */,
 				DDAA66A629D042E500219792 /* LeaderboardView.swift */,
+				094A32422A796F570008403C /* SearchFriendView.swift */,
+				094A32442A798AF90008403C /* UserProfileView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -380,12 +386,14 @@
 			files = (
 				DD4FC73B29D8291300414C2B /* GoogleAuthentication.swift in Sources */,
 				09179CD529314D3700B389C2 /* SignupView.swift in Sources */,
+				094A32452A798AF90008403C /* UserProfileView.swift in Sources */,
 				DDC33531292BB96C00C27566 /* HCard.swift in Sources */,
 				099BCA3229D8782200E9836F /* LinkedAccounts.swift in Sources */,
 				09652B8729311B19002CC615 /* LottieView.swift in Sources */,
 				09652B85293119F9002CC615 /* IntroView.swift in Sources */,
 				DD7C69B5292C254500E0D9ED /* ActivityPlanned.swift in Sources */,
 				DDC33528292BA0A000C27566 /* VCard.swift in Sources */,
+				094A32432A796F570008403C /* SearchFriendView.swift in Sources */,
 				DDEACC0E29DB745700F39F4B /* FirestoreDataSource.swift in Sources */,
 				09652B8329311942002CC615 /* CardIntro.swift in Sources */,
 				DDEACC1129DB747200F39F4B /* FirestoreRepository.swift in Sources */,

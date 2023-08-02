@@ -24,64 +24,63 @@ struct LeaderboardView: View {
     
     var body: some View {
         
-        
         NavigationStack {
             
-                VStack{
-                    Picker("Choose a time frame", selection: $selectedTimeFrame) {
-                        ForEach(TimeFrame.allCases,id: \.self){
-                            Text($0.rawValue)
-                        }
-                    }.onChange(of: selectedTimeFrame , perform: { newValue in
-                        sortUsers(timeFrame: newValue)
-                    })
-                    .pickerStyle(SegmentedPickerStyle())
-                    .padding(.bottom,8)
-            
-                    ScrollView {
-                        LazyVStack {
-                            ForEach(1..<users.count) { item in
-                                NavigationLink(value: users[item - 1]){
-                                    RankingItemView(user : users[item-1],
-                                                    selectedTimeFrame: selectedTimeFrame,
-                                                    position: item ).padding(.bottom, 95)
-                                }
+            VStack{
+                Picker("Choose a time frame", selection: $selectedTimeFrame) {
+                    ForEach(TimeFrame.allCases,id: \.self){
+                        Text($0.rawValue)
+                    }
+                }.onChange(of: selectedTimeFrame , perform: { newValue in
+                    sortUsers(timeFrame: newValue)
+                })
+                .pickerStyle(SegmentedPickerStyle())
+                .padding(.bottom,8)
+                
+                ScrollView {
+                    LazyVStack {
+                        ForEach(1..<users.count) { item in
+                            NavigationLink(value: users[item - 1]){
+                                RankingItemView(user : users[item-1],
+                                                selectedTimeFrame: selectedTimeFrame,
+                                                position: item ).padding(.bottom, 95)
                             }
                         }
-                    }.padding(.top,10)
-                    
-                } .toolbar {
-                    Button {
-                        global.toggle()
-                    } label: {
-                        if global {
-                            Text("Global").foregroundColor(.white)
-                            Image(systemName: "globe").foregroundColor(.white)
-                        } else {
-                            Text("Private").foregroundColor(.white)
-                            Image(systemName: "person").foregroundColor(.white)
-                        }
-                    }.onChange(of: global) { newValue in
-                        setUsers(global: newValue)
                     }
-                }.padding(20)
-                    .navigationTitle("Leaderboard")
-                    .navigationDestination(for: User.self) { user in
-                        DetailUserView(user: user)
+                }.padding(.top,10)
+                
+            } .toolbar {
+                Button {
+                    global.toggle()
+                } label: {
+                    if global {
+                        Text("Global").foregroundColor(.white)
+                        Image(systemName: "globe").foregroundColor(.white)
+                    } else {
+                        Text("Private").foregroundColor(.white)
+                        Image(systemName: "person").foregroundColor(.white)
                     }
-                    .toolbarColorScheme(.dark, for: .navigationBar)
-                    .toolbarBackground(
-                        Color.purple,
-                        for: .navigationBar)
-                    .toolbarBackground(.visible, for: .navigationBar)
-            }/*.onAppear(){
-              sortUsers(timeFrame: selectedTimeFrame)
-              }*/.task {
-                  firestoreViewModel.getAllUsers()
-                  // TODO: sorting
-              }
-        }
-
+                }.onChange(of: global) { newValue in
+                    setUsers(global: newValue)
+                }
+            }.padding(20)
+                .navigationTitle("Leaderboard")
+                .navigationDestination(for: User.self) { user in
+                    UserProfileView(user: user)
+                }
+                .toolbarColorScheme(.dark, for: .navigationBar)
+                .toolbarBackground(
+                    Color.purple,
+                    for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+        }/*.onAppear(){
+          sortUsers(timeFrame: selectedTimeFrame)
+          }*/.task {
+              firestoreViewModel.getAllUsers()
+              // TODO: sorting
+          }
+    }
+    
     func sortUsers(timeFrame: TimeFrame){
         if timeFrame == .daily{
             users.sort { user1, user2 in
@@ -93,7 +92,7 @@ struct LeaderboardView: View {
             }
         }
     }
-
+    
     func setUsers( global: Bool){
         if global == true {
             users = UserList.usersGlobal
@@ -109,38 +108,6 @@ enum TimeFrame : String, CaseIterable {
     case daily = "Daily"
 }
 
-struct DetailUserView: View{
-    var user: User
-    var body: some View {
-        VStack{
-            if let background = user.background {
-                Image(background)
-                    .resizable()
-                    .aspectRatio(contentMode: ContentMode.fill)
-                    .frame(height: 200, alignment: .center)
-                    .clipped()
-                    .clipShape(RoundedRectangle(cornerRadius:10))
-                    .padding([.leading,.trailing])
-            }
-            VStack{
-                if let image = user.image{
-                    Image(image)
-                        .resizable()
-                        .clipped()
-                        .clipShape(Circle())
-                        .aspectRatio(contentMode: ContentMode.fill)
-                        .frame(width: 120,height: 120)
-                }
-                if let username = user.username{
-                    Text(username)
-                        .font(.title3)
-                        .bold()
-                }
-            }.offset(y:-60)
-            Spacer()
-        }
-    }
-}
 
 struct RankingItemView: View {
     var user : User
@@ -164,18 +131,16 @@ struct RankingItemView: View {
                             .foregroundColor(.white)
                         Text("\(position)")
                             .foregroundColor(.black)
-                            .fontDesign(.serif)
-                            .fontWeight(.bold)
-                            .font(.callout)
+                            .font(.custom("Open Sans", size: 18))
                         
                     }.offset(x: -geometry.size.width/10, y: -geometry.size.width/13)
-                        
-    
+                    
+                    
                 }
                 
                 VStack(alignment: .leading){
                     Text(user.username ?? user.email)
-                        .font(.title2)
+                        .font(.custom("Open Sans", size: 21))
                         .fontWeight(.bold)
                     
                     Spacer()
@@ -191,9 +156,8 @@ struct RankingItemView: View {
                 }.frame( width: geometry.size.width/3 , height: 50)
                 
                 VStack(alignment: .center){
-                    Text("Score: ")
-                        .font(.title3)
-                        .fontWeight(.bold)
+                    Text("Score")
+                        .font(.custom("Open Sans", size: 21))
                     
                     Spacer()
                     
@@ -201,8 +165,8 @@ struct RankingItemView: View {
                         .font(.body)
                     
                 }.frame( width: geometry.size.width/4.5, height: 50)
-                    
-
+                
+                
             }.padding(.vertical,10)
                 .frame(maxWidth: .infinity,minHeight: 100)
                 .background(ItemColor(number:position).opacity(0.65))
@@ -214,8 +178,8 @@ struct RankingItemView: View {
 }
 
 func ItemColor(number : Int ) -> Color {
-        let colors: [Color] = [.red, .green, .blue, .orange, .yellow, .purple, .pink, .gray, .black]
-        return colors[number % 9]
+    let colors: [Color] = [.red, .green, .blue, .orange, .yellow, .purple, .pink, .gray, .black]
+    return colors[number % 9]
 }
 
 
