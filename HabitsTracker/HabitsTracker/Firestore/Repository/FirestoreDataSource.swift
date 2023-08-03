@@ -56,4 +56,18 @@ final class FirestoreDataSource {
             .document(user.id)
             .setData(user.asDictionary())
     }
+    
+    func deleteUserData(uid: String, completionBlock: @escaping (Result<Bool,Error>) -> Void) {
+        let reference = Firestore
+            .firestore()
+            .collection("users")
+            .document(uid)
+        reference.delete { error in
+            if let error = error {
+                completionBlock(.failure(error))
+            } else {
+                completionBlock(.success(true))
+            }
+        }
+    }
 }

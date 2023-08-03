@@ -27,7 +27,7 @@ final class FirestoreViewModel: ObservableObject {
             }
         }
     }
-
+    
     func getAllUsers() {
         firestoreRepository.getAllUsers { [weak self] result in
             switch result {
@@ -42,5 +42,18 @@ final class FirestoreViewModel: ObservableObject {
     func addNewUser(user: User) {
         firestoreRepository.addNewUser(user: user)
         print("User with email \(user.email) added to firestore")
+    }
+    
+    func deleteUserData(uid: String,completionBlock: @escaping (Result<Bool,Error>)-> Void) {
+        firestoreRepository.deleteUserData(uid: uid) { [weak self] result in
+            switch result {
+            case .success(let bool):
+                print("Success in deleting user data")
+                completionBlock(.success(bool))
+            case .failure(let error):
+                self?.messageError = error.localizedDescription
+                completionBlock(.failure(error))
+            }
+        }
     }
 }

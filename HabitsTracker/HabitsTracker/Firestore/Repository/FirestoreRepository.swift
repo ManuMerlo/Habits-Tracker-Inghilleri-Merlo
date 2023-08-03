@@ -25,4 +25,8 @@ final class FirestoreRepository {
     func addNewUser(user: User) {
         firestoreDataSource.addNewUser(user: user)
     }
+    
+    func deleteUserData(uid:String,completionBlock: @escaping (Result<Bool, Error>) -> Void) {
+        firestoreDataSource.deleteUserData( uid: uid, completionBlock: completionBlock)
+    }
 }

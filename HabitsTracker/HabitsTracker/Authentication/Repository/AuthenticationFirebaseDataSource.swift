@@ -219,5 +219,18 @@ final class AuthenticationFirebaseDataSource {
         })
     }
     
+    func deleteUser(completionBlock: @escaping (Result<Bool,Error>) -> Void) {
+        if let user = Auth.auth().currentUser {
+            user.delete { error in
+                if let error = error {
+                    completionBlock(.failure(error))
+                } else {
+                    completionBlock(.success(true))
+                }
+            }
+        }
+    }
+
+    
 }
 

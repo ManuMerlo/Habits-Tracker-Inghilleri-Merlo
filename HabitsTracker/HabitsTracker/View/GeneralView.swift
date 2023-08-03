@@ -45,7 +45,7 @@ struct GeneralView: View {
                     Image(systemName: "medal")
                     Text("Goals")
                 }*/
-            SettingsView(authenticationViewModel: authenticationViewModel)
+            SettingsView(authenticationViewModel: authenticationViewModel,firestoreViewModel : firestoreViewModel)
                 .tabItem {
                     Image(systemName: "gear")
                     Text("Settings")

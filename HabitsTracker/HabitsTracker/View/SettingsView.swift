@@ -12,11 +12,15 @@ import UserNotifications
 
 struct SettingsView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
+    @ObservedObject var firestoreViewModel : FirestoreViewModel
+    
     @StateObject var settingViewModel = SettingsViewModel()
     
     @State var expandVerificationWithEmailFrom : Bool = false
     @State var textFieldEmail: String = ""
     @State var textFieldPassword: String = ""
+    @State var showAlert: Bool = false
+    
     
     @State private var showSheet = false
     
@@ -40,7 +44,7 @@ struct SettingsView: View {
                                 .frame(width: 90, height: 90)
                                 .mask(Circle())
                                 .foregroundColor(.gray)
-                                
+                            
                         }
                         
                         Text("Change photo")
@@ -76,12 +80,40 @@ struct SettingsView: View {
                     }
                     
                     Button{
-                        //TODO: delete account
-                        // userViewModel.logout(delete: true)
+                        showAlert.toggle()
                     } label: {
                         
                         Text("Delete Account")
                     }.foregroundColor(.red)
+                        .alert(isPresented: $showAlert) {
+                            Alert(
+                                title: Text("Delete Account"),
+                                message: Text("Deleting your account will delete all content and remove your information from the database."),
+                                primaryButton: .default(
+                                    Text("Cancel")
+                                ),
+                                secondaryButton: .destructive(
+                                    Text("Continue"),
+                                    action:
+                                        {
+                                            guard let uid = authenticationViewModel.user?.id else{
+                                                print("Null uid before deleting a user")
+                                                return
+                                            }
+                                            firestoreViewModel.deleteUserData(uid: uid){result in
+                                                switch result {
+                                                case .success:
+                                                    authenticationViewModel.deleteUser()
+                                                case .failure:
+                                                    print("error deleting user ")
+                                                }
+                                                
+                                            }
+                                            
+                                        }
+                                )
+                            )
+                        }
                     
                     Button("Logout") {
                         authenticationViewModel.logout()
@@ -234,6 +266,6 @@ struct NotificationDetailView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(authenticationViewModel: AuthenticationViewModel())
+        SettingsView(authenticationViewModel: AuthenticationViewModel(),firestoreViewModel : FirestoreViewModel())
     }
 }

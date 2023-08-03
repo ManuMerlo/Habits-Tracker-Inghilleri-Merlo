@@ -59,4 +59,8 @@ final class AuthenticationRepository {
                                                               password: password,
                                                               completionBlock: completionBlock)
     }
+    
+    func deleteUser(completionBlock: @escaping (Result<Bool,Error>) -> Void) {
+        authenticationFirebaseDataSource.deleteUser(completionBlock: completionBlock)
+    }
 }

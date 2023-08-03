@@ -31,7 +31,7 @@ final class AuthenticationViewModel: ObservableObject {
     func getCurrentUser() {
         self.user = authenticationRepository.getCurrentUser()
     }
-        
+    
     func createNewUser(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void){
         authenticationRepository.createNewUser(email: email,
                                                password: password) { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
@@ -142,4 +142,21 @@ final class AuthenticationViewModel: ObservableObject {
             self?.getCurrentProvider()
         }
     }
+    
+    func deleteUser() {
+        authenticationRepository.deleteUser() { [weak self] result in
+            switch result {
+            case .success(_):
+                self?.user = nil
+                self?.textfieldUsername = ""
+                self?.textFieldEmail = ""
+                self?.textFieldPassword = ""
+                self?.repeatPassword = ""
+                print("success in deleting the user")
+            case .failure(let error):
+                self?.messageError = error.localizedDescription
+            }
+        }
+    }
+    
 }
