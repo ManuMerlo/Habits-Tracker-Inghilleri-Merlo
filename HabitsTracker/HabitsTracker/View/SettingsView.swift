@@ -12,7 +12,6 @@ import UserNotifications
 
 struct SettingsView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    
     @StateObject var settingViewModel = SettingsViewModel()
     
     @State var expandVerificationWithEmailFrom : Bool = false
@@ -20,7 +19,6 @@ struct SettingsView: View {
     @State var textFieldPassword: String = ""
     // private var userViewModel = UserViewModel()
     
-    @State private var image : UIImage?
     @State private var showSheet = false
     
     var body: some View {
@@ -31,7 +29,7 @@ struct SettingsView: View {
                     showSheet.toggle()
                 }label:{
                     VStack {
-                        if let image = self.image{
+                        if let image = settingViewModel.image{
                             Image(uiImage: image )
                                 .resizable()
                                 .frame(width: 90, height: 90)
@@ -92,11 +90,12 @@ struct SettingsView: View {
                     
                 }
             }
-        }.fullScreenCover(isPresented: $showSheet,onDismiss: nil) {
-            SettingsViewModel.ImagePicker(selectedImage:$image)
+        }.fullScreenCover(isPresented: $showSheet, onDismiss: {
+            settingViewModel.persistimageToStorage()
+        }) {
+            SettingsViewModel.ImagePicker(selectedImage: $settingViewModel.image)
         }
     }
-    
     
     @ViewBuilder
     func ProvidersDetailView() -> some View {

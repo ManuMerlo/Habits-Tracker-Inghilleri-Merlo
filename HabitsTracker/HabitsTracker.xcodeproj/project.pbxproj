@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		090F1CA72A7B7CEB00FF5E4D /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 090F1CA62A7B7CEB00FF5E4D /* FirebaseStorage */; };
 		09179CD529314D3700B389C2 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09179CD429314D3700B389C2 /* SignupView.swift */; };
 		0944AB2D2A7AB61900C73278 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */; };
 		094A32432A796F570008403C /* SearchFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094A32422A796F570008403C /* SearchFriendView.swift */; };
@@ -118,6 +119,7 @@
 			files = (
 				DD8D0D5229D5E5ED0045009C /* FacebookLogin in Frameworks */,
 				09652B76293116BE002CC615 /* Lottie in Frameworks */,
+				090F1CA72A7B7CEB00FF5E4D /* FirebaseStorage in Frameworks */,
 				DD25AA37292941BE00EF2FEB /* FirebaseAnalytics in Frameworks */,
 				DD25AA39292941BE00EF2FEB /* FirebaseAuth in Frameworks */,
 				DDF9364A29C76521002B965A /* FirebaseFirestoreSwift in Frameworks */,
@@ -320,6 +322,7 @@
 				DDF9364729C76518002B965A /* FirebaseFirestore */,
 				DDF9364929C76521002B965A /* FirebaseFirestoreSwift */,
 				DD8D0D5129D5E5ED0045009C /* FacebookLogin */,
+				090F1CA62A7B7CEB00FF5E4D /* FirebaseStorage */,
 			);
 			productName = HabitsTracker;
 			productReference = DD25AA2229293E7300EF2FEB /* HabitsTracker.app */;
@@ -666,6 +669,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		090F1CA62A7B7CEB00FF5E4D /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD25AA35292941BE00EF2FEB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
 		09652B75293116BE002CC615 /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 09652B74293116BE002CC615 /* XCRemoteSwiftPackageReference "lottie-ios" */;
