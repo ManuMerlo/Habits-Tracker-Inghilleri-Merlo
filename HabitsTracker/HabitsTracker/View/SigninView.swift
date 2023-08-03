@@ -14,8 +14,7 @@ import SwiftUI
 struct SigninView: View {
     //@StateObject private var signinViewModel = SigninViewModel()
     @ObservedObject var authenticationViewModel: AuthenticationViewModel // // Here authenticationViewModel is a @ObservedObject instead in HabitsTrackerApp is a @StateObject. For more details see (*1)
-    @State var textFieldEmail: String = ""
-    @State var textFieldPassword: String = ""
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
@@ -34,9 +33,9 @@ struct SigninView: View {
                         .padding(.bottom, 10)
                         .offset(y: -8)
                     
-                    CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $textFieldEmail)
-
-                    CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $textFieldPassword)
+                    CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmail)
+                    
+                    CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPassword)
                     
                     NavigationLink {
                         //TODO recupera password
@@ -45,12 +44,12 @@ struct SigninView: View {
                     }
                     .padding(.vertical, 6)
                     Button {
-                        guard !textFieldEmail.isEmpty, !textFieldPassword.isEmpty else {
+                        guard !authenticationViewModel.textFieldEmail.isEmpty, !authenticationViewModel.textFieldPassword.isEmpty else {
                             print("Empty email or password")
                             return
                         }
-                        authenticationViewModel.login(email: textFieldEmail,
-                                                      password: textFieldPassword)
+                        authenticationViewModel.login(email: authenticationViewModel.textFieldEmail,
+                                                      password: authenticationViewModel.textFieldPassword)
                     } label: {
                         HStack() {
                             Text("Sign in")
@@ -75,47 +74,83 @@ struct SigninView: View {
                 }
                 
                 Group {
-                    HStack {
+                    HStack{
                         VStack { Divider().background(Color.gray) }.padding(.horizontal, 20)
                         Text("or").foregroundColor(Color.gray)
                         VStack { Divider().background(Color.gray) }.padding(.horizontal, 20)
                     }
                     
-                    
                     //MARK: Custom Google Sign in Button
                     /*CustomButton(logo: "googlelogo")
-                        .overlay {
-                            if let clientID = FirebaseApp.app()?.options.clientID {
-                                GoogleSignInButton {
-                                    GIDSignIn.sharedInstance.signIn(with: .init(clientID: clientID), presenting: UIApplication.shared.rootController()) {user, err in
-                                        if let error = err {
-                                            print(error.localizedDescription)
-                                            return
+                     .overlay {
+                     if let clientID = FirebaseApp.app()?.options.clientID {
+                     GoogleSignInButton {
+                     GIDSignIn.sharedInstance.signIn(with: .init(clientID: clientID), presenting: UIApplication.shared.rootController()) {user, err in
+                     if let error = err {
+                     print(error.localizedDescription)
+                     return
+                     }
+                     //MARK: Logging Google User into Firebase
+                     if let user {
+                     //signinViewModel.logGoogleUser(user: user)
+                     }
+                     }
+                     }
+                     .blendMode(.overlay)
+                     }
+                     }
+                     .clipped()*/
+                    Button {
+                        authenticationViewModel.loginGoogle(){ result in
+                            switch result {
+                            case .success(let user):
+                                firestoreViewModel.userIsPresent(uid: user.id) { result in
+                                    switch result {
+                                    case .success(let bool):
+                                        if !bool {
+                                            firestoreViewModel.addNewUser(user: user)
                                         }
-                                        //MARK: Logging Google User into Firebase
-                                        if let user {
-                                            //signinViewModel.logGoogleUser(user: user)
-                                        }
+                                    case .failure(let error):
+                                        print("Error finding user: \(error)")
+                                        return
                                     }
                                 }
-                                .blendMode(.overlay)
+                            case .failure(let error):
+                                print("Error logging the user: \(error)")
+                                return
                             }
                         }
-                        .clipped()*/
-                    Button {
-                        authenticationViewModel.loginGoogle()
+                        
                     } label: {
                         Text("Continue with Google")
                     }
                     
                     Button {
-                        authenticationViewModel.loginFacebook()
+                        authenticationViewModel.loginFacebook(){ result in
+                            switch result {
+                            case .success(let user):
+                                firestoreViewModel.userIsPresent(uid: user.id) { result in
+                                    switch result {
+                                    case .success(let bool):
+                                        if !bool {
+                                            firestoreViewModel.addNewUser(user: user)
+                                        }
+                                    case .failure(let error):
+                                        print("Error finding user: \(error)")
+                                        return
+                                    }
+                                }
+                            case .failure(let error):
+                                print("Error logging the user: \(error)")
+                                return
+                            }
+                        }
                     } label: {
                         Text("Continue with Facebook")
                     }
                     
                     NavigationLink {
-                        SignupView(authenticationViewModel: authenticationViewModel)
+                        SignupView(authenticationViewModel: authenticationViewModel,firestoreViewModel: firestoreViewModel)
                     } label: {
                         Text("Don't have an account? Sign up")
                     }
@@ -128,31 +163,31 @@ struct SigninView: View {
             .offset(y:-30)
         }
         /*.alert(signinViewModel.errorMessage, isPresented: $signinViewModel.showError) {
-        }*/
+         }*/
     }
     
     /*@ViewBuilder
-    func CustomButton(logo: String) -> some View {
-        HStack{
-            Image(logo).resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 25, height: 25)
-                .frame(height: 45)
-            Text("Continue with Google")
-                .font(.callout)
-                .lineLimit(1)
-                .foregroundColor(.white)
-        }
-        .padding(.horizontal,15)
-        .background {
-            RoundedRectangle(cornerRadius: 10, style: .continuous)
-                .fill(.black)
-        }
-    }*/
+     func CustomButton(logo: String) -> some View {
+     HStack{
+     Image(logo).resizable()
+     .aspectRatio(contentMode: .fit)
+     .frame(width: 25, height: 25)
+     .frame(height: 45)
+     Text("Continue with Google")
+     .font(.callout)
+     .lineLimit(1)
+     .foregroundColor(.white)
+     }
+     .padding(.horizontal,15)
+     .background {
+     RoundedRectangle(cornerRadius: 10, style: .continuous)
+     .fill(.black)
+     }
+     }*/
 }
 
 struct signinView_Previews: PreviewProvider {
     static var previews: some View {
-        SigninView(authenticationViewModel: AuthenticationViewModel())
+        SigninView(authenticationViewModel: AuthenticationViewModel(),firestoreViewModel: FirestoreViewModel())
     }
 }

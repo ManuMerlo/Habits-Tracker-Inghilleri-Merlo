@@ -16,7 +16,10 @@ final class AuthenticationFirebaseDataSource {
         guard let email = Auth.auth().currentUser?.email else {
             return nil
         }
-        return .init(email: email)
+        guard let id = Auth.auth().currentUser?.uid else {
+            return nil
+        }
+        return .init(id:id, email: email)
     }
     
     // MARK: Completionblock: Notify the upper layers: Repository, ViewModel and the to View. Indicate if there will be an error or not during the creation of a new user. the @escaping returns a user if there is not error, otherwise it returns an error.
@@ -28,10 +31,14 @@ final class AuthenticationFirebaseDataSource {
                 return
             }
             let email = authDataResult?.user.email ?? "No email"
-            print("New user created with info \(email)")
-            completionBlock(.success(.init(email: email)))
+            let id = authDataResult?.user.uid ?? "No id"
+            print("New user created with info \(email) \(id)")
+            completionBlock(.success(.init(id:id ,email: email)))
         }
     }
+    
+    
+    //TODO: Se l'id è gia presente negli user non fare niente altrimenti crea lo user
     
     func login(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void) {
         Auth.auth().signIn(withEmail: email, password: password) { authDataResult, error in
@@ -42,8 +49,9 @@ final class AuthenticationFirebaseDataSource {
             }
             
             let email = authDataResult?.user.email ?? "No email"
-            print("User logged in with info \(email)")
-            completionBlock(.success(.init(email: email)))
+            let id = authDataResult?.user.uid ?? "No id"
+            print("User logged in with info \(email) \(id)")
+            completionBlock(.success(.init(id: id,email: email)))
         }
     }
     
@@ -59,8 +67,9 @@ final class AuthenticationFirebaseDataSource {
                         return
                     }
                     let email = authDataResult?.user.email ?? "No email facebook"
-                    print("New user 'created' with info \(email)")
-                    completionBlock(.success(.init(email: email)))
+                    let id = authDataResult?.user.uid ?? "No id facebook"
+                    print("New user 'created' with info \(email) \(id)")
+                    completionBlock(.success(.init(id:id, email: email)))
                 }
             case .failure(let error):
                 print("Error login with Facebook \(error.localizedDescription)")
@@ -83,8 +92,9 @@ final class AuthenticationFirebaseDataSource {
                         return
                     }
                     let email = authDataResult?.user.email ?? "No email google"
-                    print("New user 'created' with info \(email)")
-                    completionBlock(.success(.init(email: email)))
+                    let id = authDataResult?.user.uid ?? "No id google "
+                    print("New user 'created' with info \(email) \(id)")
+                    completionBlock(.success(.init(id:id ,email: email)))
                 }
             case .failure(let error):
                 print("Error login with Google \(error.localizedDescription)")
@@ -205,7 +215,7 @@ final class AuthenticationFirebaseDataSource {
                 print("New user linked with info \(email)")
                 completionBlock(true)
             })
-        
+            
         })
     }
     

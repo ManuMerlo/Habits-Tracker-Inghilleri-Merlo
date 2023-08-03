@@ -9,6 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var healthViewModel: HealthViewModel
+    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             content
@@ -49,6 +50,6 @@ struct HomeView: View {
 }
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel())
+        GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel(),firestoreViewModel: FirestoreViewModel())
     }
 }

@@ -77,7 +77,7 @@ struct UserProfileView: View {
                     }
                 }.frame(width:geometry.size.width/1.2,height: 30)
                 
-            }.offset(x:-100,y:-220)
+            }.offset(x:-100,y:-280)
         }
     }
 }

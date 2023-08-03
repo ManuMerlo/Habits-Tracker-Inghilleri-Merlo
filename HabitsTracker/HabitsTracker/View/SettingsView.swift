@@ -17,7 +17,6 @@ struct SettingsView: View {
     @State var expandVerificationWithEmailFrom : Bool = false
     @State var textFieldEmail: String = ""
     @State var textFieldPassword: String = ""
-    // private var userViewModel = UserViewModel()
     
     @State private var showSheet = false
     

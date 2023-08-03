@@ -14,12 +14,15 @@ final class FirestoreRepository {
         self.firestoreDataSource = firestoreDataSource
     }
     
+    func userIsPresent (uid : String, completionBlock: @escaping (Result<Bool, Error>) -> Void){
+        self.firestoreDataSource.userIsPresent(uid: uid, completionBlock: completionBlock)
+    }
+    
     func getAllUsers(completionBlock: @escaping (Result<[User], Error>) -> Void) {
         firestoreDataSource.getAllUsers(completionBlock: completionBlock)
     }
     
-    // TODO: add user
-    func addNewUser(user: User, completionBlock: @escaping (Result<User, Error>) -> Void) {
-        firestoreDataSource.addNewUser(user: user, completionBlock: completionBlock)
+    func addNewUser(user: User) {
+        firestoreDataSource.addNewUser(user: user)
     }
 }

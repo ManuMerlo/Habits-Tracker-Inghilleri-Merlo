@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		090F1CA72A7B7CEB00FF5E4D /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 090F1CA62A7B7CEB00FF5E4D /* FirebaseStorage */; };
 		09179CD529314D3700B389C2 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09179CD429314D3700B389C2 /* SignupView.swift */; };
+		093D33B32A7BA53B000C8ECF /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093D33B22A7BA53B000C8ECF /* Utils.swift */; };
 		0944AB2D2A7AB61900C73278 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */; };
 		094A32432A796F570008403C /* SearchFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094A32422A796F570008403C /* SearchFriendView.swift */; };
 		094A32452A798AF90008403C /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094A32442A798AF90008403C /* UserProfileView.swift */; };
@@ -64,6 +65,7 @@
 
 /* Begin PBXFileReference section */
 		09179CD429314D3700B389C2 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
+		093D33B22A7BA53B000C8ECF /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		094A32422A796F570008403C /* SearchFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFriendView.swift; sourceTree = "<group>"; };
 		094A32442A798AF90008403C /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 				DD1FAFD829D8DA0E0084178F /* HealthKit */,
 				DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */,
 				DD25AA2729293E7300EF2FEB /* ContentView.swift */,
+				093D33B22A7BA53B000C8ECF /* Utils.swift */,
 				DD33E5F42929457C00B299BD /* Info.plist */,
 				DD25AA33292940EC00EF2FEB /* GoogleService-Info.plist */,
 				DD25AA2929293E7300EF2FEB /* Assets.xcassets */,
@@ -419,6 +422,7 @@
 				DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */,
 				DD127A402929477700075A8B /* GeneralView.swift in Sources */,
 				DD1FAFDA29D8DA2A0084178F /* HealthViewModel.swift in Sources */,
+				093D33B32A7BA53B000C8ECF /* Utils.swift in Sources */,
 				DDD723B1292A87E100012461 /* HomeView.swift in Sources */,
 				DD25AA2629293E7300EF2FEB /* HabitsTrackerApp.swift in Sources */,
 				DD09A10329D9FA0D00CEBE15 /* Activity.swift in Sources */,

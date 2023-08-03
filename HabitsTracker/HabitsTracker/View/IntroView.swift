@@ -11,6 +11,8 @@ struct IntroView: View {
     @State private var selectedPage = 0
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
+    
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
     
     var body: some View {
@@ -51,7 +53,7 @@ struct IntroView: View {
                 }
                 
                 NavigationLink {
-                    SigninView(authenticationViewModel: authenticationViewModel)
+                    SigninView(authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)
                 } label: {
                     Text("Skip")
                         .fontWeight(.semibold)
@@ -106,6 +108,6 @@ struct IntroView: View {
 
 struct IntroView_Previews: PreviewProvider {
     static var previews: some View {
-        IntroView(healthViewModel: HealthViewModel(),authenticationViewModel: AuthenticationViewModel())
+        IntroView(healthViewModel: HealthViewModel(),authenticationViewModel: AuthenticationViewModel(),firestoreViewModel: FirestoreViewModel())
     }
 }

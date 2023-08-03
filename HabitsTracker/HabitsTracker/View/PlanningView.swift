@@ -186,6 +186,6 @@ struct PlanningView: View {
 
 struct PlanningView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel())
+        GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel(), firestoreViewModel: FirestoreViewModel())
     }
 }

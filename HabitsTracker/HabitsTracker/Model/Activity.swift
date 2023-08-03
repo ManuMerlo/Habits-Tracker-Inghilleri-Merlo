@@ -18,7 +18,7 @@ struct Activity: Identifiable {
             Activity(id: "appleExerciseTime", name: "Exercise Time", image: "figure.strengthtraining.traditional"),
             Activity(id: "appleStandTime", name: "Stand Time", image: "figure.stand"),
             Activity(id: "distanceWalkingRunning", name: "Distance Walking/Running", image: "figure.walk"),
-            Activity(id: "stepCount", name: "Step Count", image: "👣"),
+            Activity(id: "stepCount", name: "Step Count", image: "shoeprints.fill"),
         ]
     }
 }

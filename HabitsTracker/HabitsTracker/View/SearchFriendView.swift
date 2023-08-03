@@ -26,7 +26,9 @@ struct SearchFriendView: View {
                     
                 }
                 
-            }.searchable(text:$searchTerm, prompt:"Search a friend")
+            }
+            .listStyle(PlainListStyle())
+            .searchable(text:$searchTerm, prompt:"Search a friend")
             .navigationTitle("Friends")
             .navigationDestination(for: User.self) { user in
                 UserProfileView(user: user)

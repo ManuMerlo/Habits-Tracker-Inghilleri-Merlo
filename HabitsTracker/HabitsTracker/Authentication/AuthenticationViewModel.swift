@@ -7,12 +7,19 @@
 
 import Foundation
 
+
 final class AuthenticationViewModel: ObservableObject {
     @Published var user: User?
     @Published var messageError: String?
+    @Published var isAccountLinked: Bool = false
+    
+    @Published var textfieldUsername: String = ""
+    @Published var textFieldEmail: String = ""
+    @Published var textFieldPassword: String = ""
+    @Published var repeatPassword: String = ""
+    
     @Published var linkedAccounts: [LinkedAccounts] = []
     @Published var showAlert : Bool = false
-    @Published var isAccountLinked : Bool = false
     
     private let authenticationRepository: AuthenticationRepository
     
@@ -24,15 +31,17 @@ final class AuthenticationViewModel: ObservableObject {
     func getCurrentUser() {
         self.user = authenticationRepository.getCurrentUser()
     }
-    
-    func createNewUser(email: String, password: String) {
+        
+    func createNewUser(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void){
         authenticationRepository.createNewUser(email: email,
                                                password: password) { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
             switch result {
             case .success(let user):
                 self?.user = user
+                completionBlock(.success(user))
             case .failure(let error):
                 self?.messageError = error.localizedDescription
+                completionBlock(.failure(error))
             }
         }
     }
@@ -43,30 +52,35 @@ final class AuthenticationViewModel: ObservableObject {
             switch result {
             case .success(let user):
                 self?.user = user
+                
             case .failure(let error):
                 self?.messageError = error.localizedDescription
             }
         }
     }
     
-    func loginFacebook() {
+    func loginFacebook(completionBlock: @escaping (Result<User, Error>) -> Void) {
         authenticationRepository.loginFacebook() { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
             switch result {
             case .success(let user):
                 self?.user = user
+                completionBlock(.success(user))
             case .failure(let error):
                 self?.messageError = error.localizedDescription
+                completionBlock(.failure(error))
             }
         }
     }
     
-    func loginGoogle() {
+    func loginGoogle(completionBlock:@escaping (Result<User, Error>) -> Void) {
         authenticationRepository.loginGoogle() { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
             switch result {
             case .success(let user):
                 self?.user = user
+                completionBlock(.success(user))
             case .failure(let error):
                 self?.messageError = error.localizedDescription
+                completionBlock(.failure(error))
             }
         }
     }
@@ -75,6 +89,10 @@ final class AuthenticationViewModel: ObservableObject {
         do {
             try authenticationRepository.logout()
             self.user = nil
+            self.textfieldUsername = ""
+            self.textFieldEmail = ""
+            self.textFieldPassword = ""
+            self.repeatPassword = ""
         } catch {
             print("Error logout")
         }

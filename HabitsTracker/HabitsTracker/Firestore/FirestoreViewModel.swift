@@ -16,6 +16,18 @@ final class FirestoreViewModel: ObservableObject {
         self.firestoreRepository = firestoreRepository
     }
     
+    func userIsPresent(uid: String, completionBlock: @escaping (Result<Bool, Error>) -> Void) {
+        firestoreRepository.userIsPresent(uid: uid) { result in
+            switch result {
+            case .success(let bool):
+                completionBlock(.success(bool))
+            case .failure(let error):
+                self.messageError = error.localizedDescription
+                completionBlock(.failure(error)) // Assuming that an error means the user is not present
+            }
+        }
+    }
+
     func getAllUsers() {
         firestoreRepository.getAllUsers { [weak self] result in
             switch result {
@@ -28,13 +40,7 @@ final class FirestoreViewModel: ObservableObject {
     }
     
     func addNewUser(user: User) {
-        firestoreRepository.addNewUser(user: user) { [weak self] result in
-            switch result {
-            case .success(let user):
-                print("User with email \(user.email) added into firestore")
-            case .failure(let error):
-                self?.messageError = error.localizedDescription
-            }
-        }
+        firestoreRepository.addNewUser(user: user)
+        print("User with email \(user.email) added to firestore")
     }
 }

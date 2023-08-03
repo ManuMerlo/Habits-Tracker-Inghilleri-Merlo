@@ -10,10 +10,10 @@ import SwiftUI
 struct SignupView: View {
     // @StateObject private var signinViewModel = SigninViewModel()
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    @State var textfieldUsername: String = ""
-    @State var textFieldEmail: String = ""
-    @State var textFieldPassword: String = ""
-    @State var repeatPassword: String = "" // Togliere State o mettere nel viewmodel?
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
+    
+    
+    
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
             
@@ -33,28 +33,38 @@ struct SignupView: View {
                     .padding(.bottom, 10)
                     .offset(y: -4)
                 
-                    
-                CustomTextField(isSecure: false, hint: "username", imageName: "person", text: $textfieldUsername)
-               
-                CustomTextField(isSecure: false, hint: "email", imageName:"envelope", text: $textFieldEmail)
-        
-                CustomTextField(isSecure:true, hint: "password", imageName: "lock", text: $textFieldPassword)
-            
-                CustomTextField(isSecure:true,hint: "repeat password", imageName: "lock",text: $repeatPassword)
-               
+                
+                CustomTextField(isSecure: false, hint: "username", imageName: "person", text: $authenticationViewModel.textfieldUsername)
+                
+                CustomTextField(isSecure: false, hint: "email", imageName:"envelope", text: $authenticationViewModel.textFieldEmail)
+                
+                CustomTextField(isSecure:true, hint: "password", imageName: "lock", text: $authenticationViewModel.textFieldPassword)
+                
+                CustomTextField(isSecure:true,hint: "repeat password", imageName: "lock",text: $authenticationViewModel.repeatPassword)
+                
                 Button {
                     // Maybe these checks are not necessary
-                    guard !textFieldEmail.isEmpty, !textFieldPassword.isEmpty else {
+                    guard !authenticationViewModel.textFieldEmail.isEmpty, !authenticationViewModel.textFieldPassword.isEmpty else {
                         print("Empty email or password")
                         return
                     }
-                    guard textFieldPassword == repeatPassword else {
+                    guard authenticationViewModel.textFieldPassword == authenticationViewModel.repeatPassword else {
                         print("Passwords do not match")
                         return
                     }
-                    authenticationViewModel.createNewUser(email: textFieldEmail,
-                                                          password: textFieldPassword)
-                    // TODO: manage the username
+                    authenticationViewModel.createNewUser(email: authenticationViewModel.textFieldEmail, password: authenticationViewModel.textFieldPassword) { result in
+                        
+                        switch result {
+                        case .success(var user):
+                            user.setUsername(name: authenticationViewModel.textfieldUsername)
+                            firestoreViewModel.addNewUser(user: user)
+                        case .failure(let error):
+                            print("Error creating new user: \(error)")
+                            return
+                        }
+                    }
+                    
+                    
                 } label: {
                     HStack() {
                         Text("Sign up")
@@ -79,16 +89,16 @@ struct SignupView: View {
                 }
                 
             }
-                   .padding(.horizontal, 50)
-                   .padding(.vertical,25)
+            .padding(.horizontal, 50)
+            .padding(.vertical,25)
         }
         /*.alert(signinViewModel.errorMessage, isPresented: $signinViewModel.showError) {
-        }*/
+         }*/
     }
 }
 
 struct SignupView_Previews: PreviewProvider {
     static var previews: some View {
-        SignupView(authenticationViewModel: AuthenticationViewModel())
+        SignupView(authenticationViewModel: AuthenticationViewModel(), firestoreViewModel: FirestoreViewModel())
     }
 }

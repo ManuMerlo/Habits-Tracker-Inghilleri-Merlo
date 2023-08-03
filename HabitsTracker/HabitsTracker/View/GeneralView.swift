@@ -13,7 +13,9 @@ import Firebase
 struct GeneralView: View {
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    @StateObject var firestoreViewModel = FirestoreViewModel()
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
+
+    
     var body: some View {
         TabView {
             HomeView(healthViewModel: healthViewModel)
@@ -57,6 +59,6 @@ struct GeneralView: View {
 
 struct GeneralView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel())
+        GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel(), firestoreViewModel: FirestoreViewModel())
     }
 }

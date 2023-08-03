@@ -12,6 +12,26 @@ import FirebaseFirestoreSwift
 final class FirestoreDataSource {
     private let db = Firestore.firestore()
     
+    func userIsPresent (uid: String, completionBlock: @escaping (Result<Bool, Error>) -> Void){
+        
+        
+        let docRef = db.collection("users").document(uid)
+        
+        docRef.getDocument { (document, error) in
+            if let error = error {
+                print("Error checking existing user \(error.localizedDescription)")
+                completionBlock(.failure(error))
+                return
+            }
+            if let document = document, document.exists {
+                completionBlock(.success(true))
+            } else {
+                completionBlock(.success(false))
+            }
+        }
+        
+    }
+    
     func getAllUsers(completionBlock: @escaping (Result<[User], Error>) -> Void) {
         db.collection("users").addSnapshotListener { query, error in
             if let error = error {
@@ -30,13 +50,10 @@ final class FirestoreDataSource {
         }
     }
     
-    func addNewUser(user: User, completionBlock: @escaping (Result<User, Error>) -> Void) {
-        do {
-            _ = try db.collection("users").addDocument(from: user)
-            completionBlock(.success(user))
-        } catch {
-            completionBlock(.failure(error))
-        }
-    }
     
+    func addNewUser(user: User) {
+        db.collection("users")
+            .document(user.id)
+            .setData(user.asDictionary())
+    }
 }
