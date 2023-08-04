@@ -12,6 +12,7 @@ struct SignupView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     
+    @State var isUsernamePresent : Bool = false
     
     
     var body: some View {
@@ -52,14 +53,30 @@ struct SignupView: View {
                         print("Passwords do not match")
                         return
                     }
-                    authenticationViewModel.createNewUser(email: authenticationViewModel.textFieldEmail, password: authenticationViewModel.textFieldPassword) { result in
-                        
+                    
+                    guard !authenticationViewModel.textfieldUsername.isEmpty else {
+                        print("Username is empty")
+                        return
+                    }
+                
+                    firestoreViewModel.usernameIsPresent(name: authenticationViewModel.textfieldUsername) { result in
                         switch result {
-                        case .success(let user):
-                            firestoreViewModel.addNewUser(user: user)
+                        case .success(let isPresent):
+                            if(!isPresent){
+                                authenticationViewModel.createNewUser(email: authenticationViewModel.textFieldEmail, password: authenticationViewModel.textFieldPassword) { result in
+                                    switch result {
+                                    case .success(let user):
+                                        firestoreViewModel.addNewUser(user: user)
+                                    case .failure(let error):
+                                        print("Error creating new user: \(error)")
+                                        return
+                                    }
+                                }
+                            } else {
+                                authenticationViewModel.messageError = "The username is not available"
+                            }
                         case .failure(let error):
-                            print("Error creating new user: \(error)")
-                            return
+                            print("\(error)")
                         }
                     }
                     
@@ -91,13 +108,11 @@ struct SignupView: View {
             .padding(.horizontal, 50)
             .padding(.vertical,25)
         }
-        /*.alert(signinViewModel.errorMessage, isPresented: $signinViewModel.showError) {
-         }*/
     }
 }
 
 struct SignupView_Previews: PreviewProvider {
     static var previews: some View {
-        SignupView(authenticationViewModel: AuthenticationViewModel(), firestoreViewModel: FirestoreViewModel())
+        SignupView(authenticationViewModel: AuthenticationViewModel(), firestoreViewModel: FirestoreViewModel(uid:nil))
     }
 }

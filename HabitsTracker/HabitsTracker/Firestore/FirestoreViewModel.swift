@@ -28,6 +28,18 @@ final class FirestoreViewModel: ObservableObject {
         }
     }
     
+    func usernameIsPresent(name: String, completionBlock: @escaping (Result<Bool, Error>) -> Void) {
+        firestoreRepository.UsernameIsPresent(name: name) { result in
+            switch result {
+            case .success(let bool):
+                completionBlock(.success(bool))
+            case .failure(let error):
+                completionBlock(.failure(error)) // Assuming that an error means the user is not present
+            }
+        }
+    }
+
+    
     func getUser(uid: String, completionBlock: @escaping (Result<User?,Error>) -> Void) {
         firestoreRepository.getUser(uid: uid){ result in
             switch result {

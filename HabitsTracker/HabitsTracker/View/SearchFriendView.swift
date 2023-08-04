@@ -15,7 +15,7 @@ struct SearchFriendView: View {
     
     var filteredFrieds : [User] {
         guard !searchTerm.isEmpty else {return friends}
-        return friends.filter { $0.username!.localizedCaseInsensitiveContains(searchTerm)}
+        return friends.filter { $0.email.localizedCaseInsensitiveContains(searchTerm)}
     }
     
     var body: some View {
@@ -39,29 +39,38 @@ struct SearchFriendView: View {
                 Color.green,
                 for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            /*.task {
-             friends = await getFriends()
-             }*/
+            .task {
+                friends = firestoreViewModel.allUsers
+             }
         }
     }
 }
 
-func getFriends () async -> [User] {
-    return UserList.usersGlobal
-}
-
 struct ListItemView: View {
     var user : User
-    
     var body: some View {
-        
         GeometryReader {  geometry in
             HStack(){
-                Image(user.image ?? "user")
-                    .resizable()
-                    .frame(width: geometry.size.width/7, height: geometry.size.width/7)
-                    .mask(Circle())
-                    .padding(.trailing,5)
+                if let path = user.image {
+                    AsyncImage(url: URL(string: path)){ phase in
+                        switch phase {
+                            case .failure:
+                            Image(systemName: "person.circle.fill")
+                                .font(.largeTitle) case
+                            .success(let image):
+                                image .resizable()
+                            default: ProgressView() }
+                        
+                    } .frame(width: geometry.size.width/7, height: geometry.size.width/7)
+                      .mask(Circle())
+                } else {
+                    Image(systemName: "person.circle.fill")
+                        .resizable()
+                        .frame(width: geometry.size.width/7, height: geometry.size.width/7)
+                        .mask(Circle())
+                        .foregroundColor(.gray)
+                }
+
                 Text(user.username ?? user.email)
                     .font(.custom("Open Sans", size: 18))
                 
@@ -73,7 +82,7 @@ struct ListItemView: View {
 
 struct SearchFriendView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchFriendView( firestoreViewModel: FirestoreViewModel())
+        SearchFriendView( firestoreViewModel: FirestoreViewModel(uid:nil))
     }
 }
 

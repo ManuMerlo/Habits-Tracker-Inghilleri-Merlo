@@ -30,7 +30,6 @@
 		DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A41292947FA00075A8B /* CustomTextField.swift */; };
 		DD1FAFDA29D8DA2A0084178F /* HealthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1FAFD929D8DA2A0084178F /* HealthViewModel.swift */; };
 		DD25AA2629293E7300EF2FEB /* HabitsTrackerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */; };
-		DD25AA2829293E7300EF2FEB /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD25AA2729293E7300EF2FEB /* ContentView.swift */; };
 		DD25AA2A29293E7300EF2FEB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD25AA2929293E7300EF2FEB /* Assets.xcassets */; };
 		DD25AA2D29293E7300EF2FEB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD25AA2C29293E7300EF2FEB /* Preview Assets.xcassets */; };
 		DD25AA34292940EC00EF2FEB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DD25AA33292940EC00EF2FEB /* GoogleService-Info.plist */; };
@@ -87,7 +86,6 @@
 		DD1FAFD929D8DA2A0084178F /* HealthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthViewModel.swift; sourceTree = "<group>"; };
 		DD25AA2229293E7300EF2FEB /* HabitsTracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HabitsTracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsTrackerApp.swift; sourceTree = "<group>"; };
-		DD25AA2729293E7300EF2FEB /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		DD25AA2929293E7300EF2FEB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DD25AA2C29293E7300EF2FEB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DD25AA33292940EC00EF2FEB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -229,7 +227,6 @@
 				DDEACC0C29DB740400F39F4B /* Firestore */,
 				DD1FAFD829D8DA0E0084178F /* HealthKit */,
 				DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */,
-				DD25AA2729293E7300EF2FEB /* ContentView.swift */,
 				093D33B22A7BA53B000C8ECF /* Utils.swift */,
 				DD33E5F42929457C00B299BD /* Info.plist */,
 				DD25AA33292940EC00EF2FEB /* GoogleService-Info.plist */,
@@ -415,7 +412,6 @@
 				DDAA66A729D042E500219792 /* LeaderboardView.swift in Sources */,
 				DDC33537292BFC8700C27566 /* DateValue.swift in Sources */,
 				DDEACC1329DB748800F39F4B /* FirestoreViewModel.swift in Sources */,
-				DD25AA2829293E7300EF2FEB /* ContentView.swift in Sources */,
 				DDEB8AED29D6F301001693C8 /* AuthenticationViewModel.swift in Sources */,
 				DDC2F89529311CAD003653F1 /* Goal.swift in Sources */,
 				DDC2F89329311548003653F1 /* User.swift in Sources */,

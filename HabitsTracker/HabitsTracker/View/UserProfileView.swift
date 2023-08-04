@@ -16,28 +16,51 @@ struct UserProfileView: View {
                 
                 BadgeBackground().frame(width: 600,height: 600)
                     .rotationEffect(Angle(degrees: -50))
-                    .offset(x:20,y:-130)
+                    .offset(x:20,y:-110)
                 
                 
                 HStack{
-                    if let image = user.image{
-                        Image(image)
-                            .resizable()
-                            .clipped()
-                            .clipShape(Circle())
-                            .aspectRatio(contentMode: ContentMode.fill)
-                            .frame(width: geometry.size.width/7,height: geometry.size.width/7)
-                            .padding(.trailing,10)
-                            .offset(y:-37)
-                        
-                        
-                    }
                     
                     VStack(alignment: .leading){
+                        
                         HStack{
+                            if let path = user.image {
+                                AsyncImage(url: URL(string: path)){ phase in
+                                    switch phase {
+                                    case .failure:
+                                        Image(systemName: "person.fill")
+                                            .resizable()
+                                            .frame(width: geometry.size.width/8, height: geometry.size.width/8)
+                                            .mask(Circle())
+                                            .foregroundColor(.white)
+                                            .padding(.trailing,8)
+                                        
+                                    case .success(let image):
+                                        image .resizable()
+                                        default: ProgressView() }
+                                    
+                                } .frame(width: geometry.size.width/8, height: geometry.size.width/8)
+                                    .mask(Circle())
+                                    .padding(.trailing,8)
+                                
+                            } else {
+                                Image(systemName: "person.fill")
+                                    .resizable()
+                                    .frame(width: geometry.size.width/8, height: geometry.size.width/8)
+                                    .mask(Circle())
+                                    .foregroundColor(.white)
+                                    .padding(.trailing,8)
+                            }
+                            
                             VStack(alignment: .leading){
                                 if let username = user.username{
                                     Text(username)
+                                        .font(.custom("Open Sans", size: 25))
+                                        .foregroundColor(.white)
+                                        .padding(.bottom,1)
+                                    
+                                } else {
+                                    Text("User")
                                         .font(.custom("Open Sans", size: 25))
                                         .foregroundColor(.white)
                                         .padding(.bottom,1)
@@ -61,7 +84,7 @@ struct UserProfileView: View {
                             }.buttonStyle(.borderedProminent)
                                 .foregroundColor(.purple)
                                 .tint(.white)
-                        }.padding(.bottom,20)
+                        }
                         
                         HStack{
                             VerticalText(upperText: "1000", lowerText: "Daily")
@@ -75,19 +98,14 @@ struct UserProfileView: View {
                         }
                         
                     }
-                }.frame(width:geometry.size.width/1.2,height: 30)
+                    
+                }.frame(width:geometry.size.width/1.3,height: 30)
                 
             }.offset(x:-100,y:-280)
         }
     }
 }
 
-
-struct UserProfileView_Previews: PreviewProvider {
-    static var previews: some View {
-        UserProfileView(user:UserList.usersGlobal[1])
-    }
-}
 
 struct BadgeBackground: View {
     var body: some View {
@@ -196,5 +214,11 @@ func VerticalText(upperText: String, lowerText:String) -> some View {
             .padding(.bottom,1)
         Text(lowerText).foregroundColor(.white)
             .font(.custom("Open Sans", size: 15))
+    }
+}
+
+struct UserProfileView_Previews: PreviewProvider {
+    static var previews: some View {
+        UserProfileView(user: User(email: "lulu@gmail.com"))
     }
 }
