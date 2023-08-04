@@ -38,7 +38,7 @@ final class AuthenticationViewModel: ObservableObject {
             switch result {
             case .success(var user):
                 user.setUsername(name: self?.textfieldUsername ?? "")
-                self?.user? = user
+                self?.user = user
                 completionBlock(.success(user))
             case .failure(let error):
                 self?.messageError = error.localizedDescription
