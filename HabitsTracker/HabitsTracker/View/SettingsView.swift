@@ -10,6 +10,7 @@ import Firebase
 import UserNotifications
 
 
+
 struct SettingsView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     @ObservedObject var firestoreViewModel : FirestoreViewModel
@@ -19,51 +20,66 @@ struct SettingsView: View {
     @State var expandVerificationWithEmailFrom : Bool = false
     @State var textFieldEmail: String = ""
     @State var textFieldPassword: String = ""
+    
+    @State var modify: Bool = false
+    @State var isListEnabled: Bool = true
     @State var showAlert: Bool = false
+    @State var showSheet: Bool = false
+    @State var showDatePicker : Bool = false
+    @State var showHeightPicker : Bool = false
+    @State var showWeightPicker : Bool = false
+    @State var showSexPicker : Bool = false
     
-    
-    @State private var showSheet = false
-    
+    @State var selectedDate: Date = Date()
+    @State var selectedHeight : Int = 150
+    @State var selectedWeight : Int = 60
+    @State var selectedSex : Sex = Sex.Unspecified
+        
     var body: some View {
         NavigationStack{
             VStack {
                 
-                Button{
-                    showSheet.toggle()
-                }label:{
-                    VStack {
-                        if let image = settingViewModel.image{
-                            Image(uiImage: image )
-                                .resizable()
-                                .frame(width: 90, height: 90)
-                                .mask(Circle())
-                            
-                        } else{
-                            Image(systemName: "person.circle.fill")
-                                .resizable()
-                                .frame(width: 90, height: 90)
-                                .mask(Circle())
-                                .foregroundColor(.gray)
-                            
-                        }
-                        
-                        Text("Change photo")
-                            .font(.footnote)
-                            .foregroundColor(.blue)
-                            .padding(.horizontal, 20)
-                    }
-                    .padding(.horizontal, 20)
+                VStack {
                     
-                }.padding(3)
+                    if let path = authenticationViewModel.user?.image {
+                        AsyncImage(url: URL(string: path)){ phase in
+                            switch phase {
+                                case .failure:
+                                Image(systemName: "person.circle.fill")
+                                    .font(.largeTitle) case
+                                .success(let image):
+                                    image .resizable()
+                                default: ProgressView() }
+                            
+                        } .frame(width: 90, height: 90)
+                          .mask(Circle())
+                    } else {
+                        Image(systemName: "person.circle.fill")
+                            .resizable()
+                            .frame(width: 90, height: 90)
+                            .mask(Circle())
+                            .foregroundColor(.gray)
+                    }
+                    
+                }
+                .padding(.horizontal, 20)
                 
-                Text("Manuela Merlo").font(.title)
+                Text("\(authenticationViewModel.user?.username ?? "User")")
+                    .font(.title)
                 
-                Text("merlomanu1999@gmail.com")
+                Text("\(authenticationViewModel.user?.email ?? "")")
                     .font(.title3)
                     .accentColor(.gray)
                 
                 List {
                     Section() {
+                        NavigationLink {
+                            modifiPorfileView()
+                        } label: {
+                            Image(systemName: "person")
+                            Text("Modify profile")
+                        }
+                        
                         NavigationLink {
                             ProvidersDetailView()
                         } label: {
@@ -121,12 +137,225 @@ struct SettingsView: View {
                     
                 }
             }
+        }
+    }
+    
+    @ViewBuilder
+    func modifiPorfileView() -> some View {
+        VStack {
+            VStack(spacing: 0) {
+                
+                Button{
+                    showSheet.toggle()
+                }label:{
+                    VStack {
+                        
+                        if let path = authenticationViewModel.user?.image {
+                            AsyncImage(url: URL(string: path)){ phase in
+                                switch phase {
+                                    case .failure:
+                                    Image(systemName: "person.circle.fill")
+                                        .font(.largeTitle) case
+                                    .success(let image):
+                                        image .resizable()
+                                    default: ProgressView() }
+                                
+                            } .frame(width: 90, height: 90)
+                              .mask(Circle())
+                        } else {
+                            Image(systemName: "person.circle.fill")
+                                .resizable()
+                                .frame(width: 90, height: 90)
+                                .mask(Circle())
+                                .foregroundColor(.gray)
+                        }
+                        
+                        Text("Change photo")
+                            .font(.footnote)
+                            .foregroundColor(.blue)
+                            .padding(.horizontal, 20)
+                    }
+                    .padding(.horizontal, 20)
+                    
+                }.padding(5)
+                
+                Text("Customise your profile")
+                    .font(.title2)
+                    .fontWeight(.bold)
+                    .padding(.bottom)
+                
+                Spacer() // Spazio vuoto sopra per spingere il contenuto in alto
+                
+                List {
+                    HStack {
+                        Text("Username")
+                        Spacer()
+                        Text("\(authenticationViewModel.user?.username ?? "User")")
+                    }
+                        
+                    Button {
+                        showDatePicker.toggle()
+                        isListEnabled.toggle()
+                    } label: {
+                        HStack {
+                            Text("Birthdate")
+                            Spacer()
+                            Text(settingViewModel.dateToString(selectedDate))
+                        }
+                    }.disabled(!modify)
+                    .foregroundColor(!modify ? .gray: .black)
+                    
+                    Button {
+                        showSexPicker.toggle()
+                        isListEnabled.toggle()
+                    } label: {
+                        HStack {
+                            Text("Sex")
+                            Spacer()
+                            Text("\((authenticationViewModel.user?.sex ?? Sex.Unspecified).rawValue )")
+                        }
+                    }.disabled(!modify)
+                        .foregroundColor(!modify ? .gray: .black)
+                    
+                    
+                    Button {
+                        showHeightPicker.toggle()
+                        isListEnabled.toggle()
+                    } label: {
+                        HStack {
+                            Text("Height")
+                            Spacer()
+                            Text("\(authenticationViewModel.user?.height ?? 0 )")
+                        }
+                    }.disabled(!modify)
+                        .foregroundColor(!modify ? .gray: .black)
+                    
+                    
+                    Button {
+                        showWeightPicker.toggle()
+                        isListEnabled.toggle()
+                    } label: {
+                        HStack {
+                            Text("Weight")
+                            Spacer()
+                            Text("\(authenticationViewModel.user?.weight ?? 0 )")
+                        }
+                    }.disabled(!modify)
+                        .foregroundColor(!modify ? .gray: .black)
+                    
+                }
+                
+            }.disabled(!isListEnabled)
+            
+            Spacer()
+            
+            if showDatePicker {
+                VStack {
+                    Button {
+                        authenticationViewModel.user!.setBirthDate(birthDate: settingViewModel.dateToString(selectedDate))
+                        firestoreViewModel.modifyUser(
+                            uid: authenticationViewModel.user!.id!,
+                            field: "birthdate",
+                            value: settingViewModel.dateToString(selectedDate),
+                            type: "String")
+                        
+                        showDatePicker.toggle()
+                        isListEnabled.toggle()
+                    } label: {
+                        Text("Done")
+                    }
+                    DatePicker(selection: $selectedDate, displayedComponents: .date) {}
+                        .datePickerStyle(WheelDatePickerStyle())
+                }
+                .frame(maxWidth: .infinity)
+                .background(Color.white.opacity(0.8))
+            }
+            
+            if(showSexPicker){
+                VStack {
+                    Button {
+                        authenticationViewModel.user!.setSex(sex:selectedSex)
+                        firestoreViewModel.modifyUser(
+                            uid: authenticationViewModel.user!.id!,
+                            field: "sex",
+                            value: selectedSex.rawValue,
+                            type: "String")
+                        
+                        showSexPicker.toggle()
+                        isListEnabled.toggle()
+                    }label: {
+                        Text("Done")
+                    }
+                    Picker(selection: $selectedSex, label: Text("Select your sex" )) {
+                        ForEach(Sex.allCases, id: \.self) { item in
+                            Text("\(item.rawValue)")
+                        }
+                    }
+                    .pickerStyle(.wheel)
+                    .labelsHidden()
+                }
+            }
+            
+            if (showHeightPicker) {
+                SettingsViewModel.PickerView(
+                    firestoreViewModel:firestoreViewModel,
+                    user: $authenticationViewModel.user,
+                    property: "height",
+                    selectedItem: $selectedHeight,
+                    booleanValuePicker: $showHeightPicker,
+                    booleanValueList: $isListEnabled,
+                    rangeMin: 50,
+                    rangeMax: 300,
+                    unitaryMeasure: "cm")
+            }
+            
+            if (showWeightPicker){
+                SettingsViewModel.PickerView(
+                    firestoreViewModel:firestoreViewModel,
+                    user: $authenticationViewModel.user,
+                    property: "weight",
+                    selectedItem: $selectedWeight,
+                    booleanValuePicker: $showWeightPicker,
+                    booleanValueList: $isListEnabled,
+                    rangeMin: 30,
+                    rangeMax: 180,
+                    unitaryMeasure: "kg")
+            }
+            
+        }
+        .navigationBarBackButtonHidden(!isListEnabled || modify)
+        .toolbar {
+            Button {
+                //if(modify){
+                //    firestoreViewModel.addNewUser(user: authenticationViewModel.user!)
+                //}
+                modify.toggle()
+            } label: {
+                Text(modify ? "Done" : "Modify")
+            }.disabled(!isListEnabled)
+            
         }.fullScreenCover(isPresented: $showSheet, onDismiss: {
-            settingViewModel.persistimageToStorage()
+            settingViewModel.persistimageToStorage { result in
+                switch result {
+                case .success(let path):
+                    authenticationViewModel.user!.setImage(path: path)
+                    firestoreViewModel.modifyUser(
+                        uid: authenticationViewModel.user!.id!,
+                        field: "image",
+                        value: path,
+                        type:"String")
+                
+                case .failure(let error):
+                    print("\(error.localizedDescription)")
+                    //TODO: handle message on screen
+                }
+            }
         }) {
             SettingsViewModel.ImagePicker(selectedImage: $settingViewModel.image)
         }
     }
+    
+    
     
     @ViewBuilder
     func ProvidersDetailView() -> some View {
@@ -269,3 +498,5 @@ struct SettingsView_Previews: PreviewProvider {
         SettingsView(authenticationViewModel: AuthenticationViewModel(),firestoreViewModel : FirestoreViewModel())
     }
 }
+
+

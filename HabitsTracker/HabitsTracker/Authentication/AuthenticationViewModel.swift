@@ -36,8 +36,9 @@ final class AuthenticationViewModel: ObservableObject {
         authenticationRepository.createNewUser(email: email,
                                                password: password) { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
             switch result {
-            case .success(let user):
-                self?.user = user
+            case .success(var user):
+                user.setUsername(name: self?.textfieldUsername ?? "")
+                self?.user? = user
                 completionBlock(.success(user))
             case .failure(let error):
                 self?.messageError = error.localizedDescription
@@ -46,15 +47,16 @@ final class AuthenticationViewModel: ObservableObject {
         }
     }
     
-    func login(email: String, password: String) {
+    func login(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void) {
         authenticationRepository.login(email: email,
                                        password: password) { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
             switch result {
             case .success(let user):
                 self?.user = user
-                
+                completionBlock(.success(user))
             case .failure(let error):
                 self?.messageError = error.localizedDescription
+                completionBlock(.failure(error))
             }
         }
     }

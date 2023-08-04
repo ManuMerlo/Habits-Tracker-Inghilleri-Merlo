@@ -55,8 +55,7 @@ struct SignupView: View {
                     authenticationViewModel.createNewUser(email: authenticationViewModel.textFieldEmail, password: authenticationViewModel.textFieldPassword) { result in
                         
                         switch result {
-                        case .success(var user):
-                            user.setUsername(name: authenticationViewModel.textfieldUsername)
+                        case .success(let user):
                             firestoreViewModel.addNewUser(user: user)
                         case .failure(let error):
                             print("Error creating new user: \(error)")

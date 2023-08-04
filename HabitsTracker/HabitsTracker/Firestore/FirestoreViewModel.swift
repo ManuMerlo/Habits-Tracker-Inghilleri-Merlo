@@ -28,6 +28,20 @@ final class FirestoreViewModel: ObservableObject {
         }
     }
     
+    func getUser(uid: String, completionBlock: @escaping (Result<User?,Error>) -> Void) {
+        firestoreRepository.getUser(uid: uid){ result in
+            switch result {
+            case .success(let user):
+                completionBlock(.success(user))
+            case .failure(let error):
+                self.messageError = error.localizedDescription
+                completionBlock(.failure(error)) // Assuming that an error means the user is not present
+            }
+        }
+        
+    }
+    
+    
     func getAllUsers() {
         firestoreRepository.getAllUsers { [weak self] result in
             switch result {
@@ -42,6 +56,10 @@ final class FirestoreViewModel: ObservableObject {
     func addNewUser(user: User) {
         firestoreRepository.addNewUser(user: user)
         print("User with email \(user.email) added to firestore")
+    }
+    
+    func modifyUser(uid:String, field: String, value: String, type: String) {
+        firestoreRepository.modifyUser(uid:uid, field: field, value: value, type: type)
     }
     
     func deleteUserData(uid: String,completionBlock: @escaping (Result<Bool,Error>)-> Void) {

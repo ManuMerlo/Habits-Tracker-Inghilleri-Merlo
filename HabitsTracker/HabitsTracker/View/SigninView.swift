@@ -6,13 +6,8 @@
 //
 
 import SwiftUI
-//import Firebase
-//import GoogleSignIn
-//import GoogleSignInSwift
-//import FacebookLogin
 
 struct SigninView: View {
-    //@StateObject private var signinViewModel = SigninViewModel()
     @ObservedObject var authenticationViewModel: AuthenticationViewModel // // Here authenticationViewModel is a @ObservedObject instead in HabitsTrackerApp is a @StateObject. For more details see (*1)
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     
@@ -49,7 +44,25 @@ struct SigninView: View {
                             return
                         }
                         authenticationViewModel.login(email: authenticationViewModel.textFieldEmail,
-                                                      password: authenticationViewModel.textFieldPassword)
+                                                      password: authenticationViewModel.textFieldPassword){ result in
+                            switch result {
+                            case .success(let userPasw):
+                                firestoreViewModel.getUser(uid: userPasw.id!) { result in
+                                    switch result {
+                                    case .success(let userFirestore):
+                                        if let user = userFirestore  {
+                                            authenticationViewModel.user = user
+                                        }
+                                    case .failure(let error):
+                                        print("Error finding document user: \(error)")
+                                        return
+                                    }
+                                }
+                            case .failure(let error):
+                                print("Error logging the user: \(error)")
+                                return
+                            }
+                        }
                     } label: {
                         HStack() {
                             Text("Sign in")
@@ -100,18 +113,22 @@ struct SigninView: View {
                      }
                      }
                      .clipped()*/
+                    
                     Button {
                         authenticationViewModel.loginGoogle(){ result in
                             switch result {
-                            case .success(let user):
-                                firestoreViewModel.userIsPresent(uid: user.id) { result in
+                            case .success(let userGoogle):
+                                firestoreViewModel.getUser(uid: userGoogle.id!) { result in
                                     switch result {
-                                    case .success(let bool):
-                                        if !bool {
-                                            firestoreViewModel.addNewUser(user: user)
+                                    case .success(let userFirestore):
+                                        if let user = userFirestore  {
+                                            authenticationViewModel.user = user
+                                        }
+                                        else {
+                                            firestoreViewModel.addNewUser(user: userGoogle)
                                         }
                                     case .failure(let error):
-                                        print("Error finding user: \(error)")
+                                        print("Error finding document user: \(error)")
                                         return
                                     }
                                 }
@@ -128,15 +145,18 @@ struct SigninView: View {
                     Button {
                         authenticationViewModel.loginFacebook(){ result in
                             switch result {
-                            case .success(let user):
-                                firestoreViewModel.userIsPresent(uid: user.id) { result in
+                            case .success(let userFacebook):
+                                firestoreViewModel.getUser(uid: userFacebook.id!) { result in
                                     switch result {
-                                    case .success(let bool):
-                                        if !bool {
-                                            firestoreViewModel.addNewUser(user: user)
+                                    case .success(let userFirestore):
+                                        if let user = userFirestore {
+                                            authenticationViewModel.user = user
+                                        }
+                                        else {
+                                            firestoreViewModel.addNewUser(user: userFacebook)
                                         }
                                     case .failure(let error):
-                                        print("Error finding user: \(error)")
+                                        print("Error finding document user: \(error)")
                                         return
                                     }
                                 }
