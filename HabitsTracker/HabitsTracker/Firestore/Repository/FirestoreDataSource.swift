@@ -61,7 +61,6 @@ final class FirestoreDataSource {
             }
         }
     }
-
     
     func getUser(uid: String, completionBlock: @escaping (Result<User?,Error>) -> Void) {
           let docRef = db.collection("users").document(uid)
@@ -85,8 +84,8 @@ final class FirestoreDataSource {
                   completionBlock(.success(nil))
               }
             }
-          }
         }
+    }
 
     
     func getAllUsers(completionBlock: @escaping (Result<[User], Error>) -> Void) {

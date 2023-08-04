@@ -1,24 +1,16 @@
-//
-//  SignupView.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 25/11/22.
-//
-
 import SwiftUI
 
 struct SignupView: View {
-    // @StateObject private var signinViewModel = SigninViewModel()
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     
-    @State var isUsernamePresent : Bool = false
-    
+    @State var isUsernamePresent: Bool = false
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
             
             VStack(alignment: .center, spacing: 15) {
+                
                 ZStack{
                     LottieView(filename: "register")
                         .frame(width:330, height: 280)
@@ -34,8 +26,7 @@ struct SignupView: View {
                     .padding(.bottom, 10)
                     .offset(y: -4)
                 
-                
-                CustomTextField(isSecure: false, hint: "username", imageName: "person", text: $authenticationViewModel.textfieldUsername)
+                CustomTextField(isSecure: false, hint: "username", imageName: "person", text: $authenticationViewModel.textFieldUsername)
                 
                 CustomTextField(isSecure: false, hint: "email", imageName:"envelope", text: $authenticationViewModel.textFieldEmail)
                 
@@ -54,12 +45,12 @@ struct SignupView: View {
                         return
                     }
                     
-                    guard !authenticationViewModel.textfieldUsername.isEmpty else {
+                    guard !authenticationViewModel.textFieldUsername.isEmpty else {
                         print("Username is empty")
                         return
                     }
-                
-                    firestoreViewModel.usernameIsPresent(name: authenticationViewModel.textfieldUsername) { result in
+                    
+                    firestoreViewModel.usernameIsPresent(name: authenticationViewModel.textFieldUsername) { result in
                         switch result {
                         case .success(let isPresent):
                             if(!isPresent){
@@ -104,6 +95,8 @@ struct SignupView: View {
                         .padding()
                 }
                 
+            }.onAppear{
+                authenticationViewModel.clearSignUpParameter()
             }
             .padding(.horizontal, 50)
             .padding(.vertical,25)

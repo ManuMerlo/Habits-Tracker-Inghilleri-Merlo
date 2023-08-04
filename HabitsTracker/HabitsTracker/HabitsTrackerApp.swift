@@ -1,10 +1,3 @@
-//
-//  HabitsTrackerApp.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 19/11/22.
-//
-
 import SwiftUI
 import FirebaseCore
 import FacebookLogin
@@ -19,18 +12,18 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 }
 
 @main
+
 struct HabitsTrackerApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @StateObject var authenticationViewModel = AuthenticationViewModel() // Here authenticationViewModel is a @StateObject instead in the others view is only an @ObservedObject. For more details see (*1)
     @StateObject var healthViewModel = HealthViewModel()
-    @StateObject var firestoreViewModel = FirestoreViewModel()
     
     var body: some Scene {
         WindowGroup {
-            if let _ = authenticationViewModel.user {
-                GeneralView(healthViewModel: healthViewModel, authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)
+            if let user = authenticationViewModel.user {
+                GeneralView(healthViewModel: healthViewModel, authenticationViewModel: authenticationViewModel, firestoreViewModel: FirestoreViewModel(uid: user.id!))
             } else {
-                IntroView(healthViewModel: healthViewModel, authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)
+                IntroView(healthViewModel: healthViewModel, authenticationViewModel:authenticationViewModel)
             }
         }
     }

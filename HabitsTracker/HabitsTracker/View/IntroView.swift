@@ -1,17 +1,9 @@
-//
-//  IntroView.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 25/11/22.
-//
-
 import SwiftUI
 
 struct IntroView: View {
     @State private var selectedPage = 0
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    @ObservedObject var firestoreViewModel: FirestoreViewModel
     
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
     
@@ -53,7 +45,7 @@ struct IntroView: View {
                 }
                 
                 NavigationLink {
-                    SigninView(authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)
+                    SigninView(authenticationViewModel: authenticationViewModel)
                 } label: {
                     Text("Skip")
                         .fontWeight(.semibold)
@@ -93,9 +85,9 @@ struct IntroView: View {
                 .foregroundColor(background)
             
             Circle()
-               .frame(width: 600, height: 600)
-               .foregroundColor(.white)
-               .offset(x: 0, y: -290)
+                .frame(width: 600, height: 600)
+                .foregroundColor(.white)
+                .offset(x: 0, y: -290)
             
             LottieView(filename: filename)
                 .frame(width: 450, height: 450)
@@ -108,6 +100,6 @@ struct IntroView: View {
 
 struct IntroView_Previews: PreviewProvider {
     static var previews: some View {
-        IntroView(healthViewModel: HealthViewModel(),authenticationViewModel: AuthenticationViewModel(),firestoreViewModel: FirestoreViewModel())
+        IntroView(healthViewModel: HealthViewModel(),authenticationViewModel: AuthenticationViewModel())
     }
 }

@@ -11,9 +11,27 @@ final class FirestoreViewModel: ObservableObject {
     @Published var allUsers: [User] = [] // To use in the leaderboardview together the .task that calls this viewmodel.getAllUsers for realtime updates
     @Published var messageError: String?
     private let firestoreRepository: FirestoreRepository
+    @Published var firestoreUser: User?
+    @Published var needUsername: Bool = false
     
-    init(firestoreRepository: FirestoreRepository = FirestoreRepository()) {
+    init(uid: String?, firestoreRepository: FirestoreRepository = FirestoreRepository()) {
         self.firestoreRepository = firestoreRepository
+        if let uid = uid {
+            getUser(uid: uid) { [weak self] result in
+                switch result {
+                case .success(let user):
+                    self?.firestoreUser = user
+                    if let _ = user?.username {
+                        self?.needUsername = false
+                    } else {
+                        self?.needUsername = true
+                    }
+                case .failure(let error):
+                    self?.messageError = error.localizedDescription
+                }
+            }
+        }
+        
     }
     
     func userIsPresent(uid: String, completionBlock: @escaping (Result<Bool, Error>) -> Void) {
@@ -38,12 +56,18 @@ final class FirestoreViewModel: ObservableObject {
             }
         }
     }
-
+    
     
     func getUser(uid: String, completionBlock: @escaping (Result<User?,Error>) -> Void) {
         firestoreRepository.getUser(uid: uid){ result in
             switch result {
             case .success(let user):
+                self.firestoreUser = user
+                if let _ = user?.username {
+                    self.needUsername = false
+                } else {
+                    self.needUsername = true
+                }
                 completionBlock(.success(user))
             case .failure(let error):
                 self.messageError = error.localizedDescription

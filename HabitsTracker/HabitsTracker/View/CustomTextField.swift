@@ -25,6 +25,7 @@ struct CustomTextField: View {
                                 .focused($isEnabled)
                                 .autocorrectionDisabled(true)
                                 .autocapitalization(.none)
+                            
                         }
                         else {
                             TextField(hint, text: $text)

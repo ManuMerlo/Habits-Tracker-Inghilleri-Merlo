@@ -1,19 +1,12 @@
-//
-//  Signin.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 19/11/22.
-//
-
 import SwiftUI
 
 struct SigninView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel // // Here authenticationViewModel is a @ObservedObject instead in HabitsTrackerApp is a @StateObject. For more details see (*1)
-    @ObservedObject var firestoreViewModel: FirestoreViewModel
+    @StateObject var firestoreViewModel : FirestoreViewModel = FirestoreViewModel(uid : nil)
+    
     
     var body: some View {
         ScrollView(.vertical, showsIndicators: false){
-            
             VStack(alignment: .center, spacing: 15) {
                 Group {
                     ZStack{
@@ -22,15 +15,14 @@ struct SigninView: View {
                             .clipShape(Circle())
                             .shadow(color: .orange, radius: 1, x: 0, y: 0)
                     }
-                    
                     Text("Sign in").font(.title)
                         .fontWeight(.semibold)
                         .padding(.bottom, 10)
                         .offset(y: -8)
                     
-                    CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmail)
+                    CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmailSignin)
                     
-                    CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPassword)
+                    CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPasswordSignin)
                     
                     NavigationLink {
                         //TODO recupera password
@@ -38,13 +30,14 @@ struct SigninView: View {
                         Text("Forgot the password?")
                     }
                     .padding(.vertical, 6)
+                    
                     Button {
-                        guard !authenticationViewModel.textFieldEmail.isEmpty, !authenticationViewModel.textFieldPassword.isEmpty else {
+                        guard !authenticationViewModel.textFieldEmailSignin.isEmpty, !authenticationViewModel.textFieldPasswordSignin.isEmpty else {
                             print("Empty email or password")
                             return
                         }
-                        authenticationViewModel.login(email: authenticationViewModel.textFieldEmail,
-                                                      password: authenticationViewModel.textFieldPassword){ result in
+                        authenticationViewModel.login(email: authenticationViewModel.textFieldEmailSignin,
+                                                      password: authenticationViewModel.textFieldPasswordSignin){ result in
                             switch result {
                             case .success(let userPasw):
                                 firestoreViewModel.getUser(uid: userPasw.id!) { result in
@@ -92,27 +85,6 @@ struct SigninView: View {
                         Text("or").foregroundColor(Color.gray)
                         VStack { Divider().background(Color.gray) }.padding(.horizontal, 20)
                     }
-                    
-                    //MARK: Custom Google Sign in Button
-                    /*CustomButton(logo: "googlelogo")
-                     .overlay {
-                     if let clientID = FirebaseApp.app()?.options.clientID {
-                     GoogleSignInButton {
-                     GIDSignIn.sharedInstance.signIn(with: .init(clientID: clientID), presenting: UIApplication.shared.rootController()) {user, err in
-                     if let error = err {
-                     print(error.localizedDescription)
-                     return
-                     }
-                     //MARK: Logging Google User into Firebase
-                     if let user {
-                     //signinViewModel.logGoogleUser(user: user)
-                     }
-                     }
-                     }
-                     .blendMode(.overlay)
-                     }
-                     }
-                     .clipped()*/
                     
                     Button {
                         authenticationViewModel.loginGoogle(){ result in
@@ -169,8 +141,9 @@ struct SigninView: View {
                         Text("Continue with Facebook")
                     }
                     
+                    
                     NavigationLink {
-                        SignupView(authenticationViewModel: authenticationViewModel,firestoreViewModel: firestoreViewModel)
+                        SignupView(authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)
                     } label: {
                         Text("Don't have an account? Sign up")
                     }
@@ -178,36 +151,18 @@ struct SigninView: View {
                 }
                 
             }
+            .onAppear{
+                authenticationViewModel.clearSignInParameter()
+            }
             .padding(.horizontal, 50)
             .padding(.vertical,25)
             .offset(y:-30)
         }
-        /*.alert(signinViewModel.errorMessage, isPresented: $signinViewModel.showError) {
-         }*/
     }
-    
-    /*@ViewBuilder
-     func CustomButton(logo: String) -> some View {
-     HStack{
-     Image(logo).resizable()
-     .aspectRatio(contentMode: .fit)
-     .frame(width: 25, height: 25)
-     .frame(height: 45)
-     Text("Continue with Google")
-     .font(.callout)
-     .lineLimit(1)
-     .foregroundColor(.white)
-     }
-     .padding(.horizontal,15)
-     .background {
-     RoundedRectangle(cornerRadius: 10, style: .continuous)
-     .fill(.black)
-     }
-     }*/
 }
 
 struct signinView_Previews: PreviewProvider {
     static var previews: some View {
-        SigninView(authenticationViewModel: AuthenticationViewModel(),firestoreViewModel: FirestoreViewModel())
+        SigninView(authenticationViewModel: AuthenticationViewModel(),firestoreViewModel: FirestoreViewModel(uid:nil))
     }
 }

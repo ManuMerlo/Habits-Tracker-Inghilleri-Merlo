@@ -1,10 +1,3 @@
-//
-//  AuthenticationViewModel.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 31/03/23.
-//
-
 import Foundation
 
 
@@ -13,7 +6,10 @@ final class AuthenticationViewModel: ObservableObject {
     @Published var messageError: String?
     @Published var isAccountLinked: Bool = false
     
-    @Published var textfieldUsername: String = ""
+    @Published var textFieldEmailSignin: String = ""
+    @Published var textFieldPasswordSignin: String = ""
+    
+    @Published var textFieldUsername: String = ""
     @Published var textFieldEmail: String = ""
     @Published var textFieldPassword: String = ""
     @Published var repeatPassword: String = ""
@@ -28,6 +24,20 @@ final class AuthenticationViewModel: ObservableObject {
         getCurrentUser() // It is to check if a session already exists
     }
     
+    func clearSignUpParameter(){
+        self.textFieldUsername = ""
+        self.textFieldEmail = ""
+        self.textFieldPassword = ""
+        self.repeatPassword = ""
+        self.messageError = nil
+    }
+    
+    func clearSignInParameter(){
+        self.textFieldEmailSignin = ""
+        self.textFieldPasswordSignin = ""
+        self.messageError = nil
+    }
+    
     func getCurrentUser() {
         self.user = authenticationRepository.getCurrentUser()
     }
@@ -37,7 +47,7 @@ final class AuthenticationViewModel: ObservableObject {
                                                password: password) { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
             switch result {
             case .success(var user):
-                user.setUsername(name: self?.textfieldUsername ?? "")
+                user.setUsername(name: self?.textFieldUsername ?? "")
                 self?.user = user
                 completionBlock(.success(user))
             case .failure(let error):
@@ -91,7 +101,7 @@ final class AuthenticationViewModel: ObservableObject {
         do {
             try authenticationRepository.logout()
             self.user = nil
-            self.textfieldUsername = ""
+            self.textFieldUsername = ""
             self.textFieldEmail = ""
             self.textFieldPassword = ""
             self.repeatPassword = ""
@@ -150,7 +160,7 @@ final class AuthenticationViewModel: ObservableObject {
             switch result {
             case .success(_):
                 self?.user = nil
-                self?.textfieldUsername = ""
+                self?.textFieldUsername = ""
                 self?.textFieldEmail = ""
                 self?.textFieldPassword = ""
                 self?.repeatPassword = ""

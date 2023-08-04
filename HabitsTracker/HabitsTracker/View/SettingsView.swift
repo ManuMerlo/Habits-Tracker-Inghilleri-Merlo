@@ -14,7 +14,6 @@ import UserNotifications
 struct SettingsView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     @ObservedObject var firestoreViewModel : FirestoreViewModel
-    
     @StateObject var settingViewModel = SettingsViewModel()
     
     @State var expandVerificationWithEmailFrom : Bool = false
@@ -41,7 +40,7 @@ struct SettingsView: View {
                 
                 VStack {
                     
-                    if let path = authenticationViewModel.user?.image {
+                    if let path =  firestoreViewModel.firestoreUser?.image {
                         AsyncImage(url: URL(string: path)){ phase in
                             switch phase {
                                 case .failure:
@@ -64,10 +63,10 @@ struct SettingsView: View {
                 }
                 .padding(.horizontal, 20)
                 
-                Text("\(authenticationViewModel.user?.username ?? "User")")
+                Text("\( firestoreViewModel.firestoreUser?.username ?? "User")")
                     .font(.title)
                 
-                Text("\(authenticationViewModel.user?.email ?? "")")
+                Text("\( firestoreViewModel.firestoreUser?.email ?? "")")
                     .font(.title3)
                     .accentColor(.gray)
                 
@@ -112,7 +111,7 @@ struct SettingsView: View {
                                     Text("Continue"),
                                     action:
                                         {
-                                            guard let uid = authenticationViewModel.user?.id else{
+                                            guard let uid =  firestoreViewModel.firestoreUser?.id else{
                                                 print("Null uid before deleting a user")
                                                 return
                                             }
@@ -150,7 +149,7 @@ struct SettingsView: View {
                 }label:{
                     VStack {
                         
-                        if let path = authenticationViewModel.user?.image {
+                        if let path =  firestoreViewModel.firestoreUser?.image {
                             AsyncImage(url: URL(string: path)){ phase in
                                 switch phase {
                                     case .failure:
@@ -190,7 +189,7 @@ struct SettingsView: View {
                     HStack {
                         Text("Username")
                         Spacer()
-                        Text("\(authenticationViewModel.user?.username ?? "User")")
+                        Text("\( firestoreViewModel.firestoreUser?.username ?? "User")")
                     }
                         
                     Button {
@@ -212,7 +211,7 @@ struct SettingsView: View {
                         HStack {
                             Text("Sex")
                             Spacer()
-                            Text("\((authenticationViewModel.user?.sex ?? Sex.Unspecified).rawValue )")
+                            Text("\((firestoreViewModel.firestoreUser?.sex ?? Sex.Unspecified).rawValue )")
                         }
                     }.disabled(!modify)
                         .foregroundColor(!modify ? .gray: .black)
@@ -225,7 +224,7 @@ struct SettingsView: View {
                         HStack {
                             Text("Height")
                             Spacer()
-                            Text("\(authenticationViewModel.user?.height ?? 0 )")
+                            Text("\( firestoreViewModel.firestoreUser?.height ?? 0 )")
                         }
                     }.disabled(!modify)
                         .foregroundColor(!modify ? .gray: .black)
@@ -238,7 +237,7 @@ struct SettingsView: View {
                         HStack {
                             Text("Weight")
                             Spacer()
-                            Text("\(authenticationViewModel.user?.weight ?? 0 )")
+                            Text("\( firestoreViewModel.firestoreUser?.weight ?? 0 )")
                         }
                     }.disabled(!modify)
                         .foregroundColor(!modify ? .gray: .black)
@@ -252,9 +251,9 @@ struct SettingsView: View {
             if showDatePicker {
                 VStack {
                     Button {
-                        authenticationViewModel.user!.setBirthDate(birthDate: settingViewModel.dateToString(selectedDate))
+                        firestoreViewModel.firestoreUser!.setBirthDate(birthDate: settingViewModel.dateToString(selectedDate))
                         firestoreViewModel.modifyUser(
-                            uid: authenticationViewModel.user!.id!,
+                            uid:  firestoreViewModel.firestoreUser!.id!,
                             field: "birthdate",
                             value: settingViewModel.dateToString(selectedDate),
                             type: "String")
@@ -274,9 +273,9 @@ struct SettingsView: View {
             if(showSexPicker){
                 VStack {
                     Button {
-                        authenticationViewModel.user!.setSex(sex:selectedSex)
+                        firestoreViewModel.firestoreUser!.setSex(sex:selectedSex)
                         firestoreViewModel.modifyUser(
-                            uid: authenticationViewModel.user!.id!,
+                            uid:  firestoreViewModel.firestoreUser!.id!,
                             field: "sex",
                             value: selectedSex.rawValue,
                             type: "String")
@@ -299,7 +298,7 @@ struct SettingsView: View {
             if (showHeightPicker) {
                 SettingsViewModel.PickerView(
                     firestoreViewModel:firestoreViewModel,
-                    user: $authenticationViewModel.user,
+                    user: $firestoreViewModel.firestoreUser,
                     property: "height",
                     selectedItem: $selectedHeight,
                     booleanValuePicker: $showHeightPicker,
@@ -312,7 +311,7 @@ struct SettingsView: View {
             if (showWeightPicker){
                 SettingsViewModel.PickerView(
                     firestoreViewModel:firestoreViewModel,
-                    user: $authenticationViewModel.user,
+                    user: $firestoreViewModel.firestoreUser,
                     property: "weight",
                     selectedItem: $selectedWeight,
                     booleanValuePicker: $showWeightPicker,
@@ -334,13 +333,14 @@ struct SettingsView: View {
                 Text(modify ? "Done" : "Modify")
             }.disabled(!isListEnabled)
             
-        }.fullScreenCover(isPresented: $showSheet, onDismiss: {
+        }
+        .fullScreenCover(isPresented: $showSheet, onDismiss: {
             settingViewModel.persistimageToStorage { result in
                 switch result {
                 case .success(let path):
-                    authenticationViewModel.user!.setImage(path: path)
+                    firestoreViewModel.firestoreUser!.setImage(path: path)
                     firestoreViewModel.modifyUser(
-                        uid: authenticationViewModel.user!.id!,
+                        uid:  firestoreViewModel.firestoreUser!.id!,
                         field: "image",
                         value: path,
                         type:"String")
@@ -495,7 +495,7 @@ struct NotificationDetailView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(authenticationViewModel: AuthenticationViewModel(),firestoreViewModel : FirestoreViewModel())
+        SettingsView(authenticationViewModel: AuthenticationViewModel(),firestoreViewModel : FirestoreViewModel(uid:nil))
     }
 }
 

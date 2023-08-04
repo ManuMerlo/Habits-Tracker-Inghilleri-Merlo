@@ -13,8 +13,10 @@ import Firebase
 struct GeneralView: View {
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    @ObservedObject var firestoreViewModel: FirestoreViewModel
-
+    @StateObject var firestoreViewModel: FirestoreViewModel
+    
+    @State var textFieldValue: String = ""
+    
     
     var body: some View {
         TabView {
@@ -24,10 +26,10 @@ struct GeneralView: View {
                     Text("Home")
                 }
             /*PlanningView()
-                .tabItem {
-                    Image(systemName: "calendar")
-                    Text("Planning")
-                }*/
+             .tabItem {
+             Image(systemName: "calendar")
+             Text("Planning")
+             }*/
             
             SearchFriendView(firestoreViewModel:firestoreViewModel)
                 .tabItem {
@@ -41,10 +43,12 @@ struct GeneralView: View {
                     Text("Leaderboard")
                 }
             /*Text("Goals")
-                .tabItem {
-                    Image(systemName: "medal")
-                    Text("Goals")
-                }*/
+             .tabItem {
+             Image(systemName: "medal")
+             Text("Goals")
+             }*/
+            
+            //TODO: authentication is need to reauthenticate the user before deleting the account
             SettingsView(authenticationViewModel: authenticationViewModel,firestoreViewModel : firestoreViewModel)
                 .tabItem {
                     Image(systemName: "gear")
@@ -53,12 +57,30 @@ struct GeneralView: View {
         }
         .task {
             healthViewModel.requestAccessToHealthData()
+            firestoreViewModel.getAllUsers()
+        }.alert("Enter your name", isPresented: $firestoreViewModel.needUsername ) {
+            TextField("Enter your name", text: $textFieldValue)
+                .autocorrectionDisabled(true)
+                .autocapitalization(.none)
+            
+            Button("Save", action: {
+                firestoreViewModel.firestoreUser?.setUsername(name: textFieldValue)
+                firestoreViewModel.modifyUser(
+                    uid:  firestoreViewModel.firestoreUser!.id!,
+                    field: "username",
+                    value: textFieldValue,
+                    type: "String")
+                firestoreViewModel.needUsername.toggle()
+            }
+        )
+        } message: {
+            Text("To start using the app, you first need to set your username.")
         }
     }
 }
 
 struct GeneralView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel(), firestoreViewModel: FirestoreViewModel())
+        GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel(), firestoreViewModel: FirestoreViewModel(uid:nil))
     }
 }
