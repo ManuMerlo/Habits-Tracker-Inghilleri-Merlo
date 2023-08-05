@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SigninView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel // // Here authenticationViewModel is a @ObservedObject instead in HabitsTrackerApp is a @StateObject. For more details see (*1)
-    @StateObject var firestoreViewModel : FirestoreViewModel = FirestoreViewModel(uid : nil)
+    @StateObject var firestoreViewModel : FirestoreViewModel = FirestoreViewModel()
     
     
     var body: some View {
@@ -163,6 +163,6 @@ struct SigninView: View {
 
 struct signinView_Previews: PreviewProvider {
     static var previews: some View {
-        SigninView(authenticationViewModel: AuthenticationViewModel(),firestoreViewModel: FirestoreViewModel(uid:nil))
+        SigninView(authenticationViewModel: AuthenticationViewModel(),firestoreViewModel: FirestoreViewModel())
     }
 }

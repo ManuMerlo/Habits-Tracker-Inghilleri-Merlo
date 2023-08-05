@@ -19,7 +19,7 @@ final class AuthenticationFirebaseDataSource {
         guard let id = Auth.auth().currentUser?.uid else {
             return nil
         }
-        return .init(id:id, email: email)
+        return .init(id: id, email: email)
     }
     
     // MARK: Completionblock: Notify the upper layers: Repository, ViewModel and the to View. Indicate if there will be an error or not during the creation of a new user. the @escaping returns a user if there is not error, otherwise it returns an error.

@@ -185,7 +185,7 @@ func ItemColor(number : Int ) -> Color {
 
 struct LeaderboardView_Previews: PreviewProvider {
     static var previews: some View {
-        LeaderboardView(firestoreViewModel: FirestoreViewModel(uid:nil))
+        LeaderboardView(firestoreViewModel: FirestoreViewModel())
     }
 }
 

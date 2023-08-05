@@ -6,12 +6,16 @@
 //
 
 import SwiftUI
+import FirebaseFirestoreSwift
 
 struct SearchFriendView: View {
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     
     @State private var searchTerm = ""
-    @State private var friends: [User] = UserList.usersGlobal
+    
+    @FirestoreQuery(
+            collectionPath: "users"
+        ) var friends: [User]
     
     var filteredFrieds : [User] {
         guard !searchTerm.isEmpty else {return friends}
@@ -39,9 +43,6 @@ struct SearchFriendView: View {
                 Color.green,
                 for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-            .task {
-                friends = firestoreViewModel.allUsers
-             }
         }
     }
 }
@@ -82,7 +83,7 @@ struct ListItemView: View {
 
 struct SearchFriendView_Previews: PreviewProvider {
     static var previews: some View {
-        SearchFriendView( firestoreViewModel: FirestoreViewModel(uid:nil))
+        SearchFriendView( firestoreViewModel: FirestoreViewModel())
     }
 }
 

@@ -20,8 +20,8 @@ struct HabitsTrackerApp: App {
     
     var body: some Scene {
         WindowGroup {
-            if let user = authenticationViewModel.user {
-                GeneralView(healthViewModel: healthViewModel, authenticationViewModel: authenticationViewModel, firestoreViewModel: FirestoreViewModel(uid: user.id!))
+            if let _ = authenticationViewModel.user {
+                GeneralView(healthViewModel: healthViewModel, authenticationViewModel: authenticationViewModel)
             } else {
                 IntroView(healthViewModel: healthViewModel, authenticationViewModel:authenticationViewModel)
             }

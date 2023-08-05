@@ -115,6 +115,7 @@ struct SettingsView: View {
                                                 print("Null uid before deleting a user")
                                                 return
                                             }
+                                            
                                             firestoreViewModel.deleteUserData(uid: uid){result in
                                                 switch result {
                                                 case .success:
@@ -495,7 +496,7 @@ struct NotificationDetailView: View {
 
 struct SettingsView_Previews: PreviewProvider {
     static var previews: some View {
-        SettingsView(authenticationViewModel: AuthenticationViewModel(),firestoreViewModel : FirestoreViewModel(uid:nil))
+        SettingsView(authenticationViewModel: AuthenticationViewModel(),firestoreViewModel : FirestoreViewModel())
     }
 }
 

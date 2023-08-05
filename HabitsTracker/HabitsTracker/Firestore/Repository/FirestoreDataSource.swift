@@ -63,26 +63,26 @@ final class FirestoreDataSource {
     }
     
     func getUser(uid: String, completionBlock: @escaping (Result<User?,Error>) -> Void) {
-          let docRef = db.collection("users").document(uid)
+        let docRef = db.collection("users").document(uid)
         
-          docRef.getDocument { document, error in
+        docRef.addSnapshotListener { documentSnapshot, error in
             if let error = error as NSError? {
                 completionBlock(.failure(error))
             }
             else {
-                if let document = document, document.exists {
-                do {
-                print("Document retrieved")
-                  let user = try document.data(as: User.self)
-                    print("user retrieved \(user)")
-                    completionBlock(.success(user))
+                if let document = documentSnapshot, document.exists {
+                    do {
+                        print("Document retrieved")
+                        let user = try document.data(as: User.self)
+                        print("user retrieved \(user)")
+                        completionBlock(.success(user))
+                    }
+                    catch {
+                        print(error)
+                    }
+                }else{
+                    completionBlock(.success(nil))
                 }
-                catch {
-                  print(error)
-                }
-              }else{
-                  completionBlock(.success(nil))
-              }
             }
         }
     }

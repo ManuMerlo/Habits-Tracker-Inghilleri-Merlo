@@ -14,24 +14,8 @@ final class FirestoreViewModel: ObservableObject {
     @Published var firestoreUser: User?
     @Published var needUsername: Bool = false
     
-    init(uid: String?, firestoreRepository: FirestoreRepository = FirestoreRepository()) {
+    init(firestoreRepository: FirestoreRepository = FirestoreRepository()) {
         self.firestoreRepository = firestoreRepository
-        if let uid = uid {
-            getUser(uid: uid) { [weak self] result in
-                switch result {
-                case .success(let user):
-                    self?.firestoreUser = user
-                    if let _ = user?.username {
-                        self?.needUsername = false
-                    } else {
-                        self?.needUsername = true
-                    }
-                case .failure(let error):
-                    self?.messageError = error.localizedDescription
-                }
-            }
-        }
-        
     }
     
     func userIsPresent(uid: String, completionBlock: @escaping (Result<Bool, Error>) -> Void) {
@@ -62,11 +46,15 @@ final class FirestoreViewModel: ObservableObject {
         firestoreRepository.getUser(uid: uid){ result in
             switch result {
             case .success(let user):
-                self.firestoreUser = user
-                if let _ = user?.username {
-                    self.needUsername = false
-                } else {
-                    self.needUsername = true
+                if let user = user {
+                    print("init firestore : user - \(user)")
+                    self.firestoreUser = user
+                    if let _ = user.username {
+                        self.needUsername = false
+                    } else {
+                        self.needUsername = true
+                    }
+                    print("init firestore : needName - \(self.needUsername)")
                 }
                 completionBlock(.success(user))
             case .failure(let error):
