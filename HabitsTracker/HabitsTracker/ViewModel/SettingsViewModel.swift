@@ -12,7 +12,7 @@ import FirebaseAuth
 import FirebaseStorage
 
 final class SettingsViewModel: ObservableObject {
-    @Published var agreedToTerms = true
+    @Published var agreedToTerms = false
     @Published var dailyNotification = false
     @Published var weeklyNotification = false
     @Published var dailyNotificationIdentifier: String?

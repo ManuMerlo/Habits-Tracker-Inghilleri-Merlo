@@ -20,37 +20,12 @@ struct UserProfileView: View {
                 
                 
                 HStack{
-                    
                     VStack(alignment: .leading){
                         
                         HStack{
-                            if let path = user.image {
-                                AsyncImage(url: URL(string: path)){ phase in
-                                    switch phase {
-                                    case .failure:
-                                        Image(systemName: "person.fill")
-                                            .resizable()
-                                            .frame(width: geometry.size.width/8, height: geometry.size.width/8)
-                                            .mask(Circle())
-                                            .foregroundColor(.white)
-                                            .padding(.trailing,8)
-                                        
-                                    case .success(let image):
-                                        image .resizable()
-                                        default: ProgressView() }
-                                    
-                                } .frame(width: geometry.size.width/8, height: geometry.size.width/8)
-                                    .mask(Circle())
-                                    .padding(.trailing,8)
-                                
-                            } else {
-                                Image(systemName: "person.fill")
-                                    .resizable()
-                                    .frame(width: geometry.size.width/8, height: geometry.size.width/8)
-                                    .mask(Circle())
-                                    .foregroundColor(.white)
-                                    .padding(.trailing,8)
-                            }
+                            ProfileImageView(
+                                size: geometry.size.width/8,
+                                color: .white)
                             
                             VStack(alignment: .leading){
                                 if let username = user.username{
@@ -87,14 +62,20 @@ struct UserProfileView: View {
                         }
                         
                         HStack{
-                            VerticalText(upperText: "1000", lowerText: "Daily")
+                            VerticalText(
+                                upperText: String(user.daily_score ?? 0),
+                                lowerText: "Daily")
                             
                             Spacer()
-                            VerticalText(upperText: "1000", lowerText: "Weekly")
+                            VerticalText(
+                                upperText: String(user.weekly_score ?? 0),
+                                lowerText: "Weekly")
                             
                             Spacer()
                             
-                            VerticalText(upperText: "1000", lowerText: "Friends")
+                            VerticalText(
+                                upperText: String(user.friends?.count ?? 0),
+                                lowerText: "Friends")
                         }
                         
                     }

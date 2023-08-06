@@ -14,13 +14,20 @@
  }*/
 
 import SwiftUI
-
+import FirebaseFirestoreSwift
 
 struct LeaderboardView: View {
     @State private var global : Bool = true
     @State private var selectedTimeFrame : TimeFrame = .daily
     @ObservedObject var firestoreViewModel: FirestoreViewModel
-    @State var users: [User] = UserList.usersGlobal
+    @State var users: [User] = []
+    
+    @FirestoreQuery(
+            collectionPath: "users",
+            predicates: [
+                .orderBy("daily_score", true)
+            ]
+        ) var globalUsers: [User]
     
     var body: some View {
         
@@ -39,29 +46,29 @@ struct LeaderboardView: View {
                 
                 ScrollView {
                     LazyVStack {
-                        ForEach(1..<users.count) { item in
-                            NavigationLink(value: users[item - 1]){
-                                RankingItemView(user : users[item-1],
+                        ForEach(users, id: \.self) { user in
+                            NavigationLink(value: user){
+                                RankingItemView(user : user,
                                                 selectedTimeFrame: selectedTimeFrame,
-                                                position: item ).padding(.bottom, 95)
+                                                position: ((users.isEmpty ? globalUsers : users).firstIndex(of: user) ?? 0) + 1
+                                ).padding(.bottom, 95)
                             }
                         }
                     }
                 }.padding(.top,10)
-                
-            } .toolbar {
+            }
+            .toolbar {
                 Button {
                     global.toggle()
+                    setUsers(global: global)
                 } label: {
-                    if global {
+                    if !global {
                         Text("Global").foregroundColor(.white)
                         Image(systemName: "globe").foregroundColor(.white)
                     } else {
                         Text("Private").foregroundColor(.white)
                         Image(systemName: "person").foregroundColor(.white)
                     }
-                }.onChange(of: global) { newValue in
-                    setUsers(global: newValue)
                 }
             }.padding(20)
                 .navigationTitle("Leaderboard")
@@ -73,34 +80,45 @@ struct LeaderboardView: View {
                     Color.purple,
                     for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
-        }/*.onAppear(){
-          sortUsers(timeFrame: selectedTimeFrame)
-          }*/.task {
-              firestoreViewModel.getAllUsers()
-              // TODO: sorting
-          }
-    }
-    
-    func sortUsers(timeFrame: TimeFrame){
-        if timeFrame == .daily{
-            users.sort { user1, user2 in
-                user1.daily_score ?? 0 > user2.daily_score ?? 0  //MARK: fix score optional
-            }
-        } else {
-            users.sort { user1, user2 in
-                user1.weekly_score ?? 0 > user2.weekly_score ?? 0   //MARK: fix score optional
-            }
+        }.onChange(of: globalUsers) { newValue in
+            setUsers(global: global)
         }
     }
+    
+    func sortUsers(timeFrame: TimeFrame) {
+            users.sort { user1, user2 in
+                switch timeFrame {
+                case .daily:
+                    return user1.daily_score ?? 0 > user2.daily_score ?? 0
+                case .weekly:
+                    return user1.weekly_score ?? 0 > user2.weekly_score ?? 0
+                }
+            }
+        }
     
     func setUsers( global: Bool){
         if global == true {
-            users = UserList.usersGlobal
+            users = globalUsers
         }else {
-            users = UserList.usersFriends
+            users = getFriends()
         }
         sortUsers(timeFrame: selectedTimeFrame)
     }
+    
+    func getFriends () -> [User] {
+        if let firestoreUser = firestoreViewModel.firestoreUser {
+            if let friends = firestoreUser.friends {
+                print("friends \(friends)")
+                return globalUsers.filter { friends.contains($0.id ?? "") }
+            } else {
+                return []
+            }
+        }
+        else {
+            return []
+        }
+    }
+    
 }
 
 enum TimeFrame : String, CaseIterable {
@@ -120,10 +138,7 @@ struct RankingItemView: View {
             HStack(spacing: 20) {
                 ZStack{
                     
-                    Image(user.image ?? "user")
-                        .resizable()
-                        .frame(width: geometry.size.width/5, height: geometry.size.width/5)
-                        .mask(Circle())
+                    ProfileImageView(path: user.image, size: geometry.size.width/8, color: .white)
                     
                     ZStack{
                         Circle()
@@ -144,12 +159,15 @@ struct RankingItemView: View {
                         .fontWeight(.bold)
                     
                     Spacer()
-                    
+                
                     HStack{
                         Image(systemName: "flame")
-                        Text("1000").font(.footnote)
+                        Text("100")
+                            .font(.footnote)
                         Image(systemName: "figure.walk")
-                        Text("1000").font(.footnote)
+                        Text("100")
+                            .font(.footnote)
+
                         
                     }
                     
