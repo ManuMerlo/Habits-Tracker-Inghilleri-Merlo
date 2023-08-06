@@ -121,7 +121,7 @@ struct SettingsView: View {
                                                 case .success:
                                                     authenticationViewModel.deleteUser()
                                                 case .failure:
-                                                    print("error deleting user ")
+                                                    print("error deleting user")
                                                 }
                                                 
                                             }
@@ -133,6 +133,7 @@ struct SettingsView: View {
                     
                     Button("Logout") {
                         authenticationViewModel.logout()
+                        firestoreViewModel.firestoreUser = nil
                     }
                     
                 }

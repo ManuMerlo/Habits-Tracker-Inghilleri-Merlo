@@ -32,12 +32,12 @@ final class FirestoreDataSource {
         
     }
     
-    func usernameIsPresent (name: String, completionBlock: @escaping (Result<Bool, Error>) -> Void){
+    func fieldIsPresent (field : String, value: String, completionBlock: @escaping (Result<Bool, Error>) -> Void){
 
         let usersCollection = db.collection("users")
         
         // Perform the query to get the document with username "name"
-        usersCollection.whereField("username", isEqualTo: name).getDocuments { (querySnapshot, error) in
+        usersCollection.whereField(field, isEqualTo: value).getDocuments { (querySnapshot, error) in
             if let error = error {
                 completionBlock(.failure(error))
                 print("Error fetching document: \(error)")
@@ -47,17 +47,17 @@ final class FirestoreDataSource {
             // Check if there are any matching documents
             guard let documents = querySnapshot?.documents, !documents.isEmpty else {
                 completionBlock(.success(false))
-                print("No document found with username 'anna'")
                 return
             }
             
             completionBlock(.success(true))
+            
             // Assuming there's only one matching document, you can access it like this
             let document = documents[0]
             let data = document.data()
             // Now you can access the fields of the document, for example:
-            if let username = data["username"] as? String {
-                print("Found document with username: \(username)")
+            if let retrievedValue = data[field] as? String {
+                print("Found document with \(field): \(retrievedValue)")
             }
         }
     }
@@ -65,7 +65,7 @@ final class FirestoreDataSource {
     func getUser(uid: String, completionBlock: @escaping (Result<User?,Error>) -> Void) {
         let docRef = db.collection("users").document(uid)
         
-        docRef.addSnapshotListener { documentSnapshot, error in
+        docRef.getDocument { documentSnapshot, error in
             if let error = error as NSError? {
                 completionBlock(.failure(error))
             }
@@ -154,16 +154,14 @@ final class FirestoreDataSource {
 
     
     func deleteUserData(uid: String, completionBlock: @escaping (Result<Bool,Error>) -> Void) {
-        let reference = Firestore
-            .firestore()
-            .collection("users")
-            .document(uid)
-        reference.delete { error in
-            if let error = error {
-                completionBlock(.failure(error))
-            } else {
-                completionBlock(.success(true))
+            db.collection("users")
+                .document(uid)
+                .delete { error in
+                if let error = error {
+                    completionBlock(.failure(error))
+                } else {
+                    completionBlock(.success(true))
+                }
             }
         }
-    }
 }

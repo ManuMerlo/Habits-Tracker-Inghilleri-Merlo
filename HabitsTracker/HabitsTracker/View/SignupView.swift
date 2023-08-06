@@ -36,21 +36,34 @@ struct SignupView: View {
                 
                 Button {
                     // Maybe these checks are not necessary
-                    guard !authenticationViewModel.textFieldEmail.isEmpty, !authenticationViewModel.textFieldPassword.isEmpty else {
-                        print("Empty email or password")
+                    guard authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmail), !authenticationViewModel.textFieldPassword.isEmpty, !authenticationViewModel.repeatPassword.isEmpty else {
+                        authenticationViewModel.messageError = "Not valid email or empty password"
                         return
                     }
                     guard authenticationViewModel.textFieldPassword == authenticationViewModel.repeatPassword else {
-                        print("Passwords do not match")
+                        authenticationViewModel.messageError =  "Passwords do not match"
                         return
                     }
                     
                     guard !authenticationViewModel.textFieldUsername.isEmpty else {
-                        print("Username is empty")
+                        authenticationViewModel.messageError =  "Username is empty"
                         return
                     }
                     
-                    firestoreViewModel.usernameIsPresent(name: authenticationViewModel.textFieldUsername) { result in
+                    firestoreViewModel.fieldIsPresent(field: "email", value: authenticationViewModel.textFieldEmail) { result in
+                        switch result {
+                        case .success(let isPresent):
+                            if(isPresent){
+                                authenticationViewModel.messageError = "The email is already present in the database"
+                                return
+                            }
+                        case .failure(_):
+                            authenticationViewModel.messageError = "Error while checking existing email"
+                            
+                        }
+                    }
+                    
+                    firestoreViewModel.fieldIsPresent(field : "username", value: authenticationViewModel.textFieldUsername) { result in
                         switch result {
                         case .success(let isPresent):
                             if(!isPresent){
@@ -58,6 +71,7 @@ struct SignupView: View {
                                     switch result {
                                     case .success(let user):
                                         firestoreViewModel.addNewUser(user: user)
+                                        firestoreViewModel.firestoreUser = user
                                     case .failure(let error):
                                         print("Error creating new user: \(error)")
                                         return

@@ -18,8 +18,8 @@ final class FirestoreRepository {
         self.firestoreDataSource.userIsPresent(uid: uid, completionBlock: completionBlock)
     }
     
-    func UsernameIsPresent (name: String, completionBlock: @escaping (Result<Bool, Error>) -> Void){
-        self.firestoreDataSource.usernameIsPresent(name: name, completionBlock: completionBlock)
+    func fieldIsPresent (field : String, value: String, completionBlock: @escaping (Result<Bool, Error>)  -> Void){
+        self.firestoreDataSource.fieldIsPresent(field: field,value:value, completionBlock: completionBlock)
     }
     
     func getUser(uid: String, completionBlock: @escaping (Result<User?,Error>) -> Void) {

@@ -18,12 +18,14 @@ struct HabitsTrackerApp: App {
     @StateObject var authenticationViewModel = AuthenticationViewModel() // Here authenticationViewModel is a @StateObject instead in the others view is only an @ObservedObject. For more details see (*1)
     @StateObject var healthViewModel = HealthViewModel()
     
+    @StateObject var firestoreViewModel = FirestoreViewModel()
+    
     var body: some Scene {
         WindowGroup {
             if let _ = authenticationViewModel.user {
-                GeneralView(healthViewModel: healthViewModel, authenticationViewModel: authenticationViewModel)
+                GeneralView(healthViewModel: healthViewModel, authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)
             } else {
-                IntroView(healthViewModel: healthViewModel, authenticationViewModel:authenticationViewModel)
+                IntroView(healthViewModel: healthViewModel, authenticationViewModel:authenticationViewModel, firestoreViewModel: firestoreViewModel)
             }
         }
     }

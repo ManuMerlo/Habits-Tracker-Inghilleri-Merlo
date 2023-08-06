@@ -30,8 +30,8 @@ final class FirestoreViewModel: ObservableObject {
         }
     }
     
-    func usernameIsPresent(name: String, completionBlock: @escaping (Result<Bool, Error>) -> Void) {
-        firestoreRepository.UsernameIsPresent(name: name) { result in
+    func fieldIsPresent (field : String, value: String, completionBlock: @escaping (Result<Bool, Error>)  -> Void) {
+        firestoreRepository.fieldIsPresent(field:field, value: value) { result in
             switch result {
             case .success(let bool):
                 completionBlock(.success(bool))
@@ -54,7 +54,7 @@ final class FirestoreViewModel: ObservableObject {
                     } else {
                         self.needUsername = true
                     }
-                    print("init firestore : needName - \(self.needUsername)")
+                    print("init firestore: needName - \(self.needUsername)")
                 }
                 completionBlock(.success(user))
             case .failure(let error):
@@ -90,6 +90,7 @@ final class FirestoreViewModel: ObservableObject {
         firestoreRepository.deleteUserData(uid: uid) { [weak self] result in
             switch result {
             case .success(let bool):
+                self?.firestoreUser = nil
                 print("Success in deleting user data")
                 completionBlock(.success(bool))
             case .failure(let error):

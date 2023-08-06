@@ -13,7 +13,7 @@ import Firebase
 struct GeneralView: View {
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    @StateObject var firestoreViewModel = FirestoreViewModel()
+    @ObservedObject var firestoreViewModel : FirestoreViewModel
     
     @State var textFieldValue: String = ""
     
@@ -59,6 +59,9 @@ struct GeneralView: View {
             healthViewModel.requestAccessToHealthData()
             firestoreViewModel.getAllUsers()
         }.alert("Enter your name", isPresented: $firestoreViewModel.needUsername ) {
+            
+            Text("\(firestoreViewModel.firestoreUser?.email ?? "ciao")")
+            
             TextField("Enter your name", text: $textFieldValue)
                 .autocorrectionDisabled(true)
                 .autocapitalization(.none)
@@ -70,26 +73,25 @@ struct GeneralView: View {
                     field: "username",
                     value: textFieldValue,
                     type: "String")
-                firestoreViewModel.needUsername.toggle()
+                firestoreViewModel.needUsername = false
+
             }
             )
         } message: {
             Text("To start using the app, you first need to set your username.")
-        }.onAppear{
-            if let user = authenticationViewModel.user{
-                firestoreViewModel.getUser(uid: user.id!) { result in
-                    switch result {
-                    case .success(let userr):
-                        print("open general view with user firestore")
-                    case .failure(let error):
-                        print("\(error.localizedDescription)")
+        }
+        .onAppear{
+            if let user = authenticationViewModel.user {
+                if firestoreViewModel.firestoreUser == nil {
+                    firestoreViewModel.getUser(uid: user.id!) { result in
+                        // TODO: handle
                     }
                 }
             }
         }
     }
+    
 }
-
 struct GeneralView_Previews: PreviewProvider {
     static var previews: some View {
         GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel(), firestoreViewModel: FirestoreViewModel())

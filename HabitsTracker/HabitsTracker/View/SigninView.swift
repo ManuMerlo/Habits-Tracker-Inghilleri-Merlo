@@ -2,7 +2,7 @@ import SwiftUI
 
 struct SigninView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel // // Here authenticationViewModel is a @ObservedObject instead in HabitsTrackerApp is a @StateObject. For more details see (*1)
-    @StateObject var firestoreViewModel : FirestoreViewModel = FirestoreViewModel()
+    @ObservedObject var firestoreViewModel : FirestoreViewModel
     
     
     var body: some View {
@@ -32,25 +32,16 @@ struct SigninView: View {
                     .padding(.vertical, 6)
                     
                     Button {
-                        guard !authenticationViewModel.textFieldEmailSignin.isEmpty, !authenticationViewModel.textFieldPasswordSignin.isEmpty else {
+                        guard authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmailSignin), !authenticationViewModel.textFieldPasswordSignin.isEmpty else {
                             print("Empty email or password")
                             return
                         }
+                        
                         authenticationViewModel.login(email: authenticationViewModel.textFieldEmailSignin,
                                                       password: authenticationViewModel.textFieldPasswordSignin){ result in
                             switch result {
                             case .success(let userPasw):
-                                firestoreViewModel.getUser(uid: userPasw.id!) { result in
-                                    switch result {
-                                    case .success(let userFirestore):
-                                        if let user = userFirestore  {
-                                            authenticationViewModel.user = user
-                                        }
-                                    case .failure(let error):
-                                        print("Error finding document user: \(error)")
-                                        return
-                                    }
-                                }
+                                firestoreViewModel.getUser(uid: userPasw.id!) { _ in }
                             case .failure(let error):
                                 print("Error logging the user: \(error)")
                                 return
@@ -70,6 +61,7 @@ struct SigninView: View {
                             RoundedRectangle(cornerRadius: 10,style: .continuous).fill(.black.opacity(0.05))
                         }
                     }
+                    
                     // TODO: it must disappear.
                     if let messageError = authenticationViewModel.messageError {
                         Text(messageError)
@@ -93,10 +85,9 @@ struct SigninView: View {
                                 firestoreViewModel.getUser(uid: userGoogle.id!) { result in
                                     switch result {
                                     case .success(let userFirestore):
-                                        if let user = userFirestore  {
-                                            authenticationViewModel.user = user
-                                        }
-                                        else {
+                                        if userFirestore == nil  {
+                                            firestoreViewModel.firestoreUser = userGoogle
+                                            firestoreViewModel.needUsername = true
                                             firestoreViewModel.addNewUser(user: userGoogle)
                                         }
                                     case .failure(let error):
@@ -121,10 +112,9 @@ struct SigninView: View {
                                 firestoreViewModel.getUser(uid: userFacebook.id!) { result in
                                     switch result {
                                     case .success(let userFirestore):
-                                        if let user = userFirestore {
-                                            authenticationViewModel.user = user
-                                        }
-                                        else {
+                                        if userFirestore == nil {
+                                            firestoreViewModel.firestoreUser = userFacebook
+                                            firestoreViewModel.needUsername = true
                                             firestoreViewModel.addNewUser(user: userFacebook)
                                         }
                                     case .failure(let error):
