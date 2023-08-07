@@ -8,85 +8,103 @@
 import SwiftUI
 
 struct UserProfileView: View {
+    @ObservedObject var firestoreViewModel : FirestoreViewModel
+    
     var user: User
     var body: some View {
         GeometryReader{geometry in
             
             ZStack{
                 
-                BadgeBackground().frame(width: 600,height: 600)
+                BadgeBackground().frame(width: 600, height: 600)
                     .rotationEffect(Angle(degrees: -50))
                     .offset(x:20,y:-110)
+                    .allowsHitTesting(false)
+                    .zIndex(-1)
                 
                 
-                HStack{
-                    VStack(alignment: .leading){
+                VStack(alignment: .leading){
+                    
+                    HStack{
+                        ProfileImageView(
+                            size: geometry.size.width/8,
+                            color: .white)
                         
-                        HStack{
-                            ProfileImageView(
-                                size: geometry.size.width/8,
-                                color: .white)
-                            
-                            VStack(alignment: .leading){
-                                if let username = user.username{
-                                    Text(username)
-                                        .font(.custom("Open Sans", size: 25))
-                                        .foregroundColor(.white)
-                                        .padding(.bottom,1)
-                                    
-                                } else {
-                                    Text("User")
-                                        .font(.custom("Open Sans", size: 25))
-                                        .foregroundColor(.white)
-                                        .padding(.bottom,1)
-                                    
-                                }
+                        VStack(alignment: .leading){
+                            if let username = user.username{
+                                Text(username)
+                                    .font(.custom("Open Sans", size: 25))
+                                    .foregroundColor(.white)
+                                    .padding(.bottom,1)
                                 
-                                HStack{
-                                    Image(systemName: "mappin.and.ellipse").foregroundColor(.white)
-                                    Text("Country")
-                                        .foregroundColor(.white)
-                                        .font(.custom("Open Sans", size: 15))
-                                }
+                            } else {
+                                Text("User")
+                                    .font(.custom("Open Sans", size: 25))
+                                    .foregroundColor(.white)
+                                    .padding(.bottom,1)
+                                
                             }
-                            Spacer()
                             
-                            Button {
-                                //TODO: add friend
-                            } label: {
+                            HStack{
+                                Image(systemName: "mappin.and.ellipse").foregroundColor(.white)
+                                Text("Country")
+                                    .foregroundColor(.white)
+                                    .font(.custom("Open Sans", size: 15))
+                            }
+                        }
+                        Spacer()
+                        
+                        Button {
+                            if let friendState = firestoreViewModel.firestoreUser?.friends?.first(where: {$0.id == user.id!})?.status {
+                                switch friendState {
+                                case "Waiting","Confirmed":
+                                    firestoreViewModel.firestoreUser?.removeFriend(idFriend: user.id!)
+                                    firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!,
+                                                                    friend: Friend(id: user.id!,status: friendState))
+                                default:
+                                    print("handle")
+                                }
+                            } else {
+                                firestoreViewModel.firestoreUser?.addFriend(friend: Friend(id: user.id!,status: "Waiting"))
+                                firestoreViewModel.addFriend(
+                                    uid: firestoreViewModel.firestoreUser!.id!,
+                                    friend: Friend( id:user.id!,status: "Waiting"))
+                            }
+                        } label: {
+                            if let status = firestoreViewModel.firestoreUser?.friends?.first(where: { $0.id == user.id! })?.status {
+                                Text(status == "Waiting" ? "Waiting" : "Remove")
+                                    .font(.custom("Open Sans", size: 18))
+                            } else {
                                 Text("Follow")
                                     .font(.custom("Open Sans", size: 18))
-                            }.buttonStyle(.borderedProminent)
-                                .foregroundColor(.purple)
-                                .tint(.white)
-                        }
+                            }
+                        }.buttonStyle(.borderedProminent)
+                            .foregroundColor(.purple)
+                            .tint(.white)
+                    }.zIndex(1)
+                    
+                    HStack{
+                        VerticalText(
+                            upperText: String(user.daily_score ?? 0),
+                            lowerText: "Daily")
                         
-                        HStack{
-                            VerticalText(
-                                upperText: String(user.daily_score ?? 0),
-                                lowerText: "Daily")
-                            
-                            Spacer()
-                            VerticalText(
-                                upperText: String(user.weekly_score ?? 0),
-                                lowerText: "Weekly")
-                            
-                            Spacer()
-                            
-                            VerticalText(
-                                upperText: String(user.friends?.count ?? 0),
-                                lowerText: "Friends")
-                        }
+                        Spacer()
+                        VerticalText(
+                            upperText: String(user.weekly_score ?? 0),
+                            lowerText: "Weekly")
                         
-                    }
+                        Spacer()
+                        
+                        VerticalText(
+                            upperText: String(user.friends?.count ?? 0),
+                            lowerText: "Friends")
+                    }.zIndex(0)
                     
                 }.frame(width:geometry.size.width/1.3,height: 30)
-                
-            }.offset(x:-100,y:-280)
+            }.offset(x:-100,y:-260)
         }
     }
 }
-
 
 struct BadgeBackground: View {
     var body: some View {
@@ -200,6 +218,6 @@ func VerticalText(upperText: String, lowerText:String) -> some View {
 
 struct UserProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        UserProfileView(user: User(email: "lulu@gmail.com"))
+        UserProfileView(firestoreViewModel: FirestoreViewModel(), user: User(email: "lulu@gmail.com"))
     }
 }

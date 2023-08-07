@@ -11,12 +11,14 @@ import HealthKit
 final class HealthViewModel: ObservableObject {
     private let healthStore: HKHealthStore = HKHealthStore()
     private var observerQuery: HKObserverQuery?
-    @Published public var allMyTypes = ["activeEnergyBurned":"0",
-                                        "appleExerciseTime":"0",
-                                        "appleStandTime":"0",
-                                        "distanceWalkingRunning":"0",
-                                        "stepCount":"0"]
     private var query: HKStatisticsQuery?
+    
+    @Published public var allMyTypes = ["activeEnergyBurned": 0,
+                                        "appleExerciseTime": 0,
+                                        "appleStandTime": 0,
+                                        "distanceWalkingRunning": 0,
+                                        "stepCount": 0]
+
     
     func requestAccessToHealthData() {
         let readableTypes: Set<HKSampleType> = [
@@ -72,12 +74,12 @@ final class HealthViewModel: ObservableObject {
                                        completionHandler: { _, result, _ in
             guard let result = result, let sum = result.sumQuantity() else {
                 DispatchQueue.main.async {
-                    self.allMyTypes[category] = String(Int(0))
+                    self.allMyTypes[category] = 0
                 }
                 return
             }
             DispatchQueue.main.async {
-                self.allMyTypes[category] = String(self.value(from: sum))
+                self.allMyTypes[category] = self.value(from: sum)
             }
         })
         query.map(healthStore.execute)
@@ -112,4 +114,5 @@ final class HealthViewModel: ObservableObject {
             return Int(stat.doubleValue(for: .minute()))
         } else { return 0 }
     }
+        
 }

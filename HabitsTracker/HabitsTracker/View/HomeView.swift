@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var healthViewModel: HealthViewModel
-    
+        
     var body: some View {
         ScrollView(.vertical, showsIndicators: false) {
             content
@@ -32,7 +32,7 @@ struct HomeView: View {
                 .padding(20)
                 .padding(.bottom, 10)
             }
-            Text("Recent activities")
+            Text("Recent activities ")
                 .font(.title2)
                 .fontWeight(.bold)
                 .padding(.horizontal, 20)
@@ -40,7 +40,7 @@ struct HomeView: View {
             VStack(spacing: 20) {
                 //HCard(activityType: "Steps", quantity: healthViewModel.allMyTypes, image: "figure.walk")
                 ForEach(Activity.allActivities()) { activity in
-                    HCard(activityType: activity.name, quantity: healthViewModel.allMyTypes[activity.id] ?? "not found", image: activity.image)
+                    HCard(activityType: activity.name, quantity: healthViewModel.allMyTypes[activity.id] ?? 0 , image: activity.image)
                 }
             }
             .padding(20)

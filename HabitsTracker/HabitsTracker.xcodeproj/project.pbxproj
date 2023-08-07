@@ -13,6 +13,7 @@
 		09115CEE2A7FCA4600BE1254 /* ProvidersDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09115CED2A7FCA4600BE1254 /* ProvidersDetailView.swift */; };
 		09115CF02A7FCB9800BE1254 /* ModifyProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09115CEF2A7FCB9800BE1254 /* ModifyProfileView.swift */; };
 		09179CD529314D3700B389C2 /* SignupView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09179CD429314D3700B389C2 /* SignupView.swift */; };
+		09316F682A80D55200E92B84 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09316F672A80D55200E92B84 /* Friend.swift */; };
 		093D33B32A7BA53B000C8ECF /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093D33B22A7BA53B000C8ECF /* Utils.swift */; };
 		0944AB2D2A7AB61900C73278 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */; };
 		094A32432A796F570008403C /* SearchFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094A32422A796F570008403C /* SearchFriendView.swift */; };
@@ -72,6 +73,7 @@
 		09115CED2A7FCA4600BE1254 /* ProvidersDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvidersDetailView.swift; sourceTree = "<group>"; };
 		09115CEF2A7FCB9800BE1254 /* ModifyProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyProfileView.swift; sourceTree = "<group>"; };
 		09179CD429314D3700B389C2 /* SignupView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignupView.swift; sourceTree = "<group>"; };
+		09316F672A80D55200E92B84 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		093D33B22A7BA53B000C8ECF /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		094A32422A796F570008403C /* SearchFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFriendView.swift; sourceTree = "<group>"; };
@@ -174,6 +176,7 @@
 				DDC2F89429311CAD003653F1 /* Goal.swift */,
 				09652B8229311942002CC615 /* CardIntro.swift */,
 				DD09A10229D9FA0D00CEBE15 /* Activity.swift */,
+				09316F672A80D55200E92B84 /* Friend.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -420,6 +423,7 @@
 				09652B8729311B19002CC615 /* LottieView.swift in Sources */,
 				09652B85293119F9002CC615 /* IntroView.swift in Sources */,
 				DD7C69B5292C254500E0D9ED /* ActivityPlanned.swift in Sources */,
+				09316F682A80D55200E92B84 /* Friend.swift in Sources */,
 				DDC33528292BA0A000C27566 /* VCard.swift in Sources */,
 				094A32432A796F570008403C /* SearchFriendView.swift in Sources */,
 				DDEACC0E29DB745700F39F4B /* FirestoreDataSource.swift in Sources */,

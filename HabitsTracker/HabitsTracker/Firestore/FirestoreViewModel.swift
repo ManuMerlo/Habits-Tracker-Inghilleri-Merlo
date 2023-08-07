@@ -82,6 +82,14 @@ final class FirestoreViewModel: ObservableObject {
         print("User with email \(user.email) added to firestore")
     }
     
+    func addFriend(uid: String, friend: Friend) {
+        firestoreRepository.addFriend(uid: uid, friend: friend)
+    }
+    
+    func removeFriend(uid: String, friend: Friend) {
+        firestoreRepository.removeFriend(uid: uid, friend: friend)
+    }
+    
     func modifyUser(uid:String, field: String, value: String, type: String) {
         firestoreRepository.modifyUser(uid:uid, field: field, value: value, type: type)
     }

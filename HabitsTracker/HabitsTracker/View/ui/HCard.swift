@@ -9,7 +9,7 @@ import SwiftUI
 
 struct HCard: View {
     var activityType: String
-    var quantity: String
+    var quantity: Int
     var image: String
     var body: some View {
         HStack(spacing: 20) {
@@ -18,9 +18,9 @@ struct HCard: View {
                     .font(.title2)
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                Text(quantity)
+                Text("\(quantity)")
             }
-            Text("+30pt")
+            Text("+ \(quantity/1000)")
                 .font(.title)
                 .fontWeight(.bold)
             Divider()
@@ -31,13 +31,11 @@ struct HCard: View {
         .background(Color.green)
         .foregroundColor(.white)
         .mask(RoundedRectangle(cornerRadius: 30, style: .continuous))
-        
-        
     }
 }
 
 struct HCard_Previews: PreviewProvider {
     static var previews: some View {
-        HCard(activityType: "ActivityType", quantity: "Quantity", image: "figure.walk")
+        HCard(activityType: "ActivityType", quantity: 1000, image: "figure.walk")
     }
 }

@@ -38,6 +38,14 @@ final class FirestoreRepository {
         firestoreDataSource.modifyUser(uid:uid, field: field, value: value, type: type)
     }
     
+    func addFriend(uid: String, friend: Friend) {
+        firestoreDataSource.addFriend(uid: uid, friend: friend)
+    }
+    
+    func removeFriend(uid: String, friend: Friend) {
+        firestoreDataSource.removeFriend(uid: uid, friend: friend)
+    }
+    
     func deleteUserData(uid:String,completionBlock: @escaping (Result<Bool, Error>) -> Void) {
         firestoreDataSource.deleteUserData( uid: uid, completionBlock: completionBlock)
     }

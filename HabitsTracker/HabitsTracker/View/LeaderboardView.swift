@@ -27,6 +27,7 @@ struct LeaderboardView: View {
             predicates: [
                 .orderBy("daily_score", true)
             ]
+            
         ) var globalUsers: [User]
     
     var body: some View {
@@ -73,7 +74,7 @@ struct LeaderboardView: View {
             }.padding(20)
                 .navigationTitle("Leaderboard")
                 .navigationDestination(for: User.self) { user in
-                    UserProfileView(user: user)
+                    UserProfileView(firestoreViewModel: firestoreViewModel, user: user)
                 }
                 .toolbarColorScheme(.dark, for: .navigationBar)
                 .toolbarBackground(
@@ -109,7 +110,11 @@ struct LeaderboardView: View {
         if let firestoreUser = firestoreViewModel.firestoreUser {
             if let friends = firestoreUser.friends {
                 print("friends \(friends)")
-                return globalUsers.filter { friends.contains($0.id ?? "") }
+                let confirmedFriends = friends.filter { $0.status == "Confirmed" }
+                let friendIds = confirmedFriends.compactMap { $0.id }
+                return globalUsers.filter { user in
+                    friendIds.contains(user.id!)
+                }
             } else {
                 return []
             }

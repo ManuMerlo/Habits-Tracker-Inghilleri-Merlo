@@ -143,6 +143,40 @@ final class FirestoreDataSource {
         }
     }
 
+    // Function to add a single friend to the 'friends' array for a user in Firestore
+    func addFriend(uid: String, friend: Friend) {
+        let userRef = db.collection("users").document(uid)
+        //TODO: temporary fix
+        let new_friend = ["id": friend.id, "status": friend.status]
+        // Use the FieldValue.arrayUnion method to add the friendID to the 'friends' array
+        userRef.updateData([
+            "friends": FieldValue.arrayUnion([new_friend])
+        ]) { error in
+            if let error = error {
+                print("Error adding friend: \(error)")
+            } else {
+                print("Friend added successfully.")
+            }
+        }
+    }
+    
+
+    // Function to remove a friend from the 'friends' array for a user in Firestore
+    func removeFriend(uid: String, friend: Friend) {
+        let userRef = db.collection("users").document(uid)
+        let new_friend = ["id": friend.id, "status": friend.status]
+        // Use the FieldValue.arrayRemove method to remove the friendID from the 'friends' array
+        userRef.updateData([
+            "friends": FieldValue.arrayRemove([new_friend])
+        ]) { error in
+            if let error = error {
+                print("Error removing friend: \(error)")
+            } else {
+                print("Friend removed successfully.")
+            }
+        }
+    }
+
     // Helper function to handle the result of the update operation
     func handleUpdateResult(err: Error?) {
         if let err = err {
