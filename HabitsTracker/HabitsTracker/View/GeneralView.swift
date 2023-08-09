@@ -19,7 +19,7 @@ struct GeneralView: View {
     
     var body: some View {
         TabView {
-            HomeView(healthViewModel: healthViewModel)
+            HomeView(healthViewModel: healthViewModel, firestoreViewModel: firestoreViewModel)
                 .tabItem {
                     Image(systemName: "house")
                     Text("Home")
@@ -67,7 +67,6 @@ struct GeneralView: View {
                 .autocapitalization(.none)
             
             Button("Save", action: {
-                firestoreViewModel.firestoreUser?.setUsername(name: textFieldValue)
                 firestoreViewModel.modifyUser(
                     uid:  firestoreViewModel.firestoreUser!.id!,
                     field: "username",
@@ -80,18 +79,25 @@ struct GeneralView: View {
         } message: {
             Text("To start using the app, you first need to set your username.")
         }
-        .onAppear{
-            if let user = authenticationViewModel.user {
-                if firestoreViewModel.firestoreUser == nil {
-                    firestoreViewModel.getUser(uid: user.id!) { result in
-                        // TODO: handle
+        .onChange(of: firestoreViewModel.friendsSubcollection) { _ in
+            DispatchQueue.global().async {
+                firestoreViewModel.getFriends()
+                DispatchQueue.main.async {
+                    firestoreViewModel.getRequests()
+                    DispatchQueue.main.async {
+                        firestoreViewModel.getWaitingList()
                     }
                 }
             }
         }
+
+        .onAppear{
+            firestoreViewModel.getCurrentUser()
+            firestoreViewModel.getFriendsSubcollection()
+        }
     }
-    
 }
+
 struct GeneralView_Previews: PreviewProvider {
     static var previews: some View {
         GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel(), firestoreViewModel: FirestoreViewModel())

@@ -101,29 +101,10 @@ struct LeaderboardView: View {
         if global == true {
             users = globalUsers
         }else {
-            users = getFriends()
+            users = firestoreViewModel.friends
         }
         sortUsers(timeFrame: selectedTimeFrame)
     }
-    
-    func getFriends () -> [User] {
-        if let firestoreUser = firestoreViewModel.firestoreUser {
-            if let friends = firestoreUser.friends {
-                print("friends \(friends)")
-                let confirmedFriends = friends.filter { $0.status == "Confirmed" }
-                let friendIds = confirmedFriends.compactMap { $0.id }
-                return globalUsers.filter { user in
-                    friendIds.contains(user.id!)
-                }
-            } else {
-                return []
-            }
-        }
-        else {
-            return []
-        }
-    }
-    
 }
 
 enum TimeFrame : String, CaseIterable {

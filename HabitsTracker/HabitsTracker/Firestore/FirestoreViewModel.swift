@@ -7,25 +7,41 @@
 
 import Foundation
 
+
 final class FirestoreViewModel: ObservableObject {
+    private let firestoreRepository: FirestoreRepository
+    
     @Published var allUsers: [User] = [] // To use in the leaderboardview together the .task that calls this viewmodel.getAllUsers for realtime updates
     @Published var messageError: String?
-    private let firestoreRepository: FirestoreRepository
     @Published var firestoreUser: User?
     @Published var needUsername: Bool = false
+    @Published var friendsSubcollection : [Friend] = []
+    @Published var requests: [User] = []
+    @Published var friends: [User] = []
+    @Published var waitingList: [User] = []
+    
     
     init(firestoreRepository: FirestoreRepository = FirestoreRepository()) {
         self.firestoreRepository = firestoreRepository
+        getCurrentUser()
+        getFriendsSubcollection()
+        getFriends()
+        getRequests()
+        getWaitingList()
     }
     
-    func userIsPresent(uid: String, completionBlock: @escaping (Result<Bool, Error>) -> Void) {
-        firestoreRepository.userIsPresent(uid: uid) { result in
+    func getCurrentUser(){
+        firestoreRepository.getCurrentUser { result in
             switch result {
-            case .success(let bool):
-                completionBlock(.success(bool))
+            case .success(let user):
+                self.firestoreUser = user
+                if let _ = user.username {
+                    self.needUsername = false
+                } else {
+                    self.needUsername = true
+                }
             case .failure(let error):
                 self.messageError = error.localizedDescription
-                completionBlock(.failure(error)) // Assuming that an error means the user is not present
             }
         }
     }
@@ -41,31 +57,6 @@ final class FirestoreViewModel: ObservableObject {
         }
     }
     
-    
-    func getUser(uid: String, completionBlock: @escaping (Result<User?,Error>) -> Void) {
-        firestoreRepository.getUser(uid: uid){ result in
-            switch result {
-            case .success(let user):
-                if let user = user {
-                    print("init firestore : user - \(user)")
-                    self.firestoreUser = user
-                    if let _ = user.username {
-                        self.needUsername = false
-                    } else {
-                        self.needUsername = true
-                    }
-                    print("init firestore: needName - \(self.needUsername)")
-                }
-                completionBlock(.success(user))
-            case .failure(let error):
-                self.messageError = error.localizedDescription
-                completionBlock(.failure(error)) // Assuming that an error means the user is not present
-            }
-        }
-        
-    }
-    
-    
     func getAllUsers() {
         firestoreRepository.getAllUsers { [weak self] result in
             switch result {
@@ -77,17 +68,47 @@ final class FirestoreViewModel: ObservableObject {
         }
     }
     
+    func getFriendsSubcollection() {
+        firestoreRepository.getFriendsSubcollection { friends in
+            self.friendsSubcollection = friends ?? []
+        }
+    }
+    
+    func getRequests() {
+        firestoreRepository.getRequests(friendsSubcollection:friendsSubcollection){ users in
+            self.requests = users ?? []
+            print("requests : \(self.requests)")
+        }
+    }
+    
+    func getWaitingList(){
+        firestoreRepository.getWaitingList(friendsSubcollection: friendsSubcollection){ users in
+            self.waitingList = users ?? []
+            print("waiting : \(self.waitingList)")
+        }
+    }
+    func getFriends(){
+        firestoreRepository.getFriends (friendsSubcollection: friendsSubcollection){ users in
+            self.friends = users ?? []
+            print("friends : \(self.friends)")
+        }
+    }
+    
     func addNewUser(user: User) {
         firestoreRepository.addNewUser(user: user)
         print("User with email \(user.email) added to firestore")
     }
     
-    func addFriend(uid: String, friend: Friend) {
-        firestoreRepository.addFriend(uid: uid, friend: friend)
+    func addRequest(uid: String, friend: String) {
+        firestoreRepository.addRequest(uid: uid, friend: friend)
     }
     
-    func removeFriend(uid: String, friend: Friend) {
+    func removeFriend(uid: String, friend: String) {
         firestoreRepository.removeFriend(uid: uid, friend: friend)
+    }
+    
+    func confirmFriend(uid: String, friendId: String) {
+        firestoreRepository.confirmFriend(uid: uid, friendId: friendId)
     }
     
     func modifyUser(uid:String, field: String, value: String, type: String) {

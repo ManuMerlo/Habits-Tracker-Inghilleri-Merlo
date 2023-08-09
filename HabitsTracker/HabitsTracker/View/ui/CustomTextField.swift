@@ -52,7 +52,8 @@ struct CustomTextField: View {
             }
         }
         .padding()
-        .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 2))
+        .frame(height: 45)
+        .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 1.25))
         
     }
 }

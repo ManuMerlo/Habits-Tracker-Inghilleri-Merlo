@@ -69,9 +69,9 @@ struct SignupView: View {
                             if(!isPresent){
                                 authenticationViewModel.createNewUser(email: authenticationViewModel.textFieldEmail, password: authenticationViewModel.textFieldPassword) { result in
                                     switch result {
-                                    case .success(let user):
+                                    case .success(var user):
+                                        user.setUsername(name: authenticationViewModel.textFieldUsername)
                                         firestoreViewModel.addNewUser(user: user)
-                                        firestoreViewModel.firestoreUser = user
                                     case .failure(let error):
                                         print("Error creating new user: \(error)")
                                         return
@@ -85,7 +85,6 @@ struct SignupView: View {
                         }
                     }
                     
-                    
                 } label: {
                     HStack() {
                         Text("Sign up")
@@ -95,6 +94,7 @@ struct SignupView: View {
                     }
                     .foregroundColor(.black)
                     .padding(.horizontal,25)
+                    .frame(height: 15)
                     .padding(.vertical)
                     .background{
                         RoundedRectangle(cornerRadius: 10,style: .continuous).fill(.black.opacity(0.05))

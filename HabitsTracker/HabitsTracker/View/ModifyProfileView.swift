@@ -121,7 +121,6 @@ struct ModifyProfileView: View {
             if showDatePicker {
                 VStack {
                     Button {
-                        firestoreViewModel.firestoreUser!.setBirthDate(birthDate: settingViewModel.dateToString(selectedDate))
                         firestoreViewModel.modifyUser(
                             uid:  firestoreViewModel.firestoreUser!.id!,
                             field: "birthdate",
@@ -143,7 +142,6 @@ struct ModifyProfileView: View {
             if(showSexPicker){
                 VStack {
                     Button {
-                        firestoreViewModel.firestoreUser!.setSex(sex:selectedSex)
                         firestoreViewModel.modifyUser(
                             uid:  firestoreViewModel.firestoreUser!.id!,
                             field: "sex",
@@ -208,7 +206,6 @@ struct ModifyProfileView: View {
             settingViewModel.persistimageToStorage { result in
                 switch result {
                 case .success(let path):
-                    firestoreViewModel.firestoreUser!.setImage(path: path)
                     firestoreViewModel.modifyUser(
                         uid:  firestoreViewModel.firestoreUser!.id!,
                         field: "image",

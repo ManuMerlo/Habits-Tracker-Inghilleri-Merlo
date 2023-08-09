@@ -52,25 +52,11 @@ struct ListItemView: View {
     var body: some View {
         GeometryReader {  geometry in
             HStack(){
-                if let path = user.image {
-                    AsyncImage(url: URL(string: path)){ phase in
-                        switch phase {
-                            case .failure:
-                            Image(systemName: "person.circle.fill")
-                                .font(.largeTitle) case
-                            .success(let image):
-                                image .resizable()
-                            default: ProgressView() }
-                        
-                    } .frame(width: geometry.size.width/7, height: geometry.size.width/7)
-                      .mask(Circle())
-                } else {
-                    Image(systemName: "person.circle.fill")
-                        .resizable()
-                        .frame(width: geometry.size.width/7, height: geometry.size.width/7)
-                        .mask(Circle())
-                        .foregroundColor(.gray)
-                }
+
+                ProfileImageView(
+                    path: user.image,
+                    size: geometry.size.width/7,
+                    color: .gray)
 
                 Text(user.username ?? user.email)
                     .font(.custom("Open Sans", size: 18))

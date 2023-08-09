@@ -92,10 +92,8 @@ final class SettingsViewModel: ObservableObject {
             VStack {
                 Button {
                     if ( property == "height"){
-                        user?.setHeight(height: selectedItem)
                         firestoreViewModel.modifyUser(uid: user!.id!, field: "height", value: "\(selectedItem)", type: "Int")
                     } else {
-                        user?.setWeight(weight: selectedItem)
                         firestoreViewModel.modifyUser(uid: user!.id!, field: "weight", value: "\(selectedItem)", type: "Int")
                     }
                     booleanValuePicker.toggle()

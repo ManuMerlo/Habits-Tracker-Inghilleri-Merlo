@@ -1,3 +1,5 @@
+import FirebaseFirestore
+
 struct User: Identifiable, Codable, Hashable {
 
     var id: String?
@@ -18,39 +20,6 @@ struct User: Identifiable, Codable, Hashable {
         self.username = name
     }
     
-    mutating func setBirthDate(birthDate: String) {
-        self.birthDate = birthDate
-    }
-    
-    mutating func setSex(sex: Sex) {
-        self.sex = sex
-    }
-    
-    mutating func setHeight(height: Int) {
-        self.height = height
-    }
-    
-    mutating func setWeight(weight: Int) {
-        self.weight = weight
-    }
-    
-    mutating func setImage(path: String) {
-        self.image = path
-    }
-    
-    mutating func addFriend(friend: Friend){
-        self.friends?.append(friend)
-    }
-    
-    mutating func removeFriend(idFriend: String){
-        self.friends?.removeAll(where: {$0.id == idFriend})
-    }
-    
-    mutating func modifyStatusFriend(idFriend: String, newStatus: String) {
-        if let index = friends?.firstIndex(where: { $0.id == idFriend }) {
-                friends?[index].modifyStatus(newStatus: newStatus)
-            }
-    }
 }
 
 enum Sex: String, Codable, CaseIterable {

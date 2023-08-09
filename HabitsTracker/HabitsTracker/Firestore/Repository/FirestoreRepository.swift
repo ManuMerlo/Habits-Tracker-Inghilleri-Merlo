@@ -14,16 +14,12 @@ final class FirestoreRepository {
         self.firestoreDataSource = firestoreDataSource
     }
     
-    func userIsPresent (uid : String, completionBlock: @escaping (Result<Bool, Error>) -> Void){
-        self.firestoreDataSource.userIsPresent(uid: uid, completionBlock: completionBlock)
+    func getCurrentUser(completionBlock: @escaping (Result<User, Error>) -> Void) {
+        firestoreDataSource.getCurrentUser(completionBlock: completionBlock)
     }
     
     func fieldIsPresent (field : String, value: String, completionBlock: @escaping (Result<Bool, Error>)  -> Void){
         self.firestoreDataSource.fieldIsPresent(field: field,value:value, completionBlock: completionBlock)
-    }
-    
-    func getUser(uid: String, completionBlock: @escaping (Result<User?,Error>) -> Void) {
-        self.firestoreDataSource.getUser(uid: uid, completionBlock: completionBlock)
     }
     
     func getAllUsers(completionBlock: @escaping (Result<[User], Error>) -> Void) {
@@ -33,17 +29,37 @@ final class FirestoreRepository {
     func addNewUser(user: User) {
         firestoreDataSource.addNewUser(user: user)
     }
+        
+    func getFriendsSubcollection(completionBlock: @escaping([Friend]?) -> Void) {
+        firestoreDataSource.getFriendsSubcollection(completionBlock: completionBlock)
+    }
+    
+    func getFriends(friendsSubcollection:[Friend], completionBlock: @escaping ([User]?) -> Void) {
+        firestoreDataSource.getFriends(friendsSubcollection: friendsSubcollection, completionBlock: completionBlock)
+    }
+    
+    func getRequests(friendsSubcollection:[Friend], completionBlock: @escaping ([User]?) -> Void) {
+        firestoreDataSource.getRequests(friendsSubcollection: friendsSubcollection, completionBlock: completionBlock)
+    }
+    
+    func getWaitingList(friendsSubcollection:[Friend], completionBlock: @escaping ([User]?) -> Void) {
+        firestoreDataSource.getWaitingList(friendsSubcollection: friendsSubcollection, completionBlock: completionBlock)
+    }
     
     func modifyUser(uid:String, field: String, value: String, type: String){
         firestoreDataSource.modifyUser(uid:uid, field: field, value: value, type: type)
     }
     
-    func addFriend(uid: String, friend: Friend) {
-        firestoreDataSource.addFriend(uid: uid, friend: friend)
+    func addRequest(uid: String, friend: String) {
+        firestoreDataSource.addRequest(uid: uid, friend: friend)
     }
     
-    func removeFriend(uid: String, friend: Friend) {
+    func removeFriend(uid: String, friend: String) {
         firestoreDataSource.removeFriend(uid: uid, friend: friend)
+    }
+    
+    func confirmFriend(uid: String, friendId: String) {
+        firestoreDataSource.confirmFriend(uid: uid, friendId: friendId)
     }
     
     func deleteUserData(uid:String,completionBlock: @escaping (Result<Bool, Error>) -> Void) {
