@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Activity: Identifiable {
+struct Activity: Identifiable, Equatable {
     var id: String
     var name: String
     var image: String
@@ -21,4 +21,9 @@ struct Activity: Identifiable {
             Activity(id: "stepCount", name: "Step Count", image: "shoeprints.fill"),
         ]
     }
+    
+    static func getActivityByKey(key: String) -> Activity? {
+        return Activity.allActivities().first { $0.id == key }
+    }
+
 }

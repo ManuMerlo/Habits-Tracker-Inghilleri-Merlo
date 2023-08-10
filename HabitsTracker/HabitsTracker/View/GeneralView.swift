@@ -73,7 +73,7 @@ struct GeneralView: View {
                     value: textFieldValue,
                     type: "String")
                 firestoreViewModel.needUsername = false
-
+                
             }
             )
         } message: {
@@ -90,7 +90,10 @@ struct GeneralView: View {
                 }
             }
         }
-
+        .onChange(of: healthViewModel.allMyTypes, perform: { _ in
+            healthViewModel.computeSingleScore()
+            healthViewModel.computeTotalScore()
+        })
         .onAppear{
             firestoreViewModel.getCurrentUser()
             firestoreViewModel.getFriendsSubcollection()

@@ -71,15 +71,35 @@ struct HomeView: View {
                     .padding(20)
                     .padding(.bottom, 10)
                 }
-                Text("Recent activities ")
-                    .font(.title2)
-                    .fontWeight(.bold)
-                    .padding(.horizontal, 20)
+                HStack{
+                    Text("Recent activities ")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                        .padding(.horizontal, 20)
+                    Spacer()
+                    
+                    Text("\(healthViewModel.dailyScore)")
+                        .font(.title2)
+                        .fontWeight(.bold)
+                    
+                    Image(systemName: "star.leadinghalf.filled")
+                        .foregroundColor(.yellow)
+                        .font(.system(size: 25))
+                       
+                    
+                }.padding(.trailing)
                 
                 VStack(spacing: 20) {
                     //HCard(activityType: "Steps", quantity: healthViewModel.allMyTypes, image: "figure.walk")
-                    ForEach(Activity.allActivities()) { activity in
-                        HCard(activityType: activity.name, quantity: healthViewModel.allMyTypes[activity.id] ?? 0 , image: activity.image)
+                    ForEach(healthViewModel.allMyTypes.keys.sorted(), id: \.self) { key in
+                        if let activity = Activity.allActivities().first(where: { $0.id == key }) {
+                            HCard(
+                                activityType: activity.name,
+                                quantity: healthViewModel.allMyTypes[key] ?? 0,
+                                score: healthViewModel.singleScore[key] ?? 0,
+                                image: activity.image
+                            )
+                        }
                     }
                 }
                 .padding(20)

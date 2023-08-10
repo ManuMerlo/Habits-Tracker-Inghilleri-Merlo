@@ -7,18 +7,34 @@
 
 import Foundation
 import HealthKit
+import SwiftUI
 
 final class HealthViewModel: ObservableObject {
     private let healthStore: HKHealthStore = HKHealthStore()
     private var observerQuery: HKObserverQuery?
     private var query: HKStatisticsQuery?
     
-    @Published public var allMyTypes = ["activeEnergyBurned": 0,
-                                        "appleExerciseTime": 0,
-                                        "appleStandTime": 0,
-                                        "distanceWalkingRunning": 0,
-                                        "stepCount": 0]
+    @Published public var allMyTypes: [String:Int] = [
+        "activeEnergyBurned": 0,
+        "appleExerciseTime": 0,
+        "appleStandTime": 0,
+        "distanceWalkingRunning": 0,
+        "stepCount": 0
+    ]
+    
+    @Published var dailyScore: Int = 0
+    @Published var singleScore: [String: Int] = [:]
+    
+    func computeSingleScore() {
+        for (key, value) in allMyTypes {
+            singleScore[key] = value / 100
+        }
+    }
 
+    
+    func computeTotalScore() {
+        self.dailyScore = singleScore.values.reduce(0, +)
+    }
     
     func requestAccessToHealthData() {
         let readableTypes: Set<HKSampleType> = [
@@ -74,12 +90,12 @@ final class HealthViewModel: ObservableObject {
                                        completionHandler: { _, result, _ in
             guard let result = result, let sum = result.sumQuantity() else {
                 DispatchQueue.main.async {
-                    self.allMyTypes[category] = 0
+                    self.allMyTypes[category]? = 0
                 }
                 return
             }
             DispatchQueue.main.async {
-                self.allMyTypes[category] = self.value(from: sum)
+                self.allMyTypes[category]? = self.value(from: sum)
             }
         })
         query.map(healthStore.execute)

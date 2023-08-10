@@ -77,20 +77,17 @@ final class FirestoreViewModel: ObservableObject {
     func getRequests() {
         firestoreRepository.getRequests(friendsSubcollection:friendsSubcollection){ users in
             self.requests = users ?? []
-            print("requests : \(self.requests)")
         }
     }
     
     func getWaitingList(){
         firestoreRepository.getWaitingList(friendsSubcollection: friendsSubcollection){ users in
             self.waitingList = users ?? []
-            print("waiting : \(self.waitingList)")
         }
     }
     func getFriends(){
         firestoreRepository.getFriends (friendsSubcollection: friendsSubcollection){ users in
             self.friends = users ?? []
-            print("friends : \(self.friends)")
         }
     }
     
