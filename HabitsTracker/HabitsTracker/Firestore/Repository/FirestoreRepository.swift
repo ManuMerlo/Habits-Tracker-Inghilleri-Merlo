@@ -62,6 +62,10 @@ final class FirestoreRepository {
         firestoreDataSource.confirmFriend(uid: uid, friendId: friendId)
     }
     
+    func updateDailyScores(uid: String, newScore: Int) {
+        firestoreDataSource.updateDailyScores(uid: uid, newScore: newScore)
+    }
+    
     func deleteUserData(uid:String,completionBlock: @escaping (Result<Bool, Error>) -> Void) {
         firestoreDataSource.deleteUserData( uid: uid, completionBlock: completionBlock)
     }

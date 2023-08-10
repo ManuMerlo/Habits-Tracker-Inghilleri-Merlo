@@ -13,7 +13,7 @@ final class HealthViewModel: ObservableObject {
     private let healthStore: HKHealthStore = HKHealthStore()
     private var observerQuery: HKObserverQuery?
     private var query: HKStatisticsQuery?
-    
+        
     @Published public var allMyTypes: [String:Int] = [
         "activeEnergyBurned": 0,
         "appleExerciseTime": 0,
@@ -21,6 +21,7 @@ final class HealthViewModel: ObservableObject {
         "distanceWalkingRunning": 0,
         "stepCount": 0
     ]
+    
     
     @Published var dailyScore: Int = 0
     @Published var singleScore: [String: Int] = [:]

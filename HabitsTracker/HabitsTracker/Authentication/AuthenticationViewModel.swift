@@ -52,7 +52,7 @@ final class AuthenticationViewModel: ObservableObject {
         authenticationRepository.createNewUser(email: email,
                                                password: password) { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
             switch result {
-            case .success(var user):
+            case .success(let user):
                 self?.user = user
                 completionBlock(.success(user))
             case .failure(let error):

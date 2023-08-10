@@ -11,10 +11,9 @@ struct User: Identifiable, Codable, Hashable {
     var weight: Int?
     var friends: [Friend]?
     
-    //Additional
     var image: String?
-    var daily_score: Int?     //MARK: fix optional
-    var weekly_score: Int?     //MARK: fix optional
+    var dailyScores: [Int] = Array(repeating: 0, count: 8)
+    //[0 - Monday / 1 - Tuesday .. 7 = weeklyScore]
     
     mutating func setUsername(name: String) {
         self.username = name

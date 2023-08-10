@@ -112,6 +112,10 @@ final class FirestoreViewModel: ObservableObject {
         firestoreRepository.modifyUser(uid:uid, field: field, value: value, type: type)
     }
     
+    func updateDailyScores(uid: String, newScore: Int) {
+        firestoreRepository.updateDailyScores(uid: uid, newScore: newScore)
+    }
+    
     func deleteUserData(uid: String,completionBlock: @escaping (Result<Bool,Error>)-> Void) {
         firestoreRepository.deleteUserData(uid: uid) { [weak self] result in
             switch result {

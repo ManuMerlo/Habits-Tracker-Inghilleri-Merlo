@@ -17,18 +17,16 @@ import SwiftUI
 import FirebaseFirestoreSwift
 
 struct LeaderboardView: View {
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
     @State private var global : Bool = true
     @State private var selectedTimeFrame : TimeFrame = .daily
-    @ObservedObject var firestoreViewModel: FirestoreViewModel
     @State var users: [User] = []
+    let today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     @FirestoreQuery(
-            collectionPath: "users",
-            predicates: [
-                .orderBy("daily_score", true)
-            ]
-            
-        ) var globalUsers: [User]
+        collectionPath: "users"
+    ) var globalUsers: [User]
+
     
     var body: some View {
         
@@ -81,7 +79,10 @@ struct LeaderboardView: View {
                     Color.purple,
                     for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
-        }.onChange(of: globalUsers) { newValue in
+        }.onAppear{
+            sortUsers(timeFrame: selectedTimeFrame)
+        }
+        .onChange(of: globalUsers) { newValue in
             setUsers(global: global)
         }
     }
@@ -90,9 +91,9 @@ struct LeaderboardView: View {
             users.sort { user1, user2 in
                 switch timeFrame {
                 case .daily:
-                    return user1.daily_score ?? 0 > user2.daily_score ?? 0
+                    return user1.dailyScores[today] > user1.dailyScores[today]
                 case .weekly:
-                    return user1.weekly_score ?? 0 > user2.weekly_score ?? 0
+                    return user1.dailyScores[7] > user2.dailyScores[7]
                 }
             }
         }
@@ -117,6 +118,7 @@ struct RankingItemView: View {
     var user : User
     var selectedTimeFrame : TimeFrame
     var position : Int
+    let today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     var body: some View {
         
@@ -165,7 +167,7 @@ struct RankingItemView: View {
                     
                     Spacer()
                     
-                    Text(selectedTimeFrame == .daily ? "\(user.daily_score ?? 0)" : "\(user.weekly_score ?? 0)")
+                    Text(selectedTimeFrame == .daily ? "\(user.dailyScores[today])" : "\(user.dailyScores[7])")
                         .font(.body)
                     
                 }.frame( width: geometry.size.width/4.5, height: 50)

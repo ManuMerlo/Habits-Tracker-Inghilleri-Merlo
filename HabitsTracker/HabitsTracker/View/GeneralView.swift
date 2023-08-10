@@ -94,6 +94,9 @@ struct GeneralView: View {
             healthViewModel.computeSingleScore()
             healthViewModel.computeTotalScore()
         })
+        .onChange(of: healthViewModel.dailyScore, perform: { newValue in
+            firestoreViewModel.updateDailyScores(uid: firestoreViewModel.firestoreUser!.id!, newScore: newValue)
+        })
         .onAppear{
             firestoreViewModel.getCurrentUser()
             firestoreViewModel.getFriendsSubcollection()

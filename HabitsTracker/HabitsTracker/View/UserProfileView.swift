@@ -6,11 +6,14 @@
 //
 
 import SwiftUI
+import Foundation
 
 struct UserProfileView: View {
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     
     var user: User
+    var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
+    
     var body: some View {
         GeometryReader{geometry in
             
@@ -95,18 +98,18 @@ struct UserProfileView: View {
                             
                             HStack{
                                 VerticalText(
-                                    upperText: String(user.daily_score ?? 0),
+                                    upperText: String(user.dailyScores[today]),
                                     lowerText: "Daily")
                                 
                                 Spacer()
                                 VerticalText(
-                                    upperText: String(user.weekly_score ?? 0),
+                                    upperText: String(user.dailyScores[7]),
                                     lowerText: "Weekly")
                                 
                                 Spacer()
                                 
                                 VerticalText(
-                                    upperText: String(user.friends?.count ?? 0),
+                                    upperText: String(firestoreViewModel.friends.count),
                                     lowerText: "Friends")
                             }.padding(.vertical)
                         }

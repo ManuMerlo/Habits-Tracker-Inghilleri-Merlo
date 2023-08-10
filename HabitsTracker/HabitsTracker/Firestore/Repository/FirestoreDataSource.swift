@@ -280,7 +280,29 @@ final class FirestoreDataSource {
         }
     }
     
-    
+    // Function to update/set an array in a user's document
+    func updateDailyScores(uid: String, newScore: Int) {
+        let userRef = db.collection("users").document(uid)
+        
+        userRef.getDocument { document, error in
+            if let document = document, document.exists {
+                var scoresArray = document.get("dailyScores") as? [Int] ?? []
+                
+                let today = (Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
+                
+                scoresArray[today] = newScore
+                
+                let scoresInRange = scoresArray[0...today]
+                    
+                scoresArray[7] = scoresInRange.reduce(0, +)
+                
+                userRef.updateData(["dailyScores": scoresArray]) { err in
+                    self.handleUpdateResult(err: err)
+                }
+            }
+        }
+    }
+
     // Helper function to handle the result of the update operation
     func handleUpdateResult(err: Error?) {
         if let err = err {
