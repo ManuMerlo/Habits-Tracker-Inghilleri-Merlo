@@ -91,12 +91,12 @@ struct HomeView: View {
                 
                 VStack(spacing: 20) {
                     //HCard(activityType: "Steps", quantity: healthViewModel.allMyTypes, image: "figure.walk")
-                    ForEach(healthViewModel.allMyTypes.keys.sorted(), id: \.self) { key in
-                        if let activity = Activity.allActivities().first(where: { $0.id == key }) {
+                    ForEach( ExtendedActivity.allActivities(), id: \.self) { activity in
+                        if let baseActivity = healthViewModel.allMyTypes.first(where: { $0.id == activity.id }) {
                             HCard(
                                 activityType: activity.name,
-                                quantity: healthViewModel.allMyTypes[key] ?? 0,
-                                score: healthViewModel.singleScore[key] ?? 0,
+                                quantity: baseActivity.quantity ?? 0,
+                                score: healthViewModel.singleScore[activity.id] ?? 0,
                                 image: activity.image
                             )
                         }

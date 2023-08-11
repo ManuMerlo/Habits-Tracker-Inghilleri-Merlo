@@ -7,6 +7,7 @@
 
 import SwiftUI
 import Foundation
+import Charts
 
 struct UserProfileView: View {
     @ObservedObject var firestoreViewModel: FirestoreViewModel
@@ -15,113 +16,145 @@ struct UserProfileView: View {
     var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     var body: some View {
-        GeometryReader{geometry in
+        ScrollView (.vertical, showsIndicators: false) {
+            VStack{
+                ZStack{
+                    
+                    Rectangle()
+                        .fill(.linearGradient(colors: [Color.purple, Color.purple.opacity(0.7)], startPoint: .top, endPoint: .bottom))
+                        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
+                        .frame(height: 200)
+                    
+                    
+                    Header(firestoreViewModel: firestoreViewModel, user: user)
+                    
+                }.padding(.bottom)
+                
+                content(user: user)
+                
+                
+            }.toolbarColorScheme(.dark, for: .navigationBar)
+                .toolbarBackground(
+                    Color.purple,
+                    for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
             
-            ZStack{
-                
-                BadgeBackground().frame(width: 600, height: 600)
-                    .rotationEffect(Angle(degrees: -50))
-                    .offset(x:20,y:-120)
-                    .allowsHitTesting(false)
-                    .zIndex(-1)
-                
-                
+        }.navigationBarTitle("", displayMode: .inline) // Hide the title
+        
+        
+    }
+    
+}
+
+struct Header: View{
+    
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
+    
+    var user: User
+    var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
+    
+    var body: some View{
+        
+        VStack(alignment: .leading){
+            Spacer()
+            HStack {
                 VStack(alignment: .leading){
+                    if let username = user.username{
+                        Text(username)
+                            .font(.custom("Open Sans", size: 30))
+                            .foregroundColor(.white)
+                            .padding(.bottom,1)
+                        
+                        
+                    } else {
+                        Text("User")
+                            .font(.custom("Open Sans", size: 30))
+                            .foregroundColor(.white)
+                            .padding(.bottom,1)
+
+                    }
+                    
+                    Text("\(user.email)")
+                        .font(.custom("Open Sans", size: 15))
+                        .foregroundColor(.white)
+                        .padding(.bottom,3)
                     
                     HStack{
-                        ProfileImageView(
-                            size: geometry.size.width/8,
-                            color: .white)
-                        .offset(y:-40)
+                        Image(systemName: "medal.fill")
+                            .font(.system(size: 10))
+                            .foregroundColor(.white)
                         
-                        
-                        VStack(alignment: .leading){
-                            HStack{
-                                VStack(alignment: .leading){
-                                    if let username = user.username{
-                                        Text(username)
-                                            .font(.custom("Open Sans", size: 25))
-                                            .foregroundColor(.white)
-                                            .padding(.bottom,1)
-                                        
-                                    } else {
-                                        Text("User")
-                                            .font(.custom("Open Sans", size: 25))
-                                            .foregroundColor(.white)
-                                            .padding(.bottom,1)
-                                        
-                                    }
-                                    
-                                    HStack{
-                                        Image(systemName: "mappin.and.ellipse").foregroundColor(.white)
-                                        Text("Country")
-                                            .foregroundColor(.white)
-                                            .font(.custom("Open Sans", size: 15))
-                                    }
-                                }
-                                
-                                Spacer()
-                                
-                                if let firestoreUser = firestoreViewModel.firestoreUser, firestoreUser.id! != user.id{
-                                    Button(action: {
-                                        if firestoreViewModel.waitingList.contains(user) || firestoreViewModel.friends.contains(user) {
-                                            firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
-                                            
-                                        } else if firestoreViewModel.requests.contains(user) {
-                                            firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id!, friendId: user.id!)
-                                        } else {
-                                            firestoreViewModel.addRequest(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
-                                        }
-                                    }) {
-                                        Text(buttonTextFor(user))
-                                            .font(.custom("Open Sans", size: 18))
-                                    }
-                                    .buttonStyle(.borderedProminent)
-                                    .foregroundColor(.purple)
-                                    .tint(.white)
-                                    
-                                    if firestoreViewModel.requests.contains(user) {
-                                        Button(action: {
-                                            firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
-                                        }) {
-                                            Text("Remove")
-                                                .font(.custom("Open Sans", size: 18))
-                                        }
-                                        .buttonStyle(.borderedProminent)
-                                        .foregroundColor(.purple)
-                                        .tint(.white)
-                                    }
-                                    
-                                }
-                                
-                            }
-                            
-                            HStack{
-                                VerticalText(
-                                    upperText: String(user.dailyScores[today]),
-                                    lowerText: "Daily")
-                                
-                                Spacer()
-                                VerticalText(
-                                    upperText: String(user.dailyScores[7]),
-                                    lowerText: "Weekly")
-                                
-                                Spacer()
-                                
-                                VerticalText(
-                                    upperText: String(firestoreViewModel.friends.count),
-                                    lowerText: "Friends")
-                            }.padding(.vertical)
-                        }
+                        Text("\(user.dailyScores[today]) points")
+                            .font(.custom("Open Sans", size: 15))
+                            .foregroundColor(.white)
                         
                     }
                     
-                }.frame(width:geometry.size.width/1.15,height: 30)
-            }
-        }.offset(x:-100,y:-260)
+                }
+                
+                Spacer()
+                
+                ProfileImageView(
+                    size: 70 ,
+                    color: .white)
+                
+            }.padding(.bottom,5)
+            
+            Spacer()
+            
+            ButtonRequest(firestoreViewModel: firestoreViewModel, user: user)
+            
+            
+            Spacer()
+            
+        }.frame(width: UIScreen.main.bounds.width/1.2)
+        
     }
     
+}
+
+
+struct ButtonRequest: View {
     
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
+    
+    var user: User
+    
+    var body :some View{
+        //if let firestoreUser = firestoreViewModel.firestoreUser, firestoreUser.id! != user.id{
+        Button(action: {
+            if firestoreViewModel.waitingList.contains(user) || firestoreViewModel.friends.contains(user) {
+                firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
+                
+            } else if firestoreViewModel.requests.contains(user) {
+                firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id!, friendId: user.id!)
+            } else {
+                firestoreViewModel.addRequest(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
+            }
+        }) {
+            Image(systemName: buttonImageFor(user))
+            Text(buttonTextFor(user))
+                .font(.custom("Open Sans", size: 18))
+        }
+        .buttonStyle(.borderedProminent)
+        .foregroundColor(.purple)
+        .tint(.white)
+        
+        if firestoreViewModel.requests.contains(user) {
+            Button(action: {
+                firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
+            }) {
+                Text("Remove")
+                    .font(.custom("Open Sans", size: 18))
+            }
+            .buttonStyle(.borderedProminent)
+            .foregroundColor(.purple)
+            .tint(.white)
+        }
+        
+        //}
+        
+    }
     private func buttonTextFor(_ user: User) -> String {
         if firestoreViewModel.waitingList.contains(user) {
             return "Waiting"
@@ -133,104 +166,74 @@ struct UserProfileView: View {
             return "Follow"
         }
     }
-}
-
-struct BadgeBackground: View {
-    var body: some View {
-        GeometryReader { geometry in
-            Path { path in
-                var width: CGFloat = min(geometry.size.width, geometry.size.height)
-                let height = width
-                let xScale: CGFloat = 0.832
-                let xOffset = (width * (1.0 - xScale)) / 2.0
-                width *= xScale
-                path.move(
-                    to: CGPoint(
-                        x: width * 0.95 + xOffset,
-                        y: height * (0.20 + HexagonParameters.adjustment)
-                    )
-                )
-                
-                
-                HexagonParameters.segments.forEach { segment in
-                    path.addLine(
-                        to: CGPoint(
-                            x: width * segment.line.x + xOffset,
-                            y: height * segment.line.y
-                        )
-                    )
-                    
-                    
-                    path.addQuadCurve(
-                        to: CGPoint(
-                            x: width * segment.curve.x + xOffset,
-                            y: height * segment.curve.y
-                        ),
-                        control: CGPoint(
-                            x: width * segment.control.x + xOffset,
-                            y: height * segment.control.y
-                        )
-                    )
-                }
-            }
-            .fill(.linearGradient(
-                Gradient(colors: [Self.gradientEnd, .purple]),
-                startPoint: UnitPoint(x: 0.5, y: 0),
-                endPoint: UnitPoint(x: 0.5, y: 0.6)
-            ))
+    
+    private func buttonImageFor(_ user: User) -> String {
+        if firestoreViewModel.waitingList.contains(user) {
+            return "person.badge.clock.fill"
+        } else if firestoreViewModel.friends.contains(user) {
+            return "checkmark.seal"
+        } else if firestoreViewModel.requests.contains(user) {
+            return "person.fill.badge.plus"
+        } else {
+            return "link"
         }
-        .aspectRatio(1, contentMode: .fit)
     }
-    static let gradientStart = Color(red: 239.0 / 255, green: 120.0 / 255, blue: 221.0 / 255)
-    static let gradientEnd = Color(red: 239.0 / 255, green: 172.0 / 255, blue: 120.0 / 255)
+    
 }
 
-import CoreGraphics
-
-
-struct HexagonParameters {
-    struct Segment {
-        let line: CGPoint
-        let curve: CGPoint
-        let control: CGPoint
+struct content: View {
+    
+    var user : User
+    let gradientStart = Color(red: 239.0 / 255, green: 120.0 / 255, blue: 221.0 / 255)
+    var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
+    
+    var body: some View {
+        
+        VStack(alignment: .center){
+            
+            ScoreRingView(user:user)
+            
+            VStack(alignment: .center){
+                Text("Score Trend of the last week")
+                    .font(.title3)
+                
+                ZStack(){
+                    Chart {
+                        ForEach(user.dailyScores.indices[0...6], id: \.self) { index in
+                            LineMark(
+                                x: .value("Day", getDayLabel(for: index)),
+                                y: .value("Score", user.dailyScores[index])
+                            )
+                            .foregroundStyle(
+                                by: .value("Week", "Current Week") // You can adjust this as needed
+                            )
+                            .interpolationMethod(.catmullRom)
+                            .symbol(
+                                by: .value("Week", "Current Week") // You can adjust this as needed
+                            )
+                            .symbolSize(30)
+                        }
+                    }
+                    .chartForegroundStyleScale([
+                        "Current Week": Color(hue: 0.33, saturation: 0.81, brightness: 0.76),
+                    ])
+                    .chartYAxis {
+                        AxisMarks(position: .leading)
+                    }.frame(height: 250)
+                    
+                    
+                }
+                
+            }
+                        
+        }
+        .frame(width: UIScreen.main.bounds.width/1.1)
     }
     
-    
-    static let adjustment: CGFloat = 0.085
-    
-    
-    static let segments = [
-        Segment(
-            line:    CGPoint(x: 0.60, y: 0.05),
-            curve:   CGPoint(x: 0.40, y: 0.05),
-            control: CGPoint(x: 0.50, y: 0.00)
-        ),
-        Segment(
-            line:    CGPoint(x: 0.05, y: 0.20 + adjustment),
-            curve:   CGPoint(x: 0.00, y: 0.30 + adjustment),
-            control: CGPoint(x: 0.00, y: 0.25 + adjustment)
-        ),
-        Segment(
-            line:    CGPoint(x: 0.00, y: 0.70 - adjustment),
-            curve:   CGPoint(x: 0.05, y: 0.80 - adjustment),
-            control: CGPoint(x: 0.00, y: 0.75 - adjustment)
-        ),
-        Segment(
-            line:    CGPoint(x: 0.40, y: 0.95),
-            curve:   CGPoint(x: 0.60, y: 0.95),
-            control: CGPoint(x: 0.50, y: 1.00)
-        ),
-        Segment(
-            line:    CGPoint(x: 0.95, y: 0.80 - adjustment),
-            curve:   CGPoint(x: 1.00, y: 0.70 - adjustment),
-            control: CGPoint(x: 1.00, y: 0.75 - adjustment)
-        ),
-        Segment(
-            line:    CGPoint(x: 1.00, y: 0.30 + adjustment),
-            curve:   CGPoint(x: 0.95, y: 0.20 + adjustment),
-            control: CGPoint(x: 1.00, y: 0.25 + adjustment)
-        )
-    ]
+    private func getDayLabel(for index: Int) -> String {
+        let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        return days[index % days.count]
+    }
 }
 
 @ViewBuilder
@@ -247,6 +250,17 @@ func VerticalText(upperText: String, lowerText:String) -> some View {
 
 struct UserProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        UserProfileView(firestoreViewModel: FirestoreViewModel(), user: User(email: "lulu@gmail.com"))
+        UserProfileView(firestoreViewModel: FirestoreViewModel(), user: User(
+            username: "lulu",
+            email: "lulu@gmail.com",
+            birthDate: "10/08/2001",
+            sex: Sex.Female,
+            height: 150,
+            weight: 60,
+            image: "",
+            dailyScores: [20,50,40,60,60,90,70,80,40]))
     }
 }
+
+
+

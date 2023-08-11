@@ -9,11 +9,12 @@ struct User: Identifiable, Codable, Hashable {
     var sex: Sex?
     var height: Int?
     var weight: Int?
-    var friends: [Friend]?
     
     var image: String?
     var dailyScores: [Int] = Array(repeating: 0, count: 8)
     //[0 - Monday / 1 - Tuesday .. 7 = weeklyScore]
+    
+    
     
     mutating func setUsername(name: String) {
         self.username = name

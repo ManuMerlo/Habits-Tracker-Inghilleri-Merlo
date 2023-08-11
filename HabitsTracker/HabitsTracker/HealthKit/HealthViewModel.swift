@@ -14,12 +14,12 @@ final class HealthViewModel: ObservableObject {
     private var observerQuery: HKObserverQuery?
     private var query: HKStatisticsQuery?
         
-    @Published public var allMyTypes: [String:Int] = [
-        "activeEnergyBurned": 0,
-        "appleExerciseTime": 0,
-        "appleStandTime": 0,
-        "distanceWalkingRunning": 0,
-        "stepCount": 0
+    @Published public var allMyTypes: [BaseActivity] = [
+        BaseActivity(id:"activeEnergyBurned", quantity: 0),
+        BaseActivity(id:"appleExerciseTime", quantity: 0),
+        BaseActivity(id:"appleStandTime", quantity: 0),
+        BaseActivity(id:"distanceWalkingRunning", quantity: 0),
+        BaseActivity(id:"stepCount", quantity: 0)
     ]
     
     
@@ -27,8 +27,12 @@ final class HealthViewModel: ObservableObject {
     @Published var singleScore: [String: Int] = [:]
     
     func computeSingleScore() {
-        for (key, value) in allMyTypes {
-            singleScore[key] = value / 100
+        for activity in allMyTypes {
+            if let quantity = activity.quantity {
+                singleScore[activity.id] = quantity / 100
+            } else {
+                singleScore[activity.id] = 0
+            }
         }
     }
 
@@ -53,7 +57,7 @@ final class HealthViewModel: ObservableObject {
         healthStore.requestAuthorization(toShare: nil, read: readableTypes) { success, error in
             if success {
                 print("Request Authorization \(success.description)")
-                for activity in Activity.allActivities() {
+                for activity in ExtendedActivity.allActivities() {
                     self.getTodayStats(by: activity.id)
                 }
             }
@@ -91,12 +95,16 @@ final class HealthViewModel: ObservableObject {
                                        completionHandler: { _, result, _ in
             guard let result = result, let sum = result.sumQuantity() else {
                 DispatchQueue.main.async {
-                    self.allMyTypes[category]? = 0
+                    if let index = self.allMyTypes.firstIndex(where: { $0.id == category }) {
+                        self.allMyTypes[index].quantity = 0
+                    }
                 }
                 return
             }
             DispatchQueue.main.async {
-                self.allMyTypes[category]? = self.value(from: sum)
+                if let index = self.allMyTypes.firstIndex(where: { $0.id == category }) {
+                    self.allMyTypes[index].quantity = self.value(from: sum)
+                }
             }
         })
         query.map(healthStore.execute)
