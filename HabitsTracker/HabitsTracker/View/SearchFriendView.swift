@@ -14,8 +14,8 @@ struct SearchFriendView: View {
     @State private var searchTerm = ""
     
     @FirestoreQuery(
-            collectionPath: "users"
-        ) var friends: [User]
+        collectionPath: "users"
+    ) var friends: [User]
     
     var filteredFrieds : [User] {
         guard !searchTerm.isEmpty else {return friends}
@@ -23,45 +23,70 @@ struct SearchFriendView: View {
     }
     
     var body: some View {
-        NavigationStack {
-            List(filteredFrieds, id: \.self) { friend in
-                NavigationLink(value:friend){
-                    ListItemView(user:friend).frame(height: 40)
-                    
-                }
+        NavigationView {
+            ZStack {
+                RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
+                    .edgesIgnoringSafeArea(.all)
                 
+                ScrollView{
+                    ForEach(filteredFrieds, id: \.self) { friend in
+                        NavigationLink(destination: UserProfileView(firestoreViewModel: firestoreViewModel, user: friend)) {
+                            ListItemView(user: friend)
+                                .frame(height:UIScreen.main.bounds.height / 10 )
+                                .padding(.top)
+                        }
+                    }.padding(.top,4)
+                }
             }
-            .listStyle(PlainListStyle())
-            .searchable(text:$searchTerm, prompt:"Search a friend")
+            .searchable(text: $searchTerm, prompt: "Search a friend")
             .navigationTitle("Friends")
-            .navigationDestination(for: User.self) { user in
-                UserProfileView(firestoreViewModel: firestoreViewModel,user: user)
-                    
-            }
             .toolbarColorScheme(.dark, for: .navigationBar)
             .toolbarBackground(
-                Color.green,
+                Color("oxfordBlue"),
                 for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
+        
     }
 }
 
 struct ListItemView: View {
     var user : User
     var body: some View {
-        GeometryReader {  geometry in
-            HStack(){
-
-                ProfileImageView(
-                    path: user.image,
-                    size: geometry.size.width/7,
-                    color: .gray)
-
-                Text(user.username ?? user.email)
-                    .font(.custom("Open Sans", size: 18))
+        VStack(alignment:.leading){
+            ZStack{
                 
-            }
+                RoundedRectangle(cornerRadius: 25.0)
+                    .fill(Color("oxfordBlue").opacity(0.9)) 
+                    .frame(height: UIScreen.main.bounds.height / 10, alignment: .center)
+                    .shadow(color: Color.black.opacity(0.8), radius: 5, x: 0, y: 0)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 25.0)
+                            .stroke(Color("platinum").opacity(0.5), lineWidth: 2)
+                    )
+                    .opacity(0.8)
+
+                HStack{
+                    ProfileImageView(
+                        path: user.image,
+                        systemName: "person.crop.circle",
+                        size: UIScreen.main.bounds.height / 15,
+                        color: Color("platinum").opacity(0.7))
+                    .padding(.leading)
+                
+                    Divider()
+                            .background(Color("platinum"))
+                            .frame(height: UIScreen.main.bounds.height / 12)
+                            .padding(.horizontal,5)
+                    
+                    Text(user.username ?? user.email)
+                        .font(.title2)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, alignment: .leading)
+                    
+                }
+            }.padding(.vertical,3)
+            .padding(.horizontal)
         }
     }
 }

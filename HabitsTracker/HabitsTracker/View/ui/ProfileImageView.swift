@@ -14,33 +14,37 @@ struct ProfileImageView: View {
     var color: Color
     
     var body: some View {
-        if let path = path {
-            AsyncImage(url: URL(string: path)){ phase in
-                switch phase {
-                case .failure:
-                    Image(systemName: systemName ?? "person.fill")
+        VStack(alignment: .center){
+            if let path = path {
+                AsyncImage(url: URL(string: path)){ phase in
+                    switch phase {
+                    case .failure:
+                        Image(systemName: systemName ?? "person.fill")
+                            .resizable()
+                            .frame(width: size, height: size)
+                            .mask(Circle())
+                            .foregroundColor(.white)
+                            .padding(.trailing,8)
+                        
+                    case .success(let image):
+                        image .resizable()
+                        default: ProgressView() }
+                    
+                } .frame(width: size, height: size)
+                    .mask(Circle())
+                    .padding(.trailing,8)
+                
+            } else {
+                    Image(systemName:systemName ?? "person.fill")
                         .resizable()
+                        .scaledToFit()
                         .frame(width: size, height: size)
                         .mask(Circle())
-                        .foregroundColor(.white)
+                        .foregroundColor(color)
                         .padding(.trailing,8)
-                    
-                case .success(let image):
-                    image .resizable()
-                    default: ProgressView() }
-                
-            } .frame(width: size, height: size)
-                .mask(Circle())
-                .padding(.trailing,8)
-            
-        } else {
-            Image(systemName:systemName ?? "person.fill")
-                .resizable()
-                .frame(width: size, height: size)
-                .mask(Circle())
-                .foregroundColor(color)
-                .padding(.trailing,8)
+            }
         }
+        
     }
 }
 

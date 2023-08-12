@@ -28,6 +28,9 @@ final class HealthViewModel: ObservableObject {
     
     func computeSingleScore() {
         for activity in allMyTypes {
+            print("!!!!!!!!!!!!!!!!!!!!!")
+            print("\(activity.id)")
+            print("\(activity.quantity)")
             if let quantity = activity.quantity {
                 singleScore[activity.id] = quantity / 100
             } else {
@@ -36,7 +39,6 @@ final class HealthViewModel: ObservableObject {
         }
     }
 
-    
     func computeTotalScore() {
         self.dailyScore = singleScore.values.reduce(0, +)
     }

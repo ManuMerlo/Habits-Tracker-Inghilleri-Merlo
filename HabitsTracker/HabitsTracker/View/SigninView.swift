@@ -6,172 +6,174 @@ struct SigninView: View {
     
     
     var body: some View {
-        ScrollView(.vertical, showsIndicators: false){
-            VStack(alignment: .center, spacing: 15) {
-                Group {
-                    LottieView(filename: "login")
-                        .frame(width:300, height: 260)
-                        .clipShape(Circle())
-                        .shadow(color: .orange, radius: 1, x: 0, y: 0)
-                        .padding(.top,10)
-                    
-                    Text("Sign in")
-                        .font(.title)
-                        .fontWeight(.semibold)
-                        .offset(y: -12)
-                    
-                    CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmailSignin)
-                    
-                    CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPasswordSignin)
-                    
-                    NavigationLink {
-                        //TODO recupera password
-                    } label: {
-                        Text("Forgot the password?")
-                    }
-                                        
-                    Button {
-                        guard authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmailSignin), !authenticationViewModel.textFieldPasswordSignin.isEmpty else {
-                            print("Empty email or password")
-                            return
+        ZStack{
+            RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
+                .edgesIgnoringSafeArea(.all)
+            ScrollView(.vertical, showsIndicators: false){
+
+                VStack(alignment: .center, spacing: 15) {
+                    Group {
+                        LottieView(filename: "login")
+                            .frame(width:300, height: 260)
+                            .clipShape(Circle())
+                            .shadow(color: .orange, radius: 1, x: 0, y: 0)
+                            .padding(.top,10)
+                        
+                        Text("Sign in")
+                            .font(.title)
+                            .fontWeight(.semibold)
+                            .offset(y: -12)
+                        
+                        CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmailSignin)
+                        
+                        CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPasswordSignin)
+                        
+                        NavigationLink {
+                            //TODO recupera password
+                        } label: {
+                            Text("Forgot the password?")
                         }
                         
-                        authenticationViewModel.login(email: authenticationViewModel.textFieldEmailSignin,
-                                                      password: authenticationViewModel.textFieldPasswordSignin)
-                        
-                    } label: {
-                        HStack() {
-                            Text("Sign in")
-                                .fontWeight(.semibold)
-                                .contentTransition(.identity)
-                            
-                        }
-                        .foregroundColor(.black)
-                        .padding(.horizontal,25)
-                        .frame(height: 15)
-                        .padding(.vertical)
-                        .background{
-                            RoundedRectangle(cornerRadius: 10,style: .continuous).fill(.black.opacity(0.05))
-                        }
-                    }
-                    
-                    // TODO: it must disappear.
-                    if let messageError = authenticationViewModel.messageError {
-                        Text(messageError)
-                            .font(.body)
-                            .foregroundColor(.red)
-                            .padding()
-                    }
-                }
-                
-                
-                Group {
-                    HStack{
-                        VStack { Divider().background(Color.gray) }.padding(.horizontal, 20)
-                        Text("or").foregroundColor(Color.gray)
-                        VStack { Divider().background(Color.gray) }.padding(.horizontal, 20)
-                    }
-                    
-                    Button {
-                        authenticationViewModel.loginGoogle(){ result in
-                            switch result {
-                            case .success(let userGoogle):
-                                firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id!){ result in
-                                    switch result {
-                                    case .success(let isPresent):
-                                        if !isPresent  {
-                                            firestoreViewModel.addNewUser(user: userGoogle)
-                                        }
-                                    case .failure(let error):
-                                        print("Error finding document user: \(error)")
-                                        return
-                                    }
-                                }
-                            case .failure(let error):
-                                print("Error logging the user: \(error)")
+                        Button {
+                            guard authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmailSignin), !authenticationViewModel.textFieldPasswordSignin.isEmpty else {
+                                print("Empty email or password")
                                 return
                             }
-                        }
-                        
-                    } label: {
-                        HStack {
-                            Image("googlelogo")
-                                .resizable()
-                                .frame(width: 18, height: 18)
-                            Text("Sign in with Google")
                             
-                        }
-                        .padding()
-                        .background(.white)
-                        .foregroundColor(.gray)
-                        .cornerRadius(8)
-                        .frame(height: 40)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.gray, lineWidth: 1)
-                        )
-                    }
-                    
-                    
-                    Button {
-                        authenticationViewModel.loginFacebook(){ result in
-                            switch result {
-                            case .success(let userFacebook):
-                                firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id!){ result in
-                                    switch result {
-                                    case .success(let isPresent):
-                                        if !isPresent  {
-                                            firestoreViewModel.addNewUser(user: userFacebook)
-                                        }
-                                    case .failure(let error):
-                                        print("Error finding document user: \(error)")
-                                        return
-                                    }
-                                }
-                            case .failure(let error):
-                                print("Error logging the user: \(error)")
-                                return
-                            }
-                        }
-                    } label: {
-                        HStack {
-                            ZStack {
-                                Circle()
-                                    .fill(Color.white)
-                                    .frame(width: 24,height: 24) // Dimensioni del cerchio bianco
+                            authenticationViewModel.login(email: authenticationViewModel.textFieldEmailSignin,
+                                                          password: authenticationViewModel.textFieldPasswordSignin)
+                            
+                        } label: {
+                            HStack() {
+                                Text("Sign in")
+                                    .font(.system(size:18))
+                                    .fontWeight(.semibold)
+                                    .frame(width: 120, height: 45)
+                                    .background(.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                                    .contentTransition(.identity)
                                 
-                                Image("facebook_logo")
+                            }
+                            .padding(.vertical,10)
+
+                        }
+                        
+                        // TODO: it must disappear.
+                        if let messageError = authenticationViewModel.messageError {
+                            Text(messageError)
+                                .font(.body)
+                                .foregroundColor(.red)
+                                .padding()
+                        }
+                    }
+                    
+                    
+                    Group {
+                        HStack{
+                            VStack { Divider().background(Color.gray) }.padding(.horizontal, 20)
+                            Text("or").foregroundColor(Color.white)
+                            VStack { Divider().background(Color.white) }.padding(.horizontal, 20)
+                        }
+                        
+                        Button {
+                            authenticationViewModel.loginGoogle(){ result in
+                                switch result {
+                                case .success(let userGoogle):
+                                    firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id!){ result in
+                                        switch result {
+                                        case .success(let isPresent):
+                                            if !isPresent  {
+                                                firestoreViewModel.addNewUser(user: userGoogle)
+                                            }
+                                        case .failure(let error):
+                                            print("Error finding document user: \(error)")
+                                            return
+                                        }
+                                    }
+                                case .failure(let error):
+                                    print("Error logging the user: \(error)")
+                                    return
+                                }
+                            }
+                            
+                        } label: {
+                            HStack {
+                                Image("googlelogo")
                                     .resizable()
                                     .frame(width: 18, height: 18)
+                                Text("Sign in with Google")
+                                
                             }
-                            
-                            Text("Continue with Facebook")
-                            
+                            .padding(10)
+                            .background(.white)
+                            .foregroundColor(.gray)
+                            .cornerRadius(8)
+                            .frame(height: 40)
                         }
-                        .padding()
-                        .background(.blue)
-                        .foregroundColor(.white)
-                        .frame(height: 40)
-                        .cornerRadius(8)
-                        .frame(height: 40)
+                        
+                        
+                        Button {
+                            authenticationViewModel.loginFacebook(){ result in
+                                switch result {
+                                case .success(let userFacebook):
+                                    firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id!){ result in
+                                        switch result {
+                                        case .success(let isPresent):
+                                            if !isPresent  {
+                                                firestoreViewModel.addNewUser(user: userFacebook)
+                                            }
+                                        case .failure(let error):
+                                            print("Error finding document user: \(error)")
+                                            return
+                                        }
+                                    }
+                                case .failure(let error):
+                                    print("Error logging the user: \(error)")
+                                    return
+                                }
+                            }
+                        } label: {
+                            HStack {
+                                ZStack {
+                                    Circle()
+                                        .fill(Color.white)
+                                        .frame(width: 24,height: 24) // Dimensioni del cerchio bianco
+                                    
+                                    Image("facebook_logo")
+                                        .resizable()
+                                        .frame(width: 18, height: 18)
+                                }
+                                
+                                Text("Continue with Facebook")
+                                
+                            }
+                            .padding()
+                            .background(.blue)
+                            .foregroundColor(.white)
+                            .frame(height: 40)
+                            .cornerRadius(8)
+                            .frame(height: 40)
+                        }
+                        
+                        
+                        NavigationLink {
+                            SignupView(authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)
+                        } label: {
+                            Text("Don't have an account? Sign up")
+                                .foregroundColor(.blue)
+                        }
+                        .padding(.top, 5)
                     }
                     
-                    
-                    NavigationLink {
-                        SignupView(authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)
-                    } label: {
-                        Text("Don't have an account? Sign up")
-                    }
-                    .padding(.top, 5)
                 }
-                
-            }
-            .onAppear{
-                authenticationViewModel.clearSignInParameter()
-            }
-            .padding(.horizontal, 50)
-            .padding(.vertical,25)
-            .offset(y:-30)
+                .onAppear{
+                    authenticationViewModel.clearSignInParameter()
+                }
+                .padding(.horizontal, 50)
+                .padding(.vertical,25)
+                .offset(y:-30)
+            }.foregroundColor(.white)
         }
     }
 }

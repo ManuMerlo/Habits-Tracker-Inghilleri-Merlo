@@ -16,31 +16,34 @@ struct UserProfileView: View {
     var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     var body: some View {
-        ScrollView (.vertical, showsIndicators: false) {
-            VStack{
-                ZStack{
-                    
-                    Rectangle()
-                        .fill(.linearGradient(colors: [Color.purple, Color.purple.opacity(0.7)], startPoint: .top, endPoint: .bottom))
-                        .shadow(color: Color.black.opacity(0.2), radius: 5, x: 0, y: 2)
-                        .frame(height: 200)
-                    
-                    
-                    Header(firestoreViewModel: firestoreViewModel, user: user)
-                    
-                }.padding(.bottom)
-                
-                content(user: user)
-                
-                
-            }.toolbarColorScheme(.dark, for: .navigationBar)
-                .toolbarBackground(
-                    Color.purple,
-                    for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar)
+        ZStack{
             
-        }.navigationBarTitle("", displayMode: .inline) // Hide the title
-        
+            RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
+                .edgesIgnoringSafeArea(.all)
+            
+            ScrollView (.vertical, showsIndicators: false) {
+                
+                VStack{
+                    
+                    ZStack{
+                        
+                        Color("oxfordBlue")
+                        Header(firestoreViewModel: firestoreViewModel, user: user)
+                        
+                        
+                    }.edgesIgnoringSafeArea(.top)
+                    
+                    content(user: user).padding(.vertical)
+                    
+                    
+                }.toolbarColorScheme(.dark, for: .navigationBar)
+                    .toolbarBackground(
+                        Color("oxfordBlue"),
+                        for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
+                
+            }.navigationBarTitle("", displayMode: .inline) // Hide the title
+        }
         
     }
     
@@ -54,60 +57,67 @@ struct Header: View{
     var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     var body: some View{
-        
-        VStack(alignment: .leading){
-            Spacer()
-            HStack {
+    
+            VStack{
+                
                 VStack(alignment: .leading){
-                    if let username = user.username{
-                        Text(username)
-                            .font(.custom("Open Sans", size: 30))
-                            .foregroundColor(.white)
-                            .padding(.bottom,1)
+                    Spacer()
+                    HStack {
+                        VStack(alignment: .leading){
+                            if let username = user.username{
+                                Text(username)
+                                    .font(.custom("Open Sans", size: 30))
+                                    .foregroundColor(.white)
+                                    .padding(.bottom,1)
+                                
+                                
+                            } else {
+                                Text("User")
+                                    .font(.custom("Open Sans", size: 30))
+                                    .foregroundColor(.white)
+                                    .padding(.bottom,1)
+                                
+                            }
+                            
+                            Text("\(user.email)")
+                                .font(.custom("Open Sans", size: 15))
+                                .foregroundColor(.white)
+                                .padding(.bottom,3)
+                            
+                            HStack{
+                                Image(systemName: "medal.fill")
+                                    .font(.system(size: 10))
+                                    .foregroundColor(.white)
+                                
+                                Text("\(user.dailyScores[today]) points")
+                                    .font(.custom("Open Sans", size: 15))
+                                    .foregroundColor(.white)
+                                
+                            }
+                            
+                        }
                         
+                        Spacer()
                         
-                    } else {
-                        Text("User")
-                            .font(.custom("Open Sans", size: 30))
-                            .foregroundColor(.white)
-                            .padding(.bottom,1)
-
-                    }
+                        ProfileImageView(
+                            size: 70 ,
+                            color: .white)
+                        
+                    }.padding(.bottom,5)
                     
-                    Text("\(user.email)")
-                        .font(.custom("Open Sans", size: 15))
-                        .foregroundColor(.white)
-                        .padding(.bottom,3)
+                    Spacer()
                     
-                    HStack{
-                        Image(systemName: "medal.fill")
-                            .font(.system(size: 10))
-                            .foregroundColor(.white)
-                        
-                        Text("\(user.dailyScores[today]) points")
-                            .font(.custom("Open Sans", size: 15))
-                            .foregroundColor(.white)
-                        
-                    }
+                    ButtonRequest(firestoreViewModel: firestoreViewModel, user: user)
+                    
+                    
+                    Spacer()
+                    
                     
                 }
-                
-                Spacer()
-                
-                ProfileImageView(
-                    size: 70 ,
-                    color: .white)
-                
-            }.padding(.bottom,5)
-            
-            Spacer()
-            
-            ButtonRequest(firestoreViewModel: firestoreViewModel, user: user)
-            
-            
-            Spacer()
-            
-        }.frame(width: UIScreen.main.bounds.width/1.2)
+                .padding(.vertical)
+                .frame(width: UIScreen.main.bounds.width/1.2)
+
+            }
         
     }
     
@@ -137,7 +147,7 @@ struct ButtonRequest: View {
                 .font(.custom("Open Sans", size: 18))
         }
         .buttonStyle(.borderedProminent)
-        .foregroundColor(.purple)
+        .foregroundColor(Color("oxfordBlue"))
         .tint(.white)
         
         if firestoreViewModel.requests.contains(user) {
@@ -148,7 +158,7 @@ struct ButtonRequest: View {
                     .font(.custom("Open Sans", size: 18))
             }
             .buttonStyle(.borderedProminent)
-            .foregroundColor(.purple)
+            .foregroundColor(Color("oxfordBlue"))
             .tint(.white)
         }
         
@@ -191,11 +201,19 @@ struct content: View {
         
         VStack(alignment: .center){
             
-            ScoreRingView(user:user)
+            ScoreRingView(dailyScore: user.dailyScores[today],weeklyScore: user.dailyScores[7])
+            
+           
+            Rectangle()
+                .frame(height: 1)
+                .foregroundColor(.white.opacity(0.7))
+                .padding(.vertical)
+
             
             VStack(alignment: .center){
                 Text("Score Trend of the last week")
                     .font(.title3)
+                    .foregroundColor(.white)
                 
                 ZStack(){
                     Chart {

@@ -105,6 +105,7 @@ final class SettingsViewModel: ObservableObject {
                 Picker(selection: $selectedItem, label: Text("Select your \(property)" )) {
                     ForEach(rangeMin..<rangeMax, id: \.self) { number in
                         Text("\(number) \(unitaryMeasure)")
+                            .foregroundColor(.white)
                     }
                 }
                 .pickerStyle(.wheel)

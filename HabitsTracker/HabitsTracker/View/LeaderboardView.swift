@@ -26,59 +26,73 @@ struct LeaderboardView: View {
     @FirestoreQuery(
         collectionPath: "users"
     ) var globalUsers: [User]
-
+    
+    init(firestoreViewModel: FirestoreViewModel) {
+        self.firestoreViewModel = firestoreViewModel
+        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(red: 0.1, green: 0.15, blue: 0.23, alpha: 0.9)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .selected)
+        UISegmentedControl.appearance().setTitleTextAttributes([.foregroundColor: UIColor.white], for: .normal)
+    }
     
     var body: some View {
         
         NavigationStack {
             
-            VStack{
-                Picker("Choose a time frame", selection: $selectedTimeFrame) {
-                    ForEach(TimeFrame.allCases,id: \.self){
-                        Text($0.rawValue)
-                    }
-                }.onChange(of: selectedTimeFrame , perform: { newValue in
-                    sortUsers(timeFrame: newValue)
-                })
-                .pickerStyle(SegmentedPickerStyle())
-                .padding(.bottom,8)
+            ZStack {
+                RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
+                    .edgesIgnoringSafeArea(.all)
                 
-                ScrollView {
-                    LazyVStack {
-                        ForEach(users, id: \.self) { user in
-                            NavigationLink(value: user){
-                                RankingItemView(user : user,
-                                                selectedTimeFrame: selectedTimeFrame,
-                                                position: ((users.isEmpty ? globalUsers : users).firstIndex(of: user) ?? 0) + 1
-                                ).padding(.bottom, 95)
-                            }
+                VStack{
+                    
+                    Picker("Choose a time frame", selection: $selectedTimeFrame) {
+                        ForEach(TimeFrame.allCases,id: \.self){
+                            Text($0.rawValue)
+                            
                         }
                     }
-                }.padding(.top,10)
-            }
-            .toolbar {
-                Button {
-                    global.toggle()
-                    setUsers(global: global)
-                } label: {
-                    if !global {
-                        Text("Global").foregroundColor(.white)
-                        Image(systemName: "globe").foregroundColor(.white)
-                    } else {
-                        Text("Private").foregroundColor(.white)
-                        Image(systemName: "person").foregroundColor(.white)
+                    .pickerStyle(SegmentedPickerStyle())
+                    .onChange(of: selectedTimeFrame , perform: { newValue in
+                        sortUsers(timeFrame: newValue)
+                    })
+                    .padding(.bottom,8)
+                    
+                    ScrollView {
+                        LazyVStack {
+                            ForEach(users, id: \.self) { user in
+                                NavigationLink(value: user){
+                                    RankingItemView(user : user,
+                                                    selectedTimeFrame: selectedTimeFrame,
+                                                    position: ((users.isEmpty ? globalUsers : users).firstIndex(of: user) ?? 0) + 1
+                                    ).padding(.bottom, 95)
+                                }
+                            }
+                        }
+                    }.padding(.top,10)
+                }
+                .toolbar {
+                    Button {
+                        global.toggle()
+                        setUsers(global: global)
+                    } label: {
+                        if !global {
+                            Text("Global").foregroundColor(.white)
+                            Image(systemName: "globe").foregroundColor(.white)
+                        } else {
+                            Text("Private").foregroundColor(.white)
+                            Image(systemName: "person").foregroundColor(.white)
+                        }
                     }
-                }
-            }.padding(20)
-                .navigationTitle("Leaderboard")
-                .navigationDestination(for: User.self) { user in
-                    UserProfileView(firestoreViewModel: firestoreViewModel, user: user)
-                }
-                .toolbarColorScheme(.dark, for: .navigationBar)
-                .toolbarBackground(
-                    Color.purple,
-                    for: .navigationBar)
-                .toolbarBackground(.visible, for: .navigationBar)
+                }.padding(20)
+                    .navigationTitle("Leaderboard")
+                    .navigationDestination(for: User.self) { user in
+                        UserProfileView(firestoreViewModel: firestoreViewModel, user: user)
+                    }
+                    .toolbarColorScheme(.dark, for: .navigationBar)
+                    .toolbarBackground(
+                        Color("oxfordBlue"),
+                        for: .navigationBar)
+                    .toolbarBackground(.visible, for: .navigationBar)
+            }
         }.onAppear{
             sortUsers(timeFrame: selectedTimeFrame)
         }
@@ -119,6 +133,7 @@ struct RankingItemView: View {
     var selectedTimeFrame : TimeFrame
     var position : Int
     let today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
+    let screen = UIScreen.main.bounds.width
     
     var body: some View {
         
@@ -126,8 +141,7 @@ struct RankingItemView: View {
             HStack(spacing: 20) {
                 ZStack{
                     
-                    ProfileImageView(path: user.image, size: geometry.size.width/8, color: .white)
-                    
+                    ProfileImageView(path: user.image, size: geometry.size.width/7, color: .white)
                     ZStack{
                         Circle()
                             .frame(width: 35, height: 35)

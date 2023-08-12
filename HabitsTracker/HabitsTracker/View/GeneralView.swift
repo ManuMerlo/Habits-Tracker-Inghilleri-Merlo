@@ -21,8 +21,7 @@ struct GeneralView: View {
         TabView {
             HomeView(healthViewModel: healthViewModel, firestoreViewModel: firestoreViewModel)
                 .tabItem {
-                    Image(systemName: "house")
-                    Text("Home")
+                    Label("Dashboard", systemImage: "house")
                 }
             
             /*PlanningView()
@@ -33,14 +32,13 @@ struct GeneralView: View {
             
             SearchFriendView(firestoreViewModel:firestoreViewModel)
                 .tabItem {
-                    Image(systemName: "magnifyingglass")
-                    Text("Search")
+                    Label("Search", systemImage: "magnifyingglass")
                 }
+            
             
             LeaderboardView(firestoreViewModel: firestoreViewModel)
                 .tabItem {
-                    Image(systemName: "trophy")
-                    Text("Leaderboard")
+                    Label("Leaderboard", systemImage: "trophy")
                 }
             /*Text("Goals")
              .tabItem {
@@ -51,10 +49,12 @@ struct GeneralView: View {
             //TODO: authentication is need to reauthenticate the user before deleting the account
             SettingsView(authenticationViewModel: authenticationViewModel,firestoreViewModel : firestoreViewModel)
                 .tabItem {
-                    Image(systemName: "gear")
-                    Text("Settings")
+                    Label("Settings", systemImage: "gear")
                 }
+            
+            
         }
+        .accentColor(.white)
         .task {
             healthViewModel.requestAccessToHealthData()
             firestoreViewModel.getAllUsers()
@@ -100,6 +100,9 @@ struct GeneralView: View {
         .onAppear{
             firestoreViewModel.getCurrentUser()
             firestoreViewModel.getFriendsSubcollection()
+        }
+        .onAppear() {
+            UITabBar.appearance().barTintColor = UIColor(red: 0.1, green: 0.15, blue: 0.23, alpha: 0.9)
         }
     }
 }

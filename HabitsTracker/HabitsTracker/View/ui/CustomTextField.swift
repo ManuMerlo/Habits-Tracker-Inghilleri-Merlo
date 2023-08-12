@@ -37,7 +37,7 @@ struct CustomTextField: View {
                         Button(action: {
                             isSecure.toggle()
                         }, label: {
-                            Image(systemName: !isSecure ? "eye.slash" : "eye" ).foregroundColor(.black)
+                            Image(systemName: !isSecure ? "eye.slash" : "eye" )
                             
                         })}
                 } else {

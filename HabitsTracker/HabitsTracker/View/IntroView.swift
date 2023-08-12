@@ -10,54 +10,59 @@ struct IntroView: View {
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
     
     var body: some View {
+        
         NavigationView {
-            VStack{
-                ZStack{
-                    
-                    TabView(selection: $selectedPage)
-                    {
-                        ForEach(0..<3) {
-                            index in DescriptionCard(card: data[index]).tag(index).offset(y:25)
+            ZStack{
+                RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
+                    .edgesIgnoringSafeArea(.all)
+                VStack{
+                    ZStack{
+                        TabView(selection: $selectedPage)
+                        {
+                            ForEach(0..<3) {
+                                index in DescriptionCard(card: data[index]).tag(index).offset(y:25)
+                            }
+                            
+                        }
+                        .onAppear() {
+                            UIPageControl.appearance().currentPageIndicatorTintColor = .black
+                            UIPageControl.appearance().pageIndicatorTintColor = .gray
+                        }
+                        .offset(y:-10)
+                        .tabViewStyle(PageTabViewStyle(indexDisplayMode:.automatic))
+                        .onReceive(timer){ time in
+                            selectedPage = (selectedPage + 1) % 3
+                        }
+                        
+                        //Selected Pages
+                        if selectedPage == 0 {
+                            UpperImage(background: .blue, filename: "notes")
+                        }
+                        
+                        if selectedPage == 1 {
+                            UpperImage(background: .purple, filename: "share")
+                        }
+                        
+                        if selectedPage == 2 {
+                            UpperImage(background: .pink, filename: "plan_activities")
                         }
                         
                     }
-                    .onAppear() {
-                        UIPageControl.appearance().currentPageIndicatorTintColor = .black
-                        UIPageControl.appearance().pageIndicatorTintColor = .gray
-                    }
-                    .offset(y:-10)
-                    .tabViewStyle(PageTabViewStyle(indexDisplayMode:.automatic))
-                    .onReceive(timer){ time in
-                        selectedPage = (selectedPage + 1) % 3
-                    }
                     
-                    //Selected Pages
-                    if selectedPage == 0 {
-                        UpperImage(background: .blue, filename: "notes")
+                    NavigationLink {
+                        SigninView(authenticationViewModel: authenticationViewModel,firestoreViewModel: firestoreViewModel)
+                    } label: {
+                        Text("Skip")
+                            .font(.system(size:22))
+                            .fontWeight(.semibold)
+                            .frame(width: 150, height: 50)
+                            .background(Color.white)
+                            .foregroundColor(Color("oxfordBlue"))
+                            .cornerRadius(10)
                     }
-                    
-                    if selectedPage == 1 {
-                        UpperImage(background: .purple, filename: "share")
-                    }
-                    
-                    if selectedPage == 2 {
-                        UpperImage(background: .pink, filename: "plan_activities")
-                    }
-                    
+                    .padding(.bottom)
                 }
-                
-                NavigationLink {
-                    SigninView(authenticationViewModel: authenticationViewModel,firestoreViewModel: firestoreViewModel)
-                } label: {
-                    Text("Skip")
-                        .fontWeight(.semibold)
-                        .frame(width: 180, height: 50)
-                        .background(Color.blue)
-                        .foregroundColor(.black)
-                        .cornerRadius(10)
-                }
-                .padding(.bottom)
-            }
+            }.foregroundColor(.white)
         }
     }
     

@@ -38,7 +38,9 @@ struct NotificationDetailView: View {
                     }
                     
                 })
-            }
+            }.foregroundColor(.white.opacity(0.7))
+                .listRowBackground(Color("oxfordBlue"))
+                .listRowSeparatorTint(.white.opacity(0.7))
             
             Section {
                 
@@ -69,8 +71,13 @@ struct NotificationDetailView: View {
                 .disabled(!settingViewModel.agreedToTerms)
                 
             }
+            .foregroundColor(.white.opacity(0.7))
+            .listRowBackground(Color("oxfordBlue"))
+            .listRowSeparatorTint(.white.opacity(0.7))
             
         }
+        .scrollContentBackground(.hidden)
+        .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500).opacity(0.98))
     }
     
 }

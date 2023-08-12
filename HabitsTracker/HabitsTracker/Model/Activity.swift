@@ -24,7 +24,7 @@ struct BaseActivity: Activity, Equatable {
     }
     
     static func == (lhs: BaseActivity, rhs: BaseActivity) -> Bool {
-            return lhs.id == rhs.id
+        return lhs.id == rhs.id && lhs.quantity == rhs.quantity
         }
 }
 
@@ -43,6 +43,7 @@ class ExtendedActivity: Activity, Hashable {
         self.measure = measure
     }
   
+    // FIXME: we cannot use only the id
     static func == (lhs: ExtendedActivity, rhs: ExtendedActivity) -> Bool {
             return lhs.id == rhs.id
         }
