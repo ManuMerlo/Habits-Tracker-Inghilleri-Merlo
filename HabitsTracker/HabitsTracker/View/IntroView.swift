@@ -11,7 +11,7 @@ struct IntroView: View {
     
     var body: some View {
         
-        NavigationView {
+        NavigationStack {
             ZStack{
                 RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
                     .edgesIgnoringSafeArea(.all)
@@ -56,8 +56,7 @@ struct IntroView: View {
                             .font(.system(size:22))
                             .fontWeight(.semibold)
                             .frame(width: 150, height: 50)
-                            .background(Color.white)
-                            .foregroundColor(Color("oxfordBlue"))
+                            .background(Color.blue)
                             .cornerRadius(10)
                     }
                     .padding(.bottom)

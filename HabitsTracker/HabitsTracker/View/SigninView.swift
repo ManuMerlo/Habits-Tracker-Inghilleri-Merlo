@@ -175,6 +175,11 @@ struct SigninView: View {
                 .offset(y:-30)
             }.foregroundColor(.white)
         }
+        .toolbarColorScheme(.dark, for: .navigationBar)
+            .toolbarBackground(
+                Color("oxfordBlue"),
+                for: .navigationBar)
+            .toolbarBackground(.visible, for: .navigationBar)
     }
 }
 

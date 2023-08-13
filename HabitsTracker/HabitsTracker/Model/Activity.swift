@@ -14,7 +14,7 @@ protocol Activity {
 }
 
 // Struct conforming to the protocol
-struct BaseActivity: Activity, Equatable {
+struct BaseActivity: Activity, Equatable, Codable, Hashable {
     var id: String
     var quantity: Int?
     
@@ -54,10 +54,10 @@ class ExtendedActivity: Activity, Hashable {
     
     static func allActivities() -> [ExtendedActivity] {
         return [
-            ExtendedActivity(id: "activeEnergyBurned", name: "Active Energy Burned", image: "flame", measure: "Kcal"),
+            ExtendedActivity(id: "activeEnergyBurned", name: "Energy Burned", image: "flame", measure: "Kcal"),
             ExtendedActivity(id: "appleExerciseTime", name: "Exercise Time", image: "figure.strengthtraining.traditional", measure:"min"),
             ExtendedActivity(id: "appleStandTime",name: "Stand Time", image: "figure.stand", measure: "min"),
-            ExtendedActivity(id: "distanceWalkingRunning", name: "Distance Walking/Running", image: "figure.walk", measure: "Km"),
+            ExtendedActivity(id: "distanceWalkingRunning", name: "Distance", image: "figure.walk", measure: "Km"),
             ExtendedActivity(id: "stepCount", name: "Step Count", image: "shoeprints.fill", measure: "Steps")
             ]
     }

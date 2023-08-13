@@ -18,8 +18,8 @@ struct ActivityStatusView: View {
     var measure: String
     
     var body: some View {
-            
-        ZStack{
+        
+        VStack{
             
             RoundedRectangle(cornerRadius: 25.0)
                 .fill(Color("delftBlue").opacity(0.9))
@@ -29,68 +29,70 @@ struct ActivityStatusView: View {
                     RoundedRectangle(cornerRadius: 25.0)
                         .stroke(Color("platinum").opacity(0.5), lineWidth: 2)
                 )
-                .opacity(0.8)
-            
-            VStack(alignment: .center){
-                Text("\(activityType): \(score) ")
-                    .font(.title3)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .offset(y:15)
-                    .padding(.horizontal,30)
-                
-                Text("\(quantity) \(measure)")
-                    .font(.body)
-                    .fontWeight(.thin)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, alignment: .trailing)
-                    .offset(y:15)
-                    .padding(.horizontal,30)
-                
-                HStack{
-                    Image(systemName: "\(image)")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30, alignment: .leading)
-                        .foregroundColor(Color.white)
-                        .opacity(0.8)
+                .opacity(0.8).overlay {
                     
-                    Spacer()
-                    
-                    ZStack(){
-                        let quantity = Double(quantity)
-                        let maximumQuantity = 280.0
-                        let percentage = min(quantity, maximumQuantity)
+                    VStack(){
+                        Text("\(activityType): +\(score) points")
+                            .font(.title3)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, alignment: .leading)
+                            .offset(y:15)
+                            .padding(.leading,20)
                         
-                        RoundedRectangle(cornerRadius: 25.0)
-                            .frame(width: maximumQuantity, height: 10,
-                                   alignment: .trailing)
-                            .foregroundColor(Color("platinum"))
-                            .opacity(0.3)
-                    
-                        RoundedRectangle(cornerRadius: 25.0)
-                            .fill(LinearGradient(
-                                gradient: .init(colors: [color1, color2]),
-                                startPoint: .init(x: 0, y: 0),
-                                endPoint: .init(x: 0.5, y: 0)
-                            ))
-                            .frame(width: percentage, height: 10, alignment: .trailing)
-                            .offset(x: -((maximumQuantity-percentage)/2))
-                            .shadow(color: .black.opacity(0.5), radius: 5, x: 0.0, y: 0.0)
+                        Text("\(quantity) \(measure)")
+                            .font(.body)
+                            .fontWeight(.thin)
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity, alignment: .trailing)
+                            .offset(y:15)
+                            .padding(.trailing,20)
+                        
+                        HStack{
+                            Image(systemName: "\(image)")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 30, height: 30, alignment: .leading)
+                                .foregroundColor(Color.white)
+                                .opacity(0.8)
+                                .padding(.leading,20)
+                            
+                            
+                            Spacer()
+                            
+                            let quantity = Double(quantity)
+                            let maximumQuantity = 270.0
+                            let percentage = min(quantity, maximumQuantity)
+                            
+                            RoundedRectangle(cornerRadius: 25.0)
+                                .frame(width: maximumQuantity, height: 10,
+                                       alignment: .trailing)
+                                .foregroundColor(Color("platinum"))
+                                .opacity(0.3)
+                                .overlay {
+                                    RoundedRectangle(cornerRadius: 25.0)
+                                        .fill(LinearGradient(
+                                            gradient: .init(colors: [color1, color2]),
+                                            startPoint: .init(x: 0, y: 0),
+                                            endPoint: .init(x: 0.5, y: 0)
+                                        ))
+                                        .frame(width: percentage, height: 10, alignment: .trailing)
+                                        .offset(x: -((maximumQuantity-percentage)/2))
+                                        .shadow(color: .black.opacity(0.5), radius: 5, x: 0.0, y: 0.0)
+                                }
+                                .padding(.trailing,20)
+                            
+                        }.padding(.horizontal,30)
                         
                     }
-                    
-                }.padding(.horizontal,30)
-                
-            }
-            
-        }.padding(.vertical,3)
-        .padding(.horizontal)
+                }
+        }
+        .padding(.vertical,3)
+        .padding(.horizontal,20)
     }
 }
 
 struct ActivityStatusView_Previews: PreviewProvider {
     static var previews: some View {
-        ActivityStatusView(activityType: "Active Energy Burned", quantity: 40, score: 60, image: "flame", measure: "Kcal" )
+        ActivityStatusView(activityType: "Energy Burned", quantity: 40, score: 60, image: "flame", measure: "Kcal" )
     }
 }

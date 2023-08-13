@@ -13,7 +13,7 @@ struct SignupView: View {
             ScrollView(.vertical, showsIndicators: false){
                 
                 VStack(alignment: .center, spacing: 15) {
-                    
+
                     ZStack{
                         LottieView(filename: "register")
                             .frame(width:330, height: 280)
@@ -113,7 +113,13 @@ struct SignupView: View {
                 .padding(.horizontal, 50)
                 .padding(.vertical,25)
             }
-        }.foregroundColor(.white)
+        }
+        .foregroundColor(.white)
+        .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbarBackground(
+            Color("oxfordBlue"),
+            for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
     }
 }
 

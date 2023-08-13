@@ -103,6 +103,39 @@ struct HomeView: View {
                         }
                     }
                 }
+                
+            Text("Records")
+                    .font(.title)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                    .padding(20)
+        
+            if let user = firestoreViewModel.firestoreUser{
+                let columns = [
+                        GridItem(.flexible(), spacing: 10),
+                        GridItem(.flexible(), spacing: 10),
+                    ]
+                
+                VStack{
+                    LazyVGrid(columns: columns, spacing: 10) {
+                        ForEach(Array(ExtendedActivity.allActivities().enumerated()), id: \.element.id) { index, activity in
+                            if let record = user.records.first(where: { $0.id == activity.id }) {
+                                RecordView(
+                                    activityType: activity.name,
+                                    quantity: record.quantity ?? 0,
+                                    image: activity.image,
+                                    measure: activity.measure,
+                                    color: index,
+                                    up: record.quantity ?? 0 < healthViewModel.allMyTypes.first{$0.id == record.id}?.quantity ?? 0 ? true : false,
+                                    width: UIScreen.main.bounds.width*2/5
+                                )
+                            }
+                        }
+                    }
+                    .padding()
+                }
+            }
+            
             }.background(Color("oxfordBlue"))
         }
         .padding(.top,20)

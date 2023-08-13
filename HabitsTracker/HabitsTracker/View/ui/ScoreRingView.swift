@@ -14,22 +14,19 @@ struct ScoreRingView: View {
     var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     private let gradient = AngularGradient(
-        gradient: Gradient(colors: [Color("magenta"),Color("skyBlue")]),
+        gradient: Gradient(colors: [Color("skyBlue"),Color("magenta"),Color("phlox")]),
         center: .center,
-        startAngle: .degrees(180),
-        endAngle: .degrees(0))
+        startAngle: .degrees(0),
+        endAngle: .degrees(352))
     
     private let gradient2 = AngularGradient(
-        gradient: Gradient(colors: [Color(red: 0, green: 0.8, blue: 0), Color(red: 1, green: 1, blue: 0.8)]),
+        gradient: Gradient(colors: [Color(red: 1, green: 1, blue: 0.8),Color(red: 0, green: 0.8, blue: 0.2),Color(red: 0, green: 0.4, blue: 0.28)]),
         center: .center,
-        startAngle: .degrees(180),
-        endAngle: .degrees(0))
+        startAngle: .degrees(0),
+        endAngle: .degrees(352))
     
     var body: some View {
         ZStack{
-            
-            /*RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
-                .edgesIgnoringSafeArea(.all)*/
             
                 Circle()
                     .stroke(Color("platinum"), lineWidth: 20).opacity(0.3)
@@ -103,6 +100,6 @@ struct ScoreRingView: View {
 
 struct ScoreRingView_Previews: PreviewProvider {
     static var previews: some View {
-        ScoreRingView(dailyScore:40, weeklyScore: 100)
+        ScoreRingView(dailyScore:100, weeklyScore: 100)
     }
 }

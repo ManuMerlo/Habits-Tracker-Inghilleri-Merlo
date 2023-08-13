@@ -208,14 +208,16 @@ struct content: View {
                 .frame(height: 1)
                 .foregroundColor(.white.opacity(0.7))
                 .padding(.vertical)
+                .shadow(color:Color("oxfordBlue"),radius: 5)
 
             
             VStack(alignment: .center){
-                Text("Score Trend of the last week")
-                    .font(.title3)
-                    .foregroundColor(.white)
+                Text("Score Trend")
+                        .font(.title)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                        .padding(20)
                 
-                ZStack(){
                     Chart {
                         ForEach(user.dailyScores.indices[0...6], id: \.self) { index in
                             LineMark(
@@ -223,24 +225,25 @@ struct content: View {
                                 y: .value("Score", user.dailyScores[index])
                             )
                             .foregroundStyle(
-                                by: .value("Week", "Current Week") // You can adjust this as needed
+                                by: .value("Week", "Current Week")
                             )
                             .interpolationMethod(.catmullRom)
                             .symbol(
-                                by: .value("Week", "Current Week") // You can adjust this as needed
+                                by: .value("Week", "Current Week")
                             )
                             .symbolSize(30)
                         }
-                    }
+                    }.environment(\.colorScheme, .dark) //FIXME: temporary fix
                     .chartForegroundStyleScale([
                         "Current Week": Color(hue: 0.33, saturation: 0.81, brightness: 0.76),
                     ])
                     .chartYAxis {
                         AxisMarks(position: .leading)
-                    }.frame(height: 250)
-                    
-                    
-                }
+                           
+                    }
+                    .frame(height: 250)
+                    .padding(.horizontal,20)
+                    .foregroundColor(.blue)
                 
             }
                         
@@ -276,7 +279,7 @@ struct UserProfileView_Previews: PreviewProvider {
             height: 150,
             weight: 60,
             image: "",
-            dailyScores: [20,50,40,60,60,90,70,80,40]))
+            dailyScores: [20,50,40,60,60,90,70,200,40]))
     }
 }
 
