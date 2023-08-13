@@ -44,7 +44,7 @@ struct HomeView: View {
                 NavigationLink {
                     RequestListView( firestoreViewModel:firestoreViewModel)
                 } label: {
-                    let numberOfRequests = 1 //firestoreViewModel.requests.count
+                    let numberOfRequests = firestoreViewModel.requests.count
                     if numberOfRequests != 0 {
                         ZStack{
                             Image(systemName: "heart")
