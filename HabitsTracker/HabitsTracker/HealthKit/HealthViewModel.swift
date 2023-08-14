@@ -19,7 +19,9 @@ final class HealthViewModel: ObservableObject {
         BaseActivity(id:"appleExerciseTime", quantity: 0),
         BaseActivity(id:"appleStandTime", quantity: 0),
         BaseActivity(id:"distanceWalkingRunning", quantity: 0),
-        BaseActivity(id:"stepCount", quantity: 0)
+        BaseActivity(id:"stepCount", quantity: 0),
+        BaseActivity(id:"distanceCycling", quantity: 0),
+        
     ]
     
     
@@ -47,6 +49,7 @@ final class HealthViewModel: ObservableObject {
             HKQuantityType.quantityType(forIdentifier: .appleStandTime)!,
             HKQuantityType.quantityType(forIdentifier: .distanceWalkingRunning)!,
             HKQuantityType.quantityType(forIdentifier: .stepCount)!,
+            HKQuantityType.quantityType(forIdentifier: .distanceCycling)!,
         ]
         
         guard HKHealthStore.isHealthDataAvailable() else {
@@ -120,6 +123,8 @@ final class HealthViewModel: ObservableObject {
             return .appleStandTime
         case "distanceWalkingRunning":
             return .distanceWalkingRunning
+        case "distanceCycling":
+            return .distanceCycling
         default:
             return .stepCount
         }

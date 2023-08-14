@@ -57,9 +57,10 @@ class ExtendedActivity: Activity, Hashable {
             ExtendedActivity(id: "activeEnergyBurned", name: "Energy Burned", image: "flame", measure: "Kcal"),
             ExtendedActivity(id: "appleExerciseTime", name: "Exercise Time", image: "figure.strengthtraining.traditional", measure:"min"),
             ExtendedActivity(id: "appleStandTime",name: "Stand Time", image: "figure.stand", measure: "min"),
-            ExtendedActivity(id: "distanceWalkingRunning", name: "Distance", image: "figure.walk", measure: "Km"),
-            ExtendedActivity(id: "stepCount", name: "Step Count", image: "shoeprints.fill", measure: "Steps")
-            ]
+            ExtendedActivity(id: "distanceWalkingRunning", name: "Distance Walking", image: "figure.walk", measure: "Km"),
+            ExtendedActivity(id: "stepCount", name: "Step Count", image: "shoeprints.fill", measure: "Steps"),
+            ExtendedActivity(id: "distanceCycling", name: "Distance Cycling", image: "figure.outdoor.cycle", measure: "Km")
+]
     }
     
     static func getActivityByKey(key: String) -> Activity? {

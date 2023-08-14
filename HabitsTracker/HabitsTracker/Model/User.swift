@@ -19,7 +19,8 @@ struct User: Identifiable, Codable, Hashable {
         BaseActivity(id:"appleExerciseTime", quantity: 0),
         BaseActivity(id:"appleStandTime", quantity: 0),
         BaseActivity(id:"distanceWalkingRunning", quantity: 0),
-        BaseActivity(id:"stepCount", quantity: 0)
+        BaseActivity(id:"stepCount", quantity: 0),
+        BaseActivity(id:"distanceCycling", quantity: 0)
     ]
         
     mutating func setUsername(name: String) {
