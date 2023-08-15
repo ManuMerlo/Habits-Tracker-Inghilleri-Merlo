@@ -204,21 +204,20 @@ final class FirestoreDataSource {
     }
     
     // Function to update/set a filed is a user's document
-    func modifyUser(uid: String, field: String, value: String, type : String) {
+    func modifyUser(uid: String, field: String, value: Any) {
         let userRef = db.collection("users").document(uid)
-        
-        switch type {
-        case "String":
-            userRef.updateData([field: value]) { err in
-                self.handleUpdateResult(err: err)
-            }
-        case "Int":
-            userRef.updateData([field: Int(value) ?? 0 ]) { err in
-                self.handleUpdateResult(err: err)
-            }
-        default:
-            print("Unsupported data type for value")
+    
+        userRef.updateData([field: value]) { err in
+            self.handleUpdateResult(err: err)
         }
+        
+    }
+    
+    // Overload for arrays of BaseActivity
+    func modifyUser(uid: String, field: String, records: [BaseActivity]) {
+        let dictionaryRecords = records.map { $0.asDictionary() }
+
+        modifyUser(uid: uid, field: field, value: dictionaryRecords)
     }
     
     // Function to add a single friend to the 'friends' array for a user in Firestore
@@ -293,7 +292,7 @@ final class FirestoreDataSource {
                 scoresArray[today] = newScore
                 
                 let scoresInRange = scoresArray[0...today]
-                    
+                
                 scoresArray[7] = scoresInRange.reduce(0, +)
                 
                 userRef.updateData(["dailyScores": scoresArray]) { err in
@@ -302,7 +301,7 @@ final class FirestoreDataSource {
             }
         }
     }
-
+    
     // Helper function to handle the result of the update operation
     func handleUpdateResult(err: Error?) {
         if let err = err {

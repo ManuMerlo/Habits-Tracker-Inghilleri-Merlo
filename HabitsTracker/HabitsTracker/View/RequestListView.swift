@@ -31,28 +31,27 @@ struct RequestListView: View {
     var body: some View {
         
         NavigationStack {
-           
-                ZStack{
-                    RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
-                        .edgesIgnoringSafeArea(.all)
-                    
-                    ScrollView{
+            
+            ZStack{
+                RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
+                    .edgesIgnoringSafeArea(.all)
+                ScrollView{
+                    LazyVStack{
                         ForEach(firestoreViewModel.requests, id: \.self) { user in
                             RequestItemView(firestoreViewModel: firestoreViewModel, user: user)
-                                .padding(.top)
-                        }.padding(.top,20)
+                                .padding(.bottom, 95)
+                        }
                     }
-                    .padding()
-                    .frame(width: nil)
-                    .navigationTitle("Requests")
-                    .toolbarColorScheme(.dark, for: .navigationBar)
-                    .toolbarBackground(
-                        Color("oxfordBlue"),
-                        for: .navigationBar)
-                    .toolbarBackground(.visible, for: .navigationBar)
-                    
-                    
                 }
+                .padding()
+                .frame(width: nil)
+                .navigationTitle("Requests")
+                .toolbarColorScheme(.dark, for: .navigationBar)
+                .toolbarBackground(
+                    Color("oxfordBlue"),
+                    for: .navigationBar)
+                .toolbarBackground(.visible, for: .navigationBar)
+            }
         }
     }
 }
@@ -65,69 +64,82 @@ struct RequestItemView: View {
     var body: some View {
         GeometryReader {  geometry in
             VStack(alignment: .leading){
-                ZStack{
-                    RoundedRectangle(cornerRadius: 25.0)
-                        .fill(Color("oxfordBlue").opacity(0.9))
-                        .frame(alignment: .center)
-                        .shadow(color: Color.black.opacity(0.8), radius: 5, x: 0, y: 0)
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 25.0)
-                                .stroke(Color("platinum").opacity(0.5), lineWidth: 2)
-                        )
-                        .opacity(0.8)
-                        
-                    HStack(){
-                        ProfileImageView(
-                            path: user.image,
-                            systemName: "person.circle",
-                            size: geometry.size.width/6,
-                            color: .gray)
-                        .padding(.leading,20)
-                        
-                     
-                        Divider()
-                            .background(Color.white)
-                          
-                        VStack(alignment: .leading){
+                
+                RoundedRectangle(cornerRadius: 25.0)
+                    .fill(Color("oxfordBlue").opacity(0.9))
+                    .frame(alignment: .center)
+                    .shadow(color: Color.black.opacity(0.8), radius: 5, x: 0, y: 0)
+                    .overlay(
+                        RoundedRectangle(cornerRadius: 25.0)
+                            .stroke(Color("platinum").opacity(0.5), lineWidth: 2)
+                    )
+                    .opacity(0.8).overlay{
+                        HStack(){
+                            ProfileImageView(
+                                path: user.image,
+                                systemName: "person.circle",
+                                size: geometry.size.width/6,
+                                color: .gray)
+                            .padding(.leading,20)
                             
-                            Text(user.username ?? user.email)
-                                .font(.title2)
-                                .foregroundColor(.white)
-                                .frame(maxWidth: .infinity, alignment: .leading)
+                            
+                            Divider()
+                                .background(Color.white)
+                            
+                            VStack(alignment: .leading){
+                                Spacer()
                                 
-                            HStack{
-                                Button {
-                                    firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id!, friendId: user.id!)
-                                } label: {
-                                    Text("Confirm")
-                                }.buttonStyle(.borderedProminent)
+                                Text(user.username ?? user.email)
+                                    .font(.title2)
+                                    .foregroundColor(.white)
+                                    .frame(maxWidth: .infinity, alignment: .leading)
+                                Spacer()
+                                HStack{
+                                    Button(action: {
+                                        firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id!, friendId: user.id!)
+                                    }) {
+                                        Image(systemName: "person.fill.badge.plus")
+                                        Text("Confirm")
+                                            .font(.custom("Open Sans", size: 18))
+                                    }
+                                    .buttonStyle(.borderedProminent)
                                     .foregroundColor(.white)
                                     .tint(.blue)
-                                    .padding(.trailing,10)
-                                
-                                Button {
-                                    firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
                                     
-                                    firestoreViewModel.removeFriend(uid:user.id!, friend: firestoreViewModel.firestoreUser!.id!)
-                                } label: {
-                                    Text("Remove")
-                                }.buttonStyle(.borderedProminent)
-                                    .foregroundColor(.black)
-                                    .tint(.gray)
+                                    
+                                    Button {
+                                        firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
+                                        
+                                    } label: {
+                                        Image(systemName: "person.fill.badge.minus")
+                                        Text("Remove")
+                                            .font(.custom("Open Sans", size: 18))
+                                    }.buttonStyle(.borderedProminent)
+                                        .foregroundColor(.black)
+                                        .tint(.gray)
+                                }
+                                Spacer()
                             }
+                            
                         }
-                        .padding()
-                    }
-                }
+                    }.frame(height:90)
+                
             }
-            .frame(height: 40)
+            .frame(height: 90)
         }
     }
 }
 
 
-struct RequestListView_Previews: PreviewProvider {
+struct RequestItemView_Previews: PreviewProvider {
     static var previews: some View {
-        RequestListView( firestoreViewModel: FirestoreViewModel())
+        RequestItemView( firestoreViewModel: FirestoreViewModel(),user: User(
+            username: "lulu",
+            email: "lulu@gmail.com",
+            birthDate: "10/08/2001",
+            sex: Sex.Female,
+            height: 150,
+            weight: 60,
+            dailyScores: [20,50,40,60,60,90,70,200,40]))
     }
 }

@@ -21,3 +21,9 @@ extension Encodable{
         }
     }
 }
+
+extension Array where Element == BaseActivity {
+    func asDictionaries() -> [[String: Any]] {
+        return self.map { $0.asDictionary() }
+    }
+}

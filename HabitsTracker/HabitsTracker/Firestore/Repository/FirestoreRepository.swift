@@ -46,8 +46,13 @@ final class FirestoreRepository {
         firestoreDataSource.getWaitingList(friendsSubcollection: friendsSubcollection, completionBlock: completionBlock)
     }
     
-    func modifyUser(uid:String, field: String, value: String, type: String){
-        firestoreDataSource.modifyUser(uid:uid, field: field, value: value, type: type)
+    func modifyUser(uid:String, field: String, value: Any){
+        firestoreDataSource.modifyUser(uid:uid, field: field, value: value)
+    }
+    
+    // Overload for arrays of BaseActivity
+    func modifyUser(uid: String, field: String, records: [BaseActivity]) {
+        firestoreDataSource.modifyUser(uid: uid, field: field, records: records)
     }
     
     func addRequest(uid: String, friend: String) {

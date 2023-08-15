@@ -108,15 +108,20 @@ final class FirestoreViewModel: ObservableObject {
         firestoreRepository.confirmFriend(uid: uid, friendId: friendId)
     }
     
-    func modifyUser(uid:String, field: String, value: String, type: String) {
-        firestoreRepository.modifyUser(uid:uid, field: field, value: value, type: type)
+    func modifyUser(uid:String, field: String, value: Any) {
+        firestoreRepository.modifyUser(uid:uid, field: field, value: value)
+    }
+    
+    // Overload for arrays of BaseActivity
+    func modifyUser(uid: String, field: String, records: [BaseActivity]) {
+        firestoreRepository.modifyUser(uid: uid, field: field, records: records)
     }
     
     func updateDailyScores(uid: String, newScore: Int) {
         firestoreRepository.updateDailyScores(uid: uid, newScore: newScore)
     }
     
-    func deleteUserData(uid: String,completionBlock: @escaping (Result<Bool,Error>)-> Void) {
+    func deleteUserData(uid: String, completionBlock: @escaping (Result<Bool,Error>)-> Void) {
         firestoreRepository.deleteUserData(uid: uid) { [weak self] result in
             switch result {
             case .success(let bool):

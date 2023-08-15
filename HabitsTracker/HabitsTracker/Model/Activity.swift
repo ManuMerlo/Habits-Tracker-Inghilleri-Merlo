@@ -17,6 +17,13 @@ protocol Activity {
 struct BaseActivity: Activity, Equatable, Codable, Hashable {
     var id: String
     var quantity: Int?
+    var timestamp: TimeInterval? 
+
+    init(id: String, quantity: Int?, timestamp: TimeInterval?) {
+        self.id = id
+        self.quantity = quantity
+        self.timestamp = timestamp
+    }
     
     init(id: String, quantity: Int?) {
         self.id = id

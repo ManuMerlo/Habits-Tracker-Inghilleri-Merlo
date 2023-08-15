@@ -140,8 +140,7 @@ struct ModifyProfileView: View {
                             firestoreViewModel.modifyUser(
                                 uid: firestoreViewModel.firestoreUser!.id!,
                                 field: "birthdate",
-                                value: settingViewModel.dateToString(selectedDate),
-                                type: "String"
+                                value: settingViewModel.dateToString(selectedDate)
                             )
                             
                             showDatePicker.toggle()
@@ -173,8 +172,7 @@ struct ModifyProfileView: View {
                             firestoreViewModel.modifyUser(
                                 uid:  firestoreViewModel.firestoreUser!.id!,
                                 field: "sex",
-                                value: selectedSex.rawValue,
-                                type: "String")
+                                value: selectedSex.rawValue)
                             
                             showSexPicker.toggle()
                             isListEnabled.toggle()
@@ -239,8 +237,8 @@ struct ModifyProfileView: View {
                         firestoreViewModel.modifyUser(
                             uid:  firestoreViewModel.firestoreUser!.id!,
                             field: "image",
-                            value: path,
-                            type:"String")
+                            value: path
+                        )
                         
                     case .failure(let error):
                         print("\(error.localizedDescription)")

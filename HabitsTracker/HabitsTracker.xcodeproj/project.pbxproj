@@ -28,11 +28,12 @@
 		09652B8329311942002CC615 /* CardIntro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09652B8229311942002CC615 /* CardIntro.swift */; };
 		09652B85293119F9002CC615 /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09652B84293119F9002CC615 /* IntroView.swift */; };
 		09652B8729311B19002CC615 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09652B8629311B19002CC615 /* LottieView.swift */; };
+		097DB9BA2A8B66CC0017EAA2 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097DB9B92A8B66CC0017EAA2 /* RecordView.swift */; };
 		099BCA3229D8782200E9836F /* LinkedAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099BCA3129D8782200E9836F /* LinkedAccounts.swift */; };
 		09B7E8C82A86092A00FFD230 /* ScoreRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */; };
 		09B7E8CA2A86131000FFD230 /* ActivityStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8C92A86131000FFD230 /* ActivityStatusView.swift */; };
 		09B7E8CC2A867EE000FFD230 /* WaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8CB2A867EE000FFD230 /* WaveView.swift */; };
-		09C666E32A88AA0C006B5D38 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C666E22A88AA0C006B5D38 /* RecordView.swift */; };
+		09C666E32A88AA0C006B5D38 /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C666E22A88AA0C006B5D38 /* RecordDetailView.swift */; };
 		DD09A10329D9FA0D00CEBE15 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD09A10229D9FA0D00CEBE15 /* Activity.swift */; };
 		DD127A3C2929475900075A8B /* SigninView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3B2929475900075A8B /* SigninView.swift */; };
 		DD127A3E2929476800075A8B /* SigninViewModel_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3D2929476800075A8B /* SigninViewModel_old.swift */; };
@@ -92,11 +93,12 @@
 		09652B8229311942002CC615 /* CardIntro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardIntro.swift; sourceTree = "<group>"; };
 		09652B84293119F9002CC615 /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		09652B8629311B19002CC615 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
+		097DB9B92A8B66CC0017EAA2 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		099BCA3129D8782200E9836F /* LinkedAccounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedAccounts.swift; sourceTree = "<group>"; };
 		09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreRingView.swift; sourceTree = "<group>"; };
 		09B7E8C92A86131000FFD230 /* ActivityStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStatusView.swift; sourceTree = "<group>"; };
 		09B7E8CB2A867EE000FFD230 /* WaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveView.swift; sourceTree = "<group>"; };
-		09C666E22A88AA0C006B5D38 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
+		09C666E22A88AA0C006B5D38 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
 		DD07DFB529D0B99400633248 /* HabitsTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HabitsTracker.entitlements; sourceTree = "<group>"; };
 		DD09A10229D9FA0D00CEBE15 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		DD127A3B2929475900075A8B /* SigninView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninView.swift; sourceTree = "<group>"; };
@@ -163,7 +165,8 @@
 				09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */,
 				09B7E8C92A86131000FFD230 /* ActivityStatusView.swift */,
 				09B7E8CB2A867EE000FFD230 /* WaveView.swift */,
-				09C666E22A88AA0C006B5D38 /* RecordView.swift */,
+				09C666E22A88AA0C006B5D38 /* RecordDetailView.swift */,
+				097DB9B92A8B66CC0017EAA2 /* RecordView.swift */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -435,7 +438,7 @@
 				09115CEE2A7FCA4600BE1254 /* ProvidersDetailView.swift in Sources */,
 				DDC33531292BB96C00C27566 /* HCard.swift in Sources */,
 				099BCA3229D8782200E9836F /* LinkedAccounts.swift in Sources */,
-				09C666E32A88AA0C006B5D38 /* RecordView.swift in Sources */,
+				09C666E32A88AA0C006B5D38 /* RecordDetailView.swift in Sources */,
 				09652B8729311B19002CC615 /* LottieView.swift in Sources */,
 				09652B85293119F9002CC615 /* IntroView.swift in Sources */,
 				DD7C69B5292C254500E0D9ED /* ActivityPlanned.swift in Sources */,
@@ -457,6 +460,7 @@
 				DDC33537292BFC8700C27566 /* DateValue.swift in Sources */,
 				DDEACC1329DB748800F39F4B /* FirestoreViewModel.swift in Sources */,
 				DDEB8AED29D6F301001693C8 /* AuthenticationViewModel.swift in Sources */,
+				097DB9BA2A8B66CC0017EAA2 /* RecordView.swift in Sources */,
 				09B7E8CA2A86131000FFD230 /* ActivityStatusView.swift in Sources */,
 				DDC2F89529311CAD003653F1 /* Goal.swift in Sources */,
 				09B7E8C82A86092A00FFD230 /* ScoreRingView.swift in Sources */,

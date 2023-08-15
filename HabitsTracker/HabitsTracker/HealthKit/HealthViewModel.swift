@@ -28,7 +28,7 @@ final class HealthViewModel: ObservableObject {
     @Published var dailyScore: Int = 0
     @Published var singleScore: [String: Int] = [:]
     
-    func computeSingleScore() {
+    func computeSingleScore(){
         for activity in allMyTypes {
             if let quantity = activity.quantity {
                 singleScore[activity.id] = quantity / 100
@@ -36,6 +36,21 @@ final class HealthViewModel: ObservableObject {
                 singleScore[activity.id] = 0
             }
         }
+
+    }
+    
+    func updateRecords(records: inout [BaseActivity]) -> Bool {
+        var flag = false
+        for activity in allMyTypes {
+            if let quantity = activity.quantity {
+                if let recordIndex = records.firstIndex(where: { $0.id == activity.id }), records[recordIndex].quantity ?? 0 < quantity {
+                    records[recordIndex].quantity = quantity
+                    records[recordIndex].timestamp = Calendar.current.startOfDay(for: Date()).timeIntervalSince1970
+                    flag = true
+                }
+            }
+        }
+        return flag
     }
 
     func computeTotalScore() {

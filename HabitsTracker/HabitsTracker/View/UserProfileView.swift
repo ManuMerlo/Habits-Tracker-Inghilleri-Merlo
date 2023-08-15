@@ -24,14 +24,17 @@ struct UserProfileView: View {
             ScrollView (.vertical, showsIndicators: false) {
                 
                 VStack{
-                    
                     ZStack{
+                        Color("oxfordBlue").overlay(alignment:.bottom) {
+                            Rectangle()
+                                .frame(height: 2)
+                                .foregroundColor(Color("oxfordBlue").opacity(0.7))
+                                .shadow(color:.black,radius: 5)
+                        }
                         
-                        Color("oxfordBlue")
                         Header(firestoreViewModel: firestoreViewModel, user: user)
-                        
-                        
                     }.edgesIgnoringSafeArea(.top)
+                    
                     
                     content(user: user).padding(.vertical)
                     
@@ -57,68 +60,66 @@ struct Header: View{
     var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     var body: some View{
-    
-            VStack{
-                
-                VStack(alignment: .leading){
-                    Spacer()
-                    HStack {
-                        VStack(alignment: .leading){
-                            if let username = user.username{
-                                Text(username)
-                                    .font(.custom("Open Sans", size: 30))
-                                    .foregroundColor(.white)
-                                    .padding(.bottom,1)
-                                
-                                
-                            } else {
-                                Text("User")
-                                    .font(.custom("Open Sans", size: 30))
-                                    .foregroundColor(.white)
-                                    .padding(.bottom,1)
-                                
-                            }
-                            
-                            Text("\(user.email)")
-                                .font(.custom("Open Sans", size: 15))
+        
+        VStack{
+            
+            VStack(alignment: .leading){
+                Spacer()
+                HStack {
+                    VStack(alignment: .leading){
+                        if let username = user.username{
+                            Text(username)
+                                .font(.custom("Open Sans", size: 30))
                                 .foregroundColor(.white)
-                                .padding(.bottom,3)
+                                .padding(.bottom,1)
                             
-                            HStack{
-                                Image(systemName: "medal.fill")
-                                    .font(.system(size: 10))
-                                    .foregroundColor(.white)
-                                
-                                Text("\(user.dailyScores[today]) points")
-                                    .font(.custom("Open Sans", size: 15))
-                                    .foregroundColor(.white)
-                                
-                            }
+                            
+                        } else {
+                            Text("User")
+                                .font(.custom("Open Sans", size: 30))
+                                .foregroundColor(.white)
+                                .padding(.bottom,1)
                             
                         }
                         
-                        Spacer()
+                        Text("\(user.email)")
+                            .font(.custom("Open Sans", size: 15))
+                            .foregroundColor(.white)
+                            .padding(.bottom,3)
                         
-                        ProfileImageView(
-                            size: 70 ,
-                            color: .white)
+                        HStack{
+                            Image(systemName: "medal.fill")
+                                .font(.system(size: 10))
+                                .foregroundColor(.white)
+                            
+                            Text("\(user.dailyScores[today]) points")
+                                .font(.custom("Open Sans", size: 15))
+                                .foregroundColor(.white)
+                        }
                         
-                    }.padding(.bottom,5)
+                    }
                     
                     Spacer()
                     
+                    ProfileImageView(
+                        size: 70 ,
+                        color: .white)
+                    
+                }.padding(.bottom,5)
+                
+                Spacer()
+                if let firestoreUser = firestoreViewModel.firestoreUser, firestoreUser.id! != user.id{
                     ButtonRequest(firestoreViewModel: firestoreViewModel, user: user)
-                    
-                    
-                    Spacer()
-                    
-                    
                 }
-                .padding(.vertical)
-                .frame(width: UIScreen.main.bounds.width/1.2)
-
+                
+                Spacer()
+                
+                
             }
-        
+            .padding(.vertical)
+            .frame(width: UIScreen.main.bounds.width/1.2)
+            
+        }
     }
     
 }
@@ -131,7 +132,9 @@ struct ButtonRequest: View {
     var user: User
     
     var body :some View{
-        //if let firestoreUser = firestoreViewModel.firestoreUser, firestoreUser.id! != user.id{
+        
+        HStack{
+        
         Button(action: {
             if firestoreViewModel.waitingList.contains(user) || firestoreViewModel.friends.contains(user) {
                 firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
@@ -154,6 +157,7 @@ struct ButtonRequest: View {
             Button(action: {
                 firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
             }) {
+                Image(systemName: "person.fill.badge.minus")
                 Text("Remove")
                     .font(.custom("Open Sans", size: 18))
             }
@@ -162,7 +166,7 @@ struct ButtonRequest: View {
             .tint(.white)
         }
         
-        //}
+    }
         
     }
     private func buttonTextFor(_ user: User) -> String {
@@ -171,7 +175,7 @@ struct ButtonRequest: View {
         } else if firestoreViewModel.friends.contains(user) {
             return "Friend"
         } else if firestoreViewModel.requests.contains(user) {
-            return "Add"
+            return "Confirm"
         } else {
             return "Follow"
         }
@@ -201,54 +205,66 @@ struct content: View {
         
         VStack(alignment: .center){
             
+            Text("Todays Scores")
+                .font(.title)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, alignment: .center)
+            
             ScoreRingView(dailyScore: user.dailyScores[today],weeklyScore: user.dailyScores[7])
             
-           
-            Rectangle()
-                .frame(height: 1)
+            
+            
+            RoundedRectangle(cornerRadius: 10)
+                .frame(height: 2)
                 .foregroundColor(.white.opacity(0.7))
                 .padding(.vertical)
-                .shadow(color:Color("oxfordBlue"),radius: 5)
-
+                .shadow(color:.black,radius: 5)
+            
             
             VStack(alignment: .center){
                 Text("Score Trend")
-                        .font(.title)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity, alignment: .center)
-                        .padding(20)
+                    .font(.title)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity, alignment: .center)
                 
-                    Chart {
-                        ForEach(user.dailyScores.indices[0...6], id: \.self) { index in
-                            LineMark(
-                                x: .value("Day", getDayLabel(for: index)),
-                                y: .value("Score", user.dailyScores[index])
-                            )
-                            .foregroundStyle(
-                                by: .value("Week", "Current Week")
-                            )
-                            .interpolationMethod(.catmullRom)
-                            .symbol(
-                                by: .value("Week", "Current Week")
-                            )
-                            .symbolSize(30)
-                        }
-                    }.environment(\.colorScheme, .dark) //FIXME: temporary fix
+                Chart {
+                    ForEach(user.dailyScores.indices[0...6], id: \.self) { index in
+                        LineMark(
+                            x: .value("Day", getDayLabel(for: index)),
+                            y: .value("Score", user.dailyScores[index])
+                        )
+                        .foregroundStyle(
+                            by: .value("Week", "Current Week")
+                        )
+                        .interpolationMethod(.catmullRom)
+                        .symbol(
+                            by: .value("Week", "Current Week")
+                        )
+                        .symbolSize(30)
+                    }
+                }.environment(\.colorScheme, .dark) //FIXME: temporary fix
                     .chartForegroundStyleScale([
                         "Current Week": Color(hue: 0.33, saturation: 0.81, brightness: 0.76),
                     ])
                     .chartYAxis {
                         AxisMarks(position: .leading)
-                           
+                        
                     }
                     .frame(height: 250)
                     .padding(.horizontal,20)
                     .foregroundColor(.blue)
                 
             }
-                        
-        }
-        .frame(width: UIScreen.main.bounds.width/1.1)
+            
+            RoundedRectangle(cornerRadius: 10)
+                .frame(height: 2)
+                .foregroundColor(.white.opacity(0.7))
+                .padding(.vertical)
+                .shadow(color:.black,radius: 5)
+            
+            RecordView(user: user)
+            
+        }.frame(width: UIScreen.main.bounds.width/1.1)
     }
     
     private func getDayLabel(for index: Int) -> String {

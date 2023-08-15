@@ -70,8 +70,7 @@ struct GeneralView: View {
                 firestoreViewModel.modifyUser(
                     uid:  firestoreViewModel.firestoreUser!.id!,
                     field: "username",
-                    value: textFieldValue,
-                    type: "String")
+                    value: textFieldValue)
                 firestoreViewModel.needUsername = false
                 
             }
@@ -89,10 +88,21 @@ struct GeneralView: View {
                     }
                 }
             }
+            
         }
         .onChange(of: healthViewModel.allMyTypes, perform: { _ in
             healthViewModel.computeSingleScore()
             healthViewModel.computeTotalScore()
+            if var records = firestoreViewModel.firestoreUser?.records {
+                print("updating records")
+                if healthViewModel.updateRecords(records: &records) {
+                    firestoreViewModel.modifyUser(
+                        uid: firestoreViewModel.firestoreUser!.id!,
+                        field: "records",
+                        records: records
+                    )
+                }
+            }
         })
         .onChange(of: healthViewModel.dailyScore, perform: { newValue in
             firestoreViewModel.updateDailyScores(uid: firestoreViewModel.firestoreUser!.id!, newScore: newValue)
