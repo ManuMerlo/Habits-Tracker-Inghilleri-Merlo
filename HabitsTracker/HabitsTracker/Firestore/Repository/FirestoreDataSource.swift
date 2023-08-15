@@ -9,6 +9,7 @@ import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
+import Combine
 
 final class FirestoreDataSource {
     private let db = Firestore.firestore()
@@ -109,90 +110,104 @@ final class FirestoreDataSource {
     }
     
     // Function that returns the current user's friends
-    func getFriends(friendsSubcollection:[Friend], completionBlock: @escaping([User]?) -> Void){
+    func getFriends(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
         let requestFriendIDs = friendsSubcollection
             .filter { $0.status == "Confirmed" }
             .map { $0.id }
-        if !requestFriendIDs.isEmpty{
-            let requestedUsersRef = self.db.collection("users").whereField("id", in: requestFriendIDs)
-            requestedUsersRef.getDocuments { snapshot, error in
-                guard let documents = snapshot?.documents else {
-                    print("Error fetching requested user documents: \(error!)")
-                    completionBlock([])
-                    return
-                }
-                
-                var requestedUsers: [User] = []
-                for document in documents {
-                    if let user = try? document.data(as: User.self) {
-                        requestedUsers.append(user)
-                    }
-                }
-                
-                completionBlock(requestedUsers)
-            }
+        
+        if !requestFriendIDs.isEmpty {
+            let requestedUsersRef = db.collection("users").whereField("id", in: requestFriendIDs)
             
+            return Future<[User], Error> { promise in
+                requestedUsersRef.getDocuments { snapshot, error in
+                    if let error = error {
+                        promise(.failure(error))
+                        return
+                    }
+                    
+                    var requestedUsers: [User] = []
+                    for document in snapshot?.documents ?? [] {
+                        if let user = try? document.data(as: User.self) {
+                            requestedUsers.append(user)
+                        }
+                    }
+                    
+                    promise(.success(requestedUsers))
+                }
+            }
+            .eraseToAnyPublisher()
         } else {
-            completionBlock([])
+            return Just([]) // Return an empty array
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
         }
     }
     
     // Function that returns the current user's friend requests
-    func getRequests(friendsSubcollection:[Friend],completionBlock: @escaping ([User]?) -> Void){
+    func getRequests(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
         let requestFriendIDs = friendsSubcollection
-            .filter { $0.status == "Request"}
+            .filter { $0.status == "Request" }
             .map { $0.id }
         
-        if !requestFriendIDs.isEmpty{
-            let requestedUsersRef = self.db.collection("users").whereField("id", in:  requestFriendIDs)
-            requestedUsersRef.getDocuments { snapshot, error in
-                guard let documents = snapshot?.documents else {
-                    print("Error fetching requested user documents: \(error!)")
-                    completionBlock([])
-                    return
-                }
-                
-                var requestedUsers: [User] = []
-                for document in documents {
-                    if let user = try? document.data(as: User.self) {
-                        requestedUsers.append(user)
-                    }
-                }
-                
-                completionBlock(requestedUsers)
-            }
+        if !requestFriendIDs.isEmpty {
+            let requestedUsersRef = db.collection("users").whereField("id", in: requestFriendIDs)
             
+            return Future<[User], Error> { promise in
+                requestedUsersRef.getDocuments { snapshot, error in
+                    if let error = error {
+                        promise(.failure(error))
+                        return
+                    }
+                    
+                    var requestedUsers: [User] = []
+                    for document in snapshot?.documents ?? [] {
+                        if let user = try? document.data(as: User.self) {
+                            requestedUsers.append(user)
+                        }
+                    }
+                    
+                    promise(.success(requestedUsers))
+                }
+            }
+            .eraseToAnyPublisher()
         } else {
-            completionBlock([])
+            return Just([]) // Return an empty array
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
         }
     }
     
     // Function that returns all users to whom the current user has sent a friend request
-    func getWaitingList(friendsSubcollection:[Friend],completionBlock: @escaping ([User]?) -> Void){
+    func getWaitingList(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
         let requestFriendIDs = friendsSubcollection
             .filter { $0.status == "Waiting" }
             .map { $0.id }
-        if !requestFriendIDs.isEmpty{
-            let requestedUsersRef = self.db.collection("users").whereField("id", in:  requestFriendIDs)
-            requestedUsersRef.getDocuments { snapshot, error in
-                guard let documents = snapshot?.documents else {
-                    print("Error fetching requested user documents: \(error!)")
-                    completionBlock([])
-                    return
-                }
-                
-                var requestedUsers: [User] = []
-                for document in documents {
-                    if let user = try? document.data(as: User.self) {
-                        requestedUsers.append(user)
-                    }
-                }
-                
-                completionBlock(requestedUsers)
-            }
+        
+        if !requestFriendIDs.isEmpty {
+            let requestedUsersRef = db.collection("users").whereField("id", in: requestFriendIDs)
             
+            return Future<[User], Error> { promise in
+                requestedUsersRef.getDocuments { snapshot, error in
+                    if let error = error {
+                        promise(.failure(error))
+                        return
+                    }
+                    
+                    var requestedUsers: [User] = []
+                    for document in snapshot?.documents ?? [] {
+                        if let user = try? document.data(as: User.self) {
+                            requestedUsers.append(user)
+                        }
+                    }
+                    
+                    promise(.success(requestedUsers))
+                }
+            }
+            .eraseToAnyPublisher()
         } else {
-            completionBlock([])
+            return Just([]) // Return an empty array
+                .setFailureType(to: Error.self)
+                .eraseToAnyPublisher()
         }
     }
     

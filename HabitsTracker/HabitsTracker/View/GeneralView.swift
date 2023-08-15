@@ -78,18 +78,6 @@ struct GeneralView: View {
         } message: {
             Text("To start using the app, you first need to set your username.")
         }
-        .onChange(of: firestoreViewModel.friendsSubcollection) { _ in
-            DispatchQueue.global().async {
-                firestoreViewModel.getFriends()
-                DispatchQueue.main.async {
-                    firestoreViewModel.getRequests()
-                    DispatchQueue.main.async {
-                        firestoreViewModel.getWaitingList()
-                    }
-                }
-            }
-            
-        }
         .onChange(of: healthViewModel.allMyTypes, perform: { _ in
             healthViewModel.computeSingleScore()
             healthViewModel.computeTotalScore()

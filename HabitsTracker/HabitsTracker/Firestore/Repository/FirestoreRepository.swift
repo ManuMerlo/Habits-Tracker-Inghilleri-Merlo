@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Combine
 
 final class FirestoreRepository {
     private let firestoreDataSource: FirestoreDataSource
@@ -34,20 +35,20 @@ final class FirestoreRepository {
         firestoreDataSource.getFriendsSubcollection(completionBlock: completionBlock)
     }
     
-    func getFriends(friendsSubcollection:[Friend], completionBlock: @escaping ([User]?) -> Void) {
-        firestoreDataSource.getFriends(friendsSubcollection: friendsSubcollection, completionBlock: completionBlock)
+    func getFriends(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
+        firestoreDataSource.getFriends(friendsSubcollection: friendsSubcollection)
     }
     
-    func getRequests(friendsSubcollection:[Friend], completionBlock: @escaping ([User]?) -> Void) {
-        firestoreDataSource.getRequests(friendsSubcollection: friendsSubcollection, completionBlock: completionBlock)
+    func getRequests(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
+        return firestoreDataSource.getRequests(friendsSubcollection: friendsSubcollection)
     }
     
-    func getWaitingList(friendsSubcollection:[Friend], completionBlock: @escaping ([User]?) -> Void) {
-        firestoreDataSource.getWaitingList(friendsSubcollection: friendsSubcollection, completionBlock: completionBlock)
+    func getWaitingList(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
+        return firestoreDataSource.getWaitingList(friendsSubcollection: friendsSubcollection)
     }
     
     func modifyUser(uid:String, field: String, value: Any){
-        firestoreDataSource.modifyUser(uid:uid, field: field, value: value)
+        return firestoreDataSource.modifyUser(uid:uid, field: field, value: value)
     }
     
     // Overload for arrays of BaseActivity
