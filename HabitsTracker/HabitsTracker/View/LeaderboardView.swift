@@ -18,10 +18,11 @@ import FirebaseFirestoreSwift
 
 struct LeaderboardView: View {
     @ObservedObject var firestoreViewModel: FirestoreViewModel
+    @StateObject var leaderboardViewModel = LeaderBoardViewModel()
+    
     @State private var global : Bool = true
     @State private var selectedTimeFrame : TimeFrame = .daily
     @State var users: [User] = []
-    let today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     @FirestoreQuery(
         collectionPath: "users"
@@ -41,7 +42,6 @@ struct LeaderboardView: View {
             ZStack {
                 RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
                     .edgesIgnoringSafeArea(.all)
-                
                 VStack{
                     
                     Picker("Choose a time frame", selection: $selectedTimeFrame) {
@@ -52,7 +52,7 @@ struct LeaderboardView: View {
                     }
                     .pickerStyle(SegmentedPickerStyle())
                     .onChange(of: selectedTimeFrame , perform: { newValue in
-                        sortUsers(timeFrame: newValue)
+                        users = leaderboardViewModel.sortUsers(users:users, timeFrame: newValue)
                     })
                     .padding(.bottom,8)
                     
@@ -60,8 +60,11 @@ struct LeaderboardView: View {
                         LazyVStack {
                             ForEach(users, id: \.self) { user in
                                 NavigationLink(value: user){
-                                    RankingItemView(user : user,
+                                    RankingItemView(leaderboardViewModel: leaderboardViewModel,
+                                                    firestoreViewModel: firestoreViewModel,
+                                                    user : user,
                                                     selectedTimeFrame: selectedTimeFrame,
+                                                    global:global,
                                                     position: ((users.isEmpty ? globalUsers : users).firstIndex(of: user) ?? 0) + 1
                                     ).padding(.bottom, 95)
                                 }
@@ -72,15 +75,12 @@ struct LeaderboardView: View {
                 .toolbar {
                     Button {
                         global.toggle()
-                        setUsers(global: global)
                     } label: {
-                        if !global {
-                            Text("Global").foregroundColor(.white)
-                            Image(systemName: "globe").foregroundColor(.white)
-                        } else {
-                            Text("Private").foregroundColor(.white)
-                            Image(systemName: "person").foregroundColor(.white)
-                        }
+                        Text(global ? "Global" : "private").foregroundColor(.white)
+                        Image(systemName: global ? "globe" : "person").foregroundColor(.white)
+                    }.onChange(of: global) { newValue in
+                        users = global ? globalUsers : firestoreViewModel.friends
+                        users = leaderboardViewModel.sortUsers(users: users,timeFrame: selectedTimeFrame)
                     }
                 }.padding(20)
                     .navigationTitle("Leaderboard")
@@ -94,32 +94,16 @@ struct LeaderboardView: View {
                     .toolbarBackground(.visible, for: .navigationBar)
             }
         }.onAppear{
-            sortUsers(timeFrame: selectedTimeFrame)
-        }
-        .onChange(of: globalUsers) { newValue in
-            setUsers(global: global)
-        }
-    }
-    
-    func sortUsers(timeFrame: TimeFrame) {
-            users.sort { user1, user2 in
-                switch timeFrame {
-                case .daily:
-                    return user1.dailyScores[today] > user1.dailyScores[today]
-                case .weekly:
-                    return user1.dailyScores[7] > user2.dailyScores[7]
-                }
+            users = globalUsers
+            users = leaderboardViewModel.sortUsers(users: users,timeFrame: selectedTimeFrame)
+        }.onChange(of: globalUsers) { newValue in
+            if global {
+                users = globalUsers
+                users = leaderboardViewModel.sortUsers(users: users,timeFrame: selectedTimeFrame)
             }
         }
-    
-    func setUsers( global: Bool){
-        if global == true {
-            users = globalUsers
-        }else {
-            users = firestoreViewModel.friends
-        }
-        sortUsers(timeFrame: selectedTimeFrame)
     }
+    
 }
 
 enum TimeFrame : String, CaseIterable {
@@ -129,11 +113,14 @@ enum TimeFrame : String, CaseIterable {
 
 
 struct RankingItemView: View {
+    var leaderboardViewModel : LeaderBoardViewModel
+    var firestoreViewModel : FirestoreViewModel
     var user : User
     var selectedTimeFrame : TimeFrame
+    var global : Bool
     var position : Int
-    let today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     let screen = UIScreen.main.bounds.width
+    let today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     var body: some View {
         
@@ -161,7 +148,7 @@ struct RankingItemView: View {
                         .fontWeight(.bold)
                     
                     Spacer()
-                
+                    
                     HStack{
                         Image(systemName: "flame")
                         Text("100")
@@ -169,7 +156,7 @@ struct RankingItemView: View {
                         Image(systemName: "figure.walk")
                         Text("100")
                             .font(.footnote)
-
+                        
                         
                     }
                     
@@ -192,6 +179,34 @@ struct RankingItemView: View {
                 .background(ItemColor(number:position).opacity(0.65))
                 .foregroundColor(.white)
                 .mask(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .onChange(of: position) { newPosition in
+                    if(user.id == firestoreViewModel.firestoreUser!.id!){
+                        switch (selectedTimeFrame, global) {
+                        case (.daily, true):
+                            if let oldPosition = user.dailyGlobal, oldPosition < newPosition {
+                                print("oldposition \(oldPosition)")
+                                print("newPosition \(newPosition)")
+                                leaderboardViewModel.sendPositionChangeNotification()
+                            }
+                            firestoreViewModel.modifyUser(uid: user.id!, field: "dailyGlobal", value: newPosition)
+                        case (.daily, false):
+                            if let oldPosition = user.dailyPrivate, oldPosition < newPosition{
+                                leaderboardViewModel.sendPositionChangeNotification()
+                            }
+                            firestoreViewModel.modifyUser(uid: user.id!, field: "dailyPrivate", value: newPosition)
+                        case (.weekly, true):
+                            if let oldPosition = user.weeklyGlobal, oldPosition < newPosition{
+                                leaderboardViewModel.sendPositionChangeNotification()
+                            }
+                            firestoreViewModel.modifyUser(uid: user.id!, field: "weeklyGlobal", value: newPosition)
+                        case (.weekly, false):
+                            if let oldPosition = user.weeklyPrivate, oldPosition < newPosition{
+                                leaderboardViewModel.sendPositionChangeNotification()
+                            }
+                            firestoreViewModel.modifyUser(uid: user.id!, field: "weeklyPrivate", value: newPosition)
+                        }
+                    }
+                }
         }
         
     }

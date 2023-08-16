@@ -14,6 +14,12 @@ struct User: Identifiable, Codable, Hashable {
     var dailyScores: [Int] = Array(repeating: 0, count: 8)
     //[0 - Monday / 1 - Tuesday .. 7 = weeklyScore]
     
+    //ranking
+    var dailyGlobal : Int?
+    var dailyPrivate : Int?
+    var weeklyGlobal : Int?
+    var weeklyPrivate : Int?
+    
     var records: [BaseActivity] = [
         BaseActivity(id:"activeEnergyBurned", quantity: 0),
         BaseActivity(id:"appleExerciseTime", quantity: 0),
