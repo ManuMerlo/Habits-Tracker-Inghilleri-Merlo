@@ -103,7 +103,8 @@ final class FirestoreViewModel: ObservableObject {
                     print("Error fetching waiting list: \(error)")
                 }
             } receiveValue: { [weak self] users in
-                self?.requests = users
+                let filteredRequests = users.filter { $0.id != self?.firestoreUser?.id }
+                self?.requests = filteredRequests
                 self?.semaphore.signal()
             }
             .store(in: &cancellables)
