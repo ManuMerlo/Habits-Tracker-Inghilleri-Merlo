@@ -9,7 +9,7 @@ import SwiftUI
 
 struct RecordView: View {
     
-    var user : User
+    var user: User
     
     var body: some View {
         Text("Records")
@@ -45,8 +45,9 @@ struct RecordView: View {
 struct RecordView_Previews: PreviewProvider {
     static var previews: some View {
         RecordView(user: User(
-            username: "lulu",
+            id: "123",
             email: "lulu@gmail.com",
+            username: "lulu",
             birthDate: "10/08/2001",
             sex: Sex.Female,
             height: 150,

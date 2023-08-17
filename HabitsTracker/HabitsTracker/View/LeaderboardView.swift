@@ -129,7 +129,7 @@ enum TimeFrame : String, CaseIterable {
 
 
 struct RankingItemView: View {
-    var user : User
+    var user: User
     var selectedTimeFrame : TimeFrame
     var position : Int
     let today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7

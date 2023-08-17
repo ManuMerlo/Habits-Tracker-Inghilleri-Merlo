@@ -138,7 +138,7 @@ struct ModifyProfileView: View {
                     VStack() {
                         Button {
                             firestoreViewModel.modifyUser(
-                                uid: firestoreViewModel.firestoreUser!.id!,
+                                uid: firestoreViewModel.firestoreUser!.id,
                                 field: "birthdate",
                                 value: settingViewModel.dateToString(selectedDate)
                             )
@@ -170,7 +170,7 @@ struct ModifyProfileView: View {
                     VStack {
                         Button {
                             firestoreViewModel.modifyUser(
-                                uid:  firestoreViewModel.firestoreUser!.id!,
+                                uid:  firestoreViewModel.firestoreUser!.id,
                                 field: "sex",
                                 value: selectedSex.rawValue)
                             
@@ -235,7 +235,7 @@ struct ModifyProfileView: View {
                     switch result {
                     case .success(let path):
                         firestoreViewModel.modifyUser(
-                            uid:  firestoreViewModel.firestoreUser!.id!,
+                            uid:  firestoreViewModel.firestoreUser!.id,
                             field: "image",
                             value: path
                         )

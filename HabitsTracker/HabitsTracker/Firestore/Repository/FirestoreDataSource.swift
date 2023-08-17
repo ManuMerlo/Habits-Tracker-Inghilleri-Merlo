@@ -214,7 +214,7 @@ final class FirestoreDataSource {
     // Function to add a new user to firestore
     func addNewUser(user: User) {
         db.collection("users")
-            .document(user.id!)
+            .document(user.id)
             .setData(user.asDictionary())
     }
     

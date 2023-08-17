@@ -12,47 +12,21 @@ final class AuthenticationFirebaseDataSource {
     private let facebookAuthentication = FacebookAuthentication()
     private let googleAuthentication = GoogleAuthentication()
     
-    func getCurrentUser() -> User? {
-        guard let email = Auth.auth().currentUser?.email else {
-            return nil
+    func getAuthenticatedUser() throws -> User {
+        guard let user = Auth.auth().currentUser, let email = user.email else {
+            throw URLError(.badServerResponse) // Customize error
         }
-        guard let id = Auth.auth().currentUser?.uid else {
-            return nil
-        }
-        return .init(id: id, email: email)
+        return User(id: user.uid, email: email)
     }
     
-    // MARK: Completionblock: Notify the upper layers: Repository, ViewModel and the to View. Indicate if there will be an error or not during the creation of a new user. the @escaping returns a user if there is not error, otherwise it returns an error.
-    func createNewUser(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void) {
-        Auth.auth().createUser(withEmail: email, password: password) { authDataResult, error in
-            if let error = error {
-                print("Error creating a new user \(error.localizedDescription)")
-                completionBlock(.failure(error))
-                return
-            }
-            let email = authDataResult?.user.email ?? "No email"
-            let id = authDataResult?.user.uid ?? "No id"
-            print("New user created with info \(email) \(id)")
-            completionBlock(.success(.init(id:id ,email: email)))
-        }
+    func createNewUser(email: String, password: String) async throws -> User {
+        let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
+        return User(id: authDataResult.user.uid, email: authDataResult.user.email ?? "")
     }
     
-    
-    //TODO: Se l'id è gia presente negli user non fare niente altrimenti crea lo user
-    
-    func login(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void) {
-        Auth.auth().signIn(withEmail: email, password: password) { authDataResult, error in
-            if let error = error {
-                print("Error login user \(error.localizedDescription)")
-                completionBlock(.failure(error))
-                return
-            }
-            
-            let email = authDataResult?.user.email ?? "No email"
-            let id = authDataResult?.user.uid ?? "No id"
-            print("User logged in with info \(email) \(id)")
-            completionBlock(.success(.init(id: id,email: email)))
-        }
+    func login(email: String, password: String) async throws -> User {
+        let authDataResult = try await Auth.auth().signIn(withEmail: email, password: password)
+        return User(id: authDataResult.user.uid, email: authDataResult.user.email ?? "")
     }
     
     func loginFacebook(completionBlock: @escaping (Result<User, Error>) -> Void) {
@@ -94,7 +68,7 @@ final class AuthenticationFirebaseDataSource {
                     let email = authDataResult?.user.email ?? "No email google"
                     let id = authDataResult?.user.uid ?? "No id google "
                     print("New user 'created' with info \(email) \(id)")
-                    completionBlock(.success(.init(id:id ,email: email)))
+                    completionBlock(.success(.init(id: id, email: email)))
                 }
             case .failure(let error):
                 print("Error login with Google \(error.localizedDescription)")

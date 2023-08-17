@@ -11,6 +11,7 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseStorage
 
+@MainActor
 final class SettingsViewModel: ObservableObject {
     @Published var agreedToTerms = false
     @Published var dailyNotification = false
@@ -92,9 +93,9 @@ final class SettingsViewModel: ObservableObject {
             VStack {
                 Button {
                     if ( property == "height"){
-                        firestoreViewModel.modifyUser(uid: user!.id!, field: "height", value: selectedItem)
+                        firestoreViewModel.modifyUser(uid: user!.id, field: "height", value: selectedItem)
                     } else {
-                        firestoreViewModel.modifyUser(uid: user!.id!, field: "weight", value: selectedItem)
+                        firestoreViewModel.modifyUser(uid: user!.id, field: "weight", value: selectedItem)
                     }
                     booleanValuePicker.toggle()
                     booleanValueList.toggle()

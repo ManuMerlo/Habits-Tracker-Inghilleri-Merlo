@@ -14,21 +14,34 @@ final class AuthenticationRepository {
         self.authenticationFirebaseDataSource = authenticationFirebaseDataSource
     }
     
-    func getCurrentUser() -> User? {
+    /*func getCurrentUser() -> User? {
         authenticationFirebaseDataSource.getCurrentUser()
-    }
+    }*/
     
-    func createNewUser(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void) {
+    
+    func getAuthenticatedUser() throws -> User {
+            return try authenticationFirebaseDataSource.getAuthenticatedUser()
+        }
+    
+    /*func createNewUser(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void) {
         authenticationFirebaseDataSource.createNewUser(email: email,
                                                        password: password,
                                                        completionBlock: completionBlock)
-    }
+    }*/
     
-    func login(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void) {
+    func createNewUser(email: String, password: String) async throws -> User {
+            return try await authenticationFirebaseDataSource.createNewUser(email: email, password: password)
+        }
+    
+    /*func login(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void) {
         authenticationFirebaseDataSource.login(email: email,
                                                        password: password,
                                                        completionBlock: completionBlock)
-    }
+    }*/
+    
+    func login(email: String, password: String) async throws -> User {
+            return try await authenticationFirebaseDataSource.login(email: email, password: password)
+        }
     
     func loginFacebook(completionBlock: @escaping (Result<User, Error>) -> Void) {
         authenticationFirebaseDataSource.loginFacebook(completionBlock: completionBlock)

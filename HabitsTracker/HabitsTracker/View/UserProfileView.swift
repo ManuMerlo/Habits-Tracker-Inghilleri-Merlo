@@ -108,7 +108,7 @@ struct Header: View{
                 }.padding(.bottom,5)
                 
                 Spacer()
-                if let firestoreUser = firestoreViewModel.firestoreUser, firestoreUser.id! != user.id{
+                if let firestoreUser = firestoreViewModel.firestoreUser, firestoreUser.id != user.id{
                     ButtonRequest(firestoreViewModel: firestoreViewModel, user: user)
                 }
                 
@@ -131,18 +131,18 @@ struct ButtonRequest: View {
     
     var user: User
     
-    var body :some View{
+    var body: some View{
         
         HStack{
         
         Button(action: {
             if firestoreViewModel.waitingList.contains(user) || firestoreViewModel.friends.contains(user) {
-                firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
+                firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
                 
             } else if firestoreViewModel.requests.contains(user) {
-                firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id!, friendId: user.id!)
+                firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
             } else {
-                firestoreViewModel.addRequest(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
+                firestoreViewModel.addRequest(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
             }
         }) {
             Image(systemName: buttonImageFor(user))
@@ -155,7 +155,7 @@ struct ButtonRequest: View {
         
         if firestoreViewModel.requests.contains(user) {
             Button(action: {
-                firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
+                firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
             }) {
                 Image(systemName: "person.fill.badge.minus")
                 Text("Remove")
@@ -197,7 +197,7 @@ struct ButtonRequest: View {
 
 struct content: View {
     
-    var user : User
+    var user: User
     let gradientStart = Color(red: 239.0 / 255, green: 120.0 / 255, blue: 221.0 / 255)
     var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
@@ -288,8 +288,9 @@ func VerticalText(upperText: String, lowerText:String) -> some View {
 struct UserProfileView_Previews: PreviewProvider {
     static var previews: some View {
         UserProfileView(firestoreViewModel: FirestoreViewModel(), user: User(
-            username: "lulu",
+            id:"1234",
             email: "lulu@gmail.com",
+            username: "lulu",
             birthDate: "10/08/2001",
             sex: Sex.Female,
             height: 150,

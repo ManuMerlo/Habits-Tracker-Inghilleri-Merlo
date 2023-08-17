@@ -8,7 +8,7 @@
 import Foundation
 import Combine
 
-
+// TODO: @MainActor
 final class FirestoreViewModel: ObservableObject {
     private let firestoreRepository: FirestoreRepository
     
@@ -63,7 +63,7 @@ final class FirestoreViewModel: ObservableObject {
         }
     }
     
-    func fieldIsPresent (field : String, value: String, completionBlock: @escaping (Result<Bool, Error>)  -> Void) {
+    func fieldIsPresent (field: String, value: String, completionBlock: @escaping (Result<Bool, Error>)  -> Void) {
         firestoreRepository.fieldIsPresent(field:field, value: value) { result in
             switch result {
             case .success(let bool):

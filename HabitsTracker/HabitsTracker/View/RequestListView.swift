@@ -96,7 +96,7 @@ struct RequestItemView: View {
                                 Spacer()
                                 HStack{
                                     Button(action: {
-                                        firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id!, friendId: user.id!)
+                                        firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                                     }) {
                                         Image(systemName: "person.fill.badge.plus")
                                         Text("Confirm")
@@ -108,7 +108,7 @@ struct RequestItemView: View {
                                     
                                     
                                     Button {
-                                        firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
+                                        firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
                                         
                                     } label: {
                                         Image(systemName: "person.fill.badge.minus")
@@ -134,8 +134,9 @@ struct RequestItemView: View {
 struct RequestItemView_Previews: PreviewProvider {
     static var previews: some View {
         RequestItemView( firestoreViewModel: FirestoreViewModel(),user: User(
-            username: "lulu",
+            id: "12345",
             email: "lulu@gmail.com",
+            username: "lulu",
             birthDate: "10/08/2001",
             sex: Sex.Female,
             height: 150,

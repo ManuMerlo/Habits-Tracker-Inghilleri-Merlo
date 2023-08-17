@@ -40,8 +40,13 @@ struct SigninView: View {
                                 return
                             }
                             
-                            authenticationViewModel.login(email: authenticationViewModel.textFieldEmailSignin,
-                                                          password: authenticationViewModel.textFieldPasswordSignin)
+                            Task {
+                                do {
+                                    try await authenticationViewModel.login()
+                                } catch{
+                                    print("Error: \(error.localizedDescription)")
+                                }
+                            }
                             
                         } label: {
                             HStack() {
@@ -80,7 +85,7 @@ struct SigninView: View {
                             authenticationViewModel.loginGoogle(){ result in
                                 switch result {
                                 case .success(let userGoogle):
-                                    firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id!){ result in
+                                    firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id){ result in
                                         switch result {
                                         case .success(let isPresent):
                                             if !isPresent  {
@@ -117,7 +122,7 @@ struct SigninView: View {
                             authenticationViewModel.loginFacebook(){ result in
                                 switch result {
                                 case .success(let userFacebook):
-                                    firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id!){ result in
+                                    firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id){ result in
                                         switch result {
                                         case .success(let isPresent):
                                             if !isPresent  {

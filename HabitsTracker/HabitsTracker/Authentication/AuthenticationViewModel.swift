@@ -1,6 +1,6 @@
 import Foundation
 
-
+@MainActor
 final class AuthenticationViewModel: ObservableObject {
     @Published var user: User?
     @Published var messageError: String?
@@ -15,13 +15,13 @@ final class AuthenticationViewModel: ObservableObject {
     @Published var repeatPassword: String = ""
     
     @Published var linkedAccounts: [LinkedAccounts] = []
-    @Published var showAlert : Bool = false
+    @Published var showAlert: Bool = false
     
     private let authenticationRepository: AuthenticationRepository
     
     init(authenticationRepository: AuthenticationRepository = AuthenticationRepository()) {
         self.authenticationRepository = authenticationRepository
-        getCurrentUser() // It is to check if a session already exists
+        getAuthenticatedUser() // It is to check if a session already exists
     }
     
     func isValidEmail (email:String) -> Bool{
@@ -30,7 +30,7 @@ final class AuthenticationViewModel: ObservableObject {
             return emailPredicate.evaluate(with: email)
     }
     
-    func clearSignUpParameter(){
+    func clearSignUpParameter() {
         self.textFieldUsername = ""
         self.textFieldEmail = ""
         self.textFieldPassword = ""
@@ -44,11 +44,16 @@ final class AuthenticationViewModel: ObservableObject {
         self.messageError = nil
     }
     
-    func getCurrentUser() {
+    /*func getCurrentUser() {
         self.user = authenticationRepository.getCurrentUser()
+    }*/
+    
+    // MARK: Not async because we want the result before the app loading.
+    func getAuthenticatedUser() {
+        self.user = try? authenticationRepository.getAuthenticatedUser()
     }
     
-    func createNewUser(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void){
+    /*func createNewUser(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void){
         authenticationRepository.createNewUser(email: email,
                                                password: password) { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
             switch result {
@@ -60,9 +65,28 @@ final class AuthenticationViewModel: ObservableObject {
                 completionBlock(.failure(error))
             }
         }
+    }*/
+    
+    func createNewUser() async throws -> User {
+        guard !textFieldEmail.isEmpty, !textFieldPassword.isEmpty, !textFieldUsername.isEmpty, !repeatPassword.isEmpty else {
+            print("No username, email or password found.")
+            throw URLError(.badServerResponse)
+        }
+        let user = try await authenticationRepository.createNewUser(email: textFieldEmail, password: textFieldPassword)
+        self.user = user // FIXME: need for login after signup
+        print("Success, user created with email and password")
+        return user
+        /*Task {
+            do {
+                self.user = try await authenticationRepository.createNewUser(email: textFieldEmail, password: textFieldPassword)
+                print("Success, user created with emal and password")
+            } catch{
+                print("Error: \(error.localizedDescription)")
+            }
+        }*/
     }
     
-    func login(email: String, password: String) {
+    /*func login(email: String, password: String) {
         authenticationRepository.login(email: email,
                                        password: password) { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
             switch result {
@@ -72,6 +96,17 @@ final class AuthenticationViewModel: ObservableObject {
                 self?.messageError = error.localizedDescription
             }
         }
+    }*/
+    
+    // TODO: reset password, update email/password
+    func login() async throws {
+        guard !textFieldEmailSignin.isEmpty, !textFieldPasswordSignin.isEmpty else {
+            print("No username, email or password found.")
+            return
+        }
+        let returnedUserData = try await authenticationRepository.login(email: textFieldEmailSignin, password: textFieldPasswordSignin)
+        print("Success, user created with emal and password")
+        print(returnedUserData)
     }
     
     func loginFacebook(completionBlock: @escaping (Result<User, Error>) -> Void) {
@@ -101,17 +136,23 @@ final class AuthenticationViewModel: ObservableObject {
     }
     
     func logout() {
-        do {
-            try authenticationRepository.logout()
-            self.user = nil
-            self.textFieldUsername = ""
-            self.textFieldEmail = ""
-            self.textFieldPassword = ""
-            self.repeatPassword = ""
-        } catch {
-            print("Error logout")
+        Task {
+            do {
+                try authenticationRepository.logout()
+                self.user = nil
+                self.textFieldUsername = ""
+                self.textFieldEmail = ""
+                self.textFieldPassword = ""
+                self.repeatPassword = ""
+            } catch {
+                print("Error logout")
+            }
         }
     }
+    
+    
+    
+    
     
     func getCurrentProvider(){
         linkedAccounts = authenticationRepository.getCurrentProvider()

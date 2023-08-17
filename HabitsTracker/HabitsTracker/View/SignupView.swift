@@ -13,7 +13,7 @@ struct SignupView: View {
             ScrollView(.vertical, showsIndicators: false){
                 
                 VStack(alignment: .center, spacing: 15) {
-
+                    
                     ZStack{
                         LottieView(filename: "register")
                             .frame(width:330, height: 280)
@@ -56,28 +56,28 @@ struct SignupView: View {
                         firestoreViewModel.fieldIsPresent(field: "email", value: authenticationViewModel.textFieldEmail) { result in
                             switch result {
                             case .success(let isPresent):
-                                if(isPresent){
+                                if(isPresent) {
                                     authenticationViewModel.messageError = "The email is already present in the database"
                                     return
                                 }
                             case .failure(_):
                                 authenticationViewModel.messageError = "Error while checking existing email"
-                                
                             }
                         }
                         
-                        firestoreViewModel.fieldIsPresent(field : "username", value: authenticationViewModel.textFieldUsername) { result in
+                        firestoreViewModel.fieldIsPresent(field: "username", value: authenticationViewModel.textFieldUsername) { result in
                             switch result {
                             case .success(let isPresent):
                                 if(!isPresent){
-                                    authenticationViewModel.createNewUser(email: authenticationViewModel.textFieldEmail, password: authenticationViewModel.textFieldPassword) { result in
-                                        switch result {
-                                        case .success(var user):
+                                    Task {
+                                        do {
+                                            var user = try await authenticationViewModel.createNewUser()
+                                            print("Success, user created with email and password")
                                             user.setUsername(name: authenticationViewModel.textFieldUsername)
                                             firestoreViewModel.addNewUser(user: user)
-                                        case .failure(let error):
-                                            print("Error creating new user: \(error)")
-                                            return
+                                            print("Success, user added to firestore")
+                                        } catch{
+                                            print("Error: \(error.localizedDescription)")
                                         }
                                     }
                                 } else {
@@ -89,14 +89,14 @@ struct SignupView: View {
                         }
                         
                     } label: {
-                            Text("Sign up")
-                                .font(.system(size:22))
-                                .fontWeight(.semibold)
-                                .frame(width: 120, height: 45)
-                                .background(.blue)
-                                .foregroundColor(.white)
-                                .cornerRadius(10)
-                                .contentTransition(.identity)
+                        Text("Sign up")
+                            .font(.system(size:22))
+                            .fontWeight(.semibold)
+                            .frame(width: 120, height: 45)
+                            .background(.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(10)
+                            .contentTransition(.identity)
                         
                     }.padding(.top,20)
                     

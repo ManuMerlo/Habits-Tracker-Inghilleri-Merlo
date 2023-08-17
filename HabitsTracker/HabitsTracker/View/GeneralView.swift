@@ -68,7 +68,7 @@ struct GeneralView: View {
             
             Button("Save", action: {
                 firestoreViewModel.modifyUser(
-                    uid:  firestoreViewModel.firestoreUser!.id!,
+                    uid:  firestoreViewModel.firestoreUser!.id,
                     field: "username",
                     value: textFieldValue)
                 firestoreViewModel.needUsername = false
@@ -85,7 +85,7 @@ struct GeneralView: View {
                 print("updating records")
                 if healthViewModel.updateRecords(records: &records) {
                     firestoreViewModel.modifyUser(
-                        uid: firestoreViewModel.firestoreUser!.id!,
+                        uid: firestoreViewModel.firestoreUser!.id,
                         field: "records",
                         records: records
                     )
@@ -93,7 +93,7 @@ struct GeneralView: View {
             }
         })
         .onChange(of: healthViewModel.dailyScore, perform: { newValue in
-            firestoreViewModel.updateDailyScores(uid: firestoreViewModel.firestoreUser!.id!, newScore: newValue)
+            firestoreViewModel.updateDailyScores(uid: firestoreViewModel.firestoreUser!.id, newScore: newValue)
         })
         .onAppear{
             firestoreViewModel.getCurrentUser()
