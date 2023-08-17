@@ -1,12 +1,3 @@
-//
-//  AuthenticationRepository.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 31/03/23.
-//
-
-import Foundation
-
 final class AuthenticationRepository {
     private let authenticationFirebaseDataSource: AuthenticationFirebaseDataSource
     
@@ -14,34 +5,17 @@ final class AuthenticationRepository {
         self.authenticationFirebaseDataSource = authenticationFirebaseDataSource
     }
     
-    /*func getCurrentUser() -> User? {
-        authenticationFirebaseDataSource.getCurrentUser()
-    }*/
-    
-    
     func getAuthenticatedUser() throws -> User {
-            return try authenticationFirebaseDataSource.getAuthenticatedUser()
-        }
-    
-    /*func createNewUser(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void) {
-        authenticationFirebaseDataSource.createNewUser(email: email,
-                                                       password: password,
-                                                       completionBlock: completionBlock)
-    }*/
+        return try authenticationFirebaseDataSource.getAuthenticatedUser()
+    }
     
     func createNewUser(email: String, password: String) async throws -> User {
-            return try await authenticationFirebaseDataSource.createNewUser(email: email, password: password)
-        }
-    
-    /*func login(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void) {
-        authenticationFirebaseDataSource.login(email: email,
-                                                       password: password,
-                                                       completionBlock: completionBlock)
-    }*/
+        return try await authenticationFirebaseDataSource.createNewUser(email: email, password: password)
+    }
     
     func login(email: String, password: String) async throws -> User {
-            return try await authenticationFirebaseDataSource.login(email: email, password: password)
-        }
+        return try await authenticationFirebaseDataSource.login(email: email, password: password)
+    }
     
     func loginFacebook(completionBlock: @escaping (Result<User, Error>) -> Void) {
         authenticationFirebaseDataSource.loginFacebook(completionBlock: completionBlock)
@@ -73,7 +47,10 @@ final class AuthenticationRepository {
                                                               completionBlock: completionBlock)
     }
     
-    func deleteUser(completionBlock: @escaping (Result<Bool,Error>) -> Void) {
+    /*func deleteUser(completionBlock: @escaping (Result<Bool,Error>) -> Void) {
         authenticationFirebaseDataSource.deleteUser(completionBlock: completionBlock)
+    }*/
+    func deleteUser() async throws {
+        try await authenticationFirebaseDataSource.deleteUser()
     }
 }

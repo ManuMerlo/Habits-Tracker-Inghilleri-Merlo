@@ -193,7 +193,7 @@ final class AuthenticationFirebaseDataSource {
         })
     }
     
-    func deleteUser(completionBlock: @escaping (Result<Bool,Error>) -> Void) {
+    /*func deleteUser(completionBlock: @escaping (Result<Bool,Error>) -> Void) {
         if let user = Auth.auth().currentUser {
             user.delete { error in
                 if let error = error {
@@ -203,6 +203,13 @@ final class AuthenticationFirebaseDataSource {
                 }
             }
         }
+    }*/
+    
+    func deleteUser() async throws {
+        guard let user = Auth.auth().currentUser else {
+            throw URLError(.badURL)
+        }
+        try await user.delete()
     }
 
     

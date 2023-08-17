@@ -53,20 +53,6 @@ final class AuthenticationViewModel: ObservableObject {
         self.user = try? authenticationRepository.getAuthenticatedUser()
     }
     
-    /*func createNewUser(email: String, password: String, completionBlock: @escaping (Result<User, Error>) -> Void){
-        authenticationRepository.createNewUser(email: email,
-                                               password: password) { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
-            switch result {
-            case .success(let user):
-                self?.user = user
-                completionBlock(.success(user))
-            case .failure(let error):
-                self?.messageError = error.localizedDescription
-                completionBlock(.failure(error))
-            }
-        }
-    }*/
-    
     func createNewUser() async throws -> User {
         guard !textFieldEmail.isEmpty, !textFieldPassword.isEmpty, !textFieldUsername.isEmpty, !repeatPassword.isEmpty else {
             print("No username, email or password found.")
@@ -86,17 +72,6 @@ final class AuthenticationViewModel: ObservableObject {
         }*/
     }
     
-    /*func login(email: String, password: String) {
-        authenticationRepository.login(email: email,
-                                       password: password) { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
-            switch result {
-            case .success(let user):
-                self?.user = user
-            case .failure(let error):
-                self?.messageError = error.localizedDescription
-            }
-        }
-    }*/
     
     // TODO: reset password, update email/password
     func login() async throws {
@@ -139,6 +114,7 @@ final class AuthenticationViewModel: ObservableObject {
         Task {
             do {
                 try authenticationRepository.logout()
+                // FIXME: needed?
                 self.user = nil
                 self.textFieldUsername = ""
                 self.textFieldEmail = ""
@@ -199,7 +175,7 @@ final class AuthenticationViewModel: ObservableObject {
         }
     }
     
-    func deleteUser() {
+    /*func deleteUser() {
         authenticationRepository.deleteUser() { [weak self] result in
             switch result {
             case .success(_):
@@ -213,6 +189,10 @@ final class AuthenticationViewModel: ObservableObject {
                 self?.messageError = error.localizedDescription
             }
         }
+    }*/
+    
+    func deleteUser() async throws {
+        try await authenticationRepository.deleteUser()
     }
     
 }
