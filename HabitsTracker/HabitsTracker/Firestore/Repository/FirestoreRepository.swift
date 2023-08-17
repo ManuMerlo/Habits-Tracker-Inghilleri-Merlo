@@ -15,8 +15,12 @@ final class FirestoreRepository {
         self.firestoreDataSource = firestoreDataSource
     }
     
-    func getCurrentUser(completionBlock: @escaping (Result<User, Error>) -> Void) {
+    /*func getCurrentUser(completionBlock: @escaping (Result<User, Error>) -> Void) {
         firestoreDataSource.getCurrentUser(completionBlock: completionBlock)
+    }*/
+    
+    func getCurrentUser() async throws -> User {
+        return try await firestoreDataSource.getCurrentUser()
     }
     
     func fieldIsPresent (field : String, value: String, completionBlock: @escaping (Result<Bool, Error>)  -> Void){
@@ -72,7 +76,11 @@ final class FirestoreRepository {
         firestoreDataSource.updateDailyScores(uid: uid, newScore: newScore)
     }
     
-    func deleteUserData(uid:String,completionBlock: @escaping (Result<Bool, Error>) -> Void) {
+    /*func deleteUserData(uid:String,completionBlock: @escaping (Result<Bool, Error>) -> Void) {
         firestoreDataSource.deleteUserData( uid: uid, completionBlock: completionBlock)
+    }*/
+    
+    func deleteUserData(uid:String) async throws {
+        try await firestoreDataSource.deleteUserData(uid: uid)
     }
 }

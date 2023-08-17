@@ -1,20 +1,13 @@
-//
-//  FirestoreViewModel.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 03/04/23.
-//
-
 import Foundation
 import Combine
 
-// TODO: @MainActor
+@MainActor
 final class FirestoreViewModel: ObservableObject {
     private let firestoreRepository: FirestoreRepository
     
     @Published var allUsers: [User] = []
     @Published var messageError: String?
-    @Published var firestoreUser: User?
+    @Published /*private(set)*/ var firestoreUser: User? = nil // TODO: set
     @Published var needUsername: Bool = false
     @Published var requests: [User] = []
     @Published var friends: [User] = []
@@ -22,16 +15,16 @@ final class FirestoreViewModel: ObservableObject {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    @Published var friendsSubcollection: [Friend] = [] {
+    @Published var friendsSubcollection: [Friend] = [] /*{
         didSet {
             fetchRequestsThenFriendsThenWaitingList()
         }
-    }
+    }*/
 
     private let serialQueue = DispatchQueue(label: "friends.serialQueue")
     private let semaphore = DispatchSemaphore(value: 0)
 
-    func fetchRequestsThenFriendsThenWaitingList() {
+    /*func fetchRequestsThenFriendsThenWaitingList() {
         serialQueue.async {
             self.getRequests()
             self.semaphore.wait()
@@ -39,28 +32,16 @@ final class FirestoreViewModel: ObservableObject {
             self.semaphore.wait()
             self.getWaitingList()
         }
-    }
+    }*/
     
     init(firestoreRepository: FirestoreRepository = FirestoreRepository()) {
         self.firestoreRepository = firestoreRepository
-        getCurrentUser()
-        getFriendsSubcollection()
+        // getCurrentUser()
+        // getFriendsSubcollection()
     }
     
-    func getCurrentUser(){
-        firestoreRepository.getCurrentUser { result in
-            switch result {
-            case .success(let user):
-                self.firestoreUser = user
-                if let _ = user.username {
-                    self.needUsername = false
-                } else {
-                    self.needUsername = true
-                }
-            case .failure(let error):
-                self.messageError = error.localizedDescription
-            }
-        }
+    func getCurrentUser() async throws {
+        self.firestoreUser = try await firestoreRepository.getCurrentUser()
     }
     
     func fieldIsPresent (field: String, value: String, completionBlock: @escaping (Result<Bool, Error>)  -> Void) {
@@ -173,17 +154,8 @@ final class FirestoreViewModel: ObservableObject {
         firestoreRepository.updateDailyScores(uid: uid, newScore: newScore)
     }
     
-    func deleteUserData(uid: String, completionBlock: @escaping (Result<Bool,Error>)-> Void) {
-        firestoreRepository.deleteUserData(uid: uid) { [weak self] result in
-            switch result {
-            case .success(let bool):
-                self?.firestoreUser = nil
-                print("Success in deleting user data")
-                completionBlock(.success(bool))
-            case .failure(let error):
-                self?.messageError = error.localizedDescription
-                completionBlock(.failure(error))
-            }
-        }
+    func deleteUserData(uid: String) async throws {
+        try await firestoreRepository.deleteUserData(uid: uid)
+        // self.firestoreUser = nil
     }
 }

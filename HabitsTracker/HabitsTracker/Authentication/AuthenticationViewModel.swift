@@ -44,10 +44,6 @@ final class AuthenticationViewModel: ObservableObject {
         self.messageError = nil
     }
     
-    /*func getCurrentUser() {
-        self.user = authenticationRepository.getCurrentUser()
-    }*/
-    
     // MARK: Not async because we want the result before the app loading.
     func getAuthenticatedUser() {
         self.user = try? authenticationRepository.getAuthenticatedUser()
@@ -79,9 +75,8 @@ final class AuthenticationViewModel: ObservableObject {
             print("No username, email or password found.")
             return
         }
-        let returnedUserData = try await authenticationRepository.login(email: textFieldEmailSignin, password: textFieldPasswordSignin)
+        self.user = try await authenticationRepository.login(email: textFieldEmailSignin, password: textFieldPasswordSignin)
         print("Success, user created with emal and password")
-        print(returnedUserData)
     }
     
     func loginFacebook(completionBlock: @escaping (Result<User, Error>) -> Void) {
@@ -114,11 +109,13 @@ final class AuthenticationViewModel: ObservableObject {
         Task {
             do {
                 try authenticationRepository.logout()
-                // FIXME: needed?
+                // FIXME: can it be avoided?
                 self.user = nil
                 self.textFieldUsername = ""
                 self.textFieldEmail = ""
+                self.textFieldEmailSignin = ""
                 self.textFieldPassword = ""
+                self.textFieldPasswordSignin = ""
                 self.repeatPassword = ""
             } catch {
                 print("Error logout")

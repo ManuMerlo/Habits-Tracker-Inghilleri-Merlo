@@ -1,28 +1,19 @@
-//
-//  SettingsView.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 20/11/22.
-//
-
 import SwiftUI
 import Firebase
 import UserNotifications
 
 struct SettingsView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    @ObservedObject var firestoreViewModel : FirestoreViewModel
-    @StateObject var settingViewModel = SettingsViewModel()
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
+    @StateObject var settingsViewModel = SettingsViewModel()
     
     @State var showAlert: Bool = false
-    
-    
     
     var body: some View {
         
         NavigationStack{
             ScrollView{
-                VStack(alignment: .center){
+                VStack(alignment: .center) {
                     WaveView(upsideDown: true,repeatAnimation: false, base: -130, amplitude: 70)
                     
                     ProfileImageView(
@@ -46,7 +37,7 @@ struct SettingsView: View {
                     List {
                         Section() {
                             NavigationLink {
-                                ModifyProfileView(firestoreViewModel: firestoreViewModel, settingViewModel: settingViewModel)
+                                ModifyProfileView(firestoreViewModel: firestoreViewModel, settingViewModel: settingsViewModel)
                             } label: {
                                 Label("Modify profile", systemImage: "person")
                                 
@@ -59,7 +50,7 @@ struct SettingsView: View {
                             }
                             
                             NavigationLink {
-                                NotificationDetailView(settingViewModel: settingViewModel)
+                                NotificationDetailView(settingViewModel: settingsViewModel)
                             } label: {
                                 Label("Notifications", systemImage: "bell")
                             }
@@ -93,27 +84,25 @@ struct SettingsView: View {
                                                 return
                                             }
                                             
-                                            firestoreViewModel.deleteUserData(uid: uid){result in
-                                                switch result {
-                                                case .success:
-                                                    Task{
-                                                        do {
-                                                            try await authenticationViewModel.deleteUser()
-                                                        } catch {
-                                                            print(error)
-                                                        }
-                                                    }
-                                                case .failure:
-                                                    print("error deleting user")
+                                            Task {
+                                                do {
+                                                    try await firestoreViewModel.deleteUserData(uid: uid)
+                                                    firestoreViewModel.firestoreUser = nil
+                                                    try await authenticationViewModel.deleteUser()
+                                                    // FIXME: can it be avoided?
+                                                    authenticationViewModel.user = nil
+                                                    authenticationViewModel.textFieldUsername = ""
+                                                    authenticationViewModel.textFieldEmail = ""
+                                                    authenticationViewModel.textFieldEmailSignin = ""
+                                                    authenticationViewModel.textFieldPassword = ""
+                                                    authenticationViewModel.textFieldPasswordSignin = ""
+                                                    authenticationViewModel.repeatPassword = ""
+                                                } catch {
+                                                    print(error)
                                                 }
-                                                
                                             }
-                                            
-                                        }
-                                )
-                            )
-                        }
-                        Button{
+                                        }))}
+                        Button {
                             authenticationViewModel.logout()
                             firestoreViewModel.firestoreUser = nil
                         } label: {

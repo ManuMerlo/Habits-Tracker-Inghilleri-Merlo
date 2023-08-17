@@ -1,15 +1,14 @@
 import SwiftUI
 
 struct SigninView: View {
-    @ObservedObject var authenticationViewModel: AuthenticationViewModel // // Here authenticationViewModel is a @ObservedObject instead in HabitsTrackerApp is a @StateObject. For more details see (*1)
-    @ObservedObject var firestoreViewModel : FirestoreViewModel
-    
+    @ObservedObject var authenticationViewModel: AuthenticationViewModel
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
     
     var body: some View {
         ZStack{
             RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
                 .edgesIgnoringSafeArea(.all)
-            ScrollView(.vertical, showsIndicators: false){
+            ScrollView(.vertical, showsIndicators: false) {
 
                 VStack(alignment: .center, spacing: 15) {
                     Group {
@@ -29,7 +28,7 @@ struct SigninView: View {
                         CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPasswordSignin)
                         
                         NavigationLink {
-                            //TODO recupera password
+                            //TODO: recupera password
                         } label: {
                             Text("Forgot the password?")
                         }
@@ -39,11 +38,10 @@ struct SigninView: View {
                                 print("Empty email or password")
                                 return
                             }
-                            
                             Task {
                                 do {
                                     try await authenticationViewModel.login()
-                                } catch{
+                                } catch {
                                     print("Error: \(error.localizedDescription)")
                                 }
                             }
@@ -63,7 +61,6 @@ struct SigninView: View {
                             .padding(.vertical,10)
 
                         }
-                        
                         // TODO: it must disappear.
                         if let messageError = authenticationViewModel.messageError {
                             Text(messageError)
@@ -73,7 +70,6 @@ struct SigninView: View {
                         }
                     }
                     
-                    
                     Group {
                         HStack{
                             VStack { Divider().background(Color.gray) }.padding(.horizontal, 20)
@@ -82,7 +78,7 @@ struct SigninView: View {
                         }
                         
                         Button {
-                            authenticationViewModel.loginGoogle(){ result in
+                            authenticationViewModel.loginGoogle() { result in
                                 switch result {
                                 case .success(let userGoogle):
                                     firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id){ result in
@@ -101,7 +97,6 @@ struct SigninView: View {
                                     return
                                 }
                             }
-                            
                         } label: {
                             HStack {
                                 Image("googlelogo")
@@ -117,12 +112,11 @@ struct SigninView: View {
                             .frame(height: 40)
                         }
                         
-                        
                         Button {
-                            authenticationViewModel.loginFacebook(){ result in
+                            authenticationViewModel.loginFacebook() { result in
                                 switch result {
                                 case .success(let userFacebook):
-                                    firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id){ result in
+                                    firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id) { result in
                                         switch result {
                                         case .success(let isPresent):
                                             if !isPresent  {
@@ -160,7 +154,6 @@ struct SigninView: View {
                             .cornerRadius(8)
                             .frame(height: 40)
                         }
-                        
                         
                         NavigationLink {
                             SignupView(authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)

@@ -95,9 +95,9 @@ struct GeneralView: View {
         .onChange(of: healthViewModel.dailyScore, perform: { newValue in
             firestoreViewModel.updateDailyScores(uid: firestoreViewModel.firestoreUser!.id, newScore: newValue)
         })
-        .onAppear{
-            firestoreViewModel.getCurrentUser()
-            firestoreViewModel.getFriendsSubcollection()
+        .task {
+            try? await firestoreViewModel.getCurrentUser()
+            firestoreViewModel.getFriendsSubcollection() // FIXME: as the previous func
         }
         .onAppear() {
             UITabBar.appearance().barTintColor = UIColor(red: 0.1, green: 0.15, blue: 0.23, alpha: 0.9)

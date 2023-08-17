@@ -15,9 +15,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 
 struct HabitsTrackerApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @StateObject var authenticationViewModel = AuthenticationViewModel() // Here authenticationViewModel is a @StateObject instead in the others view is only an @ObservedObject. For more details see (*1)
+    @StateObject var authenticationViewModel = AuthenticationViewModel()
     @StateObject var healthViewModel = HealthViewModel()
-    
     @StateObject var firestoreViewModel = FirestoreViewModel()
     
     var body: some Scene {

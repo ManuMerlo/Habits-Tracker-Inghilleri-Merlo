@@ -68,7 +68,7 @@ struct SignupView: View {
                         firestoreViewModel.fieldIsPresent(field: "username", value: authenticationViewModel.textFieldUsername) { result in
                             switch result {
                             case .success(let isPresent):
-                                if(!isPresent){
+                                if(!isPresent) {
                                     Task {
                                         do {
                                             var user = try await authenticationViewModel.createNewUser()

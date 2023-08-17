@@ -8,6 +8,7 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
+
 import FirebaseAuth
 import Combine
 
@@ -15,7 +16,7 @@ final class FirestoreDataSource {
     private let db = Firestore.firestore()
     
     //Function that returns the current user
-    func getCurrentUser(completionBlock: @escaping (Result<User,Error>) -> Void) {
+    /*func getCurrentUser(completionBlock: @escaping (Result<User,Error>) -> Void) {
         if let userAuth = Auth.auth().currentUser {
             let docRef = db.collection("users").document(userAuth.uid)
             docRef.addSnapshotListener { documentSnapshot, error in
@@ -37,10 +38,17 @@ final class FirestoreDataSource {
                 }
             }
         }
+    }*/
+    
+    func getCurrentUser() async throws -> User {
+        guard let userAuth = Auth.auth().currentUser else {
+            throw URLError(.badServerResponse)
+        }
+        return try await db.collection("users").document(userAuth.uid).getDocument(as: User.self)
     }
     
     // Function that returns true if there exists a document with specific field and value
-    func fieldIsPresent (field : String, value: String, completionBlock: @escaping (Result<Bool, Error>) -> Void){
+    func fieldIsPresent(field : String, value: String, completionBlock: @escaping (Result<Bool, Error>) -> Void){
         let usersCollection = db.collection("users")
         
         // Perform the query to get the document with username "name"
@@ -212,20 +220,19 @@ final class FirestoreDataSource {
     }
     
     // Function to add a new user to firestore
-    func addNewUser(user: User) {
+    func addNewUser(user: User) { // FIXME: async trows and try await?? not necessary here
         db.collection("users")
             .document(user.id)
-            .setData(user.asDictionary())
+            .setData(user.asDictionary(), merge: false)
     }
     
-    // Function to update/set a filed is a user's document
+    // Function to update/set a field is a user's document
     func modifyUser(uid: String, field: String, value: Any) {
         let userRef = db.collection("users").document(uid)
     
         userRef.updateData([field: value]) { err in
             self.handleUpdateResult(err: err)
         }
-        
     }
     
     // Overload for arrays of BaseActivity
@@ -327,15 +334,9 @@ final class FirestoreDataSource {
     }
     
     // Fuction to delete user's document in firestore
-    func deleteUserData(uid: String, completionBlock: @escaping (Result<Bool,Error>) -> Void) {
-        db.collection("users")
+    func deleteUserData(uid: String) async throws {
+        try await db.collection("users")
             .document(uid)
-            .delete { error in
-                if let error = error {
-                    completionBlock(.failure(error))
-                } else {
-                    completionBlock(.success(true))
-                }
-            }
+            .delete()
     }
 }
