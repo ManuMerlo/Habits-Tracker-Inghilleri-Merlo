@@ -1,10 +1,3 @@
-//
-//  PlanningViewModel.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 22/11/22.
-//
-
 import SwiftUI
 
 final class PlanningViewModel: ObservableObject {

@@ -1,10 +1,3 @@
-//
-//  SearchFriendView.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 01/08/23.
-//
-
 import SwiftUI
 import FirebaseFirestoreSwift
 

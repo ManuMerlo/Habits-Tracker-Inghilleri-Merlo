@@ -1,10 +1,3 @@
-//
-//  FirestoreDataSource.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 03/04/23.
-//
-
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
@@ -14,31 +7,6 @@ import Combine
 
 final class FirestoreDataSource {
     private let db = Firestore.firestore()
-    
-    //Function that returns the current user
-    /*func getCurrentUser(completionBlock: @escaping (Result<User,Error>) -> Void) {
-        if let userAuth = Auth.auth().currentUser {
-            let docRef = db.collection("users").document(userAuth.uid)
-            docRef.addSnapshotListener { documentSnapshot, error in
-                if let error = error as NSError? {
-                    completionBlock(.failure(error))
-                } else if let document = documentSnapshot, document.exists {
-                    do {
-                        print("Document retrieved")
-                        let user = try document.data(as: User.self)
-                        
-                        if userAuth.uid == user.id {
-                            print("user Auth id: \(userAuth.uid)")
-                            print("user retrieved \(user)")
-                            completionBlock(.success(user))
-                        }
-                    } catch {
-                        print(error)
-                    }
-                }
-            }
-        }
-    }*/
     
     func getCurrentUser() async throws -> User {
         guard let userAuth = Auth.auth().currentUser else {

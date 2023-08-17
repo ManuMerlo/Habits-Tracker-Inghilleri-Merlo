@@ -1,10 +1,3 @@
-//
-//  File.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 07/08/23.
-//
-
 import Foundation
 
 struct Friend: Identifiable, Codable, Hashable {

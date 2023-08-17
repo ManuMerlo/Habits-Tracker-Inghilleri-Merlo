@@ -1,10 +1,3 @@
-//
-//  HomeView.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 20/11/22.
-//
-
 import SwiftUI
 
 struct HomeView: View {

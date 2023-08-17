@@ -1,10 +1,3 @@
-//
-//  FirestoreRepository.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 03/04/23.
-//
-
 import Foundation
 import Combine
 

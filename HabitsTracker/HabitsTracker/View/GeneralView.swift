@@ -1,13 +1,5 @@
-//
-//  Home.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 19/11/22.
-//
-
 import SwiftUI
 import Firebase
-//import GoogleSignIn
 
 
 struct GeneralView: View {

@@ -15,7 +15,7 @@ final class FirestoreViewModel: ObservableObject {
     
     private var cancellables: Set<AnyCancellable> = []
     
-    @Published var friendsSubcollection: [Friend] = [] /*{
+    @Published var friendsSubcollection: [Friend] = [] /* TODO: {
         didSet {
             fetchRequestsThenFriendsThenWaitingList()
         }
@@ -24,7 +24,7 @@ final class FirestoreViewModel: ObservableObject {
     private let serialQueue = DispatchQueue(label: "friends.serialQueue")
     private let semaphore = DispatchSemaphore(value: 0)
 
-    /*func fetchRequestsThenFriendsThenWaitingList() {
+    /*TODO: func fetchRequestsThenFriendsThenWaitingList() {
         serialQueue.async {
             self.getRequests()
             self.semaphore.wait()

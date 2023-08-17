@@ -1,10 +1,3 @@
-//
-//  UserViewModel.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 19/03/23.
-//
-
 import Foundation
 import SwiftUI
 import Firebase

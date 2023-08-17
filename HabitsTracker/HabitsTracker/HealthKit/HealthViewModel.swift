@@ -1,14 +1,8 @@
-//
-//  HealthViewModel.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 01/04/23.
-//
-
 import Foundation
 import HealthKit
 import SwiftUI
 
+@MainActor
 final class HealthViewModel: ObservableObject {
     private let healthStore: HKHealthStore = HKHealthStore()
     private var observerQuery: HKObserverQuery?

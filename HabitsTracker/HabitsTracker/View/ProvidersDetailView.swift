@@ -1,10 +1,3 @@
-//
-//  ProvidersDetailView.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 06/08/23.
-//
-
 import SwiftUI
 
 struct ProvidersDetailView: View {

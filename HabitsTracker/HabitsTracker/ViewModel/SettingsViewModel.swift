@@ -1,10 +1,3 @@
-//
-//  SettingsViewModel.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 02/08/23.
-//
-
 import Foundation
 import UserNotifications
 import SwiftUI

@@ -1,11 +1,4 @@
-//
-//  LeaderboardView.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 26/03/23.
-//
-
-//TODO : da implementare
+//TODO: da implementare
 /*switch selectedTimeFrame {
  case .weekly:
  users = viewModel.weeklyUsers

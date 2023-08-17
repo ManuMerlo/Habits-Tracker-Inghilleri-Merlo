@@ -1,10 +1,3 @@
-//
-//  SigninViewModel.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 19/11/22.
-//
-
 //MARK: TO DELETE
 
 import SwiftUI

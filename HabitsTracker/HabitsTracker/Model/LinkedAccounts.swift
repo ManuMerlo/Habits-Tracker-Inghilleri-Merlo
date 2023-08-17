@@ -1,10 +1,3 @@
-//
-//  LinkedAccount.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 01/04/23.
-//
-
 import Foundation
 
 enum LinkedAccounts: String{

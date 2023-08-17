@@ -1,10 +1,3 @@
-//
-//  AuthenticationFirebaseDataSource.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 31/03/23.
-//
-
 import Foundation
 import FirebaseAuth
 
