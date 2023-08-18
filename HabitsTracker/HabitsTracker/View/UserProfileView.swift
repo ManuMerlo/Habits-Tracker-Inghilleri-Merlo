@@ -210,7 +210,7 @@ struct content: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .center)
             
-            ScoreRingView(dailyScore: user.dailyScores[today],weeklyScore: user.dailyScores[7])
+            ScoreRingView(dailyScore: user.dailyScores[today],weeklyScore: user.dailyScores[7], ringSize: 300)
             
             
             
@@ -262,7 +262,8 @@ struct content: View {
                 .padding(.vertical)
                 .shadow(color:.black,radius: 5)
             
-            RecordView(user: user)
+            RecordView(user: user, elementSize: 100)
+                .padding(.bottom,20)
             
         }.frame(width: UIScreen.main.bounds.width/1.1)
     }

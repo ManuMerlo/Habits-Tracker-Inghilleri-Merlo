@@ -26,13 +26,9 @@ struct ModifyProfileView: View {
     @State var selectedSex : Sex = Sex.Unspecified
     
     var body: some View {
-
-        VStack{
-            
-            ZStack{
-                
-                WaveView(upsideDown: true,repeatAnimation: false, base: -140, amplitude: 70)
-                    .edgesIgnoringSafeArea(.top)
+        VStack(){
+            ZStack(alignment: .top){
+                WaveView(upsideDown: true,repeatAnimation: false, base: 215, amplitude: 70)
                 
                 VStack{
                     Button{
@@ -58,8 +54,9 @@ struct ModifyProfileView: View {
                         .fontWeight(.bold)
                     
                 }.frame(height: UIScreen.main.bounds.height*0.2)
+                    .padding(.vertical)
                 
-            }.padding(.bottom)
+            }
             
             VStack{
                 
@@ -158,10 +155,10 @@ struct ModifyProfileView: View {
                                 .labelsHidden()
                             
                             Spacer()
-                            }
+                        }
                     }
                     .background(Color("oxfordBlue"))
-
+                    
                     
                     
                 }
@@ -218,11 +215,17 @@ struct ModifyProfileView: View {
             }
             .frame(height: UIScreen.main.bounds.height*0.65)
             
-        }.foregroundColor(.white)
-            .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500).ignoresSafeArea())
-            
-            .navigationBarBackButtonHidden(!isListEnabled || modify)
-            .toolbar {
+        }
+        .padding(.top,60)
+        .foregroundColor(.white)
+        .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500).ignoresSafeArea())
+        .navigationBarBackButtonHidden(!isListEnabled || modify)
+        .toolbarColorScheme(.dark, for: .navigationBar)
+        .toolbarBackground(
+            Color("oxfordBlue"),
+            for: .navigationBar)
+        .toolbarBackground(.visible, for: .navigationBar)
+        .toolbar {
                 Button {
                     modify.toggle()
                 } label: {

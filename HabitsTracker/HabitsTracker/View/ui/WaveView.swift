@@ -13,40 +13,40 @@ struct WaveView: View {
     var repeatAnimation: Bool = false
     var base : CGFloat
     var amplitude : CGFloat?
-    // negative value to reduce the height of the wave
-    
-    
     let screen = UIScreen.main.bounds
+    
     @State var isAnimated = false
     
     var body: some View {
-        VStack {
-            if upsideDown {
-                getUpsideDownWavePath(interval: screen.width * 1.5, amplitude: amplitude ?? 130, base: base + screen.height / 2)
-                    .foregroundColor(Color("oxfordBlue"))
-                    .shadow(color: .black, radius: 10, x: 0.0, y: 0.0)
-                    .offset(x: isAnimated ? -1 * screen.width * 1.5 : 0)
-            } else {
-                getWavePath(interval: screen.width * 1.5, amplitude: 130, base: base + screen.height / 2)
-                    .foregroundColor(Color("oxfordBlue"))
-                    .shadow(color: .black, radius: 10, x: 0.0, y: 0.0)
-                    .offset(x: isAnimated ? -1 * screen.width * 1.5 : 0)
-            }
-        }
-        .onAppear() {
-            if repeatAnimation { // Replace with your boolean condition
-                withAnimation(Animation.linear(duration: 3).repeatForever(autoreverses: false)) {
-                    self.isAnimated = true
-                }
-            } else {
-                withAnimation(Animation.linear(duration: 2)){
-                    self.isAnimated = true
-                }
-            }
-        }
+        GeometryReader { geometry in
+                    VStack {
+                        if upsideDown {
+                            getUpsideDownWavePath(interval: geometry.size.width * 1.5, amplitude: amplitude ?? 130, base: base)
+                                .foregroundColor(Color("oxfordBlue"))
+                                .shadow(color: .black, radius: 10, x: 0.0, y: 0.0)
+                                .offset(x: isAnimated ? -1 * geometry.size.width * 1.5 : 0)
+                        } else {
+                            getWavePath(interval: geometry.size.width * 1.5, amplitude: 130, base: base)
+                                .foregroundColor(Color("oxfordBlue"))
+                                .shadow(color: .black, radius: 4, x: 0.0, y: -3)
+                                .offset(x: isAnimated ? -1 * geometry.size.width * 1.5 : 0)
+                        }
+                    }
+                    .onAppear() {
+                        if repeatAnimation {
+                            withAnimation(Animation.linear(duration: 3).repeatForever(autoreverses: false)) {
+                                self.isAnimated = true
+                            }
+                        } else {
+                            withAnimation(Animation.linear(duration: 2)){
+                                self.isAnimated = true
+                            }
+                        }
+                    }
+        }.frame(height: 150)
+            
     }
 
-    
     //Wave Function Produces Sine Wave
     func getWavePath(interval: CGFloat, amplitude: CGFloat = 100, base: CGFloat = UIScreen.main.bounds.height/2) -> Path {
         Path {
@@ -62,8 +62,8 @@ struct WaveView: View {
                 control1: CGPoint(x: interval * (1.35), y: amplitude + base ),
                 control2: CGPoint(x: interval * (1.65), y: -amplitude + base)
             )
-            path.addLine(to: CGPoint(x: 2*interval, y: screen.height))
-            path.addLine(to: CGPoint(x: 0, y: screen.height))
+            path.addLine(to: CGPoint(x: 2*interval, y: 150))
+            path.addLine(to: CGPoint(x: 0, y: 150))
             
         }
     }
@@ -90,6 +90,6 @@ struct WaveView: View {
 
 struct WaveView_Preview: PreviewProvider {
     static var previews: some View {
-        WaveView(upsideDown: true, base: -200)
+        WaveView(upsideDown: false, repeatAnimation: true, base: 100)
     }
 }

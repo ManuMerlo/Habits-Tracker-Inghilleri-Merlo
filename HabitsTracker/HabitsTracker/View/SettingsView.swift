@@ -23,25 +23,30 @@ struct SettingsView: View {
         NavigationStack{
                 ScrollView{
                     VStack(alignment: .center){
-                        WaveView(upsideDown: true,repeatAnimation: false, base: -130, amplitude: 70)
-                    
-                        ProfileImageView(
-                            path: firestoreViewModel.firestoreUser?.image,
-                            systemName: "person.circle.fill",
-                            size: 90,
-                            color: .gray)
-                        .padding(.top, 50)
-                        .padding(.bottom,5)
-                        
-                        Text("\( firestoreViewModel.firestoreUser?.username ?? "User")")
-                            .font(.largeTitle)
-                            .foregroundColor(.white)
-                        
-                        Text("\( firestoreViewModel.firestoreUser?.email ?? "")")
-                            .font(.title3)
-                            .foregroundColor(.gray)
-                            .accentColor(.white)
-                            .padding(.bottom,30)
+                        ZStack(alignment: .top){
+                            WaveView(upsideDown: true,repeatAnimation: false, base: 290, amplitude: 70)
+                                
+                            VStack{
+                                ProfileImageView(
+                                    path: firestoreViewModel.firestoreUser?.image,
+                                    systemName: "person.circle.fill",
+                                    size: 90,
+                                    color: .gray)
+                                .padding(.top, 50)
+                                .padding(.bottom,5)
+                                
+                                Text("\( firestoreViewModel.firestoreUser?.username ?? "User")")
+                                    .font(.largeTitle)
+                                    .foregroundColor(.white)
+                                
+                                Text("\( firestoreViewModel.firestoreUser?.email ?? "")")
+                                    .font(.title3)
+                                    .foregroundColor(.gray)
+                                    .accentColor(.white)
+                                    .padding(.bottom,30)
+                            }.padding(.top,20)
+                            
+                        }
                         
                         List {
                             Section() {
@@ -121,7 +126,6 @@ struct SettingsView: View {
                         .frame(height: 650)
                         .padding(.top,50)
                     }
-                   
                      
             } .edgesIgnoringSafeArea(.top)
                 .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500).opacity(1))

@@ -23,9 +23,9 @@ struct HabitsTrackerApp: App {
     var body: some Scene {
         WindowGroup {
             if let _ = authenticationViewModel.user {
-                GeneralView(healthViewModel: healthViewModel, authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)
+                GeneralView(healthViewModel: healthViewModel, authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel).environmentObject(OrientationInfo())
             } else {
-                IntroView(healthViewModel: healthViewModel, authenticationViewModel:authenticationViewModel, firestoreViewModel: firestoreViewModel)
+                IntroView(healthViewModel: healthViewModel, authenticationViewModel:authenticationViewModel, firestoreViewModel: firestoreViewModel).environmentObject(OrientationInfo())
             }
         }
     }

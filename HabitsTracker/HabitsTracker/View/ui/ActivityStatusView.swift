@@ -86,8 +86,6 @@ struct ActivityStatusView: View {
                     }
                 }
         }
-        .padding(.vertical,3)
-        .padding(.horizontal,20)
     }
 }
 

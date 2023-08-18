@@ -11,6 +11,15 @@ struct HomeView: View {
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     
+    //Responsiveness
+    @EnvironmentObject var orientationInfo: OrientationInfo
+    @State private var isLandscape: Bool = false
+    @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
+    @State var height = UIScreen.main.bounds.height
+    @State var width = UIScreen.main.bounds.width
+    
+    @State var waveCoordinate : CGFloat = 0
+    
     var body: some View {
         NavigationStack{
             ZStack{
@@ -18,18 +27,30 @@ struct HomeView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 ScrollView(.vertical, showsIndicators: false) {
-                    content
-                }
+                    content()
+                        .padding(.vertical,30)
+                }.edgesIgnoringSafeArea(.horizontal)
+                
             }
+            
         }
+        .onAppear(){
+            isLandscape = orientationInfo.orientation == .landscape
+            height =  UIScreen.main.bounds.height
+            width = UIScreen.main.bounds.width
+        }
+        .onChange(of: orientationInfo.orientation) { orientation in
+            isLandscape = orientation == .landscape
+            height =  UIScreen.main.bounds.height
+            width = UIScreen.main.bounds.width
+        }
+        
     }
     
-    var content: some View {
-        
-        VStack() {
-            
-            WaveView(upsideDown: false,repeatAnimation: true, base: 150, amplitude: 110)
-            
+    @ViewBuilder
+    
+    func content() -> some View {
+        VStack(spacing: 0) {
             
             HStack{
                 Text("Dashboard")
@@ -37,7 +58,7 @@ struct HomeView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 20)
+                    .padding(20)
                 
                 Spacer()
                 
@@ -61,8 +82,6 @@ struct HomeView: View {
                         }
                         
                     }
-                    
-                    //}
                 }
             }
             
@@ -78,19 +97,19 @@ struct HomeView: View {
                 .padding(.horizontal, 20)
             
             if let user = firestoreViewModel.firestoreUser{
-                ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7])
-                    .padding(.bottom, 120)
+                ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7],ringSize: width/2)
             }
             
+            WaveView(upsideDown: false,repeatAnimation:true, base: 100, amplitude: 110)
             
             VStack{
                 Text("Recent Activities")
                     .font(.title)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(20)
+                    .padding(.vertical,20)
                 
-                VStack(alignment:.center) {
+                VStack(alignment:.center, spacing: 15) {
                     ForEach( ExtendedActivity.allActivities(), id: \.self) { activity in
                         if let baseActivity = healthViewModel.allMyTypes.first(where: { $0.id == activity.id }) {
                             ActivityStatusView(
@@ -103,19 +122,42 @@ struct HomeView: View {
                         }
                     }
                 }
+                .frame(maxWidth: getMaxWidth())
                 
                 if let user = firestoreViewModel.firestoreUser {
-                    RecordView(user: user)
+                    let elementsize =  (getMaxWidth()-15)/2
+                    RecordView(user: user, elementSize: elementsize)
+                        .frame(maxWidth: getMaxWidth())
+                        .padding(.bottom,20)
                 }
+                
+            }
+            .background(Color("oxfordBlue"))
             
-            }.background(Color("oxfordBlue"))
-        }
-        .padding(.top,20)
+        }.padding(.top, 20)
         
+    }
+    
+    func getMaxWidth() -> CGFloat{
+        if device == .iPad {
+            if isLandscape {
+                return width / 1.5
+            } else {
+                return width / 1.3
+            }
+        } else if device == .iPhone {
+            if isLandscape {
+                return width/1.4
+            } else {
+                return width/1.1
+            }
+        }
+        return width
     }
 }
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
         GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel(),firestoreViewModel: FirestoreViewModel())
+            .environmentObject(OrientationInfo())
     }
 }

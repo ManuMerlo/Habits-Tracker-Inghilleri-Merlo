@@ -8,14 +8,15 @@ struct IntroView: View {
     
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
     
-    @Environment (\.verticalSizeClass) var verticalSizeClass
-   
-    @State private var isLandscape: Bool = false
+    
+    //Responsiveness
+    @EnvironmentObject var orientationInfo: OrientationInfo
+    @State private var isLandscape: Bool = true
     @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
     @State var height = UIScreen.main.bounds.height
     @State var width = UIScreen.main.bounds.width
-
-
+    
+    
     // Constants and Configurations
     enum PageColor {
         static let blue = Color.blue
@@ -27,7 +28,7 @@ struct IntroView: View {
         static let notes = "notes"
         static let share = "share"
         static let planActivities = "plan_activities"
-
+        
     }
     
     var body: some View {
@@ -35,45 +36,53 @@ struct IntroView: View {
             RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
                 .edgesIgnoringSafeArea(.all)
                 .overlay {
-                    if (!isLandscape){
-                        VStack {
-                            Spacer()
-                            UpperImage(background: getColorForSelectedPage(selectedPage))
-                            Spacer()
-                            TabViewBuilder()
-                            Spacer()
-                        }
-                    }else{
-                        HStack {
-                            Spacer()
-                            UpperImage(background: getColorForSelectedPage(selectedPage))
-                            Spacer()
-                            TabViewBuilder()
-                            Spacer()
-                        }.frame(width: width)
+                    if orientationInfo.orientation == .landscape {
+                        LandscapeView()
+                    } else {
+                        PortraitView()
                     }
-                }.foregroundColor(.white)
+                }
         }
-        .onAppear {
-            if (verticalSizeClass == .compact) || (width > height && device == .iPad){
-                isLandscape = true
-            } else {
-                isLandscape = false
-            }
-            
+        .foregroundColor(.white)
+        .onAppear(){
+            isLandscape = orientationInfo.orientation == .landscape
+            height =  UIScreen.main.bounds.height
+            width = UIScreen.main.bounds.width
         }
-        .onChange(of: verticalSizeClass) { newSize in
-            isLandscape = newSize == .compact
+        .onChange(of: orientationInfo.orientation) { orientation in
+            isLandscape = orientation == .landscape
             height =  UIScreen.main.bounds.height
             width = UIScreen.main.bounds.width
         }
     }
     
     @ViewBuilder
+    func PortraitView() -> some View {
+        VStack {
+            Spacer()
+            UpperImage(background: getColorForSelectedPage(selectedPage))
+            Spacer()
+            TabViewBuilder()
+            Spacer()
+        }
+    }
+    
+    @ViewBuilder
+    func LandscapeView() -> some View {
+        HStack {
+            Spacer()
+            UpperImage(background: getColorForSelectedPage(selectedPage))
+            Spacer()
+            TabViewBuilder()
+            Spacer()
+        }.frame(width: width)
+    }
+    
+    @ViewBuilder
     func TabViewBuilder() -> some View {
         VStack(alignment: .center) {
             Spacer()
-
+            
             TabView(selection: $selectedPage)
             {
                 DescriptionCard(card: data[selectedPage])
@@ -104,7 +113,7 @@ struct IntroView: View {
                     .background(Color.blue)
                     .cornerRadius(10)
             }
-    
+            
             Spacer()
         }.frame(height: !isLandscape ? height/3 : width/3)
     }
@@ -131,10 +140,10 @@ struct IntroView: View {
         VStack{
             ZStack {
                 if device == .iPhone{
-                    iPhoneLayout(background: background)
+                    iPhoneUpperImageLayout(background: background)
                 }
                 else {
-                    iPadLayout(background: background)
+                    iPadUpperImageLayout(background: background)
                 }
             }
         }.frame(
@@ -143,7 +152,7 @@ struct IntroView: View {
     }
     
     @ViewBuilder
-    func iPhoneLayout(background: Color) -> some View {
+    func iPhoneUpperImageLayout(background: Color) -> some View {
         Circle()
             .frame(width:!isLandscape ? height + 50 : width + 50,
                    height: !isLandscape ? height + 50 : width + 50 )
@@ -184,7 +193,7 @@ struct IntroView: View {
     }
     
     @ViewBuilder
-    func iPadLayout(background: Color) -> some View {
+    func iPadUpperImageLayout(background: Color) -> some View {
         Circle()
             .frame(width:!isLandscape ? height + 50 : width + 50,
                    height: !isLandscape ? height + 50 : width + 50 )
@@ -204,7 +213,7 @@ struct IntroView: View {
                 .frame(width: !isLandscape ? height/2 : width/2.5, height: !isLandscape ? height/2 : width/2.5)
                 .shadow(color: .orange, radius: 1, x: 0, y: 0)
                 .padding(.bottom, !isLandscape ? 60 : 0)
-
+            
         } else if selectedPage == 1 {
             LottieView(filename: PageFilename.share)
                 .frame(width: !isLandscape ? height/2 : width/2.5, height: !isLandscape ? height/2 : width/2.5)
@@ -218,8 +227,8 @@ struct IntroView: View {
                 .padding(.bottom, !isLandscape ? 60 : 0)
         }
     }
-
-
+    
+    
     
     // Helper Functions
     func getColorForSelectedPage(_ page: Int) -> Color {
@@ -251,5 +260,6 @@ enum Device {
 struct IntroView_Previews: PreviewProvider {
     static var previews: some View {
         IntroView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel(), firestoreViewModel: FirestoreViewModel())
+            .environmentObject(OrientationInfo())
     }
 }

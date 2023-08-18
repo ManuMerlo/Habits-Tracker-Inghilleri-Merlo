@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		090C998E2A8F4D1A00F8B339 /* OrientationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090C998D2A8F4D1A00F8B339 /* OrientationInfo.swift */; };
 		090F1CA72A7B7CEB00FF5E4D /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 090F1CA62A7B7CEB00FF5E4D /* FirebaseStorage */; };
 		09115CEA2A7FC38000BE1254 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09115CE92A7FC37F00BE1254 /* ProfileImageView.swift */; };
 		09115CEC2A7FC97A00BE1254 /* NotificationDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09115CEB2A7FC97A00BE1254 /* NotificationDetailView.swift */; };
@@ -75,6 +76,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		090C998D2A8F4D1A00F8B339 /* OrientationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationInfo.swift; sourceTree = "<group>"; };
 		09115CE92A7FC37F00BE1254 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		09115CEB2A7FC97A00BE1254 /* NotificationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDetailView.swift; sourceTree = "<group>"; };
 		09115CED2A7FCA4600BE1254 /* ProvidersDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProvidersDetailView.swift; sourceTree = "<group>"; };
@@ -196,6 +198,7 @@
 				09652B8229311942002CC615 /* CardIntro.swift */,
 				DD09A10229D9FA0D00CEBE15 /* Activity.swift */,
 				09316F672A80D55200E92B84 /* Friend.swift */,
+				090C998D2A8F4D1A00F8B339 /* OrientationInfo.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -460,6 +463,7 @@
 				09316F6A2A8143B000E92B84 /* RequestListView.swift in Sources */,
 				DDDDFA70292CEC290033B3D3 /* PlanningViewModel.swift in Sources */,
 				DDEB8AEB29D6F210001693C8 /* AuthenticationRepository.swift in Sources */,
+				090C998E2A8F4D1A00F8B339 /* OrientationInfo.swift in Sources */,
 				DDAA66A729D042E500219792 /* LeaderboardView.swift in Sources */,
 				DDC33537292BFC8700C27566 /* DateValue.swift in Sources */,
 				DDEACC1329DB748800F39F4B /* FirestoreViewModel.swift in Sources */,

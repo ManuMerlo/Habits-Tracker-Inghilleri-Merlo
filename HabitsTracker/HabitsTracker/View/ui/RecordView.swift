@@ -10,20 +10,23 @@ import SwiftUI
 struct RecordView: View {
     
     var user : User
+    var elementSize : CGFloat
     
     var body: some View {
         Text("Records")
             .font(.title)
             .foregroundColor(.white)
             .frame(maxWidth: .infinity, alignment: .center)
+            .padding(.top,20)
+            .padding(.bottom,5)
         
         let columns = [
-            GridItem(.flexible(), spacing: 10),
-            GridItem(.flexible(), spacing: 10),
+            GridItem(.flexible(), spacing: 15),
+            GridItem(.flexible(), spacing: 0),
         ]
         
         VStack{
-            LazyVGrid(columns: columns, spacing: 10) {
+            LazyVGrid(columns: columns, spacing: 15) {
                 ForEach(Array(ExtendedActivity.allActivities().enumerated()), id: \.element.id) { index, activity in
                     if let record = user.records.first(where: { $0.id == activity.id }) {
                         RecordDetailView(
@@ -33,7 +36,7 @@ struct RecordView: View {
                             measure: activity.measure,
                             color: index,
                             up: record.timestamp == Calendar.current.startOfDay(for: Date()).timeIntervalSince1970 ? true : false,
-                            width: UIScreen.main.bounds.width*2/5
+                            width: elementSize
                         )
                     }
                 }
@@ -44,7 +47,8 @@ struct RecordView: View {
 
 struct RecordView_Previews: PreviewProvider {
     static var previews: some View {
-        RecordView(user: User(
+        RecordView(
+        user: User(
             username: "lulu",
             email: "lulu@gmail.com",
             birthDate: "10/08/2001",
@@ -52,6 +56,7 @@ struct RecordView_Previews: PreviewProvider {
             height: 150,
             weight: 60,
             image: "",
-            dailyScores: [20,50,40,60,60,90,70,200,40]))
+            dailyScores: [20,50,40,60,60,90,70,200,40]),
+        elementSize : 200)
     }
 }

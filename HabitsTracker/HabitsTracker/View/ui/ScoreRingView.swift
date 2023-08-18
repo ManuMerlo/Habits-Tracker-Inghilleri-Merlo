@@ -11,6 +11,7 @@ struct ScoreRingView: View {
     
     var dailyScore : Int
     var weeklyScore: Int
+    var ringSize : CGFloat
     var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     private let gradient = AngularGradient(
@@ -26,11 +27,14 @@ struct ScoreRingView: View {
         endAngle: .degrees(352))
     
     var body: some View {
+        
+        let ringSize = max(290,ringSize)
+        
         ZStack{
             
                 Circle()
                     .stroke(Color("platinum"), lineWidth: 20).opacity(0.3)
-                    .frame(width: 290, height: 290, alignment: .center)
+                    .frame(width: ringSize, alignment: .center)
                 
                 
                 
@@ -40,14 +44,14 @@ struct ScoreRingView: View {
                 Circle()
                     .trim( from: 0, to: CGFloat(ratioWeekly))
                     .stroke(gradient, style: StrokeStyle(lineWidth: 20, lineCap: .round))
-                    .frame(width: 290, height: 290, alignment: .center)
+                    .frame(width: ringSize,alignment: .center)
                     .rotationEffect(.degrees(-90))
                     .shadow(color: .black.opacity(0.5), radius: 5, x: 0.0, y: 0.0)
             
             
             Circle()
                 .stroke(Color("platinum"), lineWidth: 20).opacity(0.3)
-                .frame(width: 230, height: 230, alignment: .center)
+                .frame(width: ringSize-60, alignment: .center)
        
             let maximumScoreD = 100.0
             let ratioDaily = Double(dailyScore) / maximumScoreD
@@ -55,7 +59,7 @@ struct ScoreRingView: View {
             Circle()
                 .trim( from: 0, to: CGFloat(ratioDaily))
                 .stroke(gradient2, style: StrokeStyle(lineWidth: 20, lineCap: .round))
-                .frame(width: 230, height: 230, alignment: .center)
+                .frame(width: ringSize - 60, alignment: .center)
                 .rotationEffect(.degrees(-90))
                 .shadow(color: .black.opacity(0.5), radius: 5, x: 0.0, y: 0.0)
             
@@ -100,6 +104,6 @@ struct ScoreRingView: View {
 
 struct ScoreRingView_Previews: PreviewProvider {
     static var previews: some View {
-        ScoreRingView(dailyScore:100, weeklyScore: 100)
+        ScoreRingView(dailyScore:100, weeklyScore: 100, ringSize: 500)
     }
 }
