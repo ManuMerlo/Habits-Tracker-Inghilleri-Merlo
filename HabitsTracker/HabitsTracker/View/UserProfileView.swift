@@ -15,14 +15,19 @@ struct UserProfileView: View {
     var user: User
     var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
+    //Responsiveness
+    @EnvironmentObject var orientationInfo: OrientationInfo
+    @State private var isLandscape: Bool = false
+    @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
+    @State var height = UIScreen.main.bounds.height
+    @State var width = UIScreen.main.bounds.width
+    
     var body: some View {
         ZStack{
-            
             RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
                 .edgesIgnoringSafeArea(.all)
             
             ScrollView (.vertical, showsIndicators: false) {
-                
                 VStack{
                     ZStack{
                         Color("oxfordBlue").overlay(alignment:.bottom) {
@@ -33,21 +38,105 @@ struct UserProfileView: View {
                         }
                         
                         Header(firestoreViewModel: firestoreViewModel, user: user)
+                            .frame(width: width/2)
                     }.edgesIgnoringSafeArea(.top)
                     
                     
-                    content(user: user).padding(.vertical)
-                    
-                    
+                    content().padding(.vertical)
+                        .frame(width: width/1.2)
                 }.toolbarColorScheme(.dark, for: .navigationBar)
                     .toolbarBackground(
                         Color("oxfordBlue"),
                         for: .navigationBar)
                     .toolbarBackground(.visible, for: .navigationBar)
                 
-            }.navigationBarTitle("", displayMode: .inline) // Hide the title
+            }
+            .navigationBarTitle("", displayMode: .inline) // Hide the title
+            .ignoresSafeArea()
+        }
+        .onAppear(){
+            isLandscape = orientationInfo.orientation == .landscape
+            height =  UIScreen.main.bounds.height
+            width = UIScreen.main.bounds.width
+        }
+        .onChange(of: orientationInfo.orientation) { orientation in
+            isLandscape = orientation == .landscape
+            height =  UIScreen.main.bounds.height
+            width = UIScreen.main.bounds.width
         }
         
+    }
+    
+    @ViewBuilder
+    func content() -> some View {
+        
+            VStack(alignment: .center){
+                
+                Text("Todays Scores")
+                    .font(.title)
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity, alignment: .center)
+                
+                
+                
+                ScoreRingView(dailyScore: user.dailyScores[today],weeklyScore: user.dailyScores[7], ringSize: isLandscape ? width/2.5 : width/2)
+                
+                RoundedRectangle(cornerRadius: 10)
+                    .frame(height: 2)
+                    .foregroundColor(.white.opacity(0.7))
+                    .padding(.vertical)
+                    .shadow(color:.black,radius: 5)
+                
+                VStack(alignment: .center){
+                    Text("Score Trend")
+                        .font(.title)
+                        .foregroundColor(.white)
+                        .frame(maxWidth: .infinity, alignment: .center)
+                    
+                    Chart {
+                        ForEach(user.dailyScores.indices[0...6], id: \.self) { index in
+                            LineMark(
+                                x: .value("Day", getDayLabel(for: index)),
+                                y: .value("Score", user.dailyScores[index])
+                            )
+                            .foregroundStyle(
+                                by: .value("Week", "Current Week")
+                            )
+                            .interpolationMethod(.catmullRom)
+                            .symbol(
+                                by: .value("Week", "Current Week")
+                            )
+                            .symbolSize(30)
+                        }
+                    }.environment(\.colorScheme, .dark) //FIXME: temporary fix
+                        .chartForegroundStyleScale([
+                            "Current Week": Color(hue: 0.33, saturation: 0.81, brightness: 0.76),
+                        ])
+                        .chartYAxis {
+                            AxisMarks(position: .leading)
+                            
+                        }
+                        .frame(height: 250)
+                        .padding(.horizontal,20)
+                        .foregroundColor(.blue)
+                    
+                }
+                
+                RoundedRectangle(cornerRadius: 10)
+                    .frame(height: 2)
+                    .foregroundColor(.white.opacity(0.7))
+                    .padding(.vertical)
+                    .shadow(color:.black,radius: 5)
+                
+                RecordView(user: user, elementSize: (width/1.2-15)/2)
+                    .padding(.bottom,20)
+                
+            }
+        }
+
+    func getDayLabel(for index: Int) -> String {
+        let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+        return days[index % days.count]
     }
     
 }
@@ -117,8 +206,6 @@ struct Header: View{
                 
             }
             .padding(.vertical)
-            .frame(width: UIScreen.main.bounds.width/1.2)
-            
         }
     }
     
@@ -195,85 +282,6 @@ struct ButtonRequest: View {
     
 }
 
-struct content: View {
-    
-    var user : User
-    let gradientStart = Color(red: 239.0 / 255, green: 120.0 / 255, blue: 221.0 / 255)
-    var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
-    
-    var body: some View {
-        
-        VStack(alignment: .center){
-            
-            Text("Todays Scores")
-                .font(.title)
-                .foregroundColor(.white)
-                .frame(maxWidth: .infinity, alignment: .center)
-            
-            ScoreRingView(dailyScore: user.dailyScores[today],weeklyScore: user.dailyScores[7], ringSize: 300)
-            
-            
-            
-            RoundedRectangle(cornerRadius: 10)
-                .frame(height: 2)
-                .foregroundColor(.white.opacity(0.7))
-                .padding(.vertical)
-                .shadow(color:.black,radius: 5)
-            
-            
-            VStack(alignment: .center){
-                Text("Score Trend")
-                    .font(.title)
-                    .foregroundColor(.white)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                
-                Chart {
-                    ForEach(user.dailyScores.indices[0...6], id: \.self) { index in
-                        LineMark(
-                            x: .value("Day", getDayLabel(for: index)),
-                            y: .value("Score", user.dailyScores[index])
-                        )
-                        .foregroundStyle(
-                            by: .value("Week", "Current Week")
-                        )
-                        .interpolationMethod(.catmullRom)
-                        .symbol(
-                            by: .value("Week", "Current Week")
-                        )
-                        .symbolSize(30)
-                    }
-                }.environment(\.colorScheme, .dark) //FIXME: temporary fix
-                    .chartForegroundStyleScale([
-                        "Current Week": Color(hue: 0.33, saturation: 0.81, brightness: 0.76),
-                    ])
-                    .chartYAxis {
-                        AxisMarks(position: .leading)
-                        
-                    }
-                    .frame(height: 250)
-                    .padding(.horizontal,20)
-                    .foregroundColor(.blue)
-                
-            }
-            
-            RoundedRectangle(cornerRadius: 10)
-                .frame(height: 2)
-                .foregroundColor(.white.opacity(0.7))
-                .padding(.vertical)
-                .shadow(color:.black,radius: 5)
-            
-            RecordView(user: user, elementSize: 100)
-                .padding(.bottom,20)
-            
-        }.frame(width: UIScreen.main.bounds.width/1.1)
-    }
-    
-    private func getDayLabel(for index: Int) -> String {
-        let days = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
-        return days[index % days.count]
-    }
-}
-
 @ViewBuilder
 func VerticalText(upperText: String, lowerText:String) -> some View {
     VStack(alignment: .center){
@@ -296,7 +304,7 @@ struct UserProfileView_Previews: PreviewProvider {
             height: 150,
             weight: 60,
             image: "",
-            dailyScores: [20,50,40,60,60,90,70,200,40]))
+            dailyScores: [20,50,40,60,60,90,70,200,40])).environmentObject(OrientationInfo())
     }
 }
 
