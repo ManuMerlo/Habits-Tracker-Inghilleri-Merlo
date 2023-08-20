@@ -37,10 +37,7 @@ struct UserProfileView: View {
                     .toolbarBackground(.visible, for: .navigationBar)
                 
             }.navigationBarTitle("", displayMode: .inline) // Hide the title
-        }.onChange(of: firestoreViewModel.friendsSubcollection, perform: { newValue in
-            print(firestoreViewModel.friendsSubcollection)
-        }) 
-        
+        }
     }
     
 }
@@ -127,18 +124,17 @@ struct ButtonRequest: View {
         HStack {
             
             Button(action: {
-                // FIXME: improve the conditions
-                if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Waiting")) || firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Confirmed")) {
+                if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Waiting || firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Confirmed {
                     Task {
-                        await firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
+                        await firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                     }
-                } else if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Request")) {
+                } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Request {
                     Task {
                         await firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                     }
                 } else {
                     Task {
-                        await firestoreViewModel.addRequest(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
+                        await firestoreViewModel.addRequest(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                     }
                 }
             }) {
@@ -150,10 +146,10 @@ struct ButtonRequest: View {
             .foregroundColor(Color("oxfordBlue"))
             .tint(.white)
             
-            if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Request")) {
+            if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Request {
                 Button(action: {
                     Task {
-                        await firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
+                        await firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                     }
                 }) {
                     Image(systemName: "person.fill.badge.minus")
@@ -169,11 +165,11 @@ struct ButtonRequest: View {
         
     }
     private func buttonTextFor(_ user: User) -> String {
-        if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Waiting")) {
+        if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Waiting {
             return "Waiting"
-        } else if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Confirmed")) {
+        } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Confirmed {
             return "Friend"
-        } else if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Request")) {
+        } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Confirmed {
             return "Confirm"
         } else {
             return "Follow"
@@ -181,11 +177,11 @@ struct ButtonRequest: View {
     }
     
     private func buttonImageFor(_ user: User) -> String {
-        if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Waiting")) {
+        if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Waiting {
             return "person.badge.clock.fill"
-        } else if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Confirm")) {
+        } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Confirmed {
             return "checkmark.seal"
-        } else if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Request")) {
+        } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Request {
             return "person.fill.badge.plus"
         } else {
             return "link"

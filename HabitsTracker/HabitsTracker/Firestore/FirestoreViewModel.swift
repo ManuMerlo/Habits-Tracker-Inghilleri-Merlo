@@ -70,14 +70,12 @@ final class FirestoreViewModel: ObservableObject {
     }
     
     func getFriendsSubcollection() {
-        print("FriendsSubcollectionListener added")
         firestoreRepository.getFriendsSubcollection { [weak self] friends in
             self?.friendsSubcollection = friends
         }
     }
     
     func removeListenerForFriendsSubcollection() {
-        print("FriendsSubcollectionListener removed")
         firestoreRepository.removeListenerForFriendsSubcollection()
     }
     
@@ -138,17 +136,17 @@ final class FirestoreViewModel: ObservableObject {
         print("User with email \(user.email) added to firestore")
     }
     
-    func addRequest(uid: String, friend: String) async {
+    func addRequest(uid: String, friendId: String) async {
         do {
-            try await firestoreRepository.addRequest(uid: uid, friend: friend)
+            try await firestoreRepository.addRequest(uid: uid, friendId: friendId)
         } catch {
             print(error.localizedDescription)
         }
     }
     
-    func removeFriend(uid: String, friend: String) async {
+    func removeFriend(uid: String, friendId: String) async {
         do {
-            try await firestoreRepository.removeFriend(uid: uid, friend: friend)
+            try await firestoreRepository.removeFriend(uid: uid, friendId: friendId)
         } catch {
             print(error.localizedDescription)
         }
@@ -177,5 +175,11 @@ final class FirestoreViewModel: ObservableObject {
     
     func deleteUserData(uid: String) async throws {
         try await firestoreRepository.deleteUserData(uid: uid)
+    }
+    
+    func getFriendStatus(friendId: String) -> FriendStatus? {
+        return friendsSubcollection.first { friend in
+            friend.id == friendId
+                }?.status
     }
 }

@@ -76,12 +76,18 @@ final class FirestoreDataSource {
                 }
                 var updatedFriends: [Friend] = []
                 for document in documents {
-                    // TODO: let friend = try? document.data(as: Friend.self)
-                    if let friendStatus = document.data()["status"] as? String {
+                    do {
+                        let friend = try document.data(as: Friend.self)
+                        updatedFriends.append(friend)
+                    } catch {
+                        print("Friend not found")
+                    }
+                    
+                    /*if let friendStatus = document.data()["status"] as? String {
                         let friendID = document.documentID
                         let friend = Friend(id: friendID, status: friendStatus) // Assuming Friend is a custom struct or class
-                        updatedFriends.append(friend)
-                    }
+                        
+                    }*/
                 }
                 completionBlock(updatedFriends)
             }
@@ -218,16 +224,16 @@ final class FirestoreDataSource {
     }
     
     // Function to add a single friend to the 'friends' subcollection for a user in Firestore
-    func addRequest(uid: String, friend : String) async throws {
+    func addRequest(uid: String, friendId: String) async throws {
         let batch = db.batch()
         
         // Create a document for the current user's friend
-        let currentUserFriendRef = db.collection("users").document(uid).collection("friends").document(friend)
-        batch.setData(["status": "Waiting"], forDocument: currentUserFriendRef)
+        let currentUserFriendRef = db.collection("users").document(uid).collection("friends").document(friendId)
+        batch.setData(["id": friendId, "status": FriendStatus.Waiting.rawValue], forDocument: currentUserFriendRef)
         
         // Create a document for the friend as well
-        let friendFriendRef = db.collection("users").document(friend).collection("friends").document(uid)
-        batch.setData(["status": "Request"], forDocument: friendFriendRef)
+        let friendFriendRef = db.collection("users").document(friendId).collection("friends").document(uid)
+        batch.setData(["id": uid, "status": FriendStatus.Request.rawValue], forDocument: friendFriendRef)
         
         try await batch.commit()
         
@@ -241,11 +247,11 @@ final class FirestoreDataSource {
     }
     
     // Function to remove a friend from the 'friends' collection
-    func removeFriend(uid: String, friend: String) async throws {
+    func removeFriend(uid: String, friendId: String) async throws {
         let batch = db.batch()
         
-        let userRef = db.collection("users").document(uid).collection("friends").document(friend)
-        let friendRef = db.collection("users").document(friend).collection("friends").document(uid)
+        let userRef = db.collection("users").document(uid).collection("friends").document(friendId)
+        let friendRef = db.collection("users").document(friendId).collection("friends").document(uid)
         
         batch.deleteDocument(userRef)
         batch.deleteDocument(friendRef)
@@ -260,8 +266,8 @@ final class FirestoreDataSource {
         let userRef = db.collection("users").document(uid).collection("friends").document(friendId)
         let friendRef = db.collection("users").document(friendId).collection("friends").document(uid)
         
-        batch.updateData(["status": "Confirmed"], forDocument: userRef)
-        batch.updateData(["status": "Confirmed"], forDocument: friendRef)
+        batch.updateData(["status": FriendStatus.Confirmed.rawValue], forDocument: userRef)
+        batch.updateData(["status": FriendStatus.Confirmed.rawValue], forDocument: friendRef)
         
         try await batch.commit()
     }

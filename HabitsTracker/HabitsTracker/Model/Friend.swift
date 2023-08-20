@@ -1,14 +1,17 @@
 import Foundation
 
-struct Friend: Identifiable, Codable, Hashable {
+struct Friend: Codable, Hashable {
     
-    var id: String
-    var status: String   // Waiting, Confirmed, Request
+    let id: String
+    var status: FriendStatus
     
-    mutating func modifyStatus(newStatus: String) {
+    mutating func modifyStatus(newStatus: FriendStatus) {
         self.status = newStatus
-        
     }
 }
 
-
+enum FriendStatus: String, Codable, CaseIterable {
+    case Waiting = "Waiting"
+    case Request = "Request"
+    case Confirmed = "Confirmed"
+}

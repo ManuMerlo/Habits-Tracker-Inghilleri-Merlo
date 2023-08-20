@@ -108,14 +108,14 @@ struct LeaderboardView: View {
     func setUsers( global: Bool){
         if global == true {
             users = globalUsers
-        }else {
+        } else {
             //users = firestoreViewModel.friends
         }
         sortUsers(timeFrame: selectedTimeFrame)
     }
 }
 
-enum TimeFrame : String, CaseIterable {
+enum TimeFrame: String, CaseIterable {
     case weekly = "Weekly"
     case daily = "Daily"
 }

@@ -57,12 +57,12 @@ final class FirestoreRepository {
         firestoreDataSource.modifyUser(uid: uid, field: field, records: records)
     }
     
-    func addRequest(uid: String, friend: String) async throws {
-        try await firestoreDataSource.addRequest(uid: uid, friend: friend)
+    func addRequest(uid: String, friendId: String) async throws {
+        try await firestoreDataSource.addRequest(uid: uid, friendId: friendId)
     }
     
-    func removeFriend(uid: String, friend: String) async throws {
-        try await firestoreDataSource.removeFriend(uid: uid, friend: friend)
+    func removeFriend(uid: String, friendId: String) async throws {
+        try await firestoreDataSource.removeFriend(uid: uid, friendId: friendId)
     }
     
     func confirmFriend(uid: String, friendId: String) async throws {
