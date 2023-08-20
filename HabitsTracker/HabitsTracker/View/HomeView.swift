@@ -3,6 +3,7 @@ import SwiftUI
 struct HomeView: View {
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var firestoreViewModel: FirestoreViewModel
+    @State private var numberOfRequests: Int = 0
     
     var body: some View {
         NavigationStack{
@@ -15,6 +16,15 @@ struct HomeView: View {
                 }
             }
         }
+        .refreshable {
+            self.numberOfRequests = firestoreViewModel.getFriendsIdsWithStatus(status: FriendStatus.Request).count
+        }
+        .onAppear {
+            self.numberOfRequests = firestoreViewModel.getFriendsIdsWithStatus(status: FriendStatus.Request).count
+        }.onChange(of: firestoreViewModel.friendsSubcollection) { newValue in
+            self.numberOfRequests = firestoreViewModel.getFriendsIdsWithStatus(status: FriendStatus.Request).count
+        }
+
     }
     
     var content: some View {
@@ -35,10 +45,9 @@ struct HomeView: View {
                 Spacer()
                 
                 NavigationLink {
-                    // RequestListView( firestoreViewModel:firestoreViewModel)
+                    RequestListView(firestoreViewModel:firestoreViewModel)
                 } label: {
-                    let numberOfRequests = 0 // firestoreViewModel.requests.count
-                    if numberOfRequests != 0 {
+                    if numberOfRequests > 0 {
                         ZStack{
                             Image(systemName: "heart")
                                 .foregroundColor(.white)

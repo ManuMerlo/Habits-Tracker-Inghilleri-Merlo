@@ -102,11 +102,22 @@ final class FirestoreDataSource {
         self.friendsSubcollectionListener?.remove()
     }
     
-    // Function that returns the current user's friends
-    /*func getFriends(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
-        let requestFriendIDs = friendsSubcollection
-            .filter { $0.status == "Confirmed" }
-            .map { $0.id }
+    // Function that returns the current user's friend requests
+    func getRequests(requestFriendsIDs: [String]) async throws -> [User] {
+        guard !requestFriendsIDs.isEmpty else {
+            return []
+        }
+        var requestUsers: [User] = []
+        let snapshot = try await db.collection("users").whereField("id", in: requestFriendsIDs).getDocuments()
+        for document in snapshot.documents {
+            let user = try document.data(as: User.self)
+            requestUsers.append(user)
+        }
+        return requestUsers
+    }
+    
+    // Function that returns the current user's friend requests
+    /*func getRequests(requestFriendIDs: [String]) -> AnyPublisher<[User], Error> {
         
         if !requestFriendIDs.isEmpty {
             let requestedUsersRef = db.collection("users").whereField("id", in: requestFriendIDs)
@@ -134,12 +145,12 @@ final class FirestoreDataSource {
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
         }
-    }
+    }*/
     
-    // Function that returns the current user's friend requests
-    func getRequests(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
+    // Function that returns the current user's friends
+    /*func getFriends(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
         let requestFriendIDs = friendsSubcollection
-            .filter { $0.status == "Request" }
+            .filter { $0.status == "Confirmed" }
             .map { $0.id }
         
         if !requestFriendIDs.isEmpty {

@@ -125,17 +125,11 @@ struct ButtonRequest: View {
             
             Button(action: {
                 if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Waiting || firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Confirmed {
-                    Task {
-                        await firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
-                    }
+                    firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                 } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Request {
-                    Task {
-                        await firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
-                    }
+                    firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                 } else {
-                    Task {
-                        await firestoreViewModel.addRequest(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
-                    }
+                    firestoreViewModel.addRequest(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                 }
             }) {
                 Image(systemName: buttonImageFor(user))
@@ -148,9 +142,7 @@ struct ButtonRequest: View {
             
             if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Request {
                 Button(action: {
-                    Task {
-                        await firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
-                    }
+                    firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                 }) {
                     Image(systemName: "person.fill.badge.minus")
                     Text("Remove")

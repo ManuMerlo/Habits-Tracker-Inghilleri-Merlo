@@ -9,28 +9,13 @@ final class FirestoreViewModel: ObservableObject {
     @Published var messageError: String?
     @Published /*private(set)*/ var firestoreUser: User? = nil // TODO: set
     @Published var needUsername: Bool = false
-    // @Published var requests: [User] = []
-    // @Published var friends: [User] = []
-    // @Published var waitingList: [User] = []
+    @Published var requests: [User] = []
     
     private var cancellables: Set<AnyCancellable> = []
     
     @Published private(set) var friendsSubcollection: [Friend] = [] /* TODO: {
         didSet {
             fetchRequestsThenFriendsThenWaitingList()
-        }
-    }*/
-
-    //private let serialQueue = DispatchQueue(label: "friends.serialQueue")
-    //private let semaphore = DispatchSemaphore(value: 0)
-
-    /*TODO: func fetchRequestsThenFriendsThenWaitingList() {
-        serialQueue.async {
-            self.getRequests()
-            self.semaphore.wait()
-            self.getFriends()
-            self.semaphore.wait()
-            self.getWaitingList()
         }
     }*/
     
@@ -50,17 +35,6 @@ final class FirestoreViewModel: ObservableObject {
     func fieldIsPresent(field: String, value: String) async throws -> Bool {
         return try await firestoreRepository.fieldIsPresent(field: field, value: value)
     }
-    
-    /*func fieldIsPresent (field: String, value: String, completionBlock: @escaping (Result<Bool, Error>)  -> Void) {
-        firestoreRepository.fieldIsPresent(field:field, value: value) { result in
-            switch result {
-            case .success(let bool):
-                completionBlock(.success(bool))
-            case .failure(let error):
-                completionBlock(.failure(error)) // Assuming that an error means the user is not present
-            }
-        }
-    }*/
     
     /*func getAllUsers() {
         firestoreRepository.getAllUsers { [weak self] result in
@@ -83,25 +57,18 @@ final class FirestoreViewModel: ObservableObject {
         firestoreRepository.removeListenerForFriendsSubcollection()
     }
     
-    //FIXME: temporary solution for the implemetation of friends to be tested more
-    /*func getRequests() {
-        firestoreRepository.getRequests(friendsSubcollection: friendsSubcollection)
-            .receive(on: DispatchQueue.main)
-            .sink { completion in
-                switch completion {
-                case .finished:
-                    break
-                case .failure(let error):
-                    print("Error fetching waiting list: \(error)")
-                }
-            } receiveValue: { [weak self] users in
-                self?.requests = users
-                self?.semaphore.signal()
+    func getRequests() {
+        Task {
+            do {
+                self.requests = try await firestoreRepository.getRequests(requestFriendsIDs: getFriendsIdsWithStatus(status: FriendStatus.Request))
+                print(self.requests)
+            } catch {
+                print(error.localizedDescription)
             }
-            .store(in: &cancellables)
+        }
     }
     
-    func getWaitingList() {
+    /*func getWaitingList() {
         firestoreRepository.getWaitingList(friendsSubcollection: friendsSubcollection)
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -140,27 +107,33 @@ final class FirestoreViewModel: ObservableObject {
         print("User with email \(user.email) added to firestore")
     }
     
-    func addRequest(uid: String, friendId: String) async {
-        do {
-            try await firestoreRepository.addRequest(uid: uid, friendId: friendId)
-        } catch {
-            print(error.localizedDescription)
+    func addRequest(uid: String, friendId: String) {
+        Task {
+            do {
+                try await firestoreRepository.addRequest(uid: uid, friendId: friendId)
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
     
-    func removeFriend(uid: String, friendId: String) async {
-        do {
-            try await firestoreRepository.removeFriend(uid: uid, friendId: friendId)
-        } catch {
-            print(error.localizedDescription)
+    func removeFriend(uid: String, friendId: String) {
+        Task {
+            do {
+                try await firestoreRepository.removeFriend(uid: uid, friendId: friendId)
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
     
-    func confirmFriend(uid: String, friendId: String) async {
-        do {
-            try await firestoreRepository.confirmFriend(uid: uid, friendId: friendId)
-        } catch {
-            print(error.localizedDescription)
+    func confirmFriend(uid: String, friendId: String) {
+        Task {
+            do {
+                try await firestoreRepository.confirmFriend(uid: uid, friendId: friendId)
+            } catch {
+                print(error.localizedDescription)
+            }
         }
     }
     

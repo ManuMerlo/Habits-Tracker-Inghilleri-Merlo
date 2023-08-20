@@ -36,6 +36,10 @@ final class FirestoreRepository {
         firestoreDataSource.removeListenerForFriendsSubcollection()
     }
     
+    func getRequests(requestFriendsIDs: [String]) async throws -> [User] {
+        return try await firestoreDataSource.getRequests(requestFriendsIDs: requestFriendsIDs)
+    }
+    
     /*func getFriends(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
         firestoreDataSource.getFriends(friendsSubcollection: friendsSubcollection)
     }

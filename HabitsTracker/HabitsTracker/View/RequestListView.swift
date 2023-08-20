@@ -1,4 +1,4 @@
-/*import Foundation
+import Foundation
 import SwiftUI
 import FirebaseFirestoreSwift
 
@@ -45,6 +45,13 @@ struct RequestListView: View {
                     for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
             }
+        }.refreshable {
+            firestoreViewModel.getRequests()
+        }
+        .onAppear() {
+            firestoreViewModel.getRequests()
+        }.onChange(of: firestoreViewModel.friendsSubcollection) { newValue in
+            firestoreViewModel.getRequests()
         }
     }
 }
@@ -101,7 +108,7 @@ struct RequestItemView: View {
                                     
                                     
                                     Button {
-                                        firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
+                                        firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                                         
                                     } label: {
                                         Image(systemName: "person.fill.badge.minus")
@@ -113,10 +120,8 @@ struct RequestItemView: View {
                                 }
                                 Spacer()
                             }
-                            
                         }
                     }.frame(height:90)
-                
             }
             .frame(height: 90)
         }
@@ -137,4 +142,4 @@ struct RequestItemView_Previews: PreviewProvider {
             dailyScores: [20,50,40,60,60,90,70,200,40]))
     }
 }
-*/
+
