@@ -81,7 +81,18 @@ struct SigninView: View {
                             authenticationViewModel.loginGoogle() { result in
                                 switch result {
                                 case .success(let userGoogle):
-                                    firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id){ result in
+                                    Task {
+                                        do {
+                                            let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id)
+                                            if (!isPresent) {
+                                                firestoreViewModel.addNewUser(user: userGoogle)
+                                            }
+                                        } catch {
+                                            print(error.localizedDescription)
+                                        }
+                                    }
+                                    
+                                    /*firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id){ result in
                                         switch result {
                                         case .success(let isPresent):
                                             if !isPresent  {
@@ -91,7 +102,7 @@ struct SigninView: View {
                                             print("Error finding document user: \(error)")
                                             return
                                         }
-                                    }
+                                    }*/
                                 case .failure(let error):
                                     print("Error logging the user: \(error)")
                                     return
@@ -116,7 +127,18 @@ struct SigninView: View {
                             authenticationViewModel.loginFacebook() { result in
                                 switch result {
                                 case .success(let userFacebook):
-                                    firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id) { result in
+                                    Task {
+                                        do {
+                                            let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id)
+                                            if (!isPresent) {
+                                                firestoreViewModel.addNewUser(user: userFacebook)
+                                            }
+                                        } catch {
+                                            print(error.localizedDescription)
+                                        }
+                                    }
+                                    
+                                    /*firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id) { result in
                                         switch result {
                                         case .success(let isPresent):
                                             if !isPresent  {
@@ -126,7 +148,7 @@ struct SigninView: View {
                                             print("Error finding document user: \(error)")
                                             return
                                         }
-                                    }
+                                    }*/
                                 case .failure(let error):
                                     print("Error logging the user: \(error)")
                                     return

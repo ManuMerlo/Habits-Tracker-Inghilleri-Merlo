@@ -16,8 +16,8 @@ final class FirestoreRepository {
         return try await firestoreDataSource.getCurrentUser()
     }
     
-    func fieldIsPresent (field : String, value: String, completionBlock: @escaping (Result<Bool, Error>)  -> Void){
-        self.firestoreDataSource.fieldIsPresent(field: field,value:value, completionBlock: completionBlock)
+    func fieldIsPresent (field: String, value: String) async throws -> Bool {
+        return try await firestoreDataSource.fieldIsPresent(field: field, value:value)
     }
     
     /*func getAllUsers(completionBlock: @escaping (Result<[User], Error>) -> Void) {

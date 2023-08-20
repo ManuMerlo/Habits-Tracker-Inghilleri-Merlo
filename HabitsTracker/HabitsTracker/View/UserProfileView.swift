@@ -169,7 +169,7 @@ struct ButtonRequest: View {
             return "Waiting"
         } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Confirmed {
             return "Friend"
-        } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Confirmed {
+        } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Request {
             return "Confirm"
         } else {
             return "Follow"

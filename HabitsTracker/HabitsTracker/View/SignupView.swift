@@ -53,7 +53,31 @@ struct SignupView: View {
                             return
                         }
                         
-                        firestoreViewModel.fieldIsPresent(field: "email", value: authenticationViewModel.textFieldEmail) { result in
+                        Task {
+                            do {
+                                let emailIsPresent = try await firestoreViewModel.fieldIsPresent(field: "email", value: authenticationViewModel.textFieldEmail)
+                                if emailIsPresent {
+                                    throw AuthenticationError.emailAlreadyExists
+                                }
+                                let usernameIsPresent = try await firestoreViewModel.fieldIsPresent(field: "username", value: authenticationViewModel.textFieldUsername)
+                                if usernameIsPresent {
+                                    throw AuthenticationError.usernameAlreadyExists
+                                }
+                                var user = try await authenticationViewModel.createNewUser()
+                                print("Success, user created with email and password")
+                                user.setUsername(name: authenticationViewModel.textFieldUsername)
+                                firestoreViewModel.addNewUser(user: user)
+                                print("Success, user added to firestore")
+                            } catch AuthenticationError.emailAlreadyExists {
+                                authenticationViewModel.messageError = AuthenticationError.emailAlreadyExists.description
+                            } catch AuthenticationError.usernameAlreadyExists {
+                                authenticationViewModel.messageError = AuthenticationError.usernameAlreadyExists.description
+                            } catch {
+                                print(error.localizedDescription)
+                            }
+                        }
+                        
+                        /*firestoreViewModel.fieldIsPresent(field: "email", value: authenticationViewModel.textFieldEmail) { result in
                             switch result {
                             case .success(let isPresent):
                                 if(isPresent) {
@@ -63,9 +87,9 @@ struct SignupView: View {
                             case .failure(_):
                                 authenticationViewModel.messageError = "Error while checking existing email"
                             }
-                        }
+                        }*/
                         
-                        firestoreViewModel.fieldIsPresent(field: "username", value: authenticationViewModel.textFieldUsername) { result in
+                        /*firestoreViewModel.fieldIsPresent(field: "username", value: authenticationViewModel.textFieldUsername) { result in
                             switch result {
                             case .success(let isPresent):
                                 if(!isPresent) {
@@ -86,7 +110,7 @@ struct SignupView: View {
                             case .failure(let error):
                                 print("\(error)")
                             }
-                        }
+                        }*/
                         
                     } label: {
                         Text("Sign up")

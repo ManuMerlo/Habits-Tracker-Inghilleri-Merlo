@@ -16,14 +16,18 @@ final class FirestoreDataSource {
         return try await db.collection("users").document(userAuth.uid).getDocument(as: User.self)
     }
     
-    /*func fieldIsPresentA(field: String, value: String) async throws -> Bool {
+    // Function that returns true if there exists a document with specific field and value
+    func fieldIsPresent(field: String, value: String) async throws -> Bool {
         let usersCollection = db.collection("users")
         let snapshot = try await usersCollection.whereField(field, isEqualTo: value).getDocuments()
+        guard !(snapshot.documents.isEmpty) else {
+            return false
+        }
         return true
-    }*/
+    }
     
     // Function that returns true if there exists a document with specific field and value
-    func fieldIsPresent(field: String, value: String, completionBlock: @escaping (Result<Bool, Error>) -> Void){
+    /*func fieldIsPresent(field: String, value: String, completionBlock: @escaping (Result<Bool, Error>) -> Void){
         let usersCollection = db.collection("users")
         
         // Perform the query to get the document with username "name"
@@ -50,7 +54,7 @@ final class FirestoreDataSource {
                 print("Found document with \(field): \(retrievedValue)")
             }
         }
-    }
+    }*/
     
     /*func getAllUsers(completionBlock: @escaping (Result<[User], Error>) -> Void) {
         db.collection("users").addSnapshotListener { query, error in

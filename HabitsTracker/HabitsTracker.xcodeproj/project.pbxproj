@@ -50,6 +50,7 @@
 		DD33E5F3292944B700B299BD /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD33E5F2292944B700B299BD /* GoogleSignInSwift */; };
 		DD4FC73829D7EDDC00414C2B /* FacebookAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FC73729D7EDDC00414C2B /* FacebookAuthentication.swift */; };
 		DD4FC73B29D8291300414C2B /* GoogleAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FC73A29D8291300414C2B /* GoogleAuthentication.swift */; };
+		DD7C45662A929D4E0026AF49 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C45652A929D4E0026AF49 /* Errors.swift */; };
 		DD7C69B5292C254500E0D9ED /* ActivityPlanned.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C69B4292C254500E0D9ED /* ActivityPlanned.swift */; };
 		DD8D0D5229D5E5ED0045009C /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = DD8D0D5129D5E5ED0045009C /* FacebookLogin */; };
 		DDAA66A729D042E500219792 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAA66A629D042E500219792 /* LeaderboardView.swift */; };
@@ -114,6 +115,7 @@
 		DD33E5F42929457C00B299BD /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		DD4FC73729D7EDDC00414C2B /* FacebookAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookAuthentication.swift; sourceTree = "<group>"; };
 		DD4FC73A29D8291300414C2B /* GoogleAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthentication.swift; sourceTree = "<group>"; };
+		DD7C45652A929D4E0026AF49 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		DD7C69B4292C254500E0D9ED /* ActivityPlanned.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPlanned.swift; sourceTree = "<group>"; };
 		DDAA66A629D042E500219792 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		DDC2F89229311548003653F1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 				DDEACC0C29DB740400F39F4B /* Firestore */,
 				DD1FAFD829D8DA0E0084178F /* HealthKit */,
 				DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */,
+				DD7C45652A929D4E0026AF49 /* Errors.swift */,
 				093D33B22A7BA53B000C8ECF /* Utils.swift */,
 				DD33E5F42929457C00B299BD /* Info.plist */,
 				DD25AA33292940EC00EF2FEB /* GoogleService-Info.plist */,
@@ -435,6 +438,7 @@
 				09179CD529314D3700B389C2 /* SignupView.swift in Sources */,
 				09115CEA2A7FC38000BE1254 /* ProfileImageView.swift in Sources */,
 				094A32452A798AF90008403C /* UserProfileView.swift in Sources */,
+				DD7C45662A929D4E0026AF49 /* Errors.swift in Sources */,
 				09115CEE2A7FCA4600BE1254 /* ProvidersDetailView.swift in Sources */,
 				DDC33531292BB96C00C27566 /* HCard.swift in Sources */,
 				099BCA3229D8782200E9836F /* LinkedAccounts.swift in Sources */,

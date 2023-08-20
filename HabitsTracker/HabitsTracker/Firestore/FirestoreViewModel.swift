@@ -47,7 +47,11 @@ final class FirestoreViewModel: ObservableObject {
         }
     }
     
-    func fieldIsPresent (field: String, value: String, completionBlock: @escaping (Result<Bool, Error>)  -> Void) {
+    func fieldIsPresent(field: String, value: String) async throws -> Bool {
+        return try await firestoreRepository.fieldIsPresent(field: field, value: value)
+    }
+    
+    /*func fieldIsPresent (field: String, value: String, completionBlock: @escaping (Result<Bool, Error>)  -> Void) {
         firestoreRepository.fieldIsPresent(field:field, value: value) { result in
             switch result {
             case .success(let bool):
@@ -56,7 +60,7 @@ final class FirestoreViewModel: ObservableObject {
                 completionBlock(.failure(error)) // Assuming that an error means the user is not present
             }
         }
-    }
+    }*/
     
     /*func getAllUsers() {
         firestoreRepository.getAllUsers { [weak self] result in
