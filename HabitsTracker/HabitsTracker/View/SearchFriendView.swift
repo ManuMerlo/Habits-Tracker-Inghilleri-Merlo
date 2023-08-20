@@ -13,6 +13,11 @@ struct SearchFriendView: View {
     
     @State private var searchTerm = ""
     
+    @EnvironmentObject var orientationInfo: OrientationInfo
+    @State private var isLandscape: Bool = false
+    @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
+    @State var width = UIScreen.main.bounds.width
+    
     @FirestoreQuery(
         collectionPath: "users"
     ) var friends: [User]
@@ -29,13 +34,15 @@ struct SearchFriendView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 ScrollView{
-                    ForEach(filteredFrieds, id: \.self) { friend in
-                        NavigationLink(destination: UserProfileView(firestoreViewModel: firestoreViewModel, user: friend)) {
-                            ListItemView(user: friend)
-                                .frame(height:UIScreen.main.bounds.height / 10 )
-                                .padding(.top)
+                    VStack(spacing: 15){
+                        ForEach(filteredFrieds, id: \.self) { friend in
+                            NavigationLink(destination: UserProfileView(firestoreViewModel: firestoreViewModel, user: friend)) {
+                                ListItemView(user: friend,
+                                             width: isLandscape ? width/1.5 : width/1.1)
+                            }
                         }
-                    }.padding(.top,4)
+                    }
+                    .padding(.top,15)
                 }
             }
             .searchable(text: $searchTerm, prompt: "Search a friend")
@@ -46,48 +53,55 @@ struct SearchFriendView: View {
                 for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
+        .onAppear(){
+            isLandscape = orientationInfo.orientation == .landscape
+            width = UIScreen.main.bounds.width
+        }
+        .onChange(of: orientationInfo.orientation) { orientation in
+            isLandscape = orientation == .landscape
+            width = UIScreen.main.bounds.width
+        }
         
     }
 }
 
 struct ListItemView: View {
     var user : User
+    var width : CGFloat
+    
     var body: some View {
-        VStack(alignment:.leading){
-            ZStack{
-                
-                RoundedRectangle(cornerRadius: 25.0)
-                    .fill(Color("oxfordBlue").opacity(0.9)) 
-                    .frame(height: UIScreen.main.bounds.height / 10, alignment: .center)
-                    .shadow(color: Color.black.opacity(0.8), radius: 5, x: 0, y: 0)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 25.0)
-                            .stroke(Color("platinum").opacity(0.5), lineWidth: 2)
-                    )
-                    .opacity(0.8)
-
-                HStack{
-                    ProfileImageView(
-                        path: user.image,
-                        systemName: "person.crop.circle",
-                        size: UIScreen.main.bounds.height / 15,
-                        color: Color("platinum").opacity(0.7))
-                    .padding(.leading)
-                
-                    Divider()
-                            .background(Color("platinum"))
-                            .frame(height: UIScreen.main.bounds.height / 12)
-                            .padding(.horizontal,5)
-                    
-                    Text(user.username ?? user.email)
-                        .font(.title2)
-                        .foregroundColor(.white)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                    
-                }
-            }.padding(.vertical,3)
-            .padding(.horizontal)
+        HStack{
+            
+            ProfileImageView(
+                path: user.image,
+                systemName: "person.crop.circle",
+                size: 50,
+                color: Color("platinum").opacity(0.7))
+            .padding(.leading)
+            
+            Divider()
+                .background(Color("platinum"))
+                .frame(height: 50)
+                .padding(.horizontal,5)
+            
+            Text(user.username ?? user.email)
+                .font(.title2)
+            
+            Spacer()
+            
         }
+        .frame(width: width)
+        .padding(.vertical,10)
+        .foregroundColor(Color("platinum").opacity(0.7))
+        .overlay(
+            RoundedRectangle(cornerRadius: 20)
+                .stroke(Color("platinum").opacity(0.5), lineWidth: 2)
+        )
+        .background(Color("oxfordBlue").opacity(0.9))
+        .mask(RoundedRectangle(cornerRadius: 20, style:.continuous))
+        .shadow(color: Color.black.opacity(0.8), radius: 5, x: 0, y: 0)
+        
+        
     }
 }
 
@@ -95,6 +109,7 @@ struct ListItemView: View {
 struct SearchFriendView_Previews: PreviewProvider {
     static var previews: some View {
         SearchFriendView( firestoreViewModel: FirestoreViewModel())
+            .environmentObject(OrientationInfo())
     }
 }
 

@@ -60,10 +60,10 @@ struct LeaderboardView: View {
                     users = leaderboardViewModel.sortUsers(users:users, timeFrame: newValue)
                 })
                 .padding(.bottom,8)
-                .frame(width : isLandscape ? width/1.5 : width/1.2)
+                .frame(width : isLandscape ? width/1.5 : width/1.1)
                 
                 ScrollView {
-                    VStack{
+                    VStack(spacing: 15){
                         ForEach(users, id: \.self) { user in
                             NavigationLink(value: user){
                                 RankingItemView(leaderboardViewModel: leaderboardViewModel,
@@ -73,11 +73,11 @@ struct LeaderboardView: View {
                                                 global:global,
                                                 position: ((users.isEmpty ? globalUsers : users).firstIndex(of: user) ?? 0) + 1,
                                                 width : isLandscape ? width/1.5 : width/1.2
-                                ).frame(width : isLandscape ? width/1.5 : width/1.2)
+                                ).frame(width : isLandscape ? width/1.5 : width/1.1)
                             }
                         }
                     }
-                }.padding(.top,10)
+                }.padding(.top,15)
             }
             .toolbar {
                 Button {
@@ -189,7 +189,8 @@ struct RankingItemView: View {
             
             Spacer()
             
-        }.padding(.vertical,10)
+        }
+        .padding(.vertical,10)
             .background(ItemColor(number:position).opacity(0.65))
             .foregroundColor(.white)
             .mask(RoundedRectangle(cornerRadius: 20, style: .continuous))
