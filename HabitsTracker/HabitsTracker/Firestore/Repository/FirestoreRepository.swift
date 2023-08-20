@@ -20,9 +20,9 @@ final class FirestoreRepository {
         self.firestoreDataSource.fieldIsPresent(field: field,value:value, completionBlock: completionBlock)
     }
     
-    func getAllUsers(completionBlock: @escaping (Result<[User], Error>) -> Void) {
+    /*func getAllUsers(completionBlock: @escaping (Result<[User], Error>) -> Void) {
         firestoreDataSource.getAllUsers(completionBlock: completionBlock)
-    }
+    }*/
     
     func addNewUser(user: User) {
         firestoreDataSource.addNewUser(user: user)

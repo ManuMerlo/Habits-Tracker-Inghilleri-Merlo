@@ -58,7 +58,7 @@ final class FirestoreViewModel: ObservableObject {
         }
     }
     
-    func getAllUsers() {
+    /*func getAllUsers() {
         firestoreRepository.getAllUsers { [weak self] result in
             switch result {
             case .success(let users):
@@ -67,7 +67,7 @@ final class FirestoreViewModel: ObservableObject {
                 self?.messageError = error.localizedDescription
             }
         }
-    }
+    }*/
     
     func getFriendsSubcollection() {
         firestoreRepository.getFriendsSubcollection { [weak self] friends in
@@ -182,4 +182,10 @@ final class FirestoreViewModel: ObservableObject {
             friend.id == friendId
                 }?.status
     }
+    
+    func getFriendsIdsWithStatus(status: FriendStatus) -> [String] {
+            return friendsSubcollection.filter { friend in
+                friend.status == status
+            }.map { $0.id }
+        }
 }

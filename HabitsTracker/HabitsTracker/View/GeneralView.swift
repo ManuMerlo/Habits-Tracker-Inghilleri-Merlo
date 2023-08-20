@@ -50,7 +50,7 @@ struct GeneralView: View {
         .accentColor(.white)
         .task {
             healthViewModel.requestAccessToHealthData()
-            firestoreViewModel.getAllUsers()
+            //firestoreViewModel.getAllUsers()
         }.alert("Enter your name", isPresented: $firestoreViewModel.needUsername ) {
             
             Text("\(firestoreViewModel.firestoreUser?.email ?? "ciao")")

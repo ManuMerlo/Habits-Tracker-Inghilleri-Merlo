@@ -16,8 +16,14 @@ final class FirestoreDataSource {
         return try await db.collection("users").document(userAuth.uid).getDocument(as: User.self)
     }
     
+    /*func fieldIsPresentA(field: String, value: String) async throws -> Bool {
+        let usersCollection = db.collection("users")
+        let snapshot = try await usersCollection.whereField(field, isEqualTo: value).getDocuments()
+        return true
+    }*/
+    
     // Function that returns true if there exists a document with specific field and value
-    func fieldIsPresent(field : String, value: String, completionBlock: @escaping (Result<Bool, Error>) -> Void){
+    func fieldIsPresent(field: String, value: String, completionBlock: @escaping (Result<Bool, Error>) -> Void){
         let usersCollection = db.collection("users")
         
         // Perform the query to get the document with username "name"
@@ -46,7 +52,7 @@ final class FirestoreDataSource {
         }
     }
     
-    func getAllUsers(completionBlock: @escaping (Result<[User], Error>) -> Void) {
+    /*func getAllUsers(completionBlock: @escaping (Result<[User], Error>) -> Void) {
         db.collection("users").addSnapshotListener { query, error in
             if let error = error {
                 print("Error getting all users \(error.localizedDescription)")
@@ -62,7 +68,7 @@ final class FirestoreDataSource {
             let users = documents.map { try? $0.data(as: User.self) }.compactMap { $0 }
             completionBlock(.success(users))
         }
-    }
+    }*/
     
     // Function that returns all the docouments in the current user's subcollection "friends"
     // TODO: rename the func in addListenerForFriendsSubcollection
@@ -82,12 +88,6 @@ final class FirestoreDataSource {
                     } catch {
                         print("Friend not found")
                     }
-                    
-                    /*if let friendStatus = document.data()["status"] as? String {
-                        let friendID = document.documentID
-                        let friend = Friend(id: friendID, status: friendStatus) // Assuming Friend is a custom struct or class
-                        
-                    }*/
                 }
                 completionBlock(updatedFriends)
             }
@@ -210,7 +210,6 @@ final class FirestoreDataSource {
     // Function to update/set a field is a user's document
     func modifyUser(uid: String, field: String, value: Any) {
         let userRef = db.collection("users").document(uid)
-    
         userRef.updateData([field: value]) { err in
             self.handleUpdateResult(err: err)
         }
@@ -219,7 +218,6 @@ final class FirestoreDataSource {
     // Overload for arrays of BaseActivity
     func modifyUser(uid: String, field: String, records: [BaseActivity]) {
         let dictionaryRecords = records.map { $0.asDictionary() }
-
         modifyUser(uid: uid, field: field, value: dictionaryRecords)
     }
     
@@ -236,14 +234,6 @@ final class FirestoreDataSource {
         batch.setData(["id": uid, "status": FriendStatus.Request.rawValue], forDocument: friendFriendRef)
         
         try await batch.commit()
-        
-        /*batch.commit { error in
-            if let error = error {
-                print("Batch write failed: \(error)")
-            } else {
-                print("Batch write successful!")
-            }
-        }*/
     }
     
     // Function to remove a friend from the 'friends' collection

@@ -16,6 +16,7 @@ struct LeaderboardView: View {
     @State var users: [User] = []
     let today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
+    // TODO: it is a listener, check how to do the cancellation
     @FirestoreQuery(
         collectionPath: "users"
     ) var globalUsers: [User]
@@ -105,12 +106,10 @@ struct LeaderboardView: View {
             }
         }
     
-    func setUsers( global: Bool){
-        if global == true {
-            users = globalUsers
-        } else {
-            //users = firestoreViewModel.friends
-        }
+    func setUsers(global: Bool){
+        users = global ? globalUsers : globalUsers.filter({ friend in
+            firestoreViewModel.getFriendsIdsWithStatus(status: FriendStatus.Confirmed).contains(friend.id)
+        })
         sortUsers(timeFrame: selectedTimeFrame)
     }
 }
