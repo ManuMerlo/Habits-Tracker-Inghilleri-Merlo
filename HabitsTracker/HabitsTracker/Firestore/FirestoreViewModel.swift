@@ -9,20 +9,20 @@ final class FirestoreViewModel: ObservableObject {
     @Published var messageError: String?
     @Published /*private(set)*/ var firestoreUser: User? = nil // TODO: set
     @Published var needUsername: Bool = false
-    @Published var requests: [User] = []
-    @Published var friends: [User] = []
-    @Published var waitingList: [User] = []
+    // @Published var requests: [User] = []
+    // @Published var friends: [User] = []
+    // @Published var waitingList: [User] = []
     
     private var cancellables: Set<AnyCancellable> = []
     
-    @Published var friendsSubcollection: [Friend] = [] /* TODO: {
+    @Published private(set) var friendsSubcollection: [Friend] = [] /* TODO: {
         didSet {
             fetchRequestsThenFriendsThenWaitingList()
         }
     }*/
 
-    private let serialQueue = DispatchQueue(label: "friends.serialQueue")
-    private let semaphore = DispatchSemaphore(value: 0)
+    //private let serialQueue = DispatchQueue(label: "friends.serialQueue")
+    //private let semaphore = DispatchSemaphore(value: 0)
 
     /*TODO: func fetchRequestsThenFriendsThenWaitingList() {
         serialQueue.async {
@@ -42,6 +42,9 @@ final class FirestoreViewModel: ObservableObject {
     
     func getCurrentUser() async throws {
         self.firestoreUser = try await firestoreRepository.getCurrentUser()
+        if let user = self.firestoreUser, user.username == nil {
+            self.needUsername = true
+        }
     }
     
     func fieldIsPresent (field: String, value: String, completionBlock: @escaping (Result<Bool, Error>)  -> Void) {
@@ -67,13 +70,19 @@ final class FirestoreViewModel: ObservableObject {
     }
     
     func getFriendsSubcollection() {
-        firestoreRepository.getFriendsSubcollection { friends in
-            self.friendsSubcollection = friends ?? []
+        print("FriendsSubcollectionListener added")
+        firestoreRepository.getFriendsSubcollection { [weak self] friends in
+            self?.friendsSubcollection = friends
         }
     }
     
+    func removeListenerForFriendsSubcollection() {
+        print("FriendsSubcollectionListener removed")
+        firestoreRepository.removeListenerForFriendsSubcollection()
+    }
+    
     //FIXME: temporary solution for the implemetation of friends to be tested more
-    func getRequests() {
+    /*func getRequests() {
         firestoreRepository.getRequests(friendsSubcollection: friendsSubcollection)
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -122,23 +131,35 @@ final class FirestoreViewModel: ObservableObject {
                 self?.semaphore.signal()
             }
             .store(in: &cancellables)
-    }
+    }*/
 
     func addNewUser(user: User) {
         firestoreRepository.addNewUser(user: user)
         print("User with email \(user.email) added to firestore")
     }
     
-    func addRequest(uid: String, friend: String) {
-        firestoreRepository.addRequest(uid: uid, friend: friend)
+    func addRequest(uid: String, friend: String) async {
+        do {
+            try await firestoreRepository.addRequest(uid: uid, friend: friend)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
-    func removeFriend(uid: String, friend: String) {
-        firestoreRepository.removeFriend(uid: uid, friend: friend)
+    func removeFriend(uid: String, friend: String) async {
+        do {
+            try await firestoreRepository.removeFriend(uid: uid, friend: friend)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
-    func confirmFriend(uid: String, friendId: String) {
-        firestoreRepository.confirmFriend(uid: uid, friendId: friendId)
+    func confirmFriend(uid: String, friendId: String) async {
+        do {
+            try await firestoreRepository.confirmFriend(uid: uid, friendId: friendId)
+        } catch {
+            print(error.localizedDescription)
+        }
     }
     
     func modifyUser(uid:String, field: String, value: Any) {
@@ -156,6 +177,5 @@ final class FirestoreViewModel: ObservableObject {
     
     func deleteUserData(uid: String) async throws {
         try await firestoreRepository.deleteUserData(uid: uid)
-        // self.firestoreUser = nil
     }
 }

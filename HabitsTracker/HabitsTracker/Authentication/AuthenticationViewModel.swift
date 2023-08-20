@@ -24,7 +24,7 @@ final class AuthenticationViewModel: ObservableObject {
         getAuthenticatedUser() // It is to check if a session already exists
     }
     
-    func isValidEmail (email:String) -> Bool{
+    func isValidEmail(email: String) -> Bool {
             let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
             let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
             return emailPredicate.evaluate(with: email)
@@ -38,7 +38,7 @@ final class AuthenticationViewModel: ObservableObject {
         self.messageError = nil
     }
     
-    func clearSignInParameter(){
+    func clearSignInParameter() {
         self.textFieldEmailSignin = ""
         self.textFieldPasswordSignin = ""
         self.messageError = nil
@@ -67,7 +67,6 @@ final class AuthenticationViewModel: ObservableObject {
             }
         }*/
     }
-    
     
     // TODO: reset password, update email/password
     func login() async throws {
@@ -111,40 +110,32 @@ final class AuthenticationViewModel: ObservableObject {
                 try authenticationRepository.logout()
                 // FIXME: can it be avoided?
                 self.user = nil
-                self.textFieldUsername = ""
-                self.textFieldEmail = ""
-                self.textFieldEmailSignin = ""
-                self.textFieldPassword = ""
-                self.textFieldPasswordSignin = ""
-                self.repeatPassword = ""
+                clearSignInParameter()
+                clearSignUpParameter()
             } catch {
                 print("Error logout")
             }
         }
     }
     
-    
-    
-    
-    
-    func getCurrentProvider(){
+    func getCurrentProvider() {
         linkedAccounts = authenticationRepository.getCurrentProvider()
         print("User Provider \(linkedAccounts)")
     }
     
-    func isEmailandPasswordLinked() -> Bool{
+    func isEmailandPasswordLinked() -> Bool {
         linkedAccounts.contains(where: { $0.rawValue == "password"})
     }
     
-    func isFacebookLinked() -> Bool{
+    func isFacebookLinked() -> Bool {
         linkedAccounts.contains(where: { $0.rawValue == "facebook.com"})
     }
     
-    func isGoogleLinked() -> Bool{
+    func isGoogleLinked() -> Bool {
         linkedAccounts.contains(where: { $0.rawValue == "google.com"})
     }
     
-    func linkFacebook () {
+    func linkFacebook() {
         authenticationRepository.linkFacebook { [weak self] isSuccess in
             print("Linked Facebook \(isSuccess.description)")
             self?.isAccountLinked = isSuccess
@@ -153,7 +144,7 @@ final class AuthenticationViewModel: ObservableObject {
         }
     }
     
-    func linkGoogle () {
+    func linkGoogle() {
         authenticationRepository.linkGoogle { [weak self] isSuccess in
             print("Linked Google \(isSuccess.description)")
             self?.isAccountLinked = isSuccess
@@ -171,22 +162,6 @@ final class AuthenticationViewModel: ObservableObject {
             self?.getCurrentProvider()
         }
     }
-    
-    /*func deleteUser() {
-        authenticationRepository.deleteUser() { [weak self] result in
-            switch result {
-            case .success(_):
-                self?.user = nil
-                self?.textFieldUsername = ""
-                self?.textFieldEmail = ""
-                self?.textFieldPassword = ""
-                self?.repeatPassword = ""
-                print("success in deleting the user")
-            case .failure(let error):
-                self?.messageError = error.localizedDescription
-            }
-        }
-    }*/
     
     func deleteUser() async throws {
         try await authenticationRepository.deleteUser()

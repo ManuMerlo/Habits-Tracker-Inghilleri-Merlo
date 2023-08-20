@@ -1,22 +1,22 @@
 import SwiftUI
 
 struct ModifyProfileView: View {
-    @ObservedObject var firestoreViewModel : FirestoreViewModel
-    @ObservedObject var settingViewModel : SettingsViewModel
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
+    @ObservedObject var settingsViewModel: SettingsViewModel
     
     @State var modify: Bool = false
     @State var isListEnabled: Bool = true
     
     @State var showSheet: Bool = false
-    @State var showDatePicker : Bool = false
-    @State var showHeightPicker : Bool = false
-    @State var showWeightPicker : Bool = false
-    @State var showSexPicker : Bool = false
+    @State var showDatePicker: Bool = false
+    @State var showHeightPicker: Bool = false
+    @State var showWeightPicker: Bool = false
+    @State var showSexPicker: Bool = false
     
     @State var selectedDate: Date = Date()
-    @State var selectedHeight : Int = 150
-    @State var selectedWeight : Int = 60
-    @State var selectedSex : Sex = Sex.Unspecified
+    @State var selectedHeight: Int = 150
+    @State var selectedWeight: Int = 60
+    @State var selectedSex: Sex = Sex.Unspecified
     
     var body: some View {
 
@@ -71,7 +71,7 @@ struct ModifyProfileView: View {
                         HStack {
                             Text("Birthdate")
                             Spacer()
-                            Text(settingViewModel.dateToString(selectedDate))
+                            Text(settingsViewModel.dateToString(selectedDate))
                         }
                     }.disabled(!modify)
                         .foregroundColor(!modify ? Color("platinum").opacity(0.8): .white)
@@ -85,7 +85,7 @@ struct ModifyProfileView: View {
                         HStack {
                             Text("Sex")
                             Spacer()
-                            Text("\((firestoreViewModel.firestoreUser?.sex ?? Sex.Unspecified).rawValue )")
+                            Text("\((selectedSex).rawValue )")
                         }
                     }.disabled(!modify)
                         .foregroundColor(!modify ? Color("platinum").opacity(0.8): .white)
@@ -100,7 +100,7 @@ struct ModifyProfileView: View {
                         HStack {
                             Text("Height")
                             Spacer()
-                            Text("\( firestoreViewModel.firestoreUser?.height ?? 0 )")
+                            Text("\(selectedHeight)")
                         }
                     }.disabled(!modify)
                         .foregroundColor(!modify ? Color("platinum").opacity(0.8): .white)
@@ -115,7 +115,7 @@ struct ModifyProfileView: View {
                         HStack {
                             Text("Weight")
                             Spacer()
-                            Text("\( firestoreViewModel.firestoreUser?.weight ?? 0 )")
+                            Text("\(selectedWeight)")
                         }
                     }.disabled(!modify)
                         .foregroundColor(!modify ? Color("platinum").opacity(0.8): .white)
@@ -133,9 +133,8 @@ struct ModifyProfileView: View {
                             firestoreViewModel.modifyUser(
                                 uid: firestoreViewModel.firestoreUser!.id,
                                 field: "birthdate",
-                                value: settingViewModel.dateToString(selectedDate)
-                            )
-                            
+                                value: settingsViewModel.dateToString(selectedDate))
+                            firestoreViewModel.firestoreUser?.birthDate = settingsViewModel.dateToString(selectedDate)
                             showDatePicker.toggle()
                             isListEnabled.toggle()
                         } label: {
@@ -159,14 +158,14 @@ struct ModifyProfileView: View {
                     
                 }
                 
-                if(showSexPicker){
+                if(showSexPicker) {
                     VStack {
                         Button {
                             firestoreViewModel.modifyUser(
                                 uid:  firestoreViewModel.firestoreUser!.id,
                                 field: "sex",
                                 value: selectedSex.rawValue)
-                            
+                            firestoreViewModel.firestoreUser?.sex = selectedSex
                             showSexPicker.toggle()
                             isListEnabled.toggle()
                         }label: {
@@ -184,7 +183,7 @@ struct ModifyProfileView: View {
                 }
                 
                 if (showHeightPicker) {
-                    SettingsViewModel.PickerView(
+                    PickerView(
                         firestoreViewModel:firestoreViewModel,
                         user: $firestoreViewModel.firestoreUser,
                         property: "height",
@@ -197,7 +196,7 @@ struct ModifyProfileView: View {
                 }
                 
                 if (showWeightPicker){
-                    SettingsViewModel.PickerView(
+                    PickerView(
                         firestoreViewModel:firestoreViewModel,
                         user: $firestoreViewModel.firestoreUser,
                         property: "weight",
@@ -211,7 +210,14 @@ struct ModifyProfileView: View {
             }
             .frame(height: UIScreen.main.bounds.height*0.65)
             
-        }.foregroundColor(.white)
+        }.onAppear() {
+            // TODO: check if there is a better way for this and for the picker (inconsistencies)
+            selectedDate = settingsViewModel.stringToDate((firestoreViewModel.firestoreUser?.birthDate)) ?? Date()
+            selectedHeight = firestoreViewModel.firestoreUser?.height ?? 150
+            selectedWeight = firestoreViewModel.firestoreUser?.weight ?? 60
+            selectedSex = firestoreViewModel.firestoreUser?.sex ?? Sex.Unspecified
+        }
+        .foregroundColor(.white)
             .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500).ignoresSafeArea())
             
             .navigationBarBackButtonHidden(!isListEnabled || modify)
@@ -224,7 +230,7 @@ struct ModifyProfileView: View {
                 
             }
             .fullScreenCover(isPresented: $showSheet, onDismiss: {
-                settingViewModel.persistimageToStorage { result in
+                settingsViewModel.persistimageToStorage { result in
                     switch result {
                     case .success(let path):
                         firestoreViewModel.modifyUser(
@@ -239,13 +245,56 @@ struct ModifyProfileView: View {
                     }
                 }
             }) {
-                SettingsViewModel.ImagePicker(selectedImage: $settingViewModel.image)
+                SettingsViewModel.ImagePicker(selectedImage: $settingsViewModel.image)
             }
+            .onAppear() {
+                
+            }
+    }
+}
+
+struct PickerView: View {
+    @State var firestoreViewModel: FirestoreViewModel
+    @Binding var user : User?
+    var property : String
+    @Binding var selectedItem : Int
+    @Binding var booleanValuePicker : Bool
+    @Binding var booleanValueList : Bool
+    var rangeMin : Int
+    var rangeMax : Int
+    var unitaryMeasure : String
+    
+    var body: some View{
+        VStack {
+            Button {
+                if ( property == "height"){
+                    firestoreViewModel.modifyUser(uid: user!.id, field: "height", value: selectedItem)
+                    firestoreViewModel.firestoreUser?.height = selectedItem
+                } else {
+                    firestoreViewModel.modifyUser(uid: user!.id, field: "weight", value: selectedItem)
+                    firestoreViewModel.firestoreUser?.weight = selectedItem
+
+                }
+                booleanValuePicker.toggle()
+                booleanValueList.toggle()
+            }label: {
+                Text("Done")
+            }
+            
+            Picker(selection: $selectedItem, label: Text("Select your \(property)" )) {
+                ForEach(rangeMin..<rangeMax, id: \.self) { number in
+                    Text("\(number) \(unitaryMeasure)")
+                        .foregroundColor(.white)
+                }
+            }
+            .pickerStyle(.wheel)
+            .labelsHidden()
+        }
     }
 }
 
 struct ModifyProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ModifyProfileView(firestoreViewModel: FirestoreViewModel(), settingViewModel: SettingsViewModel())
+        ModifyProfileView(firestoreViewModel: FirestoreViewModel(), settingsViewModel: SettingsViewModel())
     }
 }

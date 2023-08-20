@@ -5,9 +5,10 @@ import Firebase
 struct GeneralView: View {
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    @ObservedObject var firestoreViewModel : FirestoreViewModel
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
     
     @State var textFieldValue: String = ""
+    @State private var didAppear: Bool = false
     
     var body: some View {
         TabView {
@@ -64,7 +65,6 @@ struct GeneralView: View {
                     field: "username",
                     value: textFieldValue)
                 firestoreViewModel.needUsername = false
-                
             }
             )
         } message: {
@@ -85,14 +85,25 @@ struct GeneralView: View {
             }
         })
         .onChange(of: healthViewModel.dailyScore, perform: { newValue in
-            firestoreViewModel.updateDailyScores(uid: firestoreViewModel.firestoreUser!.id, newScore: newValue)
+            // FIXME: FirestoreUser non dovrebbe essere = nil
+            if let user = firestoreViewModel.firestoreUser {
+                firestoreViewModel.updateDailyScores(uid: user.id, newScore: newValue)
+
+            }
         })
+        // FIXME: put it only in HomeView ??
+        .refreshable {
+            try? await firestoreViewModel.getCurrentUser()
+        }
         .task {
             try? await firestoreViewModel.getCurrentUser()
-            firestoreViewModel.getFriendsSubcollection() // FIXME: as the previous func
         }
         .onAppear() {
+            firestoreViewModel.getFriendsSubcollection()
             UITabBar.appearance().barTintColor = UIColor(red: 0.1, green: 0.15, blue: 0.23, alpha: 0.9)
+        }
+        .onDisappear() {
+            firestoreViewModel.removeListenerForFriendsSubcollection()
         }
     }
 }

@@ -109,7 +109,7 @@ struct LeaderboardView: View {
         if global == true {
             users = globalUsers
         }else {
-            users = firestoreViewModel.friends
+            //users = firestoreViewModel.friends
         }
         sortUsers(timeFrame: selectedTimeFrame)
     }

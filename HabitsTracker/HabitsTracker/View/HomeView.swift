@@ -35,9 +35,9 @@ struct HomeView: View {
                 Spacer()
                 
                 NavigationLink {
-                    RequestListView( firestoreViewModel:firestoreViewModel)
+                    // RequestListView( firestoreViewModel:firestoreViewModel)
                 } label: {
-                    let numberOfRequests = firestoreViewModel.requests.count
+                    let numberOfRequests = 0 // firestoreViewModel.requests.count
                     if numberOfRequests != 0 {
                         ZStack{
                             Image(systemName: "heart")
@@ -70,7 +70,7 @@ struct HomeView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
                 .padding(.horizontal, 20)
             
-            if let user = firestoreViewModel.firestoreUser{
+            if let user = firestoreViewModel.firestoreUser {
                 ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7])
                     .padding(.bottom, 120)
             }

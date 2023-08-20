@@ -1,11 +1,4 @@
-//
-//  RequestListView.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 07/08/23.
-//
-
-import Foundation
+/*import Foundation
 import SwiftUI
 import FirebaseFirestoreSwift
 
@@ -144,3 +137,4 @@ struct RequestItemView_Previews: PreviewProvider {
             dailyScores: [20,50,40,60,60,90,70,200,40]))
     }
 }
+*/

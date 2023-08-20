@@ -48,6 +48,19 @@ final class SettingsViewModel: ObservableObject {
         return dateString
     }
     
+    func stringToDate(_ dateString: String?) -> Date? {
+        guard let dateStr = dateString else {
+            return nil
+        }
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "dd/MM/yyyy"
+        if let date = dateFormatter.date(from: dateStr) {
+            return date
+        } else {
+            return nil // Return nil if the string couldn't be converted to a date
+        }
+    }
+    
     func persistimageToStorage (completionBlock: @escaping (Result<String,Error>) -> Void){
         guard let uid = Auth.auth().currentUser?.uid
         else { return }
@@ -71,42 +84,7 @@ final class SettingsViewModel: ObservableObject {
         }
     }
     
-    struct PickerView: View {
-        @State var firestoreViewModel: FirestoreViewModel
-        @Binding var user : User?
-        var property : String
-        @Binding var selectedItem : Int
-        @Binding var booleanValuePicker : Bool
-        @Binding var booleanValueList : Bool
-        var rangeMin : Int
-        var rangeMax : Int
-        var unitaryMeasure : String
-        
-        var body: some View{
-            VStack {
-                Button {
-                    if ( property == "height"){
-                        firestoreViewModel.modifyUser(uid: user!.id, field: "height", value: selectedItem)
-                    } else {
-                        firestoreViewModel.modifyUser(uid: user!.id, field: "weight", value: selectedItem)
-                    }
-                    booleanValuePicker.toggle()
-                    booleanValueList.toggle()
-                }label: {
-                    Text("Done")
-                }
-                
-                Picker(selection: $selectedItem, label: Text("Select your \(property)" )) {
-                    ForEach(rangeMin..<rangeMax, id: \.self) { number in
-                        Text("\(number) \(unitaryMeasure)")
-                            .foregroundColor(.white)
-                    }
-                }
-                .pickerStyle(.wheel)
-                .labelsHidden()
-            }
-        }
-    }
+    
     
     struct ImagePicker: UIViewControllerRepresentable {
         @Environment(\.presentationMode) private var presentationMode

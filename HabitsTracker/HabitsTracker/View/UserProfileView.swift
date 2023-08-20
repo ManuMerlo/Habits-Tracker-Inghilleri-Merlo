@@ -1,10 +1,3 @@
-//
-//  UserProfile.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 01/08/23.
-//
-
 import SwiftUI
 import Foundation
 import Charts
@@ -13,7 +6,7 @@ struct UserProfileView: View {
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     
     var user: User
-    var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
+    var today = (Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     var body: some View {
         ZStack{
@@ -35,9 +28,7 @@ struct UserProfileView: View {
                         Header(firestoreViewModel: firestoreViewModel, user: user)
                     }.edgesIgnoringSafeArea(.top)
                     
-                    
                     content(user: user).padding(.vertical)
-                    
                     
                 }.toolbarColorScheme(.dark, for: .navigationBar)
                     .toolbarBackground(
@@ -46,13 +37,15 @@ struct UserProfileView: View {
                     .toolbarBackground(.visible, for: .navigationBar)
                 
             }.navigationBarTitle("", displayMode: .inline) // Hide the title
-        }
+        }.onChange(of: firestoreViewModel.friendsSubcollection, perform: { newValue in
+            print(firestoreViewModel.friendsSubcollection)
+        }) 
         
     }
     
 }
 
-struct Header: View{
+struct Header: View {
     
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     
@@ -79,7 +72,6 @@ struct Header: View{
                                 .font(.custom("Open Sans", size: 30))
                                 .foregroundColor(.white)
                                 .padding(.bottom,1)
-                            
                         }
                         
                         Text("\(user.email)")
@@ -87,7 +79,7 @@ struct Header: View{
                             .foregroundColor(.white)
                             .padding(.bottom,3)
                         
-                        HStack{
+                        HStack {
                             Image(systemName: "medal.fill")
                                 .font(.system(size: 10))
                                 .foregroundColor(.white)
@@ -108,12 +100,11 @@ struct Header: View{
                 }.padding(.bottom,5)
                 
                 Spacer()
-                if let firestoreUser = firestoreViewModel.firestoreUser, firestoreUser.id != user.id{
+                if let firestoreUser = firestoreViewModel.firestoreUser, firestoreUser.id != user.id {
                     ButtonRequest(firestoreViewModel: firestoreViewModel, user: user)
                 }
                 
                 Spacer()
-                
                 
             }
             .padding(.vertical)
@@ -131,50 +122,58 @@ struct ButtonRequest: View {
     
     var user: User
     
-    var body: some View{
+    var body: some View {
         
-        HStack{
-        
-        Button(action: {
-            if firestoreViewModel.waitingList.contains(user) || firestoreViewModel.friends.contains(user) {
-                firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
-                
-            } else if firestoreViewModel.requests.contains(user) {
-                firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
-            } else {
-                firestoreViewModel.addRequest(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
-            }
-        }) {
-            Image(systemName: buttonImageFor(user))
-            Text(buttonTextFor(user))
-                .font(.custom("Open Sans", size: 18))
-        }
-        .buttonStyle(.borderedProminent)
-        .foregroundColor(Color("oxfordBlue"))
-        .tint(.white)
-        
-        if firestoreViewModel.requests.contains(user) {
+        HStack {
+            
             Button(action: {
-                firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
+                // FIXME: improve the conditions
+                if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Waiting")) || firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Confirmed")) {
+                    Task {
+                        await firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
+                    }
+                } else if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Request")) {
+                    Task {
+                        await firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
+                    }
+                } else {
+                    Task {
+                        await firestoreViewModel.addRequest(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
+                    }
+                }
             }) {
-                Image(systemName: "person.fill.badge.minus")
-                Text("Remove")
+                Image(systemName: buttonImageFor(user))
+                Text(buttonTextFor(user))
                     .font(.custom("Open Sans", size: 18))
             }
             .buttonStyle(.borderedProminent)
             .foregroundColor(Color("oxfordBlue"))
             .tint(.white)
+            
+            if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Request")) {
+                Button(action: {
+                    Task {
+                        await firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friend: user.id)
+                    }
+                }) {
+                    Image(systemName: "person.fill.badge.minus")
+                    Text("Remove")
+                        .font(.custom("Open Sans", size: 18))
+                }
+                .buttonStyle(.borderedProminent)
+                .foregroundColor(Color("oxfordBlue"))
+                .tint(.white)
+            }
+            
         }
         
     }
-        
-    }
     private func buttonTextFor(_ user: User) -> String {
-        if firestoreViewModel.waitingList.contains(user) {
+        if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Waiting")) {
             return "Waiting"
-        } else if firestoreViewModel.friends.contains(user) {
+        } else if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Confirmed")) {
             return "Friend"
-        } else if firestoreViewModel.requests.contains(user) {
+        } else if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Request")) {
             return "Confirm"
         } else {
             return "Follow"
@@ -182,11 +181,11 @@ struct ButtonRequest: View {
     }
     
     private func buttonImageFor(_ user: User) -> String {
-        if firestoreViewModel.waitingList.contains(user) {
+        if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Waiting")) {
             return "person.badge.clock.fill"
-        } else if firestoreViewModel.friends.contains(user) {
+        } else if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Confirm")) {
             return "checkmark.seal"
-        } else if firestoreViewModel.requests.contains(user) {
+        } else if firestoreViewModel.friendsSubcollection.contains(Friend(id: user.id, status: "Request")) {
             return "person.fill.badge.plus"
         } else {
             return "link"

@@ -37,7 +37,7 @@ struct SettingsView: View {
                     List {
                         Section() {
                             NavigationLink {
-                                ModifyProfileView(firestoreViewModel: firestoreViewModel, settingViewModel: settingsViewModel)
+                                ModifyProfileView(firestoreViewModel: firestoreViewModel, settingsViewModel: settingsViewModel)
                             } label: {
                                 Label("Modify profile", systemImage: "person")
                                 
@@ -79,7 +79,7 @@ struct SettingsView: View {
                                     Text("Continue"),
                                     action:
                                         {
-                                            guard let uid =  firestoreViewModel.firestoreUser?.id else{
+                                            guard let uid = firestoreViewModel.firestoreUser?.id else{
                                                 print("Null uid before deleting a user")
                                                 return
                                             }
@@ -98,7 +98,7 @@ struct SettingsView: View {
                                                     authenticationViewModel.textFieldPasswordSignin = ""
                                                     authenticationViewModel.repeatPassword = ""
                                                 } catch {
-                                                    print(error)
+                                                    print(error.localizedDescription)
                                                 }
                                             }
                                         }))}

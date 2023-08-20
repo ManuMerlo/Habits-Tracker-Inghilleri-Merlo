@@ -7,6 +7,7 @@ import Combine
 
 final class FirestoreDataSource {
     private let db = Firestore.firestore()
+    private var friendsSubcollectionListener: ListenerRegistration? = nil
     
     func getCurrentUser() async throws -> User {
         guard let userAuth = Auth.auth().currentUser else {
@@ -64,16 +65,18 @@ final class FirestoreDataSource {
     }
     
     // Function that returns all the docouments in the current user's subcollection "friends"
-    func getFriendsSubcollection(completionBlock: @escaping([Friend]?) -> Void) {
+    // TODO: rename the func in addListenerForFriendsSubcollection
+    func getFriendsSubcollection(completionBlock: @escaping([Friend]) -> Void) {
         if let userAuth = Auth.auth().currentUser {
             let friendsRef = self.db.collection("users").document(userAuth.uid).collection("friends")
-            friendsRef.addSnapshotListener{ querySnapshot, error in
+            self.friendsSubcollectionListener = friendsRef.addSnapshotListener{ querySnapshot, error in
                 guard let documents = querySnapshot?.documents else {
                     print("Error fetching friend documents: \(error!)")
                     return
                 }
                 var updatedFriends: [Friend] = []
                 for document in documents {
+                    // TODO: let friend = try? document.data(as: Friend.self)
                     if let friendStatus = document.data()["status"] as? String {
                         let friendID = document.documentID
                         let friend = Friend(id: friendID, status: friendStatus) // Assuming Friend is a custom struct or class
@@ -85,8 +88,12 @@ final class FirestoreDataSource {
         }
     }
     
+    func removeListenerForFriendsSubcollection() {
+        self.friendsSubcollectionListener?.remove()
+    }
+    
     // Function that returns the current user's friends
-    func getFriends(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
+    /*func getFriends(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
         let requestFriendIDs = friendsSubcollection
             .filter { $0.status == "Confirmed" }
             .map { $0.id }
@@ -185,7 +192,7 @@ final class FirestoreDataSource {
                 .setFailureType(to: Error.self)
                 .eraseToAnyPublisher()
         }
-    }
+    }*/
     
     // Function to add a new user to firestore
     func addNewUser(user: User) { // FIXME: async trows and try await?? not necessary here
@@ -210,8 +217,8 @@ final class FirestoreDataSource {
         modifyUser(uid: uid, field: field, value: dictionaryRecords)
     }
     
-    // Function to add a single friend to the 'friends' array for a user in Firestore
-    func addRequest(uid: String, friend : String) {
+    // Function to add a single friend to the 'friends' subcollection for a user in Firestore
+    func addRequest(uid: String, friend : String) async throws {
         let batch = db.batch()
         
         // Create a document for the current user's friend
@@ -222,17 +229,19 @@ final class FirestoreDataSource {
         let friendFriendRef = db.collection("users").document(friend).collection("friends").document(uid)
         batch.setData(["status": "Request"], forDocument: friendFriendRef)
         
-        batch.commit { error in
+        try await batch.commit()
+        
+        /*batch.commit { error in
             if let error = error {
                 print("Batch write failed: \(error)")
             } else {
                 print("Batch write successful!")
             }
-        }
+        }*/
     }
     
     // Function to remove a friend from the 'friends' collection
-    func removeFriend(uid: String, friend: String) {
+    func removeFriend(uid: String, friend: String) async throws {
         let batch = db.batch()
         
         let userRef = db.collection("users").document(uid).collection("friends").document(friend)
@@ -241,17 +250,11 @@ final class FirestoreDataSource {
         batch.deleteDocument(userRef)
         batch.deleteDocument(friendRef)
         
-        batch.commit { error in
-            if let error = error {
-                print("Batch write failed: \(error)")
-            } else {
-                print("Batch write succeeded!")
-            }
-        }
+        try await batch.commit()
     }
     
     // Function to update documents and confirm a relationship
-    func confirmFriend(uid: String, friendId: String) {
+    func confirmFriend(uid: String, friendId: String) async throws {
         let batch = db.batch()
         
         let userRef = db.collection("users").document(uid).collection("friends").document(friendId)
@@ -260,19 +263,12 @@ final class FirestoreDataSource {
         batch.updateData(["status": "Confirmed"], forDocument: userRef)
         batch.updateData(["status": "Confirmed"], forDocument: friendRef)
         
-        batch.commit { error in
-            if let error = error {
-                print("Batch write failed: \(error)")
-            } else {
-                print("Batch write successful!")
-            }
-        }
+        try await batch.commit()
     }
     
     // Function to update/set an array in a user's document
     func updateDailyScores(uid: String, newScore: Int) {
         let userRef = db.collection("users").document(uid)
-        
         userRef.getDocument { document, error in
             if let document = document, document.exists {
                 var scoresArray = document.get("dailyScores") as? [Int] ?? []

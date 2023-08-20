@@ -11,7 +11,7 @@ struct SearchFriendView: View {
     ) var friends: [User]
     
     var filteredFrieds : [User] {
-        guard !searchTerm.isEmpty else {return friends}
+        guard !searchTerm.isEmpty else { return friends }
         return friends.filter { $0.email.localizedCaseInsensitiveContains(searchTerm)}
     }
     

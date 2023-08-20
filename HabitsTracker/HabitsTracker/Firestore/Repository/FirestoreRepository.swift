@@ -28,11 +28,15 @@ final class FirestoreRepository {
         firestoreDataSource.addNewUser(user: user)
     }
         
-    func getFriendsSubcollection(completionBlock: @escaping([Friend]?) -> Void) {
+    func getFriendsSubcollection(completionBlock: @escaping([Friend]) -> Void) {
         firestoreDataSource.getFriendsSubcollection(completionBlock: completionBlock)
     }
     
-    func getFriends(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
+    func removeListenerForFriendsSubcollection() {
+        firestoreDataSource.removeListenerForFriendsSubcollection()
+    }
+    
+    /*func getFriends(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
         firestoreDataSource.getFriends(friendsSubcollection: friendsSubcollection)
     }
     
@@ -42,7 +46,7 @@ final class FirestoreRepository {
     
     func getWaitingList(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
         return firestoreDataSource.getWaitingList(friendsSubcollection: friendsSubcollection)
-    }
+    }*/
     
     func modifyUser(uid:String, field: String, value: Any){
         return firestoreDataSource.modifyUser(uid:uid, field: field, value: value)
@@ -53,16 +57,16 @@ final class FirestoreRepository {
         firestoreDataSource.modifyUser(uid: uid, field: field, records: records)
     }
     
-    func addRequest(uid: String, friend: String) {
-        firestoreDataSource.addRequest(uid: uid, friend: friend)
+    func addRequest(uid: String, friend: String) async throws {
+        try await firestoreDataSource.addRequest(uid: uid, friend: friend)
     }
     
-    func removeFriend(uid: String, friend: String) {
-        firestoreDataSource.removeFriend(uid: uid, friend: friend)
+    func removeFriend(uid: String, friend: String) async throws {
+        try await firestoreDataSource.removeFriend(uid: uid, friend: friend)
     }
     
-    func confirmFriend(uid: String, friendId: String) {
-        firestoreDataSource.confirmFriend(uid: uid, friendId: friendId)
+    func confirmFriend(uid: String, friendId: String) async throws {
+        try await firestoreDataSource.confirmFriend(uid: uid, friendId: friendId)
     }
     
     func updateDailyScores(uid: String, newScore: Int) {
