@@ -148,16 +148,38 @@ final class FirestoreViewModel: ObservableObject {
     }
     
     func modifyUser(uid:String, field: String, value: Any) {
-        firestoreRepository.modifyUser(uid:uid, field: field, value: value)
+        let task = Task {
+            do {
+                try await firestoreRepository.modifyUser(uid:uid, field: field, value: value)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        tasks.append(task)
     }
     
     // Overload for arrays of BaseActivity
     func modifyUser(uid: String, field: String, records: [BaseActivity]) {
-        firestoreRepository.modifyUser(uid: uid, field: field, records: records)
+        let task = Task {
+            do {
+                try await firestoreRepository.modifyUser(uid: uid, field: field, records: records)
+            } catch {
+                print(error.localizedDescription)
+            }
+        }
+        tasks.append(task)
     }
     
     func updateDailyScores(uid: String, newScore: Int) {
-        firestoreRepository.updateDailyScores(uid: uid, newScore: newScore)
+        let task = Task {
+            do {
+                try await firestoreRepository.updateDailyScores(uid: uid, newScore: newScore)
+            } catch {
+                print(error)
+                // FIXME:error
+            }
+        }
+        tasks.append(task)
     }
     
     func deleteUserData(uid: String) async throws {

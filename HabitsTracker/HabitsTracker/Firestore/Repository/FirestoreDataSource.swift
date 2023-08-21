@@ -26,36 +26,6 @@ final class FirestoreDataSource {
         return true
     }
     
-    // Function that returns true if there exists a document with specific field and value
-    /*func fieldIsPresent(field: String, value: String, completionBlock: @escaping (Result<Bool, Error>) -> Void){
-        let usersCollection = db.collection("users")
-        
-        // Perform the query to get the document with username "name"
-        usersCollection.whereField(field, isEqualTo: value).getDocuments { (querySnapshot, error) in
-            if let error = error {
-                completionBlock(.failure(error))
-                print("Error fetching document: \(error)")
-                return
-            }
-            
-            // Check if there are any matching documents
-            guard let documents = querySnapshot?.documents, !documents.isEmpty else {
-                completionBlock(.success(false))
-                return
-            }
-            
-            completionBlock(.success(true))
-            
-            // Assuming there's only one matching document, you can access it like this
-            let document = documents[0]
-            let data = document.data()
-            // Now you can access the fields of the document, for example:
-            if let retrievedValue = data[field] as? String {
-                print("Found document with \(field): \(retrievedValue)")
-            }
-        }
-    }*/
-    
     /*func getAllUsers(completionBlock: @escaping (Result<[User], Error>) -> Void) {
         db.collection("users").addSnapshotListener { query, error in
             if let error = error {
@@ -116,105 +86,6 @@ final class FirestoreDataSource {
         return requestUsers
     }
     
-    // Function that returns the current user's friend requests
-    /*func getRequests(requestFriendIDs: [String]) -> AnyPublisher<[User], Error> {
-        
-        if !requestFriendIDs.isEmpty {
-            let requestedUsersRef = db.collection("users").whereField("id", in: requestFriendIDs)
-            
-            return Future<[User], Error> { promise in
-                requestedUsersRef.getDocuments { snapshot, error in
-                    if let error = error {
-                        promise(.failure(error))
-                        return
-                    }
-                    
-                    var requestedUsers: [User] = []
-                    for document in snapshot?.documents ?? [] {
-                        if let user = try? document.data(as: User.self) {
-                            requestedUsers.append(user)
-                        }
-                    }
-                    
-                    promise(.success(requestedUsers))
-                }
-            }
-            .eraseToAnyPublisher()
-        } else {
-            return Just([]) // Return an empty array
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        }
-    }*/
-    
-    // Function that returns the current user's friends
-    /*func getFriends(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
-        let requestFriendIDs = friendsSubcollection
-            .filter { $0.status == "Confirmed" }
-            .map { $0.id }
-        
-        if !requestFriendIDs.isEmpty {
-            let requestedUsersRef = db.collection("users").whereField("id", in: requestFriendIDs)
-            
-            return Future<[User], Error> { promise in
-                requestedUsersRef.getDocuments { snapshot, error in
-                    if let error = error {
-                        promise(.failure(error))
-                        return
-                    }
-                    
-                    var requestedUsers: [User] = []
-                    for document in snapshot?.documents ?? [] {
-                        if let user = try? document.data(as: User.self) {
-                            requestedUsers.append(user)
-                        }
-                    }
-                    
-                    promise(.success(requestedUsers))
-                }
-            }
-            .eraseToAnyPublisher()
-        } else {
-            return Just([]) // Return an empty array
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        }
-    }
-    
-    // Function that returns all users to whom the current user has sent a friend request
-    func getWaitingList(friendsSubcollection: [Friend]) -> AnyPublisher<[User], Error> {
-        let requestFriendIDs = friendsSubcollection
-            .filter { $0.status == "Waiting" }
-            .map { $0.id }
-        
-        if !requestFriendIDs.isEmpty {
-            let requestedUsersRef = db.collection("users").whereField("id", in: requestFriendIDs)
-            
-            return Future<[User], Error> { promise in
-                requestedUsersRef.getDocuments { snapshot, error in
-                    if let error = error {
-                        promise(.failure(error))
-                        return
-                    }
-                    
-                    var requestedUsers: [User] = []
-                    for document in snapshot?.documents ?? [] {
-                        if let user = try? document.data(as: User.self) {
-                            requestedUsers.append(user)
-                        }
-                    }
-                    
-                    promise(.success(requestedUsers))
-                }
-            }
-            .eraseToAnyPublisher()
-        } else {
-            return Just([]) // Return an empty array
-                .setFailureType(to: Error.self)
-                .eraseToAnyPublisher()
-        }
-    }*/
-    
     // Function to add a new user to firestore
     func addNewUser(user: User) { // FIXME: async trows and try await?? not necessary here
         db.collection("users")
@@ -223,17 +94,15 @@ final class FirestoreDataSource {
     }
     
     // Function to update/set a field is a user's document
-    func modifyUser(uid: String, field: String, value: Any) {
+    func modifyUser(uid: String, field: String, value: Any) async throws {
         let userRef = db.collection("users").document(uid)
-        userRef.updateData([field: value]) { err in
-            self.handleUpdateResult(err: err)
-        }
+        try await userRef.updateData([field: value])
     }
     
     // Overload for arrays of BaseActivity
-    func modifyUser(uid: String, field: String, records: [BaseActivity]) {
+    func modifyUser(uid: String, field: String, records: [BaseActivity]) async throws {
         let dictionaryRecords = records.map { $0.asDictionary() }
-        modifyUser(uid: uid, field: field, value: dictionaryRecords)
+        try await modifyUser(uid: uid, field: field, value: dictionaryRecords)
     }
     
     // Function to add a single friend to the 'friends' subcollection for a user in Firestore
@@ -277,25 +146,20 @@ final class FirestoreDataSource {
         try await batch.commit()
     }
     
+    // FIXME: The do-catch is needed? TODO: testing 
     // Function to update/set an array in a user's document
-    func updateDailyScores(uid: String, newScore: Int) {
+    func updateDailyScores(uid: String, newScore: Int) async throws {
         let userRef = db.collection("users").document(uid)
-        userRef.getDocument { document, error in
-            if let document = document, document.exists {
-                var scoresArray = document.get("dailyScores") as? [Int] ?? []
-                
-                let today = (Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
-                
-                scoresArray[today] = newScore
-                
-                let scoresInRange = scoresArray[0...today]
-                
-                scoresArray[7] = scoresInRange.reduce(0, +)
-                
-                userRef.updateData(["dailyScores": scoresArray]) { err in
-                    self.handleUpdateResult(err: err)
-                }
-            }
+        do {
+            let userSnapshot = try await userRef.getDocument(as: User.self)
+            var scoresArray: [Int] = userSnapshot.dailyScores
+            let today = (Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
+            scoresArray[today] = newScore
+            let scoresInRange = scoresArray[0...today]
+            scoresArray[7] = scoresInRange.reduce(0, +)
+            try await userRef.updateData(["dailyScores": scoresArray])
+        } catch {
+            throw error
         }
     }
     

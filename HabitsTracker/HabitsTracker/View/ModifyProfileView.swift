@@ -132,7 +132,7 @@ struct ModifyProfileView: View {
                         Button {
                             firestoreViewModel.modifyUser(
                                 uid: firestoreViewModel.firestoreUser!.id,
-                                field: "birthdate",
+                                field: "birthDate",
                                 value: settingsViewModel.dateToString(selectedDate))
                             firestoreViewModel.firestoreUser?.birthDate = settingsViewModel.dateToString(selectedDate)
                             showDatePicker.toggle()

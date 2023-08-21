@@ -50,13 +50,16 @@ final class SettingsViewModel: ObservableObject {
     
     func stringToDate(_ dateString: String?) -> Date? {
         guard let dateStr = dateString else {
+            print("date conversion error settings view model: nil parameter")
             return nil
         }
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "dd/MM/yyyy"
         if let date = dateFormatter.date(from: dateStr) {
+            print("date conversion settings view model: \(date)")
             return date
         } else {
+            print("date conversion error settings view model: nil conversion")
             return nil // Return nil if the string couldn't be converted to a date
         }
     }

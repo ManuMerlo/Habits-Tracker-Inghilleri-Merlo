@@ -1,5 +1,7 @@
 import Foundation
 
+//TODO: manage all errors
+
 enum AuthenticationError: Error {
     case emailAlreadyExists
     case usernameAlreadyExists

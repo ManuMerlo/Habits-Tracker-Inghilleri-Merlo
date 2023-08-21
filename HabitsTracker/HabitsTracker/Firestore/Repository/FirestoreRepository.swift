@@ -52,13 +52,13 @@ final class FirestoreRepository {
         return firestoreDataSource.getWaitingList(friendsSubcollection: friendsSubcollection)
     }*/
     
-    func modifyUser(uid:String, field: String, value: Any){
-        return firestoreDataSource.modifyUser(uid:uid, field: field, value: value)
+    func modifyUser(uid:String, field: String, value: Any) async throws {
+        try await firestoreDataSource.modifyUser(uid:uid, field: field, value: value)
     }
     
     // Overload for arrays of BaseActivity
-    func modifyUser(uid: String, field: String, records: [BaseActivity]) {
-        firestoreDataSource.modifyUser(uid: uid, field: field, records: records)
+    func modifyUser(uid: String, field: String, records: [BaseActivity]) async throws {
+        try await firestoreDataSource.modifyUser(uid: uid, field: field, records: records)
     }
     
     func addRequest(uid: String, friendId: String) async throws {
@@ -73,8 +73,8 @@ final class FirestoreRepository {
         try await firestoreDataSource.confirmFriend(uid: uid, friendId: friendId)
     }
     
-    func updateDailyScores(uid: String, newScore: Int) {
-        firestoreDataSource.updateDailyScores(uid: uid, newScore: newScore)
+    func updateDailyScores(uid: String, newScore: Int) async throws {
+        try await firestoreDataSource.updateDailyScores(uid: uid, newScore: newScore)
     }
     
     /*func deleteUserData(uid:String,completionBlock: @escaping (Result<Bool, Error>) -> Void) {
