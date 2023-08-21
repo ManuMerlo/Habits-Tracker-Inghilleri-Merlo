@@ -33,7 +33,6 @@ struct HomeView: View {
             
             WaveView(upsideDown: false,repeatAnimation: true, base: 150, amplitude: 110)
             
-            
             HStack{
                 Text("Dashboard")
                     .font(.largeTitle)

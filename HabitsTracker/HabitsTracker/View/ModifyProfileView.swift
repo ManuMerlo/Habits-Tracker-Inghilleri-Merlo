@@ -153,16 +153,13 @@ struct ModifyProfileView: View {
                             }
                     }
                     .background(Color("oxfordBlue"))
-
-                    
-                    
                 }
                 
                 if(showSexPicker) {
                     VStack {
                         Button {
                             firestoreViewModel.modifyUser(
-                                uid:  firestoreViewModel.firestoreUser!.id,
+                                uid: firestoreViewModel.firestoreUser!.id,
                                 field: "sex",
                                 value: selectedSex.rawValue)
                             firestoreViewModel.firestoreUser?.sex = selectedSex
@@ -185,7 +182,7 @@ struct ModifyProfileView: View {
                 if (showHeightPicker) {
                     PickerView(
                         firestoreViewModel:firestoreViewModel,
-                        user: $firestoreViewModel.firestoreUser,
+                        userId: firestoreViewModel.firestoreUser!.id, // FIXME: firestoreUser!
                         property: "height",
                         selectedItem: $selectedHeight,
                         booleanValuePicker: $showHeightPicker,
@@ -198,7 +195,7 @@ struct ModifyProfileView: View {
                 if (showWeightPicker){
                     PickerView(
                         firestoreViewModel:firestoreViewModel,
-                        user: $firestoreViewModel.firestoreUser,
+                        userId: firestoreViewModel.firestoreUser!.id,
                         property: "weight",
                         selectedItem: $selectedWeight,
                         booleanValuePicker: $showWeightPicker,
@@ -255,23 +252,23 @@ struct ModifyProfileView: View {
 
 struct PickerView: View {
     @State var firestoreViewModel: FirestoreViewModel
-    @Binding var user : User?
-    var property : String
-    @Binding var selectedItem : Int
-    @Binding var booleanValuePicker : Bool
-    @Binding var booleanValueList : Bool
-    var rangeMin : Int
-    var rangeMax : Int
-    var unitaryMeasure : String
+    var userId: String
+    var property: String
+    @Binding var selectedItem: Int
+    @Binding var booleanValuePicker: Bool
+    @Binding var booleanValueList: Bool
+    var rangeMin: Int
+    var rangeMax: Int
+    var unitaryMeasure: String
     
     var body: some View{
         VStack {
             Button {
-                if ( property == "height"){
-                    firestoreViewModel.modifyUser(uid: user!.id, field: "height", value: selectedItem)
+                if (property == "height"){
+                    firestoreViewModel.modifyUser(uid: userId, field: "height", value: selectedItem)
                     firestoreViewModel.firestoreUser?.height = selectedItem
                 } else {
-                    firestoreViewModel.modifyUser(uid: user!.id, field: "weight", value: selectedItem)
+                    firestoreViewModel.modifyUser(uid: userId, field: "weight", value: selectedItem)
                     firestoreViewModel.firestoreUser?.weight = selectedItem
 
                 }

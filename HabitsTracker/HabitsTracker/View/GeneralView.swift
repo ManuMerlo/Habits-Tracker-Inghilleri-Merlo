@@ -104,6 +104,8 @@ struct GeneralView: View {
         }
         .onDisappear() {
             firestoreViewModel.removeListenerForFriendsSubcollection()
+            firestoreViewModel.cancelTasks()
+            authenticationViewModel.cancelTasks()
         }
     }
 }

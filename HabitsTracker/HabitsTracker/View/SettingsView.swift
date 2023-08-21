@@ -91,12 +91,8 @@ struct SettingsView: View {
                                                     try await authenticationViewModel.deleteUser()
                                                     // FIXME: can it be avoided?
                                                     authenticationViewModel.user = nil
-                                                    authenticationViewModel.textFieldUsername = ""
-                                                    authenticationViewModel.textFieldEmail = ""
-                                                    authenticationViewModel.textFieldEmailSignin = ""
-                                                    authenticationViewModel.textFieldPassword = ""
-                                                    authenticationViewModel.textFieldPasswordSignin = ""
-                                                    authenticationViewModel.repeatPassword = ""
+                                                    authenticationViewModel.clearSignUpParameter()
+                                                    authenticationViewModel.clearSignInParameter()
                                                 } catch {
                                                     print(error.localizedDescription)
                                                 }

@@ -4,6 +4,7 @@ import Combine
 @MainActor
 final class FirestoreViewModel: ObservableObject {
     private let firestoreRepository: FirestoreRepository
+    private var tasks: [Task<Void, Never>] = []
     
     @Published var allUsers: [User] = []
     @Published var messageError: String?
@@ -11,7 +12,13 @@ final class FirestoreViewModel: ObservableObject {
     @Published var needUsername: Bool = false
     @Published var requests: [User] = []
     
-    private var cancellables: Set<AnyCancellable> = []
+    //private var cancellables: Set<AnyCancellable> = []
+    
+    // function to cancel all tasks
+    func cancelTasks() {
+        tasks.forEach({ $0.cancel() })
+        tasks = []
+    }
     
     @Published private(set) var friendsSubcollection: [Friend] = [] /* TODO: {
         didSet {
@@ -58,14 +65,14 @@ final class FirestoreViewModel: ObservableObject {
     }
     
     func getRequests() {
-        Task {
+        let task = Task {
             do {
-                self.requests = try await firestoreRepository.getRequests(requestFriendsIDs: getFriendsIdsWithStatus(status: FriendStatus.Request))
-                print(self.requests)
+                requests = try await firestoreRepository.getRequests(requestFriendsIDs: getFriendsIdsWithStatus(status: FriendStatus.Request))
             } catch {
                 print(error.localizedDescription)
             }
         }
+        tasks.append(task)
     }
     
     /*func getWaitingList() {
@@ -108,33 +115,36 @@ final class FirestoreViewModel: ObservableObject {
     }
     
     func addRequest(uid: String, friendId: String) {
-        Task {
+        let task = Task {
             do {
                 try await firestoreRepository.addRequest(uid: uid, friendId: friendId)
             } catch {
                 print(error.localizedDescription)
             }
         }
+        tasks.append(task)
     }
     
     func removeFriend(uid: String, friendId: String) {
-        Task {
+        let task = Task {
             do {
                 try await firestoreRepository.removeFriend(uid: uid, friendId: friendId)
             } catch {
                 print(error.localizedDescription)
             }
         }
+        tasks.append(task)
     }
     
     func confirmFriend(uid: String, friendId: String) {
-        Task {
+        let task = Task {
             do {
                 try await firestoreRepository.confirmFriend(uid: uid, friendId: friendId)
             } catch {
                 print(error.localizedDescription)
             }
         }
+        tasks.append(task)
     }
     
     func modifyUser(uid:String, field: String, value: Any) {

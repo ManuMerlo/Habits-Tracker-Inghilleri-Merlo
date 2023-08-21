@@ -2,6 +2,8 @@ import Foundation
 
 @MainActor
 final class AuthenticationViewModel: ObservableObject {
+    private var tasks: [Task<Void, Never>] = []
+    
     @Published var user: User?
     @Published var messageError: String?
     @Published var isAccountLinked: Bool = false
@@ -22,6 +24,12 @@ final class AuthenticationViewModel: ObservableObject {
     init(authenticationRepository: AuthenticationRepository = AuthenticationRepository()) {
         self.authenticationRepository = authenticationRepository
         getAuthenticatedUser() // It is to check if a session already exists
+    }
+    
+    // function to cancel all tasks
+    func cancelTasks() {
+        tasks.forEach({ $0.cancel() })
+        tasks = []
     }
     
     func isValidEmail(email: String) -> Bool {
@@ -105,7 +113,7 @@ final class AuthenticationViewModel: ObservableObject {
     }
     
     func logout() {
-        Task {
+        let task = Task {
             do {
                 try authenticationRepository.logout()
                 // FIXME: can it be avoided?
@@ -116,6 +124,7 @@ final class AuthenticationViewModel: ObservableObject {
                 print("Error logout")
             }
         }
+        tasks.append(task)
     }
     
     func getCurrentProvider() {
