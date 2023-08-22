@@ -58,7 +58,7 @@ struct ModifyProfileView: View {
                                 .foregroundColor(.gray)
                                 .accentColor(.white)
                                 .padding(.bottom,30)
-                        }.padding(.top,20)
+                        }
                         
                     }
                     

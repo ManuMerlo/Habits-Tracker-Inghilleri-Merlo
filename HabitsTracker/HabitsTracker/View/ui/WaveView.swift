@@ -21,12 +21,12 @@ struct WaveView: View {
         GeometryReader { geometry in
                     VStack {
                         if upsideDown {
-                            getUpsideDownWavePath(interval: geometry.size.width * 1.5, amplitude: amplitude ?? 130, base: base)
+                            getUpsideDownWavePath(interval: geometry.size.width * 1.8, amplitude: amplitude ?? 130, base: base)
                                 .foregroundColor(Color("oxfordBlue"))
                                 .shadow(color: .black, radius: 10, x: 0.0, y: 0.0)
                                 .offset(x: isAnimated ? -1 * geometry.size.width * 1.5 : 0)
                         } else {
-                            getWavePath(interval: geometry.size.width * 1.5, amplitude: 130, base: base)
+                            getWavePath(interval: geometry.size.width * 1.8, amplitude: 130, base: base)
                                 .foregroundColor(Color("oxfordBlue"))
                                 .shadow(color: .black, radius: 4, x: 0.0, y: -3)
                                 .offset(x: isAnimated ? -1 * geometry.size.width * 1.5 : 0)
@@ -35,10 +35,6 @@ struct WaveView: View {
                     .onAppear() {
                         if repeatAnimation {
                             withAnimation(Animation.linear(duration: 3).repeatForever(autoreverses: false)) {
-                                self.isAnimated = true
-                            }
-                        } else {
-                            withAnimation(Animation.linear(duration: 2)){
                                 self.isAnimated = true
                             }
                         }
@@ -90,6 +86,6 @@ struct WaveView: View {
 
 struct WaveView_Preview: PreviewProvider {
     static var previews: some View {
-        WaveView(upsideDown: false, repeatAnimation: true, base: 100)
+        WaveView(upsideDown: false, repeatAnimation: false, base: 100)
     }
 }

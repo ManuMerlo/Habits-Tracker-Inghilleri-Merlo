@@ -11,9 +11,12 @@ struct ProvidersDetailView: View {
     
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     
+    var width: CGFloat
+    
     @State var expandVerificationWithEmailFrom : Bool = false
     @State var textFieldEmail: String = ""
     @State var textFieldPassword: String = ""
+    
     
     
     var body: some View {
@@ -71,7 +74,9 @@ struct ProvidersDetailView: View {
                     .listRowBackground(Color("oxfordBlue"))
                     .listRowSeparatorTint(.white.opacity(0.7))
                 
-            }.task {
+            }
+            .frame(width: width)
+            .task {
                 authenticationViewModel.getCurrentProvider()
             }
             .alert(authenticationViewModel.isAccountLinked ? "Link successful" : "Error", isPresented: $authenticationViewModel.showAlert) {
@@ -87,6 +92,7 @@ struct ProvidersDetailView: View {
             
             .scrollContentBackground(.hidden)
         }
+        .frame(maxWidth: .infinity)
         .foregroundColor(.white.opacity(0.7))
         .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500).opacity(0.97))
     }
@@ -94,6 +100,6 @@ struct ProvidersDetailView: View {
 
 struct ProvidersDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ProvidersDetailView(authenticationViewModel: AuthenticationViewModel())
+        ProvidersDetailView(authenticationViewModel: AuthenticationViewModel(),width: 600)
     }
 }
