@@ -127,7 +127,8 @@ struct SettingsView: View {
                         .padding(.top,50)
                     }
                      
-            } .edgesIgnoringSafeArea(.top)
+            }
+                .edgesIgnoringSafeArea(.top)
                 .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500).opacity(1))
             
         }

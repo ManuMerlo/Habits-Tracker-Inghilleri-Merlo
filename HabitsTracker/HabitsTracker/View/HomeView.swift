@@ -27,7 +27,7 @@ struct HomeView: View {
                 
                 ScrollView(.vertical, showsIndicators: false) {
                     content()
-                        .padding(.vertical,30)
+                    .padding(.vertical,30)
                 }.edgesIgnoringSafeArea(.horizontal)
                 
             }
@@ -48,7 +48,6 @@ struct HomeView: View {
     
     func content() -> some View {
         VStack(spacing: 0) {
-            
             HStack{
                 Text("Dashboard")
                     .font(.largeTitle)

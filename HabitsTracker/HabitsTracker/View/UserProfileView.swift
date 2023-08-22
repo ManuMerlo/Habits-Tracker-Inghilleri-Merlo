@@ -19,49 +19,48 @@ struct UserProfileView: View {
     @EnvironmentObject var orientationInfo: OrientationInfo
     @State private var isLandscape: Bool = false
     @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
-    @State var height = UIScreen.main.bounds.height
     @State var width = UIScreen.main.bounds.width
     
     var body: some View {
         ZStack{
             RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
                 .edgesIgnoringSafeArea(.all)
-            
-            ScrollView (.vertical, showsIndicators: false) {
-                VStack{
-                    ZStack{
-                        Color("oxfordBlue").overlay(alignment:.bottom) {
-                            Rectangle()
-                                .frame(height: 2)
-                                .foregroundColor(Color("oxfordBlue").opacity(0.7))
-                                .shadow(color:.black,radius: 5)
-                        }
                         
-                        Header(firestoreViewModel: firestoreViewModel, user: user)
-                            .frame(width: width/2)
-                    }.edgesIgnoringSafeArea(.top)
+                ScrollView (.vertical, showsIndicators: false) {
+                    VStack{
+                        ZStack{
+                            Color("oxfordBlue").overlay(alignment:.bottom) {
+                                Rectangle()
+                                    .frame(height: 2)
+                                    .foregroundColor(Color("oxfordBlue").opacity(0.7))
+                                    .shadow(color:.black,radius: 5)
+                            }
+                            
+                            Header(firestoreViewModel: firestoreViewModel, user: user)
+                                .frame(width: isLandscape ? width/2 : width/1.2)
+                                .padding(.top,isLandscape ? 20 : 80 )
+                            
+                        }.edgesIgnoringSafeArea(.top)
+                        
+                        
+                        content().padding(.vertical)
+                            .frame(width: width/1.2)
+                    }.toolbarColorScheme(.dark, for: .navigationBar)
+                        .toolbarBackground(
+                            Color("oxfordBlue"),
+                            for: .navigationBar)
+                        .toolbarBackground(.visible, for: .navigationBar)
                     
-                    
-                    content().padding(.vertical)
-                        .frame(width: width/1.2)
-                }.toolbarColorScheme(.dark, for: .navigationBar)
-                    .toolbarBackground(
-                        Color("oxfordBlue"),
-                        for: .navigationBar)
-                    .toolbarBackground(.visible, for: .navigationBar)
-                
-            }
-            .navigationBarTitle("", displayMode: .inline) // Hide the title
-            .ignoresSafeArea()
+                }
+                .navigationBarTitle("", displayMode: .inline) // Hide the title
+                .ignoresSafeArea()
         }
         .onAppear(){
             isLandscape = orientationInfo.orientation == .landscape
-            height =  UIScreen.main.bounds.height
             width = UIScreen.main.bounds.width
         }
         .onChange(of: orientationInfo.orientation) { orientation in
             isLandscape = orientation == .landscape
-            height =  UIScreen.main.bounds.height
             width = UIScreen.main.bounds.width
         }
         

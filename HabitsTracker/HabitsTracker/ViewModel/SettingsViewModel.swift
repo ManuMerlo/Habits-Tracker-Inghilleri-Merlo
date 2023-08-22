@@ -77,42 +77,6 @@ final class SettingsViewModel: ObservableObject {
         }
     }
     
-    struct PickerView: View {
-        @State var firestoreViewModel: FirestoreViewModel
-        @Binding var user : User?
-        var property : String
-        @Binding var selectedItem : Int
-        @Binding var booleanValuePicker : Bool
-        @Binding var booleanValueList : Bool
-        var rangeMin : Int
-        var rangeMax : Int
-        var unitaryMeasure : String
-        
-        var body: some View{
-            VStack {
-                Button {
-                    if ( property == "height"){
-                        firestoreViewModel.modifyUser(uid: user!.id!, field: "height", value: selectedItem)
-                    } else {
-                        firestoreViewModel.modifyUser(uid: user!.id!, field: "weight", value: selectedItem)
-                    }
-                    booleanValuePicker.toggle()
-                    booleanValueList.toggle()
-                }label: {
-                    Text("Done")
-                }
-                
-                Picker(selection: $selectedItem, label: Text("Select your \(property)" )) {
-                    ForEach(rangeMin..<rangeMax, id: \.self) { number in
-                        Text("\(number) \(unitaryMeasure)")
-                            .foregroundColor(.white)
-                    }
-                }
-                .pickerStyle(.wheel)
-                .labelsHidden()
-            }
-        }
-    }
     
     struct ImagePicker: UIViewControllerRepresentable {
         @Environment(\.presentationMode) private var presentationMode

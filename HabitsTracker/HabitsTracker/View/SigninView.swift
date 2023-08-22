@@ -14,27 +14,28 @@ struct SigninView: View {
     
     
     var body: some View {
-        
-        ZStack{
-            RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
-                .edgesIgnoringSafeArea(.all)
-            
-            if !isLandscape{
-                ScrollView(.vertical, showsIndicators: false){
-                    content().padding(.vertical,20)
-                }.foregroundColor(.white)
-            } else {
-                HStack{
-                    LottieView(filename: "login")
-                        .clipShape(Circle())
-                        .shadow(color: .orange, radius: 1, x: 0, y: 0)
-                        .padding(.top,10)
-                        .frame(maxWidth: width/3)
-                    
+        NavigationStack{
+            ZStack{
+                RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
+                    .edgesIgnoringSafeArea(.all)
+                
+                if !isLandscape{
                     ScrollView(.vertical, showsIndicators: false){
-                        content().padding(.vertical,50)
+                        content().padding(.vertical,20)
                     }.foregroundColor(.white)
-                        .fixedSize(horizontal: false, vertical: device == .iPad ? true : false)
+                } else {
+                    HStack{
+                        LottieView(filename: "login")
+                            .clipShape(Circle())
+                            .shadow(color: .orange, radius: 1, x: 0, y: 0)
+                            .padding(.top,10)
+                            .frame(maxWidth: width/3)
+                        
+                        ScrollView(.vertical, showsIndicators: false){
+                            content().padding(.vertical,50)
+                        }.foregroundColor(.white)
+                            .fixedSize(horizontal: false, vertical: device == .iPad ? true : false)
+                    }
                 }
             }
         }

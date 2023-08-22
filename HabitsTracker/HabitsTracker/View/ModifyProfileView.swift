@@ -25,199 +25,153 @@ struct ModifyProfileView: View {
     @State var selectedWeight : Int = 60
     @State var selectedSex : Sex = Sex.Unspecified
     
+    //Responsiveness
+    @EnvironmentObject var orientationInfo: OrientationInfo
+    @State private var isLandscape: Bool = false
+    @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
+    @State var width = UIScreen.main.bounds.width
+    @State var height = UIScreen.main.bounds.height
+    
     var body: some View {
-        VStack(){
-            ZStack(alignment: .top){
-                WaveView(upsideDown: true,repeatAnimation: false, base: 215, amplitude: 70)
-                
-                VStack{
-                    Button{
-                        showSheet.toggle()
-                    }label:{
-                        VStack {
+        
+        VStack{
+            ScrollView{
+                VStack(alignment: .center, spacing: 0){
+                    ZStack(alignment: .top){
+                        WaveView(upsideDown: true,repeatAnimation: false, base: 270, amplitude: 70)
+                        
+                        VStack{
                             ProfileImageView(
                                 path: firestoreViewModel.firestoreUser?.image,
                                 systemName: "person.circle.fill",
                                 size: 90,
-                                color: Color("platinum").opacity(0.8))
+                                color: .gray)
+                            .padding(.top, 20)
+                            .padding(.bottom,5)
                             
-                            Text("Change photo")
-                                .font(.body)
-                                .foregroundColor(.blue)
-                                .padding(.horizontal, 20)
-                        }
+                            Text("\( firestoreViewModel.firestoreUser?.username ?? "User")")
+                                .font(.largeTitle)
+                                .foregroundColor(.white)
+                            
+                            Text("\( firestoreViewModel.firestoreUser?.email ?? "")")
+                                .font(.title3)
+                                .foregroundColor(.gray)
+                                .accentColor(.white)
+                                .padding(.bottom,30)
+                        }.padding(.top,20)
                         
-                    }.padding(5)
+                    }
                     
-                    Text("Customise your profile")
-                        .font(.title2)
-                        .fontWeight(.bold)
-                    
-                }.frame(height: UIScreen.main.bounds.height*0.2)
-                    .padding(.vertical)
+                    List {
+                        UserDetailRow(title: "Username", value: firestoreViewModel.firestoreUser?.username ?? "User")
+                        UserDetailRow(title: "Birthdate", value: settingViewModel.dateToString(selectedDate), isEnabled: modify, action: toggleDatePicker)
+                        UserDetailRow(title: "Sex", value: firestoreViewModel.firestoreUser?.sex?.rawValue ?? "Unspecified", isEnabled: modify, action: toggleSexPicker)
+                        UserDetailRow(title: "Height", value: "\(firestoreViewModel.firestoreUser?.height ?? 0) cm", isEnabled: modify, action: toggleHeightPicker)
+                        UserDetailRow(title: "Weight", value: "\(firestoreViewModel.firestoreUser?.weight ?? 0) kg", isEnabled: modify, action: toggleWeightPicker)
+                        
+                    }
+                    .frame(width: isLandscape ? width/1.5 : width/1.1, height: 300)
+                    .frame(height: nil)
+                    .scrollDisabled(true)
+                    .padding(.top,50)
+                    .disabled(!isListEnabled)
+                    .scrollContentBackground(.hidden)
+                }
+                
                 
             }
             
-            VStack{
-                
-                List {
-                    HStack {
-                        Text("Username")
-                        Spacer()
-                        Text("\( firestoreViewModel.firestoreUser?.username ?? "User")")
-                    } .listRowBackground(Color("oxfordBlue"))
-                        .listRowSeparatorTint(.white.opacity(0.9))
-                        .foregroundColor(.white)
+            if showDatePicker {
+                VStack() {
                     Button {
+                        firestoreViewModel.modifyUser(
+                            uid: firestoreViewModel.firestoreUser!.id!,
+                            field: "birthdate",
+                            value: settingViewModel.dateToString(selectedDate)
+                        )
+                        
                         showDatePicker.toggle()
                         isListEnabled.toggle()
                     } label: {
-                        HStack {
-                            Text("Birthdate")
-                            Spacer()
-                            Text(settingViewModel.dateToString(selectedDate))
-                        }
-                    }.disabled(!modify)
-                        .foregroundColor(!modify ? Color("platinum").opacity(0.8): .white)
-                        .listRowBackground(Color("oxfordBlue"))
-                        .listRowSeparatorTint(.white.opacity(0.9))
-                    
-                    Button {
-                        showSexPicker.toggle()
-                        isListEnabled.toggle()
-                    } label: {
-                        HStack {
-                            Text("Sex")
-                            Spacer()
-                            Text("\((firestoreViewModel.firestoreUser?.sex ?? Sex.Unspecified).rawValue )")
-                        }
-                    }.disabled(!modify)
-                        .foregroundColor(!modify ? Color("platinum").opacity(0.8): .white)
-                        .listRowBackground(Color("oxfordBlue"))
-                        .listRowSeparatorTint(.white.opacity(0.9))
-                    
-                    
-                    Button {
-                        showHeightPicker.toggle()
-                        isListEnabled.toggle()
-                    } label: {
-                        HStack {
-                            Text("Height")
-                            Spacer()
-                            Text("\( firestoreViewModel.firestoreUser?.height ?? 0 )")
-                        }
-                    }.disabled(!modify)
-                        .foregroundColor(!modify ? Color("platinum").opacity(0.8): .white)
-                        .listRowBackground(Color("oxfordBlue"))
-                        .listRowSeparatorTint(.white.opacity(0.9))
-                    
-                    
-                    Button {
-                        showWeightPicker.toggle()
-                        isListEnabled.toggle()
-                    } label: {
-                        HStack {
-                            Text("Weight")
-                            Spacer()
-                            Text("\( firestoreViewModel.firestoreUser?.weight ?? 0 )")
-                        }
-                    }.disabled(!modify)
-                        .foregroundColor(!modify ? Color("platinum").opacity(0.8): .white)
-                        .listRowBackground(Color("oxfordBlue"))
-                        .listRowSeparatorTint(.white.opacity(0.9))
-                    
-                }
-                .padding(.top,30)
-                .disabled(!isListEnabled)
-                .scrollContentBackground(.hidden)
-                
-                if showDatePicker {
-                    VStack() {
-                        Button {
-                            firestoreViewModel.modifyUser(
-                                uid: firestoreViewModel.firestoreUser!.id!,
-                                field: "birthdate",
-                                value: settingViewModel.dateToString(selectedDate)
-                            )
-                            
-                            showDatePicker.toggle()
-                            isListEnabled.toggle()
-                        } label: {
-                            Text("Done")
-                                .padding(.vertical, 8)
-                        }
-                        
-                        HStack{
-                            Spacer()
-                            DatePicker(selection: $selectedDate, displayedComponents: .date) {}
-                                .colorScheme(.dark)
-                                .datePickerStyle(WheelDatePickerStyle())
-                                .labelsHidden()
-                            
-                            Spacer()
-                        }
+                        Text("Done")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity) // Makes the button full width
+                            .padding(.vertical, 8)
                     }
                     .background(Color("oxfordBlue"))
                     
-                    
-                    
-                }
-                
-                if(showSexPicker){
-                    VStack {
-                        Button {
-                            firestoreViewModel.modifyUser(
-                                uid:  firestoreViewModel.firestoreUser!.id!,
-                                field: "sex",
-                                value: selectedSex.rawValue)
-                            
-                            showSexPicker.toggle()
-                            isListEnabled.toggle()
-                        }label: {
-                            Text("Done")
-                        }
-                        Picker(selection: $selectedSex, label: Text("Select your sex" )) {
-                            ForEach(Sex.allCases, id: \.self) { item in
-                                Text("\(item.rawValue)")
-                                    .foregroundColor(.white)
-                            }
-                        }
-                        .pickerStyle(.wheel)
-                        .labelsHidden()
+                    HStack{
+                        Spacer()
+                        DatePicker(selection: $selectedDate, displayedComponents: .date) {}
+                            .colorScheme(.dark)
+                            .datePickerStyle(WheelDatePickerStyle())
+                            .labelsHidden()
+                        
+                        Spacer()
                     }
                 }
+                .background(Color.clear)
                 
-                if (showHeightPicker) {
-                    SettingsViewModel.PickerView(
-                        firestoreViewModel:firestoreViewModel,
-                        user: $firestoreViewModel.firestoreUser,
-                        property: "height",
-                        selectedItem: $selectedHeight,
-                        booleanValuePicker: $showHeightPicker,
-                        booleanValueList: $isListEnabled,
-                        rangeMin: 50,
-                        rangeMax: 300,
-                        unitaryMeasure: "cm")
-                }
-                
-                if (showWeightPicker){
-                    SettingsViewModel.PickerView(
-                        firestoreViewModel:firestoreViewModel,
-                        user: $firestoreViewModel.firestoreUser,
-                        property: "weight",
-                        selectedItem: $selectedWeight,
-                        booleanValuePicker: $showWeightPicker,
-                        booleanValueList: $isListEnabled,
-                        rangeMin: 30,
-                        rangeMax: 180,
-                        unitaryMeasure: "kg")
-                }
             }
-            .frame(height: UIScreen.main.bounds.height*0.65)
             
+            if(showSexPicker){
+                VStack {
+                    Button {
+                        firestoreViewModel.modifyUser(
+                            uid:  firestoreViewModel.firestoreUser!.id!,
+                            field: "sex",
+                            value: selectedSex.rawValue)
+                        
+                        showSexPicker.toggle()
+                        isListEnabled.toggle()
+                    }label: {
+                        Text("Done")
+                            .foregroundColor(.white)
+                            .frame(maxWidth: .infinity) // Makes the button full width
+                                    .padding(.vertical, 8)
+                            }
+                            .background(Color("oxfordBlue"))
+                    
+                    Picker(selection: $selectedSex, label: Text("Select your sex" )) {
+                        ForEach(Sex.allCases, id: \.self) { item in
+                            Text("\(item.rawValue)")
+                                .foregroundColor(.white)
+                        }
+                    }
+                    .pickerStyle(.wheel)
+                    .labelsHidden()
+                }
+                .frame(minHeight: 200)
+            }
+            
+            if (showHeightPicker) {
+                PickerView(
+                    firestoreViewModel:firestoreViewModel,
+                    user: $firestoreViewModel.firestoreUser,
+                    property: "height",
+                    selectedItem: $selectedHeight,
+                    booleanValuePicker: $showHeightPicker,
+                    booleanValueList: $isListEnabled,
+                    rangeMin: 50,
+                    rangeMax: 300,
+                    unitaryMeasure: "cm")
+            }
+            
+            if (showWeightPicker){
+                PickerView(
+                    firestoreViewModel:firestoreViewModel,
+                    user: $firestoreViewModel.firestoreUser,
+                    property: "weight",
+                    selectedItem: $selectedWeight,
+                    booleanValuePicker: $showWeightPicker,
+                    booleanValueList: $isListEnabled,
+                    rangeMin: 30,
+                    rangeMax: 180,
+                    unitaryMeasure: "kg")
+            }
         }
-        .padding(.top,60)
-        .foregroundColor(.white)
+        .accentColor(Color("oxfordBlue"))
+        .edgesIgnoringSafeArea(.horizontal)
         .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500).ignoresSafeArea())
         .navigationBarBackButtonHidden(!isListEnabled || modify)
         .toolbarColorScheme(.dark, for: .navigationBar)
@@ -226,36 +180,133 @@ struct ModifyProfileView: View {
             for: .navigationBar)
         .toolbarBackground(.visible, for: .navigationBar)
         .toolbar {
-                Button {
-                    modify.toggle()
-                } label: {
-                    Text(modify ? "Done" : "Edit")
-                }.disabled(!isListEnabled)
-                
-            }
-            .fullScreenCover(isPresented: $showSheet, onDismiss: {
-                settingViewModel.persistimageToStorage { result in
-                    switch result {
-                    case .success(let path):
-                        firestoreViewModel.modifyUser(
-                            uid:  firestoreViewModel.firestoreUser!.id!,
-                            field: "image",
-                            value: path
-                        )
-                        
-                    case .failure(let error):
-                        print("\(error.localizedDescription)")
-                        //TODO: handle message on screen
-                    }
+            Button {
+                modify.toggle()
+            } label: {
+                Text(modify ? "Done" : "Edit")
+            }.disabled(!isListEnabled)
+            
+        }
+        .onAppear(){
+            isLandscape = orientationInfo.orientation == .landscape
+            width = UIScreen.main.bounds.width
+            height = UIScreen.main.bounds.height
+        }
+        .onChange(of: orientationInfo.orientation) { orientation in
+            isLandscape = orientation == .landscape
+            width = UIScreen.main.bounds.width
+            height = UIScreen.main.bounds.height
+        }
+        .fullScreenCover(isPresented: $showSheet, onDismiss: {
+            settingViewModel.persistimageToStorage { result in
+                switch result {
+                case .success(let path):
+                    firestoreViewModel.modifyUser(
+                        uid:  firestoreViewModel.firestoreUser!.id!,
+                        field: "image",
+                        value: path
+                    )
+                    
+                case .failure(let error):
+                    print("\(error.localizedDescription)")
+                    //TODO: handle message on screen
                 }
-            }) {
-                SettingsViewModel.ImagePicker(selectedImage: $settingViewModel.image)
             }
+        }) {
+            SettingsViewModel.ImagePicker(selectedImage: $settingViewModel.image)
+        }
+    }
+    
+    
+    private func toggleDatePicker() {
+        showDatePicker.toggle()
+        isListEnabled.toggle()
+    }
+    
+    private func toggleSexPicker() {
+        showSexPicker.toggle()
+        isListEnabled.toggle()
+    }
+    
+    private func toggleHeightPicker() {
+        showHeightPicker.toggle()
+        isListEnabled.toggle()
+    }
+    
+    private func toggleWeightPicker() {
+        showWeightPicker.toggle()
+        isListEnabled.toggle()
+    }
+    
+}
+
+struct UserDetailRow: View {
+    var title: String
+    var value: String
+    var isEnabled: Bool = true
+    var action: () -> Void = {}
+    
+    var body: some View {
+        Button(action: action) {
+            HStack {
+                Text(title)
+                Spacer()
+                Text(value)
+            }
+        }
+        .disabled(!isEnabled)
+        .foregroundColor(isEnabled ? .white : Color("platinum").opacity(0.8))
+        .listRowBackground(Color("oxfordBlue"))
+        .listRowSeparatorTint(.white.opacity(0.9))
     }
 }
+
+
+struct PickerView: View {
+    @State var firestoreViewModel: FirestoreViewModel
+    @Binding var user : User?
+    var property : String
+    @Binding var selectedItem : Int
+    @Binding var booleanValuePicker : Bool
+    @Binding var booleanValueList : Bool
+    var rangeMin : Int
+    var rangeMax : Int
+    var unitaryMeasure : String
+    
+    var body: some View{
+        VStack(alignment: .center) {
+            Button {
+                if ( property == "height"){
+                    firestoreViewModel.modifyUser(uid: user!.id!, field: "height", value: selectedItem)
+                } else {
+                    firestoreViewModel.modifyUser(uid: user!.id!, field: "weight", value: selectedItem)
+                }
+                booleanValuePicker.toggle()
+                booleanValueList.toggle()
+            }label: {
+                Text("Done")
+                    .foregroundColor(.white)
+                    .frame(maxWidth: .infinity) // Makes the button full width
+                            .padding(.vertical, 8)
+                    }
+            .background(Color("oxfordBlue"))
+            
+            Picker(selection: $selectedItem, label: Text("Select your \(property)" )) {
+                ForEach(rangeMin..<rangeMax, id: \.self) { number in
+                    Text("\(number) \(unitaryMeasure)")
+                        .foregroundColor(.white)
+                }
+            }
+            .pickerStyle(.wheel)
+            .labelsHidden()
+        }.frame(minHeight: 200)
+    }
+}
+
 
 struct ModifyProfileView_Previews: PreviewProvider {
     static var previews: some View {
         ModifyProfileView(firestoreViewModel: FirestoreViewModel(), settingViewModel: SettingsViewModel())
+            .environmentObject(OrientationInfo())
     }
 }

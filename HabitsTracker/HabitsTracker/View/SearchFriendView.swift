@@ -15,7 +15,6 @@ struct SearchFriendView: View {
     
     @EnvironmentObject var orientationInfo: OrientationInfo
     @State private var isLandscape: Bool = false
-    @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
     @State var width = UIScreen.main.bounds.width
     
     @FirestoreQuery(
@@ -28,7 +27,7 @@ struct SearchFriendView: View {
     }
     
     var body: some View {
-        NavigationView {
+        NavigationStack {
             ZStack {
                 RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
                     .edgesIgnoringSafeArea(.all)
