@@ -10,12 +10,15 @@ import SwiftUI
 struct ProvidersDetailView: View {
     
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    
-    var width: CGFloat
-    
+
     @State var expandVerificationWithEmailFrom : Bool = false
     @State var textFieldEmail: String = ""
     @State var textFieldPassword: String = ""
+    
+    //Responsiveness
+    @EnvironmentObject var orientationInfo: OrientationInfo
+    @State private var isLandscape: Bool = false
+    @State var width = UIScreen.main.bounds.width
     
     var body: some View {
         VStack{
@@ -73,7 +76,7 @@ struct ProvidersDetailView: View {
                     .listRowSeparatorTint(.white.opacity(0.7))
                 
             }
-            .frame(width: width)
+            .frame(width: isLandscape ? width/1.3 : width)
             .task {
                 authenticationViewModel.getCurrentProvider()
             }
@@ -93,11 +96,20 @@ struct ProvidersDetailView: View {
         .frame(maxWidth: .infinity)
         .foregroundColor(.white.opacity(0.7))
         .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500).opacity(0.97))
+        .onAppear(){
+            isLandscape = orientationInfo.orientation == .landscape
+            width = UIScreen.main.bounds.width
+        }
+        .onChange(of: orientationInfo.orientation) { orientation in
+            isLandscape = orientation == .landscape
+            width = UIScreen.main.bounds.width
+        }
     }
 }
 
 struct ProvidersDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        ProvidersDetailView(authenticationViewModel: AuthenticationViewModel(),width: 600)
+        ProvidersDetailView(authenticationViewModel: AuthenticationViewModel())
+            .environmentObject(OrientationInfo())
     }
 }

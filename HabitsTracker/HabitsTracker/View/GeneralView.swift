@@ -98,8 +98,6 @@ struct GeneralView: View {
         .onAppear{
             firestoreViewModel.getCurrentUser()
             firestoreViewModel.getFriendsSubcollection()
-        }
-        .onAppear() {
             UITabBar.appearance().barTintColor = UIColor(red: 0.1, green: 0.15, blue: 0.23, alpha: 0.9)
         }
     }

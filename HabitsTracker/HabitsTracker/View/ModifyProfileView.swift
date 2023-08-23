@@ -33,20 +33,19 @@ struct ModifyProfileView: View {
     
     var body: some View {
         
-        VStack{
+        VStack(spacing: 15){
             ScrollView{
-                VStack(alignment: .center, spacing: 0){
+                VStack(alignment: .center, spacing: 15){
                     ZStack(alignment: .top){
-                        WaveView(upsideDown: true,repeatAnimation: false, base: 270, amplitude: 70)
+                        WaveView(upsideDown: true,repeatAnimation: false, base: 230, amplitude: 70)
                         
                         VStack{
+                            
                             ProfileImageView(
                                 path: firestoreViewModel.firestoreUser?.image,
                                 systemName: "person.circle.fill",
-                                size: 50,
+                                size: 90,
                                 color: .gray)
-                            .padding(.top, 20)
-                            .padding(.bottom,5)
                             
                             Text("\( firestoreViewModel.firestoreUser?.username ?? "User")")
                                 .font(.largeTitle)
@@ -56,9 +55,8 @@ struct ModifyProfileView: View {
                                 .font(.title3)
                                 .foregroundColor(.gray)
                                 .accentColor(.white)
-                                .padding(.bottom,30)
-                        }
-                        
+                            
+                        }.padding(.top,15)
                     }
                     
                     List {
@@ -72,7 +70,7 @@ struct ModifyProfileView: View {
                     .frame(width: isLandscape ? width/1.5 : width/1.1, height: 300)
                     .frame(height: nil)
                     .scrollDisabled(true)
-                    .padding(.top,50)
+                    .padding(.top,20)
                     .disabled(!isListEnabled)
                     .scrollContentBackground(.hidden)
                 }
@@ -81,7 +79,7 @@ struct ModifyProfileView: View {
             }
             
             if showDatePicker {
-                VStack() {
+                VStack(alignment:.center){
                     Button {
                         firestoreViewModel.modifyUser(
                             uid: firestoreViewModel.firestoreUser!.id!,
@@ -94,8 +92,8 @@ struct ModifyProfileView: View {
                     } label: {
                         Text("Done")
                             .foregroundColor(.white)
+                            .padding(.vertical,10)
                             .frame(maxWidth: .infinity) // Makes the button full width
-                            .padding(.vertical, 8)
                     }
                     .background(Color("oxfordBlue"))
                     
@@ -114,7 +112,7 @@ struct ModifyProfileView: View {
             }
             
             if(showSexPicker){
-                VStack {
+                VStack(alignment:.center){
                     Button {
                         firestoreViewModel.modifyUser(
                             uid:  firestoreViewModel.firestoreUser!.id!,
@@ -127,7 +125,7 @@ struct ModifyProfileView: View {
                         Text("Done")
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity) // Makes the button full width
-                                    .padding(.vertical, 8)
+                                    .padding(.vertical, 10)
                             }
                             .background(Color("oxfordBlue"))
                     
@@ -284,7 +282,7 @@ struct PickerView: View {
                 Text("Done")
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity) // Makes the button full width
-                            .padding(.vertical, 8)
+                            .padding(.vertical, 10)
                     }
             .background(Color("oxfordBlue"))
             

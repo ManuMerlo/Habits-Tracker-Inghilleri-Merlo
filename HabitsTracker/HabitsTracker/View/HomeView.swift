@@ -27,8 +27,8 @@ struct HomeView: View {
                 
                 ScrollView(.vertical, showsIndicators: false) {
                     content()
-                    .padding(.vertical,30)
-                }.edgesIgnoringSafeArea(.horizontal)
+                }
+                .edgesIgnoringSafeArea(.horizontal)
             }
         }
         .onAppear(){
@@ -45,7 +45,7 @@ struct HomeView: View {
     @ViewBuilder
     
     func content() -> some View {
-        VStack(spacing: 20) {
+        VStack(spacing: 15) {
             HStack{
                 Text("Dashboard")
                     .font(.largeTitle)
@@ -78,26 +78,30 @@ struct HomeView: View {
                 }
             }.padding(.horizontal,15)
             
-            Divider()
-                .background(Color("platinum"))
-                .shadow(color: .black, radius: 1, x: 0, y: 0)
-                .padding(.bottom)
+            RoundedRectangle(cornerRadius: 10)
+                .frame(height: 1)
+                .foregroundColor(.white.opacity(0.5))
+                .shadow(color:.black,radius: 5)
             
             Text("Scores")
                 .font(.title)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .center)
-                .padding(.horizontal, 20)
             
             if let user = firestoreViewModel.firestoreUser{
-                ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7],ringSize: width/2)
+                if isLandscape{
+                    ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7],ringSize: width/2.3)
+                }
+                else {
+                    ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7],ringSize: width/1.7)
+                }
             }
             
             if isLandscape{
                 WaveView(upsideDown: false,repeatAnimation: false, base: 40, amplitude: 110)
                     .offset(y:20)
             } else {
-                WaveView(upsideDown: false,repeatAnimation: true, base: 40, amplitude: 110)
+                WaveView(upsideDown: false,repeatAnimation: device == .iPhone ? true : false, base: 40, amplitude: 110)
                     .offset(y:20)
             }
             
@@ -107,7 +111,7 @@ struct HomeView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .center)
                 
-                VStack(alignment:.center, spacing: 15) {
+                VStack(alignment:.center, spacing: 10) {
                     ForEach( ExtendedActivity.allActivities(), id: \.self) { activity in
                         if let baseActivity = healthViewModel.allMyTypes.first(where: { $0.id == activity.id }) {
                             ActivityStatusView(
@@ -126,13 +130,13 @@ struct HomeView: View {
                     let elementsize =  (getMaxWidth()-15)/2
                     RecordView(user: user, elementSize: elementsize)
                         .frame(maxWidth: getMaxWidth())
-                        .padding(.bottom,20)
                 }
                 
             }
             .background(Color("oxfordBlue"))
             
-        }.padding(.top, 20)
+        }
+        .padding(.top, 30)
         
     }
     

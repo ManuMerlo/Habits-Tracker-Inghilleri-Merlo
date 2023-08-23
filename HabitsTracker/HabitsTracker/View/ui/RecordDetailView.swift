@@ -91,7 +91,6 @@ struct RecordDetailView: View {
                 dismissButton: .default(Text("OK"))
             )
         }
-        .padding(.vertical,3)
     }
     
     func ItemColor(number : Int ) -> Color {

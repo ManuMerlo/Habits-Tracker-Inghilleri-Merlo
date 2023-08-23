@@ -36,8 +36,6 @@ struct ScoreRingView: View {
                     .stroke(Color("platinum"), lineWidth: 20).opacity(0.3)
                     .frame(width: ringSize, alignment: .center)
                 
-                
-                
                 let maximumScoreW = 200.0
                 let ratioWeekly = Double(weeklyScore) / maximumScoreW
                 

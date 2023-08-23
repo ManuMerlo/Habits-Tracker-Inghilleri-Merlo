@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+//TODO: no multitasking iPad
+
 final class OrientationInfo: ObservableObject {
     
     enum Orientation {

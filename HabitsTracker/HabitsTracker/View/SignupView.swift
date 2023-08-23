@@ -20,14 +20,13 @@ struct SignupView: View {
             
             if !isLandscape{
                 ScrollView(.vertical, showsIndicators: false){
-                    content().padding(.vertical,20)
+                    content()
                 }.foregroundColor(.white)
             } else {
                 HStack{
                     LottieView(filename: "register")
                         .clipShape(Circle())
                         .shadow(color: .orange, radius: 1, x: 0, y: 0)
-                        .padding(.top,10)
                         .frame(maxWidth: width/3)
                     
                     ScrollView(.vertical, showsIndicators: false){
@@ -64,7 +63,6 @@ struct SignupView: View {
                     .frame(width:width, height: height/3)
                     .clipShape(Circle())
                     .shadow(color: .orange, radius: 1, x: 0, y: 0)
-                    .padding(.top,10)
             }
             
             Text("Create New Account")
@@ -72,7 +70,6 @@ struct SignupView: View {
                 .multilineTextAlignment(.center)
                 .fontWeight(.semibold)
                 .lineSpacing(10)
-                .padding(.bottom, 10)
                 .offset(y: -4)
             
             Group{
@@ -148,7 +145,7 @@ struct SignupView: View {
                         .cornerRadius(10)
                         .contentTransition(.identity)
                 
-            }.padding(.top,10)
+            }
             
             if let messageError = authenticationViewModel.messageError {
                 Text(messageError)
@@ -161,7 +158,6 @@ struct SignupView: View {
             authenticationViewModel.clearSignUpParameter()
         }
         .padding(.horizontal, 50)
-        .padding(.vertical,25)
     }
     
     func getMaxWidth() -> CGFloat{

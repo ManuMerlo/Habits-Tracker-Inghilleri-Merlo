@@ -33,7 +33,7 @@ struct SearchFriendView: View {
                     .edgesIgnoringSafeArea(.all)
                 
                 ScrollView{
-                    VStack(spacing: 15){
+                    VStack(spacing: 10){
                         ForEach(filteredFrieds, id: \.self) { friend in
                             NavigationLink(destination: UserProfileView(firestoreViewModel: firestoreViewModel, user: friend)) {
                                 ListItemView(user: friend,
@@ -52,7 +52,7 @@ struct SearchFriendView: View {
                 for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
         }
-        .onAppear(){
+        .onAppear{
             isLandscape = orientationInfo.orientation == .landscape
             width = UIScreen.main.bounds.width
         }

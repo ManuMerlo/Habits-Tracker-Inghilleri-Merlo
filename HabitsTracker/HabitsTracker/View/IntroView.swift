@@ -229,7 +229,6 @@ struct IntroView: View {
     }
     
     
-    
     // Helper Functions
     func getColorForSelectedPage(_ page: Int) -> Color {
         switch page {
@@ -255,7 +254,6 @@ enum Device {
     case iPhone
     case iPad
 }
-
 
 struct IntroView_Previews: PreviewProvider {
     static var previews: some View {

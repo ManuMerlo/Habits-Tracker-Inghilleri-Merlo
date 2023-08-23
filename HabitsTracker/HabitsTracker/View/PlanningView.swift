@@ -90,7 +90,6 @@ struct PlanningView: View {
                 let columns = Array(repeating: GridItem(.flexible()), count: 7)
                 
                 LazyVGrid(columns: columns, spacing: 15) {
-                    
                     ForEach(planningViewModel.extractDate()) { value in
                         CardView(value: value)
                             .background(

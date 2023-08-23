@@ -21,18 +21,17 @@ struct SigninView: View {
                 
                 if !isLandscape{
                     ScrollView(.vertical, showsIndicators: false){
-                        content().padding(.vertical,20)
+                        content()
                     }.foregroundColor(.white)
                 } else {
                     HStack{
                         LottieView(filename: "login")
                             .clipShape(Circle())
                             .shadow(color: .orange, radius: 1, x: 0, y: 0)
-                            .padding(.top,10)
                             .frame(maxWidth: width/3)
                         
                         ScrollView(.vertical, showsIndicators: false){
-                            content().padding(.vertical,50)
+                            content()
                         }.foregroundColor(.white)
                             .fixedSize(horizontal: false, vertical: device == .iPad ? true : false)
                     }
@@ -59,21 +58,19 @@ struct SigninView: View {
     @ViewBuilder
     func content() -> some View {
         
-        VStack(alignment: .center, spacing: 17) {
+        VStack(alignment: .center, spacing: 15) {
             
             if !isLandscape{
                 LottieView(filename: "login")
                     .frame(width:width, height: height/3)
                     .clipShape(Circle())
                     .shadow(color: .orange, radius: 1, x: 0, y: 0)
-                    .padding(.top,10)
             }
             Group {
                 
                 Text("Sign in")
                     .font(.title)
                     .fontWeight(.semibold)
-                    .offset(y: -12)
                 
                 CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmailSignin)
                     .frame(width: getMaxWidth())
@@ -93,7 +90,6 @@ struct SigninView: View {
                         print("Empty email or password")
                         return
                     }
-                    
                     authenticationViewModel.login(email: authenticationViewModel.textFieldEmailSignin,
                                                   password: authenticationViewModel.textFieldPasswordSignin)
                     
@@ -109,8 +105,6 @@ struct SigninView: View {
                             .contentTransition(.identity)
                         
                     }
-                    .padding(.vertical,10)
-                    
                 }
                 
                 // TODO: it must disappear.
@@ -122,12 +116,17 @@ struct SigninView: View {
                 }
             }
             
-            
             Group {
-                HStack{
-                    VStack { Divider().background(Color.gray) }.padding(.horizontal, 20)
-                    Text("or").foregroundColor(Color.white)
-                    VStack { Divider().background(Color.white) }.padding(.horizontal, 20)
+                HStack(spacing: 20){
+                    VStack{
+                        Divider()
+                        .background(Color.gray)
+                    }
+                    Text("or")
+                        .foregroundColor(Color.white)
+                    VStack {
+                        Divider().background(Color.white)
+                    }
                 }.frame(width: getMaxWidth())
                 
                 
@@ -203,7 +202,7 @@ struct SigninView: View {
                         Text("Continue with Facebook")
                         
                     }
-                    .padding()
+                    .padding(10)
                     .background(.blue)
                     .foregroundColor(.white)
                     .frame(height: 40)
@@ -217,16 +216,12 @@ struct SigninView: View {
                     Text("Don't have an account? Sign up")
                         .foregroundColor(.blue)
                 }
-                .padding(.top, 5)
             }
             
         }
         .onAppear{
             authenticationViewModel.clearSignInParameter()
         }
-        .padding(.horizontal, 50)
-        .padding(.vertical,25)
-        .offset(y:-30)
     }
     
     func getMaxWidth() -> CGFloat{

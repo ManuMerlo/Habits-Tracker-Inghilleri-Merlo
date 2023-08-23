@@ -13,20 +13,18 @@ struct RecordView: View {
     var elementSize : CGFloat
     
     var body: some View {
-        Text("Records")
-            .font(.title)
-            .foregroundColor(.white)
-            .frame(maxWidth: .infinity, alignment: .center)
-            .padding(.top,20)
-            .padding(.bottom,5)
-        
-        let columns = [
-            GridItem(.flexible(), spacing: 15),
-            GridItem(.flexible(), spacing: 0),
-        ]
-        
         VStack{
-            LazyVGrid(columns: columns, spacing: 15) {
+            Text("Records")
+                .font(.title)
+                .foregroundColor(.white)
+                .frame(maxWidth: .infinity, alignment: .center)
+            
+            let columns = [
+                GridItem(.flexible(), spacing: 15),
+                GridItem(.flexible(), spacing: 0),
+            ]
+            
+            LazyVGrid(columns: columns, spacing: 10) {
                 ForEach(Array(ExtendedActivity.allActivities().enumerated()), id: \.element.id) { index, activity in
                     if let record = user.records.first(where: { $0.id == activity.id }) {
                         RecordDetailView(
@@ -48,15 +46,15 @@ struct RecordView: View {
 struct RecordView_Previews: PreviewProvider {
     static var previews: some View {
         RecordView(
-        user: User(
-            username: "lulu",
-            email: "lulu@gmail.com",
-            birthDate: "10/08/2001",
-            sex: Sex.Female,
-            height: 150,
-            weight: 60,
-            image: "",
-            dailyScores: [20,50,40,60,60,90,70,200,40]),
-        elementSize : 200)
+            user: User(
+                username: "lulu",
+                email: "lulu@gmail.com",
+                birthDate: "10/08/2001",
+                sex: Sex.Female,
+                height: 150,
+                weight: 60,
+                image: "",
+                dailyScores: [20,50,40,60,60,90,70,200,40]),
+            elementSize : 200)
     }
 }

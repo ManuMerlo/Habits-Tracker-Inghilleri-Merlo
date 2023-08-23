@@ -25,7 +25,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationStack{
             ScrollView{
-                VStack(alignment: .center){
+                VStack(alignment: .center,spacing: 15){
                     ZStack(alignment: .top){
                         WaveView(upsideDown: true,repeatAnimation: false, base: 290, amplitude: 70)
                         
@@ -35,7 +35,6 @@ struct SettingsView: View {
                                 systemName: "person.circle.fill",
                                 size: 90,
                                 color: .gray)
-                            .padding(.bottom,5)
                             
                             Text("\( firestoreViewModel.firestoreUser?.username ?? "User")")
                                 .font(.largeTitle)
@@ -46,8 +45,8 @@ struct SettingsView: View {
                                 .foregroundColor(.gray)
                                 .accentColor(.white)
                                 .padding(.bottom,30)
-                        }.padding(.top,60)
-                        
+                            
+                        }.padding(.top,isLandscape ? 30 : 60)
                     }
                     
                     List {
@@ -60,14 +59,14 @@ struct SettingsView: View {
                             }
                             
                             NavigationLink {
-                                ProvidersDetailView(authenticationViewModel: authenticationViewModel, width: isLandscape ? width/1.5 : width/1.1)
+                                ProvidersDetailView(authenticationViewModel: authenticationViewModel)
                                     
                             } label: {
                                 Label("Providers", systemImage: "person.crop.circle.badge.plus")
                             }
                             
                             NavigationLink {
-                                NotificationDetailView(settingViewModel: settingViewModel,width: isLandscape ? width/1.5 : width/1.1)
+                                NotificationDetailView(settingViewModel: settingViewModel)
                             } label: {
                                 Label("Notifications", systemImage: "bell")
                             }

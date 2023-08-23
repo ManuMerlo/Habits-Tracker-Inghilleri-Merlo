@@ -11,7 +11,11 @@ struct NotificationDetailView: View {
     
     @ObservedObject var settingViewModel : SettingsViewModel
     
-    var width: CGFloat
+    //Responsiveness
+    @EnvironmentObject var orientationInfo: OrientationInfo
+    @State private var isLandscape: Bool = false
+    @State var width = UIScreen.main.bounds.width
+    
     var body: some View {
         VStack{
             Form {
@@ -79,17 +83,24 @@ struct NotificationDetailView: View {
                 .listRowSeparatorTint(.white.opacity(0.7))
                 
             }
-            .frame(width: width)
+            .frame(width: isLandscape ? width/1.3 : width)
             .scrollContentBackground(.hidden)
             
         }.frame(maxWidth: .infinity)
-        
-            .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500).opacity(0.98))
+        .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500).opacity(0.98))
+        .onAppear(){
+                isLandscape = orientationInfo.orientation == .landscape
+                width = UIScreen.main.bounds.width
+        }
+        .onChange(of: orientationInfo.orientation) { orientation in
+                isLandscape = orientation == .landscape
+                width = UIScreen.main.bounds.width
+        }
     }
 }
 
 struct NotificationDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        NotificationDetailView(settingViewModel: SettingsViewModel(),width: 600)
+        NotificationDetailView(settingViewModel:SettingsViewModel()) .environmentObject(OrientationInfo())
     }
 }
