@@ -70,7 +70,6 @@ struct ListItemView: View {
     
     var body: some View {
         HStack{
-            
             ProfileImageView(
                 path: user.image,
                 systemName: "person.crop.circle",
@@ -99,7 +98,6 @@ struct ListItemView: View {
         .background(Color("oxfordBlue").opacity(0.9))
         .mask(RoundedRectangle(cornerRadius: 20, style:.continuous))
         .shadow(color: Color.black.opacity(0.8), radius: 5, x: 0, y: 0)
-        
         
     }
 }

@@ -12,7 +12,6 @@ struct NotificationDetailView: View {
     @ObservedObject var settingViewModel : SettingsViewModel
     
     var width: CGFloat
-    
     var body: some View {
         VStack{
             Form {

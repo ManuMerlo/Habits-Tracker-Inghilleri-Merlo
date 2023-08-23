@@ -97,7 +97,7 @@ struct ScoreRingView: View {
                 
             }
             
-        }.padding()
+        }
     }
 }
 

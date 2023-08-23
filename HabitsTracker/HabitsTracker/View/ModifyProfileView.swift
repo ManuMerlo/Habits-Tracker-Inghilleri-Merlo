@@ -30,7 +30,6 @@ struct ModifyProfileView: View {
     @State private var isLandscape: Bool = false
     @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
     @State var width = UIScreen.main.bounds.width
-    @State var height = UIScreen.main.bounds.height
     
     var body: some View {
         
@@ -44,7 +43,7 @@ struct ModifyProfileView: View {
                             ProfileImageView(
                                 path: firestoreViewModel.firestoreUser?.image,
                                 systemName: "person.circle.fill",
-                                size: 90,
+                                size: 50,
                                 color: .gray)
                             .padding(.top, 20)
                             .padding(.bottom,5)
@@ -190,12 +189,10 @@ struct ModifyProfileView: View {
         .onAppear(){
             isLandscape = orientationInfo.orientation == .landscape
             width = UIScreen.main.bounds.width
-            height = UIScreen.main.bounds.height
         }
         .onChange(of: orientationInfo.orientation) { orientation in
             isLandscape = orientation == .landscape
             width = UIScreen.main.bounds.width
-            height = UIScreen.main.bounds.height
         }
         .fullScreenCover(isPresented: $showSheet, onDismiss: {
             settingViewModel.persistimageToStorage { result in

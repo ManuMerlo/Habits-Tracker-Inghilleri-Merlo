@@ -29,9 +29,7 @@ struct HomeView: View {
                     content()
                     .padding(.vertical,30)
                 }.edgesIgnoringSafeArea(.horizontal)
-                
             }
-            
         }
         .onAppear(){
             isLandscape = orientationInfo.orientation == .landscape
@@ -47,15 +45,14 @@ struct HomeView: View {
     @ViewBuilder
     
     func content() -> some View {
-        VStack(spacing: 0) {
+        VStack(spacing: 20) {
             HStack{
                 Text("Dashboard")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(20)
-                
+        
                 Spacer()
                 
                 NavigationLink {
@@ -79,7 +76,7 @@ struct HomeView: View {
                         
                     }
                 }
-            }
+            }.padding(.horizontal,15)
             
             Divider()
                 .background(Color("platinum"))
@@ -96,14 +93,19 @@ struct HomeView: View {
                 ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7],ringSize: width/2)
             }
             
-            WaveView(upsideDown: false,repeatAnimation:true, base: 100, amplitude: 110)
+            if isLandscape{
+                WaveView(upsideDown: false,repeatAnimation: false, base: 40, amplitude: 110)
+                    .offset(y:20)
+            } else {
+                WaveView(upsideDown: false,repeatAnimation: true, base: 40, amplitude: 110)
+                    .offset(y:20)
+            }
             
             VStack{
                 Text("Recent Activities")
                     .font(.title)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .center)
-                    .padding(.vertical,20)
                 
                 VStack(alignment:.center, spacing: 15) {
                     ForEach( ExtendedActivity.allActivities(), id: \.self) { activity in

@@ -21,9 +21,6 @@ struct SettingsView: View {
     @State private var isLandscape: Bool = false
     @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
     @State var width = UIScreen.main.bounds.width
-    @State var height = UIScreen.main.bounds.height
-    
-    
     
     var body: some View {
         NavigationStack{
@@ -142,12 +139,10 @@ struct SettingsView: View {
         .onAppear(){
             isLandscape = orientationInfo.orientation == .landscape
             width = UIScreen.main.bounds.width
-            height = UIScreen.main.bounds.height
         }
         .onChange(of: orientationInfo.orientation) { orientation in
             isLandscape = orientation == .landscape
             width = UIScreen.main.bounds.width
-            height = UIScreen.main.bounds.height
         }
     }
 }

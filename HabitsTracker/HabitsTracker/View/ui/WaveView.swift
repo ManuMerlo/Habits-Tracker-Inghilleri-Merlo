@@ -24,12 +24,12 @@ struct WaveView: View {
                             getUpsideDownWavePath(interval: geometry.size.width * 1.8, amplitude: amplitude ?? 130, base: base)
                                 .foregroundColor(Color("oxfordBlue"))
                                 .shadow(color: .black, radius: 10, x: 0.0, y: 0.0)
-                                .offset(x: isAnimated ? -1 * geometry.size.width * 1.5 : 0)
+                                .offset(x: isAnimated ? -1 * geometry.size.width * 1.8 : 0)
                         } else {
                             getWavePath(interval: geometry.size.width * 1.8, amplitude: 130, base: base)
                                 .foregroundColor(Color("oxfordBlue"))
                                 .shadow(color: .black, radius: 4, x: 0.0, y: -3)
-                                .offset(x: isAnimated ? -1 * geometry.size.width * 1.5 : 0)
+                                .offset(x: isAnimated ? -1 * geometry.size.width * 1.8 : 0)
                         }
                     }
                     .onAppear() {
@@ -39,7 +39,7 @@ struct WaveView: View {
                             }
                         }
                     }
-        }.frame(height: 150)
+        }.frame(height: 100)
             
     }
 

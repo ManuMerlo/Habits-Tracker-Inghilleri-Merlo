@@ -148,9 +148,7 @@ struct Header: View{
     var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     var body: some View{
-        
         VStack{
-            
             VStack(alignment: .leading){
                 Spacer()
                 HStack {
@@ -284,11 +282,12 @@ struct ButtonRequest: View {
 @ViewBuilder
 func VerticalText(upperText: String, lowerText:String) -> some View {
     VStack(alignment: .center){
-        
-        Text(upperText).foregroundColor(.white)
+        Text(upperText)
+            .foregroundColor(.white)
             .font(.custom("Open Sans", size: 22))
             .padding(.bottom,1)
-        Text(lowerText).foregroundColor(.white)
+        Text(lowerText)
+            .foregroundColor(.white)
             .font(.custom("Open Sans", size: 15))
     }
 }

@@ -17,8 +17,6 @@ struct ProvidersDetailView: View {
     @State var textFieldEmail: String = ""
     @State var textFieldPassword: String = ""
     
-    
-    
     var body: some View {
         VStack{
             List{
