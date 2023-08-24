@@ -17,12 +17,12 @@ final class AuthenticationRepository {
         return try await authenticationFirebaseDataSource.login(email: email, password: password)
     }
     
-    func loginFacebook(completionBlock: @escaping (Result<User, Error>) -> Void) {
-        authenticationFirebaseDataSource.loginFacebook(completionBlock: completionBlock)
+    func loginFacebook() async throws -> User {
+        return try await authenticationFirebaseDataSource.loginFacebook()
     }
     
-    func loginGoogle(completionBlock: @escaping (Result<User, Error>) -> Void) {
-        authenticationFirebaseDataSource.loginGoogle(completionBlock: completionBlock)
+    func loginGoogle() async throws -> User {
+        return try await authenticationFirebaseDataSource.loginGoogle()
     }
     
     func logout() throws {
@@ -33,12 +33,12 @@ final class AuthenticationRepository {
         authenticationFirebaseDataSource.getCurrentProvider()
     }
     
-    func linkFacebook(completionBlock: @escaping (Bool) -> Void) {
-        authenticationFirebaseDataSource.linkFacebook(completionBlock: completionBlock)
+    func linkFacebook() async throws {
+        try await authenticationFirebaseDataSource.linkFacebook()
     }
     
-    func linkGoogle(completionBlock: @escaping (Bool) -> Void) {
-        authenticationFirebaseDataSource.linkGoogle(completionBlock: completionBlock)
+    func linkGoogle() async throws {
+        try await authenticationFirebaseDataSource.linkGoogle()
     }
     
     func linkEmailAndPassword(email:String ,password:String,completionBlock: @escaping (Bool) -> Void){

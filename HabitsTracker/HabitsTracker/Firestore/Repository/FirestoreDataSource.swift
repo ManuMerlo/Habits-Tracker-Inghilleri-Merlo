@@ -175,21 +175,16 @@ final class FirestoreDataSource {
         try await batch.commit()
     }
     
-    // FIXME: The do-catch is needed? TODO: testing 
     // Function to update/set an array in a user's document
     func updateDailyScores(uid: String, newScore: Int) async throws {
         let userRef = db.collection("users").document(uid)
-        do {
-            let userSnapshot = try await userRef.getDocument(as: User.self)
-            var scoresArray: [Int] = userSnapshot.dailyScores
-            let today = (Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
-            scoresArray[today] = newScore
-            let scoresInRange = scoresArray[0...today]
-            scoresArray[7] = scoresInRange.reduce(0, +)
-            try await userRef.updateData(["dailyScores": scoresArray])
-        } catch {
-            throw error
-        }
+        let userSnapshot = try await userRef.getDocument(as: User.self)
+        var scoresArray: [Int] = userSnapshot.dailyScores
+        let today = (Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
+        scoresArray[today] = newScore
+        let scoresInRange = scoresArray[0...today]
+        scoresArray[7] = scoresInRange.reduce(0, +)
+        try await userRef.updateData(["dailyScores": scoresArray])
     }
     
     // Helper function to handle the result of the update operation

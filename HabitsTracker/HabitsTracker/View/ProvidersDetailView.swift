@@ -64,7 +64,7 @@ struct ProvidersDetailView: View {
                     .listRowBackground(Color("oxfordBlue"))
                     .listRowSeparatorTint(.white.opacity(0.7))
                 
-            }.task {
+            }.onAppear {
                 authenticationViewModel.getCurrentProvider()
             }
             .alert(authenticationViewModel.isAccountLinked ? "Link successful" : "Error", isPresented: $authenticationViewModel.showAlert) {

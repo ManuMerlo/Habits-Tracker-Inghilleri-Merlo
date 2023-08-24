@@ -5,7 +5,7 @@ final class AuthenticationViewModel: ObservableObject {
     private var tasks: [Task<Void, Never>] = []
     
     @Published var user: User?
-    @Published var messageError: String?
+    @Published var messageError: String? // FIXME: async await
     @Published var isAccountLinked: Bool = false
     
     @Published var textFieldEmailSignin: String = ""
@@ -78,30 +78,16 @@ final class AuthenticationViewModel: ObservableObject {
         print("Success, user created with emal and password")
     }
     
-    func loginFacebook(completionBlock: @escaping (Result<User, Error>) -> Void) {
-        authenticationRepository.loginFacebook() { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
-            switch result {
-            case .success(let user):
-                //self?.user = user
-                completionBlock(.success(user))
-            case .failure(let error):
-                self?.messageError = error.localizedDescription
-                completionBlock(.failure(error))
-            }
-        }
+    func loginFacebook() async throws -> User {
+        let user = try await authenticationRepository.loginFacebook()
+        self.user = user
+        return user
     }
     
-    func loginGoogle(completionBlock:@escaping (Result<User, Error>) -> Void) {
-        authenticationRepository.loginGoogle() { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
-            switch result {
-            case .success(let user):
-                self?.user = user
-                completionBlock(.success(user))
-            case .failure(let error):
-                self?.messageError = error.localizedDescription
-                completionBlock(.failure(error))
-            }
-        }
+    func loginGoogle() async throws -> User {
+        let user = try await authenticationRepository.loginGoogle()
+        self.user = user
+        return user
     }
     
     func logout() {
@@ -119,6 +105,7 @@ final class AuthenticationViewModel: ObservableObject {
         tasks.append(task)
     }
     
+    //FIXME: it can be
     func getCurrentProvider() {
         linkedAccounts = authenticationRepository.getCurrentProvider()
         print("User Provider \(linkedAccounts)")
@@ -137,22 +124,43 @@ final class AuthenticationViewModel: ObservableObject {
     }
     
     func linkFacebook() {
-        authenticationRepository.linkFacebook { [weak self] isSuccess in
-            print("Linked Facebook \(isSuccess.description)")
-            self?.isAccountLinked = isSuccess
-            self?.showAlert.toggle()
-            self?.getCurrentProvider()
+        let task = Task {
+            do {
+                try await authenticationRepository.linkFacebook()
+                self.isAccountLinked = true
+            } catch {
+                self.isAccountLinked = false
+                print("Account not linked")
+            }
+            self.showAlert.toggle()
+            self.getCurrentProvider()
         }
+        tasks.append(task)
     }
     
     func linkGoogle() {
+        let task = Task {
+            do {
+                try await authenticationRepository.linkGoogle()
+                self.isAccountLinked = true
+            } catch {
+                self.isAccountLinked = false
+                print("Account not linked")
+            }
+            self.showAlert.toggle()
+            self.getCurrentProvider()
+        }
+        tasks.append(task)
+    }
+    
+    /*func linkGoogle() {
         authenticationRepository.linkGoogle { [weak self] isSuccess in
             print("Linked Google \(isSuccess.description)")
             self?.isAccountLinked = isSuccess
             self?.showAlert.toggle()
             self?.getCurrentProvider()
         }
-    }
+    }*/
     
     func linkEmailAndPassword(email:String, password:String) {
         authenticationRepository.linkEmailAndPassword(email: email,

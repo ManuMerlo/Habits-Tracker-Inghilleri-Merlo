@@ -78,7 +78,18 @@ struct SigninView: View {
                         }
                         
                         Button {
-                            authenticationViewModel.loginGoogle() { result in
+                            Task {
+                                do {
+                                    let userGoogle = try await authenticationViewModel.loginGoogle()
+                                    let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id)
+                                    if (!isPresent) {
+                                        firestoreViewModel.addNewUser(user: userGoogle)
+                                    }
+                                } catch {
+                                    print(error.localizedDescription)
+                                }
+                            }
+                            /*authenticationViewModel.loginGoogle() { result in
                                 switch result {
                                 case .success(let userGoogle):
                                     Task {
@@ -96,7 +107,7 @@ struct SigninView: View {
                                     print("Error logging the user: \(error)")
                                     return
                                 }
-                            }
+                            }*/
                         } label: {
                             HStack {
                                 Image("googlelogo")
@@ -113,35 +124,15 @@ struct SigninView: View {
                         }
                         
                         Button {
-                            authenticationViewModel.loginFacebook() { result in
-                                switch result {
-                                case .success(let userFacebook):
-                                    Task {
-                                        do {
-                                            let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id)
-                                            if (!isPresent) {
-                                                firestoreViewModel.addNewUser(user: userFacebook)
-                                            }
-                                            authenticationViewModel.user = userFacebook
-                                        } catch {
-                                            print(error.localizedDescription)
-                                        }
+                            Task {
+                                do {
+                                    let userFacebook = try await authenticationViewModel.loginFacebook()
+                                    let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id)
+                                    if (!isPresent) {
+                                        firestoreViewModel.addNewUser(user: userFacebook)
                                     }
-                                    
-                                    /*firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id) { result in
-                                        switch result {
-                                        case .success(let isPresent):
-                                            if !isPresent  {
-                                                firestoreViewModel.addNewUser(user: userFacebook)
-                                            }
-                                        case .failure(let error):
-                                            print("Error finding document user: \(error)")
-                                            return
-                                        }
-                                    }*/
-                                case .failure(let error):
-                                    print("Error logging the user: \(error)")
-                                    return
+                                } catch {
+                                    print(error.localizedDescription)
                                 }
                             }
                         } label: {
