@@ -37,15 +37,25 @@ struct ModifyProfileView: View {
             ScrollView{
                 VStack(alignment: .center, spacing: 15){
                     ZStack(alignment: .top){
-                        WaveView(upsideDown: true,repeatAnimation: false, base: 230, amplitude: 70)
+                        
+                        WaveView(upsideDown: true,repeatAnimation: false, base: 250, amplitude: 70)
                         
                         VStack{
                             
-                            ProfileImageView(
-                                path: firestoreViewModel.firestoreUser?.image,
-                                systemName: "person.circle.fill",
-                                size: 90,
-                                color: .gray)
+                            Button{
+                                showSheet.toggle()
+                            } label: {
+                                VStack(spacing: 10){
+                                    ProfileImageView(
+                                        path: firestoreViewModel.firestoreUser?.image,
+                                        systemName: "person.circle.fill",
+                                        size: 90,
+                                        color: .gray)
+                                    Text("Change photo")
+                                        .foregroundColor(.blue)
+                                }
+                            }.padding(.bottom,1)
+                            
                             
                             Text("\( firestoreViewModel.firestoreUser?.username ?? "User")")
                                 .font(.largeTitle)

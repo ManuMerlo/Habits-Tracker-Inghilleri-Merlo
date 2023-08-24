@@ -186,9 +186,8 @@ struct Header: View{
                     
                     Spacer()
                     
-                    ProfileImageView(
-                        size: 70 ,
-                        color: .white)
+                    ProfileImageView(path:user.image, size: 70, color: .white)
+                    
                 }
                 
             }
