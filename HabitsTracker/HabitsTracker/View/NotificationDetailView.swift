@@ -2,7 +2,7 @@ import SwiftUI
 
 struct NotificationDetailView: View {
     
-    @ObservedObject var settingViewModel : SettingsViewModel
+    @ObservedObject var settingsViewModel : SettingsViewModel
     
     //Responsiveness
     @EnvironmentObject var orientationInfo: OrientationInfo
@@ -14,16 +14,16 @@ struct NotificationDetailView: View {
             Form {
                 Section {
                     
-                    Toggle(isOn: $settingViewModel.agreedToTerms, label: {
+                    Toggle(isOn: $settingsViewModel.agreedToTerms, label: {
                         Text("Allow Notification")
                     })
-                    .onChange(of: settingViewModel.agreedToTerms, perform: { newValue in
+                    .onChange(of: settingsViewModel.agreedToTerms, perform: { newValue in
                         if !newValue {
-                            if settingViewModel.dailyNotification {
-                                settingViewModel.dailyNotification.toggle()
+                            if settingsViewModel.dailyNotification {
+                                settingsViewModel.dailyNotification.toggle()
                             }
-                            if settingViewModel.weeklyNotification {
-                                settingViewModel.weeklyNotification.toggle()
+                            if settingsViewModel.weeklyNotification {
+                                settingsViewModel.weeklyNotification.toggle()
                             }
                         }else{
                             UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.badge,.sound]){ success, error in
@@ -44,31 +44,31 @@ struct NotificationDetailView: View {
                 
                 Section {
                     
-                    Toggle(isOn: $settingViewModel.dailyNotification, label: {
+                    Toggle(isOn: $settingsViewModel.dailyNotification, label: {
                         Text("Daily Notification")
                     })
-                    .onChange(of: settingViewModel.dailyNotification, perform: { newValue in
+                    .onChange(of: settingsViewModel.dailyNotification, perform: { newValue in
                         print("success daily")
                         if(newValue){
-                            settingViewModel.dailyNotificationIdentifier = settingViewModel.scheduleNotifications(title: "Daily Notification", subtitle: "you are doing great", timeInterval: 86400, repeats: true)
+                            settingsViewModel.dailyNotificationIdentifier = settingsViewModel.scheduleNotifications(title: "Daily Notification", subtitle: "you are doing great", timeInterval: 86400, repeats: true)
                         }else{
                             print("Stop Notification")
-                            settingViewModel.dailyNotificationIdentifier = settingViewModel.stopNotifications(identifier: settingViewModel.dailyNotificationIdentifier)
+                            settingsViewModel.dailyNotificationIdentifier = settingsViewModel.stopNotifications(identifier: settingsViewModel.dailyNotificationIdentifier)
                         }
-                    }) .disabled(!settingViewModel.agreedToTerms)
+                    }) .disabled(!settingsViewModel.agreedToTerms)
                     
-                    Toggle(isOn:  $settingViewModel.weeklyNotification, label: {
+                    Toggle(isOn:  $settingsViewModel.weeklyNotification, label: {
                         Text("Weakly Notifications")
                     })
-                    .onChange(of: settingViewModel.weeklyNotification, perform: { newValue in
+                    .onChange(of: settingsViewModel.weeklyNotification, perform: { newValue in
                         if(newValue){
-                            settingViewModel.weeklyNotificationIdentifier = settingViewModel.scheduleNotifications(title: "Daily Notification", subtitle: "you are doing great", timeInterval: 86400*7, repeats: true)
+                            settingsViewModel.weeklyNotificationIdentifier = settingsViewModel.scheduleNotifications(title: "Daily Notification", subtitle: "you are doing great", timeInterval: 86400*7, repeats: true)
                         }
                         else{
-                            settingViewModel.weeklyNotificationIdentifier = settingViewModel.stopNotifications(identifier: settingViewModel.weeklyNotificationIdentifier)
+                            settingsViewModel.weeklyNotificationIdentifier = settingsViewModel.stopNotifications(identifier: settingsViewModel.weeklyNotificationIdentifier)
                         }
                     })
-                    .disabled(!settingViewModel.agreedToTerms)
+                    .disabled(!settingsViewModel.agreedToTerms)
                     
                 }
                 .foregroundColor(.white.opacity(0.7))
@@ -94,6 +94,6 @@ struct NotificationDetailView: View {
 
 struct NotificationDetailView_Previews: PreviewProvider {
     static var previews: some View {
-        NotificationDetailView(settingViewModel:SettingsViewModel()) .environmentObject(OrientationInfo())
+        NotificationDetailView(settingsViewModel:SettingsViewModel()) .environmentObject(OrientationInfo())
     }
 }

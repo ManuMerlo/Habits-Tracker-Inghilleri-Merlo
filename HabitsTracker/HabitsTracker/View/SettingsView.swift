@@ -96,9 +96,9 @@ struct SettingsView: View {
                                                 do {
                                                     try await firestoreViewModel.deleteUserData(uid: uid)
                                                     firestoreViewModel.firestoreUser = nil
+                                                    authenticationViewModel.user = nil
                                                     try await authenticationViewModel.deleteUser()
                                                     // FIXME: can it be avoided?
-                                                    authenticationViewModel.user = nil
                                                     authenticationViewModel.clearSignUpParameter()
                                                     authenticationViewModel.clearSignInParameter()
                                                 } catch {

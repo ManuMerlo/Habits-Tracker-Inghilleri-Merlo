@@ -10,14 +10,7 @@ final class FirestoreDataSource {
     private var currentUserListener: ListenerRegistration? = nil
     private var friendsSubcollectionListener: ListenerRegistration? = nil
     
-    /*func getCurrentUser() async throws -> User {
-        guard let userAuth = Auth.auth().currentUser else {
-            throw URLError(.badServerResponse)
-        }
-        return try await db.collection("users").document(userAuth.uid).getDocument(as: User.self)
-    }*/
-    
-    func getCurrentUser(completionBlock: @escaping (Result<User,Error>) -> Void) {
+    func addListenerForCurrentUser(completionBlock: @escaping (Result<User,Error>) -> Void) {
         if let userAuth = Auth.auth().currentUser {
             let docRef = db.collection("users").document(userAuth.uid)
             docRef.addSnapshotListener { documentSnapshot, error in
@@ -74,8 +67,7 @@ final class FirestoreDataSource {
     }*/
     
     // Function that returns all the docouments in the current user's subcollection "friends"
-    // TODO: rename the func in addListenerForFriendsSubcollection
-    func getFriendsSubcollection(completionBlock: @escaping([Friend]) -> Void) {
+    func addListenerForFriendsSubcollection(completionBlock: @escaping([Friend]) -> Void) {
         if let userAuth = Auth.auth().currentUser {
             let friendsRef = self.db.collection("users").document(userAuth.uid).collection("friends")
             self.friendsSubcollectionListener = friendsRef.addSnapshotListener{ querySnapshot, error in

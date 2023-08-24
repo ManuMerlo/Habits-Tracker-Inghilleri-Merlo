@@ -17,14 +17,13 @@ final class HealthViewModel: ObservableObject {
         BaseActivity(id:"distanceCycling", quantity: 0),
         
     ]
-    
-    
     @Published var dailyScore: Int = 0
     @Published var singleScore: [String: Int] = [:]
     
-    func computeSingleScore(){
+    func computeSingleScore() {
         for activity in allMyTypes {
             if let quantity = activity.quantity {
+                //FIXME: better algorithm
                 singleScore[activity.id] = quantity / 100
             } else {
                 singleScore[activity.id] = 0

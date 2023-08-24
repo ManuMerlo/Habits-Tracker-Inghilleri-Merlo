@@ -185,7 +185,7 @@ struct Header: View {
                 
             }
             
-            if let firestoreUser = firestoreViewModel.firestoreUser, firestoreUser.id! != user.id{
+            if let firestoreUser = firestoreViewModel.firestoreUser, firestoreUser.id != user.id{
                 ButtonRequest(firestoreViewModel: firestoreViewModel, user: user)
             }
             

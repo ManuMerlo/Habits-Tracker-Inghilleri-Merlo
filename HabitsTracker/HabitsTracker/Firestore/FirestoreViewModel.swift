@@ -20,26 +20,14 @@ final class FirestoreViewModel: ObservableObject {
         tasks = []
     }
     
-    @Published private(set) var friendsSubcollection: [Friend] = [] /* TODO: {
-        didSet {
-            fetchRequestsThenFriendsThenWaitingList()
-        }
-    }*/
+    @Published private(set) var friendsSubcollection: [Friend] = []
     
     init(firestoreRepository: FirestoreRepository = FirestoreRepository()) {
         self.firestoreRepository = firestoreRepository
     }
-    
-    /*func getCurrentUser() async throws {
-        self.firestoreUser = try await firestoreRepository.getCurrentUser()
-        if let user = self.firestoreUser, user.username == nil {
-            self.needUsername = true
-        }
-    }*/
-    
-    // Listener
-    func getCurrentUser() {
-        firestoreRepository.getCurrentUser { [weak self] result in
+
+    func addListenerForCurrentUser() {
+        firestoreRepository.addListenerForCurrentUser { [weak self] result in
             switch result {
             case .success(let user):
                 self?.firestoreUser = user
@@ -62,8 +50,8 @@ final class FirestoreViewModel: ObservableObject {
         return try await firestoreRepository.fieldIsPresent(field: field, value: value)
     }
     
-    func getFriendsSubcollection() {
-        firestoreRepository.getFriendsSubcollection { [weak self] friends in
+    func addListenerForFriendsSubcollection() {
+        firestoreRepository.addListenerForFriendsSubcollection { [weak self] friends in
             self?.friendsSubcollection = friends
         }
     }

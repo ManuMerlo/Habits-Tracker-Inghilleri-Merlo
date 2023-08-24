@@ -8,8 +8,8 @@ final class FirestoreRepository {
         self.firestoreDataSource = firestoreDataSource
     }
     
-    func getCurrentUser(completionBlock: @escaping (Result<User, Error>) -> Void) {
-        firestoreDataSource.getCurrentUser(completionBlock: completionBlock)
+    func addListenerForCurrentUser(completionBlock: @escaping (Result<User, Error>) -> Void) {
+        firestoreDataSource.addListenerForCurrentUser(completionBlock: completionBlock)
     }
     
     func removeListenerForCurrentUser() {
@@ -28,8 +28,8 @@ final class FirestoreRepository {
         firestoreDataSource.addNewUser(user: user)
     }
         
-    func getFriendsSubcollection(completionBlock: @escaping([Friend]) -> Void) {
-        firestoreDataSource.getFriendsSubcollection(completionBlock: completionBlock)
+    func addListenerForFriendsSubcollection(completionBlock: @escaping([Friend]) -> Void) {
+        firestoreDataSource.addListenerForFriendsSubcollection(completionBlock: completionBlock)
     }
     
     func removeListenerForFriendsSubcollection() {

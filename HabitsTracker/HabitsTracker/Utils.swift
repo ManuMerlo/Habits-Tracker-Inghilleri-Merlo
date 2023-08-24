@@ -22,7 +22,7 @@ extension Array where Element == BaseActivity {
     }
 }
 
-final class Utilities {
+/*final class Utilities {
     
     static let shared = Utilities()
     private init() {}
@@ -44,6 +44,6 @@ final class Utilities {
         }
         return controller
     }
-}
+}*/
 
 

@@ -65,9 +65,9 @@ struct ModifyProfileView: View {
                     List {
                         UserDetailRow(title: "Username", value: firestoreViewModel.firestoreUser?.username ?? "User")
                         UserDetailRow(title: "Birthdate", value: settingsViewModel.dateToString(selectedDate), isEnabled: modify, action: toggleDatePicker)
-                        UserDetailRow(title: "Sex", value: selectedSex.rawValue ?? "Unspecified", isEnabled: modify, action: toggleSexPicker)
-                        UserDetailRow(title: "Height", value: "\(selectedHeight ?? 0) cm", isEnabled: modify, action: toggleHeightPicker)
-                        UserDetailRow(title: "Weight", value: "\(selectedWeight ?? 0) kg", isEnabled: modify, action: toggleWeightPicker)
+                        UserDetailRow(title: "Sex", value: selectedSex.rawValue, isEnabled: modify, action: toggleSexPicker)
+                        UserDetailRow(title: "Height", value: "\(selectedHeight) cm", isEnabled: modify, action: toggleHeightPicker)
+                        UserDetailRow(title: "Weight", value: "\(selectedWeight) kg", isEnabled: modify, action: toggleWeightPicker)
                         
                     }
                     .frame(width: isLandscape ? width/1.5 : width/1.1, height: 300)
@@ -147,7 +147,7 @@ struct ModifyProfileView: View {
             if (showHeightPicker) {
                 PickerView(
                     firestoreViewModel:firestoreViewModel,
-                    userId: firestoreViewModel.firestoreUser.id,
+                    userId: firestoreViewModel.firestoreUser!.id,
                     property: "height",
                     selectedItem: $selectedHeight,
                     booleanValuePicker: $showHeightPicker,
@@ -217,7 +217,7 @@ struct ModifyProfileView: View {
                 }
             }
         }) {
-            SettingsViewModel.ImagePicker(selectedImage: $settingViewModel.image)
+            SettingsViewModel.ImagePicker(selectedImage: $settingsViewModel.image)
         }
     }
     
@@ -310,7 +310,7 @@ struct PickerView: View {
 
 struct ModifyProfileView_Previews: PreviewProvider {
     static var previews: some View {
-        ModifyProfileView(firestoreViewModel: FirestoreViewModel(), settingViewModel: SettingsViewModel())
+        ModifyProfileView(firestoreViewModel: FirestoreViewModel(), settingsViewModel: SettingsViewModel())
             .environmentObject(OrientationInfo())
     }
 }

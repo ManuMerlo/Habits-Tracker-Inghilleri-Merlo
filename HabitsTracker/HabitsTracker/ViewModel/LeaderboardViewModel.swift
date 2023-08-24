@@ -1,19 +1,3 @@
-//
-//  LeaderboardViewModel.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 16/08/23.
-//
-
-import Foundation
-
-//
-//  SettingsViewModel.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 02/08/23.
-//
-
 import Foundation
 import UserNotifications
 import SwiftUI
@@ -28,7 +12,6 @@ final class LeaderBoardViewModel: ObservableObject {
         content.title = "Ranking Position Change"
         content.subtitle = "You are losing positions in the rankings! Hurry up!!"
         content.sound = .default
-        
 
         let trigger = UNTimeIntervalNotificationTrigger (timeInterval: 20, repeats: false)
 

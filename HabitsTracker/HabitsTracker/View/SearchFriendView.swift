@@ -53,12 +53,11 @@ struct SearchFriendView: View {
                 width = UIScreen.main.bounds.width
             }
         }
-        
     }
 }
 
 struct ListItemView: View {
-    var user : User
+    var user: User
     
     var body: some View {
         HStack{

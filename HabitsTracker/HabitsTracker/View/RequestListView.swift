@@ -157,7 +157,7 @@ struct RequestItemView_Previews: PreviewProvider {
             sex: Sex.Female,
             height: 150,
             weight: 60,
-            dailyScores: [20,50,40,60,60,90,70,200,40]))*/
+            dailyScores: [20,50,40,60,60,90,70,200,40]))
     }
 }
 
