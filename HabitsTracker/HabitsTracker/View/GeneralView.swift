@@ -1,21 +1,14 @@
-//
-//  Home.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 19/11/22.
-//
-
 import SwiftUI
 import Firebase
-//import GoogleSignIn
 
 
 struct GeneralView: View {
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    @ObservedObject var firestoreViewModel : FirestoreViewModel
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
     
     @State var textFieldValue: String = ""
+    @State private var didAppear: Bool = false
     
     var body: some View {
         TabView {
@@ -57,7 +50,7 @@ struct GeneralView: View {
         .accentColor(.white)
         .task {
             healthViewModel.requestAccessToHealthData()
-            firestoreViewModel.getAllUsers()
+            //firestoreViewModel.getAllUsers()
         }.alert("Enter your name", isPresented: $firestoreViewModel.needUsername ) {
             
             Text("\(firestoreViewModel.firestoreUser?.email ?? "ciao")")
@@ -68,11 +61,10 @@ struct GeneralView: View {
             
             Button("Save", action: {
                 firestoreViewModel.modifyUser(
-                    uid:  firestoreViewModel.firestoreUser!.id!,
+                    uid:  firestoreViewModel.firestoreUser!.id,
                     field: "username",
                     value: textFieldValue)
                 firestoreViewModel.needUsername = false
-                
             }
             )
         } message: {
@@ -85,7 +77,7 @@ struct GeneralView: View {
                 print("updating records")
                 if healthViewModel.updateRecords(records: &records) {
                     firestoreViewModel.modifyUser(
-                        uid: firestoreViewModel.firestoreUser!.id!,
+                        uid: firestoreViewModel.firestoreUser!.id,
                         field: "records",
                         records: records
                     )
@@ -93,12 +85,22 @@ struct GeneralView: View {
             }
         })
         .onChange(of: healthViewModel.dailyScore, perform: { newValue in
-            firestoreViewModel.updateDailyScores(uid: firestoreViewModel.firestoreUser!.id!, newScore: newValue)
+            // FIXME: FirestoreUser non dovrebbe essere = nil
+            if let user = firestoreViewModel.firestoreUser {
+                firestoreViewModel.updateDailyScores(uid: user.id, newScore: newValue)
+
+            }
         })
-        .onAppear{
+        .onAppear() {
             firestoreViewModel.getCurrentUser()
             firestoreViewModel.getFriendsSubcollection()
             UITabBar.appearance().barTintColor = UIColor(red: 0.1, green: 0.15, blue: 0.23, alpha: 0.9)
+        }
+        .onDisappear() {
+            firestoreViewModel.removeListenerForFriendsSubcollection()
+            firestoreViewModel.removeListenerForCurrentUser()
+            firestoreViewModel.cancelTasks()
+            authenticationViewModel.cancelTasks()
         }
     }
 }

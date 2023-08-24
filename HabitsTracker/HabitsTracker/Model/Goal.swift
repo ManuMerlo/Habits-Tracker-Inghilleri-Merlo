@@ -1,10 +1,3 @@
-//
-//  Goal.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 25/11/22.
-//
-
 import Foundation
 
 struct Goal: Identifiable, Codable {

@@ -1,10 +1,10 @@
-import FirebaseFirestore
+import FirebaseAuth // FIXME: needed?
 
-struct User: Identifiable, Codable, Hashable {
+struct User: Codable, Hashable {
 
-    var id: String?
-    var username: String?
+    let id: String
     let email: String
+    var username: String?
     var birthDate: String?
     var sex: Sex?
     var height: Int?
@@ -28,7 +28,7 @@ struct User: Identifiable, Codable, Hashable {
         BaseActivity(id:"stepCount", quantity: 0),
         BaseActivity(id:"distanceCycling", quantity: 0)
     ]
-        
+    
     mutating func setUsername(name: String) {
         self.username = name
     }

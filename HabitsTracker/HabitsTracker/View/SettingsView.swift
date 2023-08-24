@@ -1,18 +1,11 @@
-//
-//  SettingsView.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 20/11/22.
-//
-
 import SwiftUI
 import Firebase
 import UserNotifications
 
 struct SettingsView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    @ObservedObject var firestoreViewModel : FirestoreViewModel
-    @StateObject var settingViewModel = SettingsViewModel()
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
+    @StateObject var settingsViewModel = SettingsViewModel()
     
     @State var showAlert: Bool = false
     
@@ -52,7 +45,7 @@ struct SettingsView: View {
                     List {
                         Section() {
                             NavigationLink {
-                                ModifyProfileView(firestoreViewModel: firestoreViewModel, settingViewModel: settingViewModel)
+                                ModifyProfileView(firestoreViewModel: firestoreViewModel, settingsViewModel: settingsViewModel)
                             } label: {
                                 Label("Modify profile", systemImage: "person")
                                 
@@ -60,13 +53,12 @@ struct SettingsView: View {
                             
                             NavigationLink {
                                 ProvidersDetailView(authenticationViewModel: authenticationViewModel)
-                                    
                             } label: {
                                 Label("Providers", systemImage: "person.crop.circle.badge.plus")
                             }
                             
                             NavigationLink {
-                                NotificationDetailView(settingViewModel: settingViewModel)
+                                NotificationDetailView(settingsViewModel: settingsViewModel)
                             } label: {
                                 Label("Notifications", systemImage: "bell")
                             }
@@ -100,14 +92,18 @@ struct SettingsView: View {
                                                 return
                                             }
                                             
-                                            firestoreViewModel.deleteUserData(uid: uid){result in
-                                                switch result {
-                                                case .success:
-                                                    authenticationViewModel.deleteUser()
-                                                case .failure:
-                                                    print("error deleting user")
+                                            Task {
+                                                do {
+                                                    try await firestoreViewModel.deleteUserData(uid: uid)
+                                                    firestoreViewModel.firestoreUser = nil
+                                                    try await authenticationViewModel.deleteUser()
+                                                    // FIXME: can it be avoided?
+                                                    authenticationViewModel.user = nil
+                                                    authenticationViewModel.clearSignUpParameter()
+                                                    authenticationViewModel.clearSignInParameter()
+                                                } catch {
+                                                    print(error.localizedDescription)
                                                 }
-                                                
                                             }
                                             
                                         }

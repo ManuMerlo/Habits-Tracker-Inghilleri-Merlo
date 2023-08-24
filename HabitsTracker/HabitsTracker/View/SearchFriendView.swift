@@ -1,10 +1,3 @@
-//
-//  SearchFriendView.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 01/08/23.
-//
-
 import SwiftUI
 import FirebaseFirestoreSwift
 
@@ -22,7 +15,7 @@ struct SearchFriendView: View {
     ) var friends: [User]
     
     var filteredFrieds : [User] {
-        guard !searchTerm.isEmpty else {return friends}
+        guard !searchTerm.isEmpty else { return friends }
         return friends.filter { $0.email.localizedCaseInsensitiveContains(searchTerm)}
     }
     

@@ -1,15 +1,9 @@
-//
-//  HomeView.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 20/11/22.
-//
-
 import SwiftUI
 
 struct HomeView: View {
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var firestoreViewModel: FirestoreViewModel
+    @State private var numberOfRequests: Int = 0
     
     //Responsiveness
     @EnvironmentObject var orientationInfo: OrientationInfo
@@ -31,19 +25,24 @@ struct HomeView: View {
                 .edgesIgnoringSafeArea(.horizontal)
             }
         }
+        .refreshable {
+            self.numberOfRequests = firestoreViewModel.getFriendsIdsWithStatus(status: FriendStatus.Request).count
+        }
         .onAppear(){
+            self.numberOfRequests = firestoreViewModel.getFriendsIdsWithStatus(status: FriendStatus.Request).count
             isLandscape = orientationInfo.orientation == .landscape
             width = UIScreen.main.bounds.width
         }
         .onChange(of: orientationInfo.orientation) { orientation in
             isLandscape = orientation == .landscape
             width = UIScreen.main.bounds.width
+        }.onChange(of: firestoreViewModel.friendsSubcollection) { newValue in
+            self.numberOfRequests = firestoreViewModel.getFriendsIdsWithStatus(status: FriendStatus.Request).count
         }
         
     }
     
     @ViewBuilder
-    
     func content() -> some View {
         VStack(spacing: 15) {
             HStack{
@@ -56,10 +55,9 @@ struct HomeView: View {
                 Spacer()
                 
                 NavigationLink {
-                    RequestListView( firestoreViewModel:firestoreViewModel)
+                    RequestListView(firestoreViewModel:firestoreViewModel)
                 } label: {
-                    let numberOfRequests = firestoreViewModel.requests.count
-                    if numberOfRequests != 0 {
+                    if numberOfRequests > 0 {
                         ZStack{
                             Image(systemName: "heart")
                                 .foregroundColor(.white)
@@ -88,7 +86,7 @@ struct HomeView: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .center)
             
-            if let user = firestoreViewModel.firestoreUser{
+            if let user = firestoreViewModel.firestoreUser {
                 if isLandscape{
                     ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7],ringSize: width/2.3)
                         .padding(.top)

@@ -12,8 +12,9 @@ import FirebaseAuth
 import GoogleSignIn
 import GoogleSignInSwift
 
+
 final class GoogleAuthentication {
-    func loginGoogle(completionBlock: @escaping (Result<GIDGoogleUser?, Error>) -> Void) {
+    /*func loginGoogle(completionBlock: @escaping (Result<GIDGoogleUser?, Error>) -> Void) {
         guard let clientID = FirebaseApp.app()?.options.clientID else {
             fatalError("No clientID found in Firebase Configuration")
         }
@@ -25,6 +26,35 @@ final class GoogleAuthentication {
             }
             completionBlock(.success(user ?? nil))
         }
+    }*/
+    
+    func loginGoogle() async throws -> GIDGoogleUser {
+        guard let clientID = FirebaseApp.app()?.options.clientID else {
+            throw URLError(.badURL)
+        }
+        
+        let rootController = await getRootController()
+        
+        return try await withCheckedThrowingContinuation { continuation in
+            DispatchQueue.main.async {
+                GIDSignIn.sharedInstance.signIn(with: .init(clientID: clientID), presenting: rootController) { user, error in
+                    if let user = user {
+                        continuation.resume(returning: user)
+                    } else if let error = error {
+                        continuation.resume(throwing: error)
+                    } else {
+                        continuation.resume(throwing: URLError(.badURL))
+                    }
+                }
+            }
+            
+        }
+    }
+    
+    //FIXME: is a good way??
+    @MainActor
+    func getRootController() -> UIViewController {
+        return UIApplication.shared.rootController()
     }
 
     func getUser() -> GIDGoogleUser? {

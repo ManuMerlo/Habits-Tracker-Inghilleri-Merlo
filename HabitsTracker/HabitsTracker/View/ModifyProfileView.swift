@@ -1,29 +1,22 @@
-//
-//  ModifyProfileView.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 06/08/23.
-//
-
 import SwiftUI
 
 struct ModifyProfileView: View {
-    @ObservedObject var firestoreViewModel : FirestoreViewModel
-    @ObservedObject var settingViewModel : SettingsViewModel
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
+    @ObservedObject var settingsViewModel: SettingsViewModel
     
     @State var modify: Bool = false
     @State var isListEnabled: Bool = true
     
     @State var showSheet: Bool = false
-    @State var showDatePicker : Bool = false
-    @State var showHeightPicker : Bool = false
-    @State var showWeightPicker : Bool = false
-    @State var showSexPicker : Bool = false
+    @State var showDatePicker: Bool = false
+    @State var showHeightPicker: Bool = false
+    @State var showWeightPicker: Bool = false
+    @State var showSexPicker: Bool = false
     
     @State var selectedDate: Date = Date()
-    @State var selectedHeight : Int = 150
-    @State var selectedWeight : Int = 60
-    @State var selectedSex : Sex = Sex.Unspecified
+    @State var selectedHeight: Int = 150
+    @State var selectedWeight: Int = 60
+    @State var selectedSex: Sex = Sex.Unspecified
     
     //Responsiveness
     @EnvironmentObject var orientationInfo: OrientationInfo
@@ -71,10 +64,10 @@ struct ModifyProfileView: View {
                     
                     List {
                         UserDetailRow(title: "Username", value: firestoreViewModel.firestoreUser?.username ?? "User")
-                        UserDetailRow(title: "Birthdate", value: settingViewModel.dateToString(selectedDate), isEnabled: modify, action: toggleDatePicker)
-                        UserDetailRow(title: "Sex", value: firestoreViewModel.firestoreUser?.sex?.rawValue ?? "Unspecified", isEnabled: modify, action: toggleSexPicker)
-                        UserDetailRow(title: "Height", value: "\(firestoreViewModel.firestoreUser?.height ?? 0) cm", isEnabled: modify, action: toggleHeightPicker)
-                        UserDetailRow(title: "Weight", value: "\(firestoreViewModel.firestoreUser?.weight ?? 0) kg", isEnabled: modify, action: toggleWeightPicker)
+                        UserDetailRow(title: "Birthdate", value: settingsViewModel.dateToString(selectedDate), isEnabled: modify, action: toggleDatePicker)
+                        UserDetailRow(title: "Sex", value: selectedSex.rawValue ?? "Unspecified", isEnabled: modify, action: toggleSexPicker)
+                        UserDetailRow(title: "Height", value: "\(selectedHeight ?? 0) cm", isEnabled: modify, action: toggleHeightPicker)
+                        UserDetailRow(title: "Weight", value: "\(selectedWeight ?? 0) kg", isEnabled: modify, action: toggleWeightPicker)
                         
                     }
                     .frame(width: isLandscape ? width/1.5 : width/1.1, height: 300)
@@ -92,9 +85,9 @@ struct ModifyProfileView: View {
                 VStack(alignment:.center){
                     Button {
                         firestoreViewModel.modifyUser(
-                            uid: firestoreViewModel.firestoreUser!.id!,
-                            field: "birthdate",
-                            value: settingViewModel.dateToString(selectedDate)
+                            uid: firestoreViewModel.firestoreUser!.id,
+                            field: "birthDate",
+                            value: settingsViewModel.dateToString(selectedDate)
                         )
                         
                         showDatePicker.toggle()
@@ -125,7 +118,7 @@ struct ModifyProfileView: View {
                 VStack(alignment:.center){
                     Button {
                         firestoreViewModel.modifyUser(
-                            uid:  firestoreViewModel.firestoreUser!.id!,
+                            uid:  firestoreViewModel.firestoreUser!.id,
                             field: "sex",
                             value: selectedSex.rawValue)
                         
@@ -154,7 +147,7 @@ struct ModifyProfileView: View {
             if (showHeightPicker) {
                 PickerView(
                     firestoreViewModel:firestoreViewModel,
-                    user: $firestoreViewModel.firestoreUser,
+                    userId: firestoreViewModel.firestoreUser.id,
                     property: "height",
                     selectedItem: $selectedHeight,
                     booleanValuePicker: $showHeightPicker,
@@ -167,7 +160,7 @@ struct ModifyProfileView: View {
             if (showWeightPicker){
                 PickerView(
                     firestoreViewModel:firestoreViewModel,
-                    user: $firestoreViewModel.firestoreUser,
+                    userId: firestoreViewModel.firestoreUser!.id,
                     property: "weight",
                     selectedItem: $selectedWeight,
                     booleanValuePicker: $showWeightPicker,
@@ -195,6 +188,12 @@ struct ModifyProfileView: View {
             
         }
         .onAppear(){
+        // TODO: check if there is a better way for this and for the picker (inconsistencies)
+            selectedDate = settingsViewModel.stringToDate((firestoreViewModel.firestoreUser?.birthDate)) ?? Date()
+            selectedHeight = firestoreViewModel.firestoreUser?.height ?? 150
+            selectedWeight = firestoreViewModel.firestoreUser?.weight ?? 60
+            selectedSex = firestoreViewModel.firestoreUser?.sex ?? Sex.Unspecified
+            
             isLandscape = orientationInfo.orientation == .landscape
             width = UIScreen.main.bounds.width
         }
@@ -203,11 +202,11 @@ struct ModifyProfileView: View {
             width = UIScreen.main.bounds.width
         }
         .fullScreenCover(isPresented: $showSheet, onDismiss: {
-            settingViewModel.persistimageToStorage { result in
+            settingsViewModel.persistimageToStorage { result in
                 switch result {
                 case .success(let path):
                     firestoreViewModel.modifyUser(
-                        uid:  firestoreViewModel.firestoreUser!.id!,
+                        uid:  firestoreViewModel.firestoreUser!.id,
                         field: "image",
                         value: path
                     )
@@ -269,22 +268,22 @@ struct UserDetailRow: View {
 
 struct PickerView: View {
     @State var firestoreViewModel: FirestoreViewModel
-    @Binding var user : User?
-    var property : String
-    @Binding var selectedItem : Int
-    @Binding var booleanValuePicker : Bool
-    @Binding var booleanValueList : Bool
-    var rangeMin : Int
-    var rangeMax : Int
-    var unitaryMeasure : String
+    var userId: String
+    var property: String
+    @Binding var selectedItem: Int
+    @Binding var booleanValuePicker: Bool
+    @Binding var booleanValueList: Bool
+    var rangeMin: Int
+    var rangeMax: Int
+    var unitaryMeasure: String
     
     var body: some View{
         VStack(alignment: .center) {
             Button {
                 if ( property == "height"){
-                    firestoreViewModel.modifyUser(uid: user!.id!, field: "height", value: selectedItem)
+                    firestoreViewModel.modifyUser(uid: userId, field: "height", value: selectedItem)
                 } else {
-                    firestoreViewModel.modifyUser(uid: user!.id!, field: "weight", value: selectedItem)
+                    firestoreViewModel.modifyUser(uid: userId, field: "weight", value: selectedItem)
                 }
                 booleanValuePicker.toggle()
                 booleanValueList.toggle()

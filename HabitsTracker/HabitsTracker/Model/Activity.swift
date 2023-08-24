@@ -1,10 +1,3 @@
-//
-//  Activity.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 2/04/23.
-//
-
 import Foundation
 
 protocol Activity {

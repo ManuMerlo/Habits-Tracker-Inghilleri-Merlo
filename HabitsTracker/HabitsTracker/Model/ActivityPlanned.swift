@@ -1,10 +1,3 @@
-//
-//  ActivityPlanned.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 21/11/22.
-//
-
 import SwiftUI
 
 // Activity Model and Sample of activities

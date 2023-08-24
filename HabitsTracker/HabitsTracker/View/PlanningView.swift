@@ -1,10 +1,3 @@
-//
-//  PlanningView.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 21/11/22.
-//
-
 import SwiftUI
 
 struct PlanningView: View {

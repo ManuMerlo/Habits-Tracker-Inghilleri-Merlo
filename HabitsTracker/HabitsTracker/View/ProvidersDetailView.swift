@@ -1,16 +1,8 @@
-//
-//  ProvidersDetailView.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 06/08/23.
-//
-
 import SwiftUI
 
 struct ProvidersDetailView: View {
     
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-
     @State var expandVerificationWithEmailFrom : Bool = false
     @State var textFieldEmail: String = ""
     @State var textFieldPassword: String = ""
@@ -77,7 +69,7 @@ struct ProvidersDetailView: View {
                 
             }
             .frame(width: isLandscape ? width/1.3 : width)
-            .task {
+            .onAppear {
                 authenticationViewModel.getCurrentProvider()
             }
             .alert(authenticationViewModel.isAccountLinked ? "Link successful" : "Error", isPresented: $authenticationViewModel.showAlert) {

@@ -45,16 +45,16 @@ struct RecordView: View {
 
 struct RecordView_Previews: PreviewProvider {
     static var previews: some View {
-        RecordView(
-            user: User(
-                username: "lulu",
-                email: "lulu@gmail.com",
-                birthDate: "10/08/2001",
-                sex: Sex.Female,
-                height: 150,
-                weight: 60,
-                image: "",
-                dailyScores: [20,50,40,60,60,90,70,200,40]),
-            elementSize : 200)
+        RecordView(user: User(
+            id: "123",
+            email: "lulu@gmail.com",
+            username: "lulu",
+            birthDate: "10/08/2001",
+            sex: Sex.Female,
+            height: 150,
+            weight: 60,
+            image: "",
+            dailyScores: [20,50,40,60,60,90,70,200,40]),
+            elementSize: 200)
     }
 }

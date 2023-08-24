@@ -1,10 +1,3 @@
-//
-//  UserProfile.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 01/08/23.
-//
-
 import SwiftUI
 import Foundation
 import Charts
@@ -13,7 +6,7 @@ struct UserProfileView: View {
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     
     var user: User
-    var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
+    var today = (Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     //Responsiveness
     @EnvironmentObject var orientationInfo: OrientationInfo
@@ -143,7 +136,7 @@ struct UserProfileView: View {
     
 }
 
-struct Header: View{
+struct Header: View {
     
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     
@@ -172,7 +165,7 @@ struct Header: View{
                             .font(.custom("Open Sans", size: 15))
                             .foregroundColor(.white)
                         
-                        HStack{
+                        HStack {
                             Image(systemName: "medal.fill")
                                 .font(.system(size: 10))
                                 .foregroundColor(.white)
@@ -209,18 +202,17 @@ struct ButtonRequest: View {
     
     var user: User
     
-    var body :some View{
+    var body: some View {
         
-        HStack{
+        HStack {
             
             Button(action: {
-                if firestoreViewModel.waitingList.contains(user) || firestoreViewModel.friends.contains(user) {
-                    firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
-                    
-                } else if firestoreViewModel.requests.contains(user) {
-                    firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id!, friendId: user.id!)
+                if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Waiting || firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Confirmed {
+                    firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
+                } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Request {
+                    firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                 } else {
-                    firestoreViewModel.addRequest(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
+                    firestoreViewModel.addRequest(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                 }
             }) {
                 Image(systemName: buttonImageFor(user))
@@ -231,9 +223,9 @@ struct ButtonRequest: View {
             .foregroundColor(Color("oxfordBlue"))
             .tint(.white)
             
-            if firestoreViewModel.requests.contains(user) {
+            if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Request {
                 Button(action: {
-                    firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
+                    firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                 }) {
                     Image(systemName: "person.fill.badge.minus")
                     Text("Remove")
@@ -248,11 +240,11 @@ struct ButtonRequest: View {
         
     }
     private func buttonTextFor(_ user: User) -> String {
-        if firestoreViewModel.waitingList.contains(user) {
+        if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Waiting {
             return "Waiting"
-        } else if firestoreViewModel.friends.contains(user) {
+        } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Confirmed {
             return "Friend"
-        } else if firestoreViewModel.requests.contains(user) {
+        } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Request {
             return "Confirm"
         } else {
             return "Follow"
@@ -260,11 +252,11 @@ struct ButtonRequest: View {
     }
     
     private func buttonImageFor(_ user: User) -> String {
-        if firestoreViewModel.waitingList.contains(user) {
+        if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Waiting {
             return "person.badge.clock.fill"
-        } else if firestoreViewModel.friends.contains(user) {
+        } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Confirmed {
             return "checkmark.seal"
-        } else if firestoreViewModel.requests.contains(user) {
+        } else if firestoreViewModel.getFriendStatus(friendId: user.id) == FriendStatus.Request {
             return "person.fill.badge.plus"
         } else {
             return "link"
@@ -289,8 +281,9 @@ func VerticalText(upperText: String, lowerText:String) -> some View {
 struct UserProfileView_Previews: PreviewProvider {
     static var previews: some View {
         UserProfileView(firestoreViewModel: FirestoreViewModel(), user: User(
-            username: "lulu",
+            id:"1234",
             email: "lulu@gmail.com",
+            username: "lulu",
             birthDate: "10/08/2001",
             sex: Sex.Female,
             height: 150,

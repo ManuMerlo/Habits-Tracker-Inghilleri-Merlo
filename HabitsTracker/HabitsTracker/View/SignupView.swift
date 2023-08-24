@@ -85,55 +85,46 @@ struct SignupView: View {
             
             Button {
                 // Maybe these checks are not necessary
-                guard authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmail), !authenticationViewModel.textFieldPassword.isEmpty, !authenticationViewModel.repeatPassword.isEmpty else {
-                    authenticationViewModel.messageError = "Not valid email or empty password"
-                    return
-                }
-                guard authenticationViewModel.textFieldPassword == authenticationViewModel.repeatPassword else {
-                    authenticationViewModel.messageError =  "Passwords do not match"
-                    return
-                }
-                
-                guard !authenticationViewModel.textFieldUsername.isEmpty else {
-                    authenticationViewModel.messageError =  "Username is empty"
-                    return
-                }
-                
-                firestoreViewModel.fieldIsPresent(field: "email", value: authenticationViewModel.textFieldEmail) { result in
-                    switch result {
-                    case .success(let isPresent):
-                        if(isPresent){
-                            authenticationViewModel.messageError = "The email is already present in the database"
+                        guard authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmail), !authenticationViewModel.textFieldPassword.isEmpty, !authenticationViewModel.repeatPassword.isEmpty else {
+                            authenticationViewModel.messageError = "Not valid email or empty password"
                             return
                         }
-                    case .failure(_):
-                        authenticationViewModel.messageError = "Error while checking existing email"
-                        
-                    }
-                }
-                
-                firestoreViewModel.fieldIsPresent(field : "username", value: authenticationViewModel.textFieldUsername) { result in
-                    switch result {
-                    case .success(let isPresent):
-                        if(!isPresent){
-                            authenticationViewModel.createNewUser(email: authenticationViewModel.textFieldEmail, password: authenticationViewModel.textFieldPassword) { result in
-                                switch result {
-                                case .success(var user):
-                                    user.setUsername(name: authenticationViewModel.textFieldUsername)
-                                    firestoreViewModel.addNewUser(user: user)
-                                case .failure(let error):
-                                    print("Error creating new user: \(error)")
-                                    return
-                                }
-                            }
-                        } else {
-                            authenticationViewModel.messageError = "The username is not available"
+                        guard authenticationViewModel.textFieldPassword == authenticationViewModel.repeatPassword else {
+                            authenticationViewModel.messageError =  "Passwords do not match"
+                            return
                         }
-                    case .failure(let error):
-                        print("\(error)")
-                    }
-                }
-                
+                        
+                        guard !authenticationViewModel.textFieldUsername.isEmpty else {
+                            authenticationViewModel.messageError =  "Username is empty"
+                            return
+                        }
+                        
+                        Task {
+                            do {
+                                let emailIsPresent = try await firestoreViewModel.fieldIsPresent(field: "email", value: authenticationViewModel.textFieldEmail)
+                                if emailIsPresent {
+                                    throw AuthenticationError.emailAlreadyExists
+                                }
+                                let usernameIsPresent = try await firestoreViewModel.fieldIsPresent(field: "username", value: authenticationViewModel.textFieldUsername)
+                                if usernameIsPresent {
+                                    throw AuthenticationError.usernameAlreadyExists
+                                }
+                                var user = try await authenticationViewModel.createNewUser()
+                                print("Success, user created with email and password")
+                                //try await Task.sleep(nanoseconds: 10_000_000_000)
+                                //print("!!!Fatto")
+                                user.setUsername(name: authenticationViewModel.textFieldUsername)
+                                firestoreViewModel.addNewUser(user: user)
+                                //authenticationViewModel.user = user
+                                print("Success, user added to firestore")
+                            } catch AuthenticationError.emailAlreadyExists {
+                                authenticationViewModel.messageError = AuthenticationError.emailAlreadyExists.description
+                            } catch AuthenticationError.usernameAlreadyExists {
+                                authenticationViewModel.messageError = AuthenticationError.usernameAlreadyExists.description
+                            } catch {
+                                print(error.localizedDescription)
+                            }
+                        }
             } label: {
                     Text("Sign up")
                         .font(.system(size:22))

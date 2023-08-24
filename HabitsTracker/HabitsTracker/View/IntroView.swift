@@ -4,7 +4,7 @@ struct IntroView: View {
     @State private var selectedPage = 0
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    @ObservedObject var firestoreViewModel = FirestoreViewModel()
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
     
     let timer = Timer.publish(every: 3, on: .main, in: .common).autoconnect()
     

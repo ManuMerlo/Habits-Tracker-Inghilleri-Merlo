@@ -1,10 +1,3 @@
-//
-//  RequestListView.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 07/08/23.
-//
-
 import Foundation
 import SwiftUI
 import FirebaseFirestoreSwift
@@ -56,6 +49,13 @@ struct RequestListView: View {
                         for: .navigationBar)
                 .toolbarBackground(.visible, for: .navigationBar)
             }
+        }.refreshable {
+            firestoreViewModel.getRequests()
+        }
+        .onAppear() {
+            firestoreViewModel.getRequests()
+        }.onChange(of: firestoreViewModel.friendsSubcollection) { newValue in
+            firestoreViewModel.getRequests()
         }
         .onAppear(){
             isLandscape = orientationInfo.orientation == .landscape
@@ -67,6 +67,7 @@ struct RequestListView: View {
         }
     }
     
+    //FIXME: function in view
     func getMaxWidth() -> CGFloat{
         if device == .iPad {
             return 90
@@ -103,7 +104,7 @@ struct RequestItemView: View {
                 
                 HStack(spacing: 10){
                     Button(action: {
-                        firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id!, friendId: user.id!)
+                        firestoreViewModel.confirmFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                     }) {
                         Image(systemName: "person.fill.badge.plus")
                         Text("Confirm")
@@ -115,7 +116,7 @@ struct RequestItemView: View {
                     .tint(.blue)
                     
                     Button {
-                        firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id!, friend: user.id!)
+                        firestoreViewModel.removeFriend(uid: firestoreViewModel.firestoreUser!.id, friendId: user.id)
                         
                     } label: {
                         Image(systemName: "person.fill.badge.minus")
@@ -146,11 +147,12 @@ struct RequestItemView: View {
 
 struct RequestItemView_Previews: PreviewProvider {
     static var previews: some View {
-        RequestListView(firestoreViewModel: FirestoreViewModel())
-            .environmentObject(OrientationInfo())
-        /*RequestItemView( firestoreViewModel: FirestoreViewModel(),user: User(
-            username: "lulu",
+    /*RequestListView(firestoreViewModel: FirestoreViewModel())
+            .environmentObject(OrientationInfo())*/
+        RequestItemView(firestoreViewModel: FirestoreViewModel(),user: User(
+            id: "12345",
             email: "lulu@gmail.com",
+            username: "lulu",
             birthDate: "10/08/2001",
             sex: Sex.Female,
             height: 150,
@@ -158,3 +160,4 @@ struct RequestItemView_Previews: PreviewProvider {
             dailyScores: [20,50,40,60,60,90,70,200,40]))*/
     }
 }
+

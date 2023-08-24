@@ -1,10 +1,3 @@
-//
-//  CardIntro.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 25/11/22.
-//
-
 import Foundation
 import SwiftUI
 

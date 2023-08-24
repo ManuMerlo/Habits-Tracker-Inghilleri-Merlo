@@ -1,23 +1,9 @@
-//
-//  LeaderboardView.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 26/03/23.
-//
-
-//TODO : da implementare
-/*switch selectedTimeFrame {
- case .weekly:
- users = viewModel.weeklyUsers
- case .daily:
- users = viewModel.dailyUsers
- }*/
-
 import SwiftUI
 import FirebaseFirestoreSwift
 
 struct LeaderboardView: View {
     @ObservedObject var firestoreViewModel: FirestoreViewModel
+    //FIXME: merge refactor
     @StateObject var leaderboardViewModel = LeaderBoardViewModel()
     
     @State private var global : Bool = true
@@ -28,6 +14,7 @@ struct LeaderboardView: View {
     @State private var isLandscape: Bool = false
     @State var width = UIScreen.main.bounds.width
     
+    // TODO: it is a listener, check how to do the cancellation
     @FirestoreQuery(
         collectionPath: "users"
     ) var globalUsers: [User]
@@ -83,7 +70,9 @@ struct LeaderboardView: View {
                         Text(global ? "Global" : "private").foregroundColor(.white)
                         Image(systemName: global ? "globe" : "person").foregroundColor(.white)
                     }.onChange(of: global) { newValue in
-                        users = global ? globalUsers : firestoreViewModel.friends
+                        users = global ? globalUsers : globalUsers.filter({ friend in
+            firestoreViewModel.getFriendsIdsWithStatus(status: FriendStatus.Confirmed).contains(friend.id)
+        })
                         users = leaderboardViewModel.sortUsers(users: users,timeFrame: selectedTimeFrame)
                     }
                 }
@@ -99,32 +88,34 @@ struct LeaderboardView: View {
             }
         }
         .onAppear{
-            users = globalUsers
+            users = global ? globalUsers : globalUsers.filter({ friend in
+            firestoreViewModel.getFriendsIdsWithStatus(status: FriendStatus.Confirmed).contains(friend.id)
+        })
             users = leaderboardViewModel.sortUsers(users: users,timeFrame: selectedTimeFrame)
             isLandscape = orientationInfo.orientation == .landscape
             width = UIScreen.main.bounds.width
             
         }.onChange(of: globalUsers) { newValue in
-            if global {
-                users = globalUsers
-                users = leaderboardViewModel.sortUsers(users: users,timeFrame: selectedTimeFrame)
-            }
+            users = global ? globalUsers : globalUsers.filter({ friend in
+            firestoreViewModel.getFriendsIdsWithStatus(status: FriendStatus.Confirmed).contains(friend.id)
+        })                users = leaderboardViewModel.sortUsers(users: users,timeFrame: selectedTimeFrame)
+            
         }
         .onChange(of: orientationInfo.orientation) { orientation in
             isLandscape = orientation == .landscape
             width = UIScreen.main.bounds.width
         }
     }
-    
 }
 
-enum TimeFrame : String, CaseIterable {
+enum TimeFrame: String, CaseIterable {
     case weekly = "Weekly"
     case daily = "Daily"
 }
 
 
 struct RankingItemView: View {
+    //FIXME: merge refactor i viewmodels dovrebbero essere observedobject, no?
     var leaderboardViewModel : LeaderBoardViewModel
     var firestoreViewModel : FirestoreViewModel
     var user : User

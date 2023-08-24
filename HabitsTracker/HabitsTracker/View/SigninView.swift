@@ -1,9 +1,8 @@
 import SwiftUI
 
 struct SigninView: View {
-    @ObservedObject var authenticationViewModel: AuthenticationViewModel // // Here authenticationViewModel is a @ObservedObject instead in HabitsTrackerApp is a @StateObject. For more details see (*1)
-    @ObservedObject var firestoreViewModel : FirestoreViewModel
-    
+    @ObservedObject var authenticationViewModel: AuthenticationViewModel
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
     
     //Responsiveness
     @EnvironmentObject var orientationInfo: OrientationInfo
@@ -87,12 +86,16 @@ struct SigninView: View {
                 
                 Button {
                     guard authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmailSignin), !authenticationViewModel.textFieldPasswordSignin.isEmpty else {
-                        print("Empty email or password")
-                        return
-                    }
-                    authenticationViewModel.login(email: authenticationViewModel.textFieldEmailSignin,
-                                                  password: authenticationViewModel.textFieldPasswordSignin)
-                    
+                                print("Empty email or password")
+                                return
+                            }
+                            Task {
+                                do {
+                                    try await authenticationViewModel.login()
+                                } catch {
+                                    print("Error: \(error.localizedDescription)")
+                                }
+                            }
                 } label: {
                     HStack() {
                         Text("Sign in")
@@ -131,25 +134,17 @@ struct SigninView: View {
                 
                 
                 Button {
-                    authenticationViewModel.loginGoogle(){ result in
-                        switch result {
-                        case .success(let userGoogle):
-                            firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id!){ result in
-                                switch result {
-                                case .success(let isPresent):
-                                    if !isPresent  {
+                    Task {
+                                do {
+                                    let userGoogle = try await authenticationViewModel.loginGoogle()
+                                    let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id)
+                                    if (!isPresent) {
                                         firestoreViewModel.addNewUser(user: userGoogle)
                                     }
-                                case .failure(let error):
-                                    print("Error finding document user: \(error)")
-                                    return
+                                } catch {
+                                    print(error.localizedDescription)
                                 }
                             }
-                        case .failure(let error):
-                            print("Error logging the user: \(error)")
-                            return
-                        }
-                    }
                     
                 } label: {
                     HStack {
@@ -168,25 +163,17 @@ struct SigninView: View {
                 
                 
                 Button {
-                    authenticationViewModel.loginFacebook(){ result in
-                        switch result {
-                        case .success(let userFacebook):
-                            firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id!){ result in
-                                switch result {
-                                case .success(let isPresent):
-                                    if !isPresent  {
+                    Task {
+                                do {
+                                    let userFacebook = try await authenticationViewModel.loginFacebook()
+                                    let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id)
+                                    if (!isPresent) {
                                         firestoreViewModel.addNewUser(user: userFacebook)
                                     }
-                                case .failure(let error):
-                                    print("Error finding document user: \(error)")
-                                    return
+                                } catch {
+                                    print(error.localizedDescription)
                                 }
                             }
-                        case .failure(let error):
-                            print("Error logging the user: \(error)")
-                            return
-                        }
-                    }
                 } label: {
                     HStack {
                         ZStack {
