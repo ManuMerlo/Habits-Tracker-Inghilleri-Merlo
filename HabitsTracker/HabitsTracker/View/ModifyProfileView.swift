@@ -134,7 +134,7 @@ struct ModifyProfileView: View {
                                 uid: firestoreViewModel.firestoreUser!.id,
                                 field: "birthDate",
                                 value: settingsViewModel.dateToString(selectedDate))
-                            firestoreViewModel.firestoreUser?.birthDate = settingsViewModel.dateToString(selectedDate)
+                            //firestoreViewModel.firestoreUser?.birthDate = settingsViewModel.dateToString(selectedDate)
                             showDatePicker.toggle()
                             isListEnabled.toggle()
                         } label: {
@@ -162,7 +162,7 @@ struct ModifyProfileView: View {
                                 uid: firestoreViewModel.firestoreUser!.id,
                                 field: "sex",
                                 value: selectedSex.rawValue)
-                            firestoreViewModel.firestoreUser?.sex = selectedSex
+                            //firestoreViewModel.firestoreUser?.sex = selectedSex
                             showSexPicker.toggle()
                             isListEnabled.toggle()
                         }label: {
@@ -235,7 +235,7 @@ struct ModifyProfileView: View {
                             field: "image",
                             value: path
                         )
-                        
+                        //firestoreViewModel.firestoreUser?.image = path
                     case .failure(let error):
                         print("\(error.localizedDescription)")
                         //TODO: handle message on screen
@@ -266,10 +266,10 @@ struct PickerView: View {
             Button {
                 if (property == "height"){
                     firestoreViewModel.modifyUser(uid: userId, field: "height", value: selectedItem)
-                    firestoreViewModel.firestoreUser?.height = selectedItem
+                    //firestoreViewModel.firestoreUser?.height = selectedItem
                 } else {
                     firestoreViewModel.modifyUser(uid: userId, field: "weight", value: selectedItem)
-                    firestoreViewModel.firestoreUser?.weight = selectedItem
+                    //firestoreViewModel.firestoreUser?.weight = selectedItem
 
                 }
                 booleanValuePicker.toggle()

@@ -87,22 +87,11 @@ struct SigninView: View {
                                             if (!isPresent) {
                                                 firestoreViewModel.addNewUser(user: userGoogle)
                                             }
+                                            // authenticationViewModel.user = userGoogle
                                         } catch {
                                             print(error.localizedDescription)
                                         }
                                     }
-                                    
-                                    /*firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id){ result in
-                                        switch result {
-                                        case .success(let isPresent):
-                                            if !isPresent  {
-                                                firestoreViewModel.addNewUser(user: userGoogle)
-                                            }
-                                        case .failure(let error):
-                                            print("Error finding document user: \(error)")
-                                            return
-                                        }
-                                    }*/
                                 case .failure(let error):
                                     print("Error logging the user: \(error)")
                                     return
@@ -133,6 +122,7 @@ struct SigninView: View {
                                             if (!isPresent) {
                                                 firestoreViewModel.addNewUser(user: userFacebook)
                                             }
+                                            authenticationViewModel.user = userFacebook
                                         } catch {
                                             print(error.localizedDescription)
                                         }

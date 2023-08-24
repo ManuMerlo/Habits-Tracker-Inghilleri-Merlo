@@ -28,15 +28,34 @@ final class FirestoreViewModel: ObservableObject {
     
     init(firestoreRepository: FirestoreRepository = FirestoreRepository()) {
         self.firestoreRepository = firestoreRepository
-        // getCurrentUser()
-        // getFriendsSubcollection()
     }
     
-    func getCurrentUser() async throws {
+    /*func getCurrentUser() async throws {
         self.firestoreUser = try await firestoreRepository.getCurrentUser()
         if let user = self.firestoreUser, user.username == nil {
             self.needUsername = true
         }
+    }*/
+    
+    // Listener
+    func getCurrentUser() {
+        firestoreRepository.getCurrentUser { [weak self] result in
+            switch result {
+            case .success(let user):
+                self?.firestoreUser = user
+                if let _ = user.username {
+                    self?.needUsername = false
+                } else {
+                    self?.needUsername = true
+                }
+            case .failure(let error):
+                self?.messageError = error.localizedDescription
+            }
+        }
+    }
+    
+    func removeListenerForCurrentUser() {
+        firestoreRepository.removeListenerForCurrentUser()
     }
     
     func fieldIsPresent(field: String, value: String) async throws -> Bool {

@@ -91,19 +91,14 @@ struct GeneralView: View {
 
             }
         })
-        // FIXME: put it only in HomeView ??
-        .refreshable {
-            try? await firestoreViewModel.getCurrentUser()
-        }
-        .task {
-            try? await firestoreViewModel.getCurrentUser()
-        }
         .onAppear() {
+            firestoreViewModel.getCurrentUser()
             firestoreViewModel.getFriendsSubcollection()
             UITabBar.appearance().barTintColor = UIColor(red: 0.1, green: 0.15, blue: 0.23, alpha: 0.9)
         }
         .onDisappear() {
             firestoreViewModel.removeListenerForFriendsSubcollection()
+            firestoreViewModel.removeListenerForCurrentUser()
             firestoreViewModel.cancelTasks()
             authenticationViewModel.cancelTasks()
         }

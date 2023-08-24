@@ -8,21 +8,21 @@ final class FirestoreRepository {
         self.firestoreDataSource = firestoreDataSource
     }
     
-    /*func getCurrentUser(completionBlock: @escaping (Result<User, Error>) -> Void) {
+    func getCurrentUser(completionBlock: @escaping (Result<User, Error>) -> Void) {
         firestoreDataSource.getCurrentUser(completionBlock: completionBlock)
-    }*/
-    
-    func getCurrentUser() async throws -> User {
-        return try await firestoreDataSource.getCurrentUser()
     }
+    
+    func removeListenerForCurrentUser() {
+        firestoreDataSource.removeListenerForCurrentUser()
+    }
+    
+    /*func getCurrentUser() async throws -> User {
+        return try await firestoreDataSource.getCurrentUser()
+    }*/
     
     func fieldIsPresent (field: String, value: String) async throws -> Bool {
         return try await firestoreDataSource.fieldIsPresent(field: field, value:value)
     }
-    
-    /*func getAllUsers(completionBlock: @escaping (Result<[User], Error>) -> Void) {
-        firestoreDataSource.getAllUsers(completionBlock: completionBlock)
-    }*/
     
     func addNewUser(user: User) {
         firestoreDataSource.addNewUser(user: user)

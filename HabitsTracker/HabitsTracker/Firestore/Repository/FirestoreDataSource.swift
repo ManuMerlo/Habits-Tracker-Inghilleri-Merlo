@@ -7,13 +7,42 @@ import Combine
 
 final class FirestoreDataSource {
     private let db = Firestore.firestore()
+    private var currentUserListener: ListenerRegistration? = nil
     private var friendsSubcollectionListener: ListenerRegistration? = nil
     
-    func getCurrentUser() async throws -> User {
+    /*func getCurrentUser() async throws -> User {
         guard let userAuth = Auth.auth().currentUser else {
             throw URLError(.badServerResponse)
         }
         return try await db.collection("users").document(userAuth.uid).getDocument(as: User.self)
+    }*/
+    
+    func getCurrentUser(completionBlock: @escaping (Result<User,Error>) -> Void) {
+        if let userAuth = Auth.auth().currentUser {
+            let docRef = db.collection("users").document(userAuth.uid)
+            docRef.addSnapshotListener { documentSnapshot, error in
+                if let error = error as NSError? {
+                    completionBlock(.failure(error))
+                } else if let document = documentSnapshot, document.exists {
+                    do {
+                        print("Document retrieved")
+                        let user = try document.data(as: User.self)
+                        
+                        if userAuth.uid == user.id {
+                            print("user Auth id: \(userAuth.uid)")
+                            print("user retrieved \(user)")
+                            completionBlock(.success(user))
+                        }
+                    } catch {
+                        print(error)
+                    }
+                }
+            }
+        }
+    }
+    
+    func removeListenerForCurrentUser() {
+        self.currentUserListener?.remove()
     }
     
     // Function that returns true if there exists a document with specific field and value

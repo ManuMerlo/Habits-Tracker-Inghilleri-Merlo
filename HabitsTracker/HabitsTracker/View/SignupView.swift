@@ -65,8 +65,11 @@ struct SignupView: View {
                                 }
                                 var user = try await authenticationViewModel.createNewUser()
                                 print("Success, user created with email and password")
+                                //try await Task.sleep(nanoseconds: 10_000_000_000)
+                                //print("!!!Fatto")
                                 user.setUsername(name: authenticationViewModel.textFieldUsername)
                                 firestoreViewModel.addNewUser(user: user)
+                                //authenticationViewModel.user = user
                                 print("Success, user added to firestore")
                             } catch AuthenticationError.emailAlreadyExists {
                                 authenticationViewModel.messageError = AuthenticationError.emailAlreadyExists.description

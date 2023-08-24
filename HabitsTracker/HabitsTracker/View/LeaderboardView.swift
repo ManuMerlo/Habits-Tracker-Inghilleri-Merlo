@@ -88,7 +88,7 @@ struct LeaderboardView: View {
                     .toolbarBackground(.visible, for: .navigationBar)
             }
         }.onAppear{
-            sortUsers(timeFrame: selectedTimeFrame)
+            setUsers(global: global)
         }
         .onChange(of: globalUsers) { newValue in
             setUsers(global: global)
@@ -99,7 +99,7 @@ struct LeaderboardView: View {
             users.sort { user1, user2 in
                 switch timeFrame {
                 case .daily:
-                    return user1.dailyScores[today] > user1.dailyScores[today]
+                    return user1.dailyScores[today] > user2.dailyScores[today]
                 case .weekly:
                     return user1.dailyScores[7] > user2.dailyScores[7]
                 }

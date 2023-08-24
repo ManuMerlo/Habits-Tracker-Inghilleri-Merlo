@@ -66,14 +66,6 @@ final class AuthenticationViewModel: ObservableObject {
         self.user = user // FIXME: need for login after signup
         print("Success, user created with email and password")
         return user
-        /*Task {
-            do {
-                self.user = try await authenticationRepository.createNewUser(email: textFieldEmail, password: textFieldPassword)
-                print("Success, user created with emal and password")
-            } catch{
-                print("Error: \(error.localizedDescription)")
-            }
-        }*/
     }
     
     // TODO: reset password, update email/password
@@ -90,7 +82,7 @@ final class AuthenticationViewModel: ObservableObject {
         authenticationRepository.loginFacebook() { [weak self] result in // result would be the completionBlock of the repository that returns success or failure
             switch result {
             case .success(let user):
-                self?.user = user
+                //self?.user = user
                 completionBlock(.success(user))
             case .failure(let error):
                 self?.messageError = error.localizedDescription
