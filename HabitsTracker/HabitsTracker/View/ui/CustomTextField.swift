@@ -21,15 +21,16 @@ struct CustomTextField: View {
                     HStack{
                         if isSecure {
                             SecureField(hint, text: $text)
-                                .textContentType(.password)
+                                .foregroundColor(.white)
+                                .textContentType(.oneTimeCode)
                                 .focused($isEnabled)
                                 .autocorrectionDisabled(true)
                                 .autocapitalization(.none)
-                            
                         }
                         else {
                             TextField(hint, text: $text)
-                                .textContentType(.password)
+                                .foregroundColor(.white)
+                                .textContentType(.oneTimeCode)
                                 .focused($isEnabled)
                                 .autocorrectionDisabled(true)
                                 .autocapitalization(.none)
@@ -51,11 +52,19 @@ struct CustomTextField: View {
                 }
             }
         }
+        .preferredColorScheme(.dark)
         .padding()
         .frame(height: 45)
         .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 1.25))
-        
     }
 }
 
+
+struct customTextField_Previews: PreviewProvider {
+    @State static var text: String = ""
+
+    static var previews: some View {
+        CustomTextField(isSecure: false, hint: "email", imageName: "envelope", text: $text)
+    }
+}
 

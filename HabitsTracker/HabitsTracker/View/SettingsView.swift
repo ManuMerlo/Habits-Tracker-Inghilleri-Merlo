@@ -27,7 +27,7 @@ struct SettingsView: View {
             ScrollView{
                 VStack(alignment: .center,spacing: 15){
                     ZStack(alignment: .top){
-                        WaveView(upsideDown: true,repeatAnimation: false, base: 290, amplitude: 70)
+                        WaveView(upsideDown: true,repeatAnimation: false, base: isLandscape ? 250 : 280, amplitude: 70)
                         
                         VStack{
                             ProfileImageView(

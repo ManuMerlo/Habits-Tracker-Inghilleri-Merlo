@@ -32,12 +32,12 @@ struct SearchFriendView: View {
                 RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
                     .edgesIgnoringSafeArea(.all)
                 
-                ScrollView{
+                ScrollView(showsIndicators: false){
                     VStack(spacing: 10){
                         ForEach(filteredFrieds, id: \.self) { friend in
                             NavigationLink(destination: UserProfileView(firestoreViewModel: firestoreViewModel, user: friend)) {
-                                ListItemView(user: friend,
-                                             width: isLandscape ? width/1.5 : width/1.1)
+                                ListItemView(user: friend)
+                                    .frame(width: isLandscape ? width/1.5 : width/1.1)
                             }
                         }
                     }
@@ -51,14 +51,14 @@ struct SearchFriendView: View {
                 Color("oxfordBlue"),
                 for: .navigationBar)
             .toolbarBackground(.visible, for: .navigationBar)
-        }
-        .onAppear{
-            isLandscape = orientationInfo.orientation == .landscape
-            width = UIScreen.main.bounds.width
-        }
-        .onChange(of: orientationInfo.orientation) { orientation in
-            isLandscape = orientation == .landscape
-            width = UIScreen.main.bounds.width
+            .onAppear{
+                isLandscape = orientationInfo.orientation == .landscape
+                width = UIScreen.main.bounds.width
+            }
+            .onChange(of: orientationInfo.orientation) { orientation in
+                isLandscape = orientation == .landscape
+                width = UIScreen.main.bounds.width
+            }
         }
         
     }
@@ -66,7 +66,6 @@ struct SearchFriendView: View {
 
 struct ListItemView: View {
     var user : User
-    var width : CGFloat
     
     var body: some View {
         HStack{
@@ -88,17 +87,16 @@ struct ListItemView: View {
             Spacer()
             
         }
-        .frame(width: width)
-        .padding(.vertical,10)
+        .padding(.vertical, 10)
         .foregroundColor(Color("platinum").opacity(0.7))
+        .background(Color("oxfordBlue"))
+        .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+        .shadow(color: Color.black.opacity(0.8), radius: 4, x: 0, y: 0)
         .overlay(
             RoundedRectangle(cornerRadius: 20)
                 .stroke(Color("platinum").opacity(0.5), lineWidth: 2)
+                
         )
-        .background(Color("oxfordBlue").opacity(0.9))
-        .mask(RoundedRectangle(cornerRadius: 20, style:.continuous))
-        .shadow(color: Color.black.opacity(0.8), radius: 5, x: 0, y: 0)
-        
     }
 }
 

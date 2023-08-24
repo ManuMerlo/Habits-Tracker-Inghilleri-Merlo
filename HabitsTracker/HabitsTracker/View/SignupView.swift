@@ -70,17 +70,16 @@ struct SignupView: View {
                 .multilineTextAlignment(.center)
                 .fontWeight(.semibold)
                 .lineSpacing(10)
-                .offset(y: -4)
             
             Group{
                 
-                CustomTextField(isSecure: false, hint: "username", imageName: "person", text: $authenticationViewModel.textFieldUsername)
+                CustomTextField(isSecure: false, hint: "Username", imageName: "person", text: $authenticationViewModel.textFieldUsername)
                 
-                CustomTextField(isSecure: false, hint: "email", imageName:"envelope", text: $authenticationViewModel.textFieldEmail)
+                CustomTextField(isSecure: false, hint: "Email", imageName:"envelope", text: $authenticationViewModel.textFieldEmail)
                 
-                CustomTextField(isSecure:true, hint: "password", imageName: "lock", text: $authenticationViewModel.textFieldPassword)
+                CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPassword)
                 
-                CustomTextField(isSecure:true,hint: "repeat password", imageName: "lock",text: $authenticationViewModel.repeatPassword)
+                CustomTextField(isSecure:true,hint: "Repeat password", imageName: "lock",text: $authenticationViewModel.repeatPassword)
                 
             }.frame(width: getMaxWidth())
             
@@ -156,8 +155,7 @@ struct SignupView: View {
             
         }.onAppear{
             authenticationViewModel.clearSignUpParameter()
-        }
-        .padding(.horizontal, 50)
+        }.padding(.vertical, isLandscape ? 20 : 0)
     }
     
     func getMaxWidth() -> CGFloat{

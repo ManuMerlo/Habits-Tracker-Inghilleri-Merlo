@@ -87,7 +87,7 @@ struct NotificationDetailView: View {
             .scrollContentBackground(.hidden)
             
         }.frame(maxWidth: .infinity)
-        .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500).opacity(0.98))
+        .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500))
         .onAppear(){
                 isLandscape = orientationInfo.orientation == .landscape
                 width = UIScreen.main.bounds.width

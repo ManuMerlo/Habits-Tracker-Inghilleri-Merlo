@@ -91,18 +91,22 @@ struct HomeView: View {
             if let user = firestoreViewModel.firestoreUser{
                 if isLandscape{
                     ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7],ringSize: width/2.3)
+                        .padding(.top)
                 }
                 else {
                     ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7],ringSize: width/1.7)
+                        .padding(.top)
                 }
             }
             
             if isLandscape{
                 WaveView(upsideDown: false,repeatAnimation: false, base: 40, amplitude: 110)
                     .offset(y:20)
+                    
             } else {
                 WaveView(upsideDown: false,repeatAnimation: device == .iPhone ? true : false, base: 40, amplitude: 110)
                     .offset(y:20)
+                
             }
             
             VStack{
@@ -119,7 +123,8 @@ struct HomeView: View {
                                 quantity: baseActivity.quantity ?? 0,
                                 score: healthViewModel.singleScore[activity.id] ?? 0,
                                 image: activity.image,
-                                measure: activity.measure
+                                measure: activity.measure,
+                                width: getMaxWidth()
                             )
                         }
                     }
@@ -130,11 +135,11 @@ struct HomeView: View {
                     let elementsize =  (getMaxWidth()-15)/2
                     RecordView(user: user, elementSize: elementsize)
                         .frame(maxWidth: getMaxWidth())
+                        .padding(.bottom,20)
                 }
                 
             }
             .background(Color("oxfordBlue"))
-            
         }
         .padding(.top, 30)
         

@@ -219,6 +219,7 @@ struct SigninView: View {
             }
             
         }
+        .padding(.top, isLandscape ? 20 : 0)
         .onAppear{
             authenticationViewModel.clearSignInParameter()
         }

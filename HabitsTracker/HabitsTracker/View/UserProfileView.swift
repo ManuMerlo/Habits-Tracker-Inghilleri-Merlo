@@ -78,7 +78,7 @@ struct UserProfileView: View {
     @ViewBuilder
     func content() -> some View {
         VStack(alignment: .center,spacing: 15){
-            Text("Todays Scores")
+            Text("Today's Scores")
                 .font(.title)
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity, alignment: .center)
@@ -122,7 +122,6 @@ struct UserProfileView: View {
                     }
                     .frame(height: 250)
                     .padding(.horizontal,20)
-                    .foregroundColor(.blue)
                 
             }
             
@@ -132,6 +131,7 @@ struct UserProfileView: View {
                 .shadow(color:.black,radius: 5)
             
             RecordView(user: user, elementSize: (width/1.2-15)/2)
+                .padding(.bottom,20)
             
         }
     }
