@@ -89,13 +89,7 @@ struct SigninView: View {
                                 print("Empty email or password")
                                 return
                             }
-                            Task {
-                                do {
-                                    try await authenticationViewModel.login()
-                                } catch {
-                                    print("Error: \(error.localizedDescription)")
-                                }
-                            }
+                    authenticationViewModel.login()
                 } label: {
                     HStack() {
                         Text("Sign in")

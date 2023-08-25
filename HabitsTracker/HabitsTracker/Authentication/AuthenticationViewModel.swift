@@ -33,9 +33,9 @@ final class AuthenticationViewModel: ObservableObject {
     }
     
     func isValidEmail(email: String) -> Bool {
-            let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-            let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-            return emailPredicate.evaluate(with: email)
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        return emailPredicate.evaluate(with: email)
     }
     
     func clearSignUpParameter() {
@@ -69,13 +69,20 @@ final class AuthenticationViewModel: ObservableObject {
     }
     
     // TODO: reset password, update email/password
-    func login() async throws {
+    func login() {
         guard !textFieldEmailSignin.isEmpty, !textFieldPasswordSignin.isEmpty else {
             print("No username, email or password found.")
             return
         }
-        self.user = try await authenticationRepository.login(email: textFieldEmailSignin, password: textFieldPasswordSignin)
-        print("Success, user created with emal and password")
+        let task = Task {
+            do {
+                self.user = try await authenticationRepository.login(email: textFieldEmailSignin, password: textFieldPasswordSignin)
+                print("Success, user created with emal and password")
+            } catch {
+                print("Error: \(error.localizedDescription)")
+            }
+        }
+        tasks.append(task)
     }
     
     func loginFacebook() async throws -> User {
