@@ -153,15 +153,6 @@ final class AuthenticationViewModel: ObservableObject {
         tasks.append(task)
     }
     
-    /*func linkGoogle() {
-        authenticationRepository.linkGoogle { [weak self] isSuccess in
-            print("Linked Google \(isSuccess.description)")
-            self?.isAccountLinked = isSuccess
-            self?.showAlert.toggle()
-            self?.getCurrentProvider()
-        }
-    }*/
-    
     func linkEmailAndPassword(email:String, password:String) {
         authenticationRepository.linkEmailAndPassword(email: email,
                                                       password: password) { [weak self] isSuccess in
