@@ -53,6 +53,17 @@
 		DD4B90C52A97E65C00B8CC5C /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4B90C42A97E65C00B8CC5C /* LoadingView.swift */; };
 		DD4FC73829D7EDDC00414C2B /* FacebookAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FC73729D7EDDC00414C2B /* FacebookAuthentication.swift */; };
 		DD4FC73B29D8291300414C2B /* GoogleAuthentication.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4FC73A29D8291300414C2B /* GoogleAuthentication.swift */; };
+		DD7151902A9865020023C814 /* HabitsTracker_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD71518F2A9865020023C814 /* HabitsTracker_Tests.swift */; };
+		DD7151972A9865E60023C814 /* AuthenticationViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7151962A9865E60023C814 /* AuthenticationViewModel_Tests.swift */; };
+		DD7151992A986A3A0023C814 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = DD7151982A986A3A0023C814 /* Lottie */; };
+		DD71519B2A986A420023C814 /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = DD71519A2A986A420023C814 /* FacebookLogin */; };
+		DD71519D2A986A4C0023C814 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = DD71519C2A986A4C0023C814 /* GoogleSignIn */; };
+		DD71519F2A986A510023C814 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD71519E2A986A510023C814 /* GoogleSignInSwift */; };
+		DD7151A12A986A590023C814 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = DD7151A02A986A590023C814 /* FirebaseAnalytics */; };
+		DD7151A32A986A650023C814 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = DD7151A22A986A650023C814 /* FirebaseStorage */; };
+		DD7151A52A986A6A0023C814 /* FirebaseAuth in Frameworks */ = {isa = PBXBuildFile; productRef = DD7151A42A986A6A0023C814 /* FirebaseAuth */; };
+		DD7151A72A986A700023C814 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DD7151A62A986A700023C814 /* FirebaseFirestoreSwift */; };
+		DD7151A92A986A7A0023C814 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DD7151A82A986A7A0023C814 /* FirebaseFirestore */; };
 		DD7C45662A929D4E0026AF49 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C45652A929D4E0026AF49 /* Errors.swift */; };
 		DD7C69B5292C254500E0D9ED /* ActivityPlanned.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C69B4292C254500E0D9ED /* ActivityPlanned.swift */; };
 		DD8D0D5229D5E5ED0045009C /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = DD8D0D5129D5E5ED0045009C /* FacebookLogin */; };
@@ -76,6 +87,16 @@
 		DDF9364829C76518002B965A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DDF9364729C76518002B965A /* FirebaseFirestore */; };
 		DDF9364A29C76521002B965A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DDF9364929C76521002B965A /* FirebaseFirestoreSwift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		DD7151912A9865020023C814 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = DD25AA1A29293E7200EF2FEB /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = DD25AA2129293E7200EF2FEB;
+			remoteInfo = HabitsTracker;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		090C998D2A8F4D1A00F8B339 /* OrientationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationInfo.swift; sourceTree = "<group>"; };
@@ -121,6 +142,9 @@
 		DD4B90C42A97E65C00B8CC5C /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		DD4FC73729D7EDDC00414C2B /* FacebookAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FacebookAuthentication.swift; sourceTree = "<group>"; };
 		DD4FC73A29D8291300414C2B /* GoogleAuthentication.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GoogleAuthentication.swift; sourceTree = "<group>"; };
+		DD71518D2A9865020023C814 /* HabitsTracker_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HabitsTracker_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD71518F2A9865020023C814 /* HabitsTracker_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsTracker_Tests.swift; sourceTree = "<group>"; };
+		DD7151962A9865E60023C814 /* AuthenticationViewModel_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel_Tests.swift; sourceTree = "<group>"; };
 		DD7C45652A929D4E0026AF49 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		DD7C69B4292C254500E0D9ED /* ActivityPlanned.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPlanned.swift; sourceTree = "<group>"; };
 		DDAA66A629D042E500219792 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
@@ -156,6 +180,22 @@
 				DD33E5F1292944B700B299BD /* GoogleSignIn in Frameworks */,
 				DD33E5F3292944B700B299BD /* GoogleSignInSwift in Frameworks */,
 				DDF9364829C76518002B965A /* FirebaseFirestore in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD71518A2A9865020023C814 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD71519B2A986A420023C814 /* FacebookLogin in Frameworks */,
+				DD7151992A986A3A0023C814 /* Lottie in Frameworks */,
+				DD71519D2A986A4C0023C814 /* GoogleSignIn in Frameworks */,
+				DD7151A12A986A590023C814 /* FirebaseAnalytics in Frameworks */,
+				DD71519F2A986A510023C814 /* GoogleSignInSwift in Frameworks */,
+				DD7151A92A986A7A0023C814 /* FirebaseFirestore in Frameworks */,
+				DD7151A52A986A6A0023C814 /* FirebaseAuth in Frameworks */,
+				DD7151A32A986A650023C814 /* FirebaseStorage in Frameworks */,
+				DD7151A72A986A700023C814 /* FirebaseFirestoreSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				DD25AA2429293E7300EF2FEB /* HabitsTracker */,
+				DD71518E2A9865020023C814 /* HabitsTracker_Tests */,
 				DD25AA2329293E7300EF2FEB /* Products */,
 				DDF9364629C76518002B965A /* Frameworks */,
 			);
@@ -263,6 +304,7 @@
 			isa = PBXGroup;
 			children = (
 				DD25AA2229293E7300EF2FEB /* HabitsTracker.app */,
+				DD71518D2A9865020023C814 /* HabitsTracker_Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -314,6 +356,15 @@
 				DDEB8AE829D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift */,
 			);
 			path = Repository;
+			sourceTree = "<group>";
+		};
+		DD71518E2A9865020023C814 /* HabitsTracker_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				DD71518F2A9865020023C814 /* HabitsTracker_Tests.swift */,
+				DD7151962A9865E60023C814 /* AuthenticationViewModel_Tests.swift */,
+			);
+			path = HabitsTracker_Tests;
 			sourceTree = "<group>";
 		};
 		DDBDA92C29D778F900B81D6F /* Authentication */ = {
@@ -381,6 +432,35 @@
 			productReference = DD25AA2229293E7300EF2FEB /* HabitsTracker.app */;
 			productType = "com.apple.product-type.application";
 		};
+		DD71518C2A9865020023C814 /* HabitsTracker_Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = DD7151952A9865020023C814 /* Build configuration list for PBXNativeTarget "HabitsTracker_Tests" */;
+			buildPhases = (
+				DD7151892A9865020023C814 /* Sources */,
+				DD71518A2A9865020023C814 /* Frameworks */,
+				DD71518B2A9865020023C814 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				DD7151922A9865020023C814 /* PBXTargetDependency */,
+			);
+			name = HabitsTracker_Tests;
+			packageProductDependencies = (
+				DD7151982A986A3A0023C814 /* Lottie */,
+				DD71519A2A986A420023C814 /* FacebookLogin */,
+				DD71519C2A986A4C0023C814 /* GoogleSignIn */,
+				DD71519E2A986A510023C814 /* GoogleSignInSwift */,
+				DD7151A02A986A590023C814 /* FirebaseAnalytics */,
+				DD7151A22A986A650023C814 /* FirebaseStorage */,
+				DD7151A42A986A6A0023C814 /* FirebaseAuth */,
+				DD7151A62A986A700023C814 /* FirebaseFirestoreSwift */,
+				DD7151A82A986A7A0023C814 /* FirebaseFirestore */,
+			);
+			productName = HabitsTracker_Tests;
+			productReference = DD71518D2A9865020023C814 /* HabitsTracker_Tests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -388,11 +468,15 @@
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
-				LastSwiftUpdateCheck = 1410;
+				LastSwiftUpdateCheck = 1420;
 				LastUpgradeCheck = 1410;
 				TargetAttributes = {
 					DD25AA2129293E7200EF2FEB = {
 						CreatedOnToolsVersion = 14.1;
+					};
+					DD71518C2A9865020023C814 = {
+						CreatedOnToolsVersion = 14.2;
+						TestTargetID = DD25AA2129293E7200EF2FEB;
 					};
 				};
 			};
@@ -416,6 +500,7 @@
 			projectRoot = "";
 			targets = (
 				DD25AA2129293E7200EF2FEB /* HabitsTracker */,
+				DD71518C2A9865020023C814 /* HabitsTracker_Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -433,6 +518,13 @@
 				09652B81293117E7002CC615 /* share.json in Resources */,
 				DD25AA34292940EC00EF2FEB /* GoogleService-Info.plist in Resources */,
 				09652B79293117B6002CC615 /* login.json in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DD71518B2A9865020023C814 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,7 +589,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		DD7151892A9865020023C814 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD7151972A9865E60023C814 /* AuthenticationViewModel_Tests.swift in Sources */,
+				DD7151902A9865020023C814 /* HabitsTracker_Tests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		DD7151922A9865020023C814 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = DD25AA2129293E7200EF2FEB /* HabitsTracker */;
+			targetProxy = DD7151912A9865020023C814 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin XCBuildConfiguration section */
 		DD25AA2E29293E7300EF2FEB /* Debug */ = {
@@ -678,6 +787,40 @@
 			};
 			name = Release;
 		};
+		DD7151932A9865020023C814 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "it.polimi.HabitsTracker-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HabitsTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HabitsTracker";
+			};
+			name = Debug;
+		};
+		DD7151942A9865020023C814 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "it.polimi.HabitsTracker-Tests";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/HabitsTracker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/HabitsTracker";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -695,6 +838,15 @@
 			buildConfigurations = (
 				DD25AA3129293E7300EF2FEB /* Debug */,
 				DD25AA3229293E7300EF2FEB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		DD7151952A9865020023C814 /* Build configuration list for PBXNativeTarget "HabitsTracker_Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				DD7151932A9865020023C814 /* Debug */,
+				DD7151942A9865020023C814 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -766,6 +918,51 @@
 			isa = XCSwiftPackageProductDependency;
 			package = DD33E5EF292944B700B299BD /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
 			productName = GoogleSignInSwift;
+		};
+		DD7151982A986A3A0023C814 /* Lottie */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 09652B74293116BE002CC615 /* XCRemoteSwiftPackageReference "lottie-ios" */;
+			productName = Lottie;
+		};
+		DD71519A2A986A420023C814 /* FacebookLogin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD8D0D5029D5E5ED0045009C /* XCRemoteSwiftPackageReference "facebook-ios-sdk" */;
+			productName = FacebookLogin;
+		};
+		DD71519C2A986A4C0023C814 /* GoogleSignIn */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD33E5EF292944B700B299BD /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignIn;
+		};
+		DD71519E2A986A510023C814 /* GoogleSignInSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD33E5EF292944B700B299BD /* XCRemoteSwiftPackageReference "GoogleSignIn-iOS" */;
+			productName = GoogleSignInSwift;
+		};
+		DD7151A02A986A590023C814 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD25AA35292941BE00EF2FEB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		DD7151A22A986A650023C814 /* FirebaseStorage */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD25AA35292941BE00EF2FEB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseStorage;
+		};
+		DD7151A42A986A6A0023C814 /* FirebaseAuth */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD25AA35292941BE00EF2FEB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAuth;
+		};
+		DD7151A62A986A700023C814 /* FirebaseFirestoreSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD25AA35292941BE00EF2FEB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestoreSwift;
+		};
+		DD7151A82A986A7A0023C814 /* FirebaseFirestore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = DD25AA35292941BE00EF2FEB /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseFirestore;
 		};
 		DD8D0D5129D5E5ED0045009C /* FacebookLogin */ = {
 			isa = XCSwiftPackageProductDependency;
