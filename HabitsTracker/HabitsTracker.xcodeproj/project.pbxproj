@@ -21,6 +21,7 @@
 		0944AB2D2A7AB61900C73278 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */; };
 		094A32432A796F570008403C /* SearchFriendView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094A32422A796F570008403C /* SearchFriendView.swift */; };
 		094A32452A798AF90008403C /* UserProfileView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 094A32442A798AF90008403C /* UserProfileView.swift */; };
+		09599AEF2A9A8412006A2B9E /* BackgroundViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09599AEE2A9A8412006A2B9E /* BackgroundViewModel.swift */; };
 		09652B76293116BE002CC615 /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = 09652B75293116BE002CC615 /* Lottie */; };
 		09652B79293117B6002CC615 /* login.json in Resources */ = {isa = PBXBuildFile; fileRef = 09652B78293117B6002CC615 /* login.json */; };
 		09652B7B293117C2002CC615 /* notes.json in Resources */ = {isa = PBXBuildFile; fileRef = 09652B7A293117C2002CC615 /* notes.json */; };
@@ -112,6 +113,7 @@
 		0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
 		094A32422A796F570008403C /* SearchFriendView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchFriendView.swift; sourceTree = "<group>"; };
 		094A32442A798AF90008403C /* UserProfileView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserProfileView.swift; sourceTree = "<group>"; };
+		09599AEE2A9A8412006A2B9E /* BackgroundViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundViewModel.swift; sourceTree = "<group>"; };
 		09652B78293117B6002CC615 /* login.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = login.json; sourceTree = "<group>"; };
 		09652B7A293117C2002CC615 /* notes.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = notes.json; sourceTree = "<group>"; };
 		09652B7C293117D1002CC615 /* plan_activities.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = plan_activities.json; sourceTree = "<group>"; };
@@ -219,6 +221,14 @@
 			path = ui;
 			sourceTree = "<group>";
 		};
+		09599AED2A9A83CD006A2B9E /* Background */ = {
+			isa = PBXGroup;
+			children = (
+				09599AEE2A9A8412006A2B9E /* BackgroundViewModel.swift */,
+			);
+			path = Background;
+			sourceTree = "<group>";
+		};
 		09652B7729311723002CC615 /* Lottie */ = {
 			isa = PBXGroup;
 			children = (
@@ -312,6 +322,7 @@
 		DD25AA2429293E7300EF2FEB /* HabitsTracker */ = {
 			isa = PBXGroup;
 			children = (
+				09599AED2A9A83CD006A2B9E /* Background */,
 				DD07DFB529D0B99400633248 /* HabitsTracker.entitlements */,
 				09652B7729311723002CC615 /* Lottie */,
 				DD127A38292946E100075A8B /* Model */,
@@ -559,6 +570,7 @@
 				DD4FC73829D7EDDC00414C2B /* FacebookAuthentication.swift in Sources */,
 				09B7E8CC2A867EE000FFD230 /* WaveView.swift in Sources */,
 				0938459B2A8C93720081E1C5 /* LeaderboardViewModel.swift in Sources */,
+				09599AEF2A9A8412006A2B9E /* BackgroundViewModel.swift in Sources */,
 				09316F6A2A8143B000E92B84 /* RequestListView.swift in Sources */,
 				DDDDFA70292CEC290033B3D3 /* PlanningViewModel.swift in Sources */,
 				DDEB8AEB29D6F210001693C8 /* AuthenticationRepository.swift in Sources */,
@@ -737,7 +749,6 @@
 				INFOPLIST_FILE = HabitsTracker/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app requires to access your Health Data";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -769,7 +780,6 @@
 				INFOPLIST_FILE = HabitsTracker/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app requires to access your Health Data";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
