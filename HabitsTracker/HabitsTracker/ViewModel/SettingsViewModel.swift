@@ -4,6 +4,12 @@ import SwiftUI
 import FirebaseAuth
 import FirebaseStorage
 
+protocol UserNotificationCenterProtocol {
+    func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?)
+}
+
+extension UNUserNotificationCenter: UserNotificationCenterProtocol { }
+
 @MainActor
 final class SettingsViewModel: ObservableObject {
     @Published var agreedToTerms = false
@@ -14,7 +20,8 @@ final class SettingsViewModel: ObservableObject {
     @Published var image: UIImage?
     
     
-    func scheduleNotifications( title: String, subtitle: String,timeInterval: TimeInterval, repeats: Bool)-> String?{
+    func scheduleNotifications(title: String, subtitle: String, timeInterval: TimeInterval, repeats: Bool, notificationCenter: UserNotificationCenterProtocol = UNUserNotificationCenter.current()) -> String? {
+        
         let identifier : String
         
         let content = UNMutableNotificationContent()
@@ -28,7 +35,9 @@ final class SettingsViewModel: ObservableObject {
         
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         
-        UNUserNotificationCenter.current().add(request)
+        notificationCenter.add(request){ _ in
+            
+        }
         
         return identifier
     }
@@ -54,6 +63,7 @@ final class SettingsViewModel: ObservableObject {
             return nil
         }
         let dateFormatter = DateFormatter()
+        dateFormatter.timeZone = TimeZone(abbreviation: "GMT")
         dateFormatter.dateFormat = "dd/MM/yyyy"
         if let date = dateFormatter.date(from: dateStr) {
             print("date conversion settings view model: \(date)")
@@ -86,6 +96,7 @@ final class SettingsViewModel: ObservableObject {
             }
         }
     }
+    
     
     
     struct ImagePicker: UIViewControllerRepresentable {
