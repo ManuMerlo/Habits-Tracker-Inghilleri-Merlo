@@ -4,15 +4,28 @@ import Combine
 @MainActor
 final class FirestoreViewModel: ObservableObject {
     private let firestoreRepository: FirestoreRepository
-    private var tasks: [Task<Void, Never>] = []
+    // Changed from private to privite set for tests purposes
+    private(set) var tasks: [Task<Void, Never>] = []
     
+    //TODO: allUsers is not used ( in case we decide to use it we need to tests its initial value)
     @Published var allUsers: [User] = []
     @Published var messageError: String?
     @Published /*private(set)*/ var firestoreUser: User? = nil // TODO: set
     @Published var needUsername: Bool = false
     @Published var requests: [User] = []
+    @Published private(set) var friendsSubcollection: [Friend] = []
     
     //private var cancellables: Set<AnyCancellable> = []
+    
+    // Default initializer
+    init(firestoreRepository: FirestoreRepository = FirestoreRepository()) {
+        self.firestoreRepository = firestoreRepository
+    }
+    
+    // Initializer for test purposes
+    init(withRepository firestoreRepository: FirestoreRepository) {
+        self.firestoreRepository = firestoreRepository
+    }
     
     // function to cancel all tasks
     func cancelTasks() {
@@ -20,12 +33,6 @@ final class FirestoreViewModel: ObservableObject {
         tasks = []
     }
     
-    @Published private(set) var friendsSubcollection: [Friend] = []
-    
-    init(firestoreRepository: FirestoreRepository = FirestoreRepository()) {
-        self.firestoreRepository = firestoreRepository
-    }
-
     func addListenerForCurrentUser() {
         firestoreRepository.addListenerForCurrentUser { [weak self] result in
             switch result {
@@ -65,12 +72,12 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 requests = try await firestoreRepository.getRequests(requestFriendsIDs: getFriendsIdsWithStatus(status: FriendStatus.Request))
             } catch {
-                print(error.localizedDescription)
+                print("!!! Error while fetching the requests: \( error.localizedDescription)")
             }
         }
         tasks.append(task)
     }
-
+    
     func addNewUser(user: User) {
         firestoreRepository.addNewUser(user: user)
         print("User with email \(user.email) added to firestore")
@@ -151,12 +158,12 @@ final class FirestoreViewModel: ObservableObject {
     func getFriendStatus(friendId: String) -> FriendStatus? {
         return friendsSubcollection.first { friend in
             friend.id == friendId
-                }?.status
+        }?.status
     }
     
     func getFriendsIdsWithStatus(status: FriendStatus) -> [String] {
-            return friendsSubcollection.filter { friend in
-                friend.status == status
-            }.map { $0.id }
-        }
+        return friendsSubcollection.filter { friend in
+            friend.status == status
+        }.map { $0.id }
+    }
 }

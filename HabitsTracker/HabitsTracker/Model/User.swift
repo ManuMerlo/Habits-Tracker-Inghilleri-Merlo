@@ -1,6 +1,6 @@
 import FirebaseAuth // FIXME: needed?
 
-struct User: Codable, Hashable {
+struct User: Codable, Hashable, Identifiable {
 
     let id: String
     let email: String

@@ -2,9 +2,14 @@ import Foundation
 import Combine
 
 final class FirestoreRepository {
-    private let firestoreDataSource: FirestoreDataSource
+    private let firestoreDataSource: FirestoreDataSourceProtocol
     
     init(firestoreDataSource: FirestoreDataSource = FirestoreDataSource()) {
+        self.firestoreDataSource = firestoreDataSource
+    }
+    
+    //Second initializer for test purposes
+    init(withDataSource firestoreDataSource: FirestoreDataSourceProtocol) {
         self.firestoreDataSource = firestoreDataSource
     }
     

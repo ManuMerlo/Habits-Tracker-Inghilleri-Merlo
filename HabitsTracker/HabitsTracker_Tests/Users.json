@@ -1,0 +1,118 @@
+
+[
+    {
+        "id": "1",
+        "email": "john.doe@example.com",
+        "username": "JohnDoe",
+        "birthDate": "1990-01-01",
+        "sex": "Male",
+        "height": 180,
+        "weight": 70,
+        "image": "https://example.com/images/john.jpg",
+        "dailyScores": [10, 15, 12, 20, 14, 22, 13, 106],
+        "dailyGlobal": 100,
+        "dailyPrivate": 50,
+        "weeklyGlobal": 250,
+        "weeklyPrivate": 75,
+        "records": [
+            {"id": "activeEnergyBurned", "quantity": 250},
+            {"id": "appleExerciseTime", "quantity": 30},
+            {"id": "appleStandTime", "quantity": 10},
+            {"id": "distanceWalkingRunning", "quantity": 5},
+            {"id": "stepCount", "quantity": 7000},
+            {"id": "distanceCycling", "quantity": 0}
+        ]
+    },
+    {
+        "id": "2",
+        "email": "jane.smith@example.com",
+        "username": "JaneSmith",
+        "birthDate": "1992-02-02",
+        "sex": "Female",
+        "height": 165,
+        "weight": 60,
+        "image": "https://example.com/images/jane.jpg",
+        "dailyScores": [14, 12, 20, 18, 14, 20, 15, 113],
+        "dailyGlobal": 90,
+        "dailyPrivate": 45,
+        "weeklyGlobal": 240,
+        "weeklyPrivate": 70,
+        "records": [
+            {"id": "activeEnergyBurned", "quantity": 200},
+            {"id": "appleExerciseTime", "quantity": 25},
+            {"id": "appleStandTime", "quantity": 9},
+            {"id": "distanceWalkingRunning", "quantity": 4},
+            {"id": "stepCount", "quantity": 6500},
+            {"id": "distanceCycling", "quantity": 2}
+        ]
+    },
+    {
+        "id": "3",
+        "email": "robert.brown@example.com",
+        "username": "RobBrown",
+        "birthDate": "1985-03-03",
+        "sex": "Male",
+        "height": 175,
+        "weight": 75,
+        "image": "https://example.com/images/robert.jpg",
+        "dailyScores": [15, 14, 22, 17, 16, 24, 15, 123],
+        "dailyGlobal": 85,
+        "dailyPrivate": 42,
+        "weeklyGlobal": 230,
+        "weeklyPrivate": 65,
+        "records": [
+            {"id": "activeEnergyBurned", "quantity": 270},
+            {"id": "appleExerciseTime", "quantity": 32},
+            {"id": "appleStandTime", "quantity": 8},
+            {"id": "distanceWalkingRunning", "quantity": 4},
+            {"id": "stepCount", "quantity": 6800},
+            {"id": "distanceCycling", "quantity": 3}
+        ]
+    },
+    {
+        "id": "4",
+        "email": "emily.clark@example.com",
+        "username": "EmilyClark",
+        "birthDate": "1995-04-04",
+        "sex": "Female",
+        "height": 160,
+        "weight": 55,
+        "image": "https://example.com/images/emily.jpg",
+        "dailyScores": [12, 10, 18, 16, 12, 18, 14, 100],
+        "dailyGlobal": 80,
+        "dailyPrivate": 40,
+        "weeklyGlobal": 220,
+        "weeklyPrivate": 60,
+        "records": [
+            {"id": "activeEnergyBurned", "quantity": 220},
+            {"id": "appleExerciseTime", "quantity": 28},
+            {"id": "appleStandTime", "quantity": 7},
+            {"id": "distanceWalkingRunning", "quantity": 3},
+            {"id": "stepCount", "quantity": 6200},
+            {"id": "distanceCycling", "quantity": 1}
+        ]
+        },
+    {
+        "id": "5",
+        "email": "michael.evans@example.com",
+        "username": "MikeEvans",
+        "birthDate": "1988-05-05",
+        "sex": "Male",
+        "height": 182,
+        "weight": 78,
+        "image": "https://example.com/images/michael.jpg",
+        "dailyScores": [13, 15, 19, 20, 15, 21, 16, 119],
+        "dailyGlobal": 88,
+        "dailyPrivate": 44,
+        "weeklyGlobal": 235,
+        "weeklyPrivate": 63,
+        "records": [
+            {"id": "activeEnergyBurned", "quantity": 260},
+            {"id": "appleExerciseTime", "quantity": 30},
+            {"id": "appleStandTime", "quantity": 9},
+            {"id": "distanceWalkingRunning", "quantity": 5},
+            {"id": "stepCount", "quantity": 6700},
+            {"id": "distanceCycling", "quantity": 2}
+            ]
+    }
+]

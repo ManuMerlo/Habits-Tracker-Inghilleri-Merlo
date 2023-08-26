@@ -1,6 +1,6 @@
 import Foundation
 
-struct Friend: Codable, Hashable {
+struct Friend: Codable, Hashable, Identifiable {
     
     let id: String
     var status: FriendStatus

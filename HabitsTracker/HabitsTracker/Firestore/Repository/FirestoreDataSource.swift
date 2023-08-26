@@ -5,7 +5,36 @@ import FirebaseFirestoreSwift
 import FirebaseAuth
 import Combine
 
-final class FirestoreDataSource {
+protocol FirestoreDataSourceProtocol {
+    
+    // Listeners
+    func addListenerForCurrentUser(completionBlock: @escaping (Result<User, Error>) -> Void)
+    func removeListenerForCurrentUser()
+    func addListenerForFriendsSubcollection(completionBlock: @escaping([Friend]) -> Void)
+    func removeListenerForFriendsSubcollection()
+    
+    // CRUD for User
+    func addNewUser(user: User)
+    func modifyUser(uid: String, field: String, value: Any) async throws
+    func modifyUser(uid: String, field: String, records: [BaseActivity]) async throws
+    func deleteUserData(uid: String) async throws
+    
+    // User operations
+    func updateDailyScores(uid: String, newScore: Int) async throws
+    func fieldIsPresent(field: String, value: String) async throws -> Bool
+    
+    // Friend Operations
+    func addRequest(uid: String, friendId: String) async throws
+    func removeFriend(uid: String, friendId: String) async throws
+    func confirmFriend(uid: String, friendId: String) async throws
+    func getRequests(requestFriendsIDs: [String]) async throws -> [User]
+    
+    // Helper
+    func handleUpdateResult(err: Error?)
+}
+
+
+final class FirestoreDataSource : FirestoreDataSourceProtocol {
     private let db = Firestore.firestore()
     private var currentUserListener: ListenerRegistration? = nil
     private var friendsSubcollectionListener: ListenerRegistration? = nil
@@ -179,6 +208,13 @@ final class FirestoreDataSource {
         try await userRef.updateData(["dailyScores": scoresArray])
     }
     
+    // Fuction to delete user's document in firestore
+    func deleteUserData(uid: String) async throws {
+        try await db.collection("users")
+            .document(uid)
+            .delete()
+    }
+    
     // Helper function to handle the result of the update operation
     func handleUpdateResult(err: Error?) {
         if let err = err {
@@ -186,12 +222,5 @@ final class FirestoreDataSource {
         } else {
             print("Document successfully updated")
         }
-    }
-    
-    // Fuction to delete user's document in firestore
-    func deleteUserData(uid: String) async throws {
-        try await db.collection("users")
-            .document(uid)
-            .delete()
     }
 }
