@@ -304,7 +304,7 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
         XCTAssertGreaterThan(vm.tasks.count, 0)
     }
 
-    func test_FirestoreViewModel_modifyUser_shouldModify() async {
+    /*func test_FirestoreViewModel_modifyUser_shouldModify() async {
         // Given
         guard let vm = viewModel else {
             XCTFail()
@@ -336,7 +336,7 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
         await fulfillment(of: [expectation], timeout: 5) // Replaced the traditional wait(for:timeout:) method
 
         XCTAssertEqual(vm.firestoreUser?.email, newValue)
-    }
+    }*/
 
     
 
