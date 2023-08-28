@@ -121,10 +121,11 @@ final class FirestoreDataSource {
     }
     
     // Overload for arrays of BaseActivity
-    func modifyUser(uid: String, field: String, records: [BaseActivity]) async throws {
-        let dictionaryRecords = records.map { $0.asDictionary() }
+    func modifyUser(uid: String, field: String, newScores: [BaseActivity]) async throws {
+        let dictionaryRecords = newScores.map { $0.asDictionary() }
         try await modifyUser(uid: uid, field: field, value: dictionaryRecords)
     }
+
     
     // Function to add a single friend to the 'friends' subcollection for a user in Firestore
     func addRequest(uid: String, friendId: String) async throws {

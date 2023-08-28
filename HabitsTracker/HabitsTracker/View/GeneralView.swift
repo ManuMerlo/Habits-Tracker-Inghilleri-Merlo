@@ -6,7 +6,7 @@ struct GeneralView: View {
     @ObservedObject var healthViewModel: HealthViewModel
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     @ObservedObject var firestoreViewModel: FirestoreViewModel
-    
+    @State private var device: Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
     @State var textFieldValue: String = ""
     @State private var didAppear: Bool = false
     
@@ -38,8 +38,9 @@ struct GeneralView: View {
                 }
                 .accentColor(.white)
                 .task {
-                    healthViewModel.requestAccessToHealthData()
-                    //firestoreViewModel.getAllUsers()
+                    if device == .iPhone {
+                        healthViewModel.requestAccessToHealthData()
+                    }
                 }.alert("Enter your name", isPresented: $firestoreViewModel.needUsername ) {
                     
                     Text("\(currentUser.email)")
@@ -59,38 +60,44 @@ struct GeneralView: View {
                 } message: {
                     Text("To start using the app, you first need to set your username.")
                 }
-                //FIXME: does not work
                 .onChange(of: healthViewModel.allMyTypes, perform: { _ in
-                    healthViewModel.computeSingleScore()
-                    healthViewModel.computeTotalScore()
-                    print("updating records")
-                    if healthViewModel.updateRecords(records: &(currentUser.records)) {
-                        firestoreViewModel.modifyUser(
-                            uid: currentUser.id,
-                            field: "records",
-                            records: currentUser.records
-                        )
+                    if device == .iPhone{
+                        healthViewModel.computeSingleScore()
+                        healthViewModel.computeTotalScore()
+                        print("updating records")
+                        if healthViewModel.updateRecords(records: &(currentUser.records)) {
+                            firestoreViewModel.modifyUser(
+                                uid: currentUser.id,
+                                field: "records",
+                                newScores: currentUser.records
+                            )
+                        }
+                        firestoreViewModel.modifyUser(uid: currentUser.id, field: "actualScores", newScores: healthViewModel.allMyTypes)
                     }
                     
                 })
                 .onChange(of: healthViewModel.dailyScore, perform: { newValue in
-                    firestoreViewModel.updateDailyScores(uid: currentUser.id, newScore: newValue)
+                    if device == .iPhone {
+                        firestoreViewModel.updateDailyScores(uid: currentUser.id, newScore: newValue)
+                    }
                 })
                 .onAppear() {
-                    //firestoreViewModel.addListenerForCurrentUser()
                     firestoreViewModel.addListenerForFriendsSubcollection()
-                    
-                    healthViewModel.computeSingleScore()
-                    healthViewModel.computeTotalScore()
-                    print("updating records")
-                    if healthViewModel.updateRecords(records: &(currentUser.records)) {
-                        firestoreViewModel.modifyUser(
-                            uid: currentUser.id,
-                            field: "records",
-                            records: currentUser.records
-                        )
+                    if device == .iPhone {
+                        healthViewModel.computeSingleScore()
+                        healthViewModel.computeTotalScore()
+                        print("updating records")
+                        if healthViewModel.updateRecords(records: &(currentUser.records)) {
+                            firestoreViewModel.modifyUser(
+                                uid: currentUser.id,
+                                field: "records",
+                                newScores: currentUser.records
+                            )
+                        }
+                        firestoreViewModel.modifyUser(uid: currentUser.id, field: "actualScores", newScores: healthViewModel.allMyTypes)
+                        firestoreViewModel.updateDailyScores(uid: currentUser.id, newScore: healthViewModel.dailyScore)
                     }
-                    firestoreViewModel.updateDailyScores(uid: currentUser.id, newScore: healthViewModel.dailyScore)
+                    
                     
                     UITabBar.appearance().barTintColor = UIColor(red: 0.1, green: 0.15, blue: 0.23, alpha: 0.9)
                 }

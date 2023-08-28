@@ -121,10 +121,10 @@ final class FirestoreViewModel: ObservableObject {
     }
     
     // Overload for arrays of BaseActivity
-    func modifyUser(uid: String, field: String, records: [BaseActivity]) {
+    func modifyUser(uid: String, field: String, newScores: [BaseActivity]) {
         let task = Task {
             do {
-                try await firestoreRepository.modifyUser(uid: uid, field: field, records: records)
+                try await firestoreRepository.modifyUser(uid: uid, field: field, newScores: newScores)
             } catch {
                 print(error.localizedDescription)
             }

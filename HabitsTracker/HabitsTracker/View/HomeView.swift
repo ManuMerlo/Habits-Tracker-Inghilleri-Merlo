@@ -39,7 +39,6 @@ struct HomeView: View {
         }.onChange(of: firestoreViewModel.friendsSubcollection) { newValue in
             self.numberOfRequests = firestoreViewModel.getFriendsIdsWithStatus(status: FriendStatus.Request).count
         }
-        
     }
     
     @ViewBuilder
@@ -87,22 +86,23 @@ struct HomeView: View {
                 .frame(maxWidth: .infinity, alignment: .center)
             
             if let user = firestoreViewModel.firestoreUser {
+                let today = (Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
                 if isLandscape{
-                    ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7],ringSize: width/2.3)
+                    ScoreRingView(dailyScore: user.dailyScores[today], weeklyScore: user.dailyScores[7], ringSize: width/2.3)
                         .padding(.top)
                 }
                 else {
-                    ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7],ringSize: width/1.7)
+                    ScoreRingView(dailyScore: user.dailyScores[today], weeklyScore: user.dailyScores[7], ringSize: width/1.7)
                         .padding(.top)
                 }
             }
             
             if isLandscape{
-                WaveView(upsideDown: false,repeatAnimation: false, base: 40, amplitude: 110)
+                WaveView(upsideDown: false, repeatAnimation: false, base: 40, amplitude: 110)
                     .offset(y:20)
                     
             } else {
-                WaveView(upsideDown: false,repeatAnimation: device == .iPhone ? true : false, base: 40, amplitude: 110)
+                WaveView(upsideDown: false, repeatAnimation: device == .iPhone ? true : false, base: 40, amplitude: 110)
                     .offset(y:20)
                 
             }
@@ -114,8 +114,8 @@ struct HomeView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                 
                 VStack(alignment:.center, spacing: 10) {
-                    ForEach( ExtendedActivity.allActivities(), id: \.self) { activity in
-                        if let baseActivity = healthViewModel.allMyTypes.first(where: { $0.id == activity.id }) {
+                    ForEach(ExtendedActivity.allActivities(), id: \.self) { activity in
+                        if let currentUser = firestoreViewModel.firestoreUser, let baseActivity = currentUser.actualScores.first(where: { $0.id == activity.id }) {
                             ActivityStatusView(
                                 activityType: activity.name,
                                 quantity: baseActivity.quantity ?? 0,

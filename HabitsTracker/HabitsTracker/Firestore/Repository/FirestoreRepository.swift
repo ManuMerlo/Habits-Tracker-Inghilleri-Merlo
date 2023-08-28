@@ -57,8 +57,8 @@ final class FirestoreRepository {
     }
     
     // Overload for arrays of BaseActivity
-    func modifyUser(uid: String, field: String, records: [BaseActivity]) async throws {
-        try await firestoreDataSource.modifyUser(uid: uid, field: field, records: records)
+    func modifyUser(uid: String, field: String, newScores: [BaseActivity]) async throws {
+        try await firestoreDataSource.modifyUser(uid: uid, field: field, newScores: newScores)
     }
     
     func addRequest(uid: String, friendId: String) async throws {

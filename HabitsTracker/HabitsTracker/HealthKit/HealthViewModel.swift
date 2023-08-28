@@ -7,6 +7,7 @@ final class HealthViewModel: ObservableObject {
     private let healthStore: HKHealthStore = HKHealthStore()
     private var observerQuery: HKObserverQuery?
     private var query: HKStatisticsQuery?
+    private var device: Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
         
     @Published public var allMyTypes: [BaseActivity] = [
         BaseActivity(id:"activeEnergyBurned", quantity: 0),
@@ -29,7 +30,6 @@ final class HealthViewModel: ObservableObject {
                 singleScore[activity.id] = 0
             }
         }
-
     }
     
     func updateRecords(records: inout [BaseActivity]) -> Bool {
