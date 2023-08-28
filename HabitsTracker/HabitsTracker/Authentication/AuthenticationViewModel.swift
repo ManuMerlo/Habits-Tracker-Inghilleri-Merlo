@@ -3,18 +3,24 @@ import Foundation
 @MainActor
 final class AuthenticationViewModel: ObservableObject {
     private var tasks: [Task<Void, Never>] = []
-    
+    //TODO: merge all this variables?
     @Published var user: User?
     @Published var messageError: String? // FIXME: async await
     @Published var isAccountLinked: Bool = false
-    
+    // SigninView
     @Published var textFieldEmailSignin: String = ""
     @Published var textFieldPasswordSignin: String = ""
-    
+    // SignupView
     @Published var textFieldUsername: String = ""
     @Published var textFieldEmail: String = ""
     @Published var textFieldPassword: String = ""
     @Published var repeatPassword: String = ""
+    // ProvidersView
+    @Published var textFieldEmailProviders: String = ""
+    @Published var textFieldPasswordProviders: String = ""
+    // SecuritySettingsView
+    @Published var textFieldEmailSecurity: String = ""
+    @Published var textFieldPasswordSecurity: String = ""
     
     @Published var linkedAccounts: [LinkedAccounts] = []
     @Published var showAlert: Bool = false
@@ -72,12 +78,12 @@ final class AuthenticationViewModel: ObservableObject {
         try await authenticationRepository.resetPassword(email: email)
     }
     
-    func updateEmail(email: String) async throws {
-        try await authenticationRepository.updateEmail(email: email)
+    func updateEmail() async throws {
+        try await authenticationRepository.updateEmail(email: textFieldEmailSecurity)
     }
     
-    func updatePassword(password: String) async throws {
-        try await authenticationRepository.updatePassword(password: password)
+    func updatePassword() async throws {
+        try await authenticationRepository.updatePassword(password: textFieldPasswordSecurity)
     }
     
     // TODO: reset password, update email/password
@@ -172,9 +178,9 @@ final class AuthenticationViewModel: ObservableObject {
         tasks.append(task)
     }
     
-    func linkEmailAndPassword(email:String, password:String) {
-        authenticationRepository.linkEmailAndPassword(email: email,
-                                                      password: password) { [weak self] isSuccess in
+    func linkEmailAndPassword() {
+        authenticationRepository.linkEmailAndPassword(email: textFieldEmailProviders,
+                                                      password: textFieldPasswordProviders) { [weak self] isSuccess in
             print("Linked Email and Password \(isSuccess.description)")
             self?.isAccountLinked = isSuccess
             self?.showAlert.toggle()

@@ -12,7 +12,7 @@ struct IntroView: View {
     //Responsiveness
     @EnvironmentObject var orientationInfo: OrientationInfo
     @State private var isLandscape: Bool = true
-    @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
+    @State private var device: Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
     @State var height = UIScreen.main.bounds.height
     @State var width = UIScreen.main.bounds.width
     

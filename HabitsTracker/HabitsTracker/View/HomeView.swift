@@ -8,7 +8,7 @@ struct HomeView: View {
     //Responsiveness
     @EnvironmentObject var orientationInfo: OrientationInfo
     @State private var isLandscape: Bool = false
-    @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
+    @State private var device: Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
     @State var width = UIScreen.main.bounds.width
     
     @State var waveCoordinate : CGFloat = 0

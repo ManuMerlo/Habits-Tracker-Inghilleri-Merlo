@@ -26,7 +26,7 @@ final class AuthenticationFirebaseDataSource {
         guard let user = Auth.auth().currentUser else {
             throw URLError(.badServerResponse)
         }
-        
+
         try await user.updatePassword(to: password)
     }
     

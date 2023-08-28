@@ -3,9 +3,8 @@ import SwiftUI
 struct ProvidersDetailView: View {
     
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    @State var expandVerificationWithEmailForm : Bool = false
-    @State var textFieldEmail: String = ""
-    @State var textFieldPassword: String = ""
+    @State var expandVerificationWithEmailForm: Bool = false
+
     
     //Responsiveness
     @EnvironmentObject var orientationInfo: OrientationInfo
@@ -34,11 +33,11 @@ struct ProvidersDetailView: View {
                 if expandVerificationWithEmailForm {
                     HStack{
                         VStack(spacing: 5){
-                            CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $textFieldEmail)
-                            CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $textFieldPassword)
+                            CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmailProviders)
+                            CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPasswordProviders)
                             
                             Button("Accept"){
-                                authenticationViewModel.linkEmailAndPassword(email: textFieldEmail, password: textFieldPassword)
+                                authenticationViewModel.linkEmailAndPassword()
                             }
                             .padding(10)
                             .buttonStyle(.bordered)

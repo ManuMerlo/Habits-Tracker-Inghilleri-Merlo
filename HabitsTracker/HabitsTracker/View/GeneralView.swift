@@ -12,7 +12,7 @@ struct GeneralView: View {
     
     var body: some View {
         Group {
-           if var currentUser =  firestoreViewModel.firestoreUser {
+            if var currentUser = firestoreViewModel.firestoreUser {
                 TabView {
                     HomeView(healthViewModel: healthViewModel, firestoreViewModel: firestoreViewModel)
                         .tabItem {
@@ -100,8 +100,8 @@ struct GeneralView: View {
                     authenticationViewModel.cancelTasks()
                 }
             } else {
-               LoadingView()
-           }
+                LoadingView()
+            }
         }
         .onAppear{
             /*DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {

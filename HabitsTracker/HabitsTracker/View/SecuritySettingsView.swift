@@ -1,10 +1,3 @@
-//
-//  SecuritySettingsView.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 26/08/23.
-//
-
 import SwiftUI
 import FirebaseAuth
 
@@ -18,15 +11,13 @@ struct SecuritySettingsView: View {
     @State private var isLandscape: Bool = false
     @State var width = UIScreen.main.bounds.width
     
-    @State var expandEmail : Bool = false
-    @State var expandPassword : Bool = false
-    @State var showLoginAgainAlert : Bool = false
-    @State var showSuccessAlert : Bool = false
+    @State var expandEmail: Bool = false
+    @State var expandPassword: Bool = false
+    @State var showLoginAgainAlert: Bool = false
+    @State var showSuccessAlert: Bool = false
     
-    @State var textFieldEmail: String = ""
-    @State var textFieldPassword: String = ""
-    @State var messageErrorEmail : String?
-    @State var messageErrorPassword : String?
+    @State var messageErrorEmail: String?
+    @State var messageErrorPassword: String?
     
     var body: some View {
         VStack{
@@ -49,15 +40,19 @@ struct SecuritySettingsView: View {
                 if expandEmail{
                     HStack{
                         VStack(spacing: 10){
-                            CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $textFieldEmail)
+                            CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmailSecurity)
                             
                             Button("Submit"){
-                                if !textFieldEmail.isEmpty{
+                                if !authenticationViewModel.textFieldEmailSecurity.isEmpty {
                                     Task {
                                         do {
-                                            try await authenticationViewModel.updateEmail(email: textFieldEmail)
+                                            try await authenticationViewModel.updateEmail()
                                             expandEmail.toggle()
                                             showSuccessAlert.toggle()
+                                            firestoreViewModel.modifyUser(
+                                                uid: firestoreViewModel.firestoreUser?.id ?? "",
+                                                field: "email",
+                                                value: authenticationViewModel.textFieldEmailSecurity)
                                     } catch {
                                         print("error \(error.localizedDescription)")
                                         showLoginAgainAlert = true
@@ -99,19 +94,16 @@ struct SecuritySettingsView: View {
                 if expandPassword{
                     HStack{
                         VStack(spacing: 10){
-                            CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $textFieldPassword)
+                            CustomTextField(isSecure: true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPasswordSecurity)
                             
                             Button("Submit"){
-                                if !textFieldPassword.isEmpty{
+                                if !authenticationViewModel.textFieldPasswordSecurity.isEmpty{
                                     Task {
                                         do {
-                                            try await authenticationViewModel.updatePassword(password: textFieldPassword)
+                                            try await authenticationViewModel.updatePassword()
                                             expandPassword.toggle()
                                             showSuccessAlert.toggle()
-                                            firestoreViewModel.modifyUser(
-                                                uid: firestoreViewModel.firestoreUser?.id ?? "",
-                                                field: "email",
-                                                value: textFieldEmail)
+                                            
                                             
                                         } catch {
                                             showLoginAgainAlert = true

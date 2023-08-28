@@ -15,10 +15,10 @@ struct User: Codable, Hashable {
     //[0 - Monday / 1 - Tuesday .. 7 = weeklyScore]
     
     //ranking
-    var dailyGlobal : Int?
-    var dailyPrivate : Int?
-    var weeklyGlobal : Int?
-    var weeklyPrivate : Int?
+    var dailyGlobal: Int?
+    var dailyPrivate: Int?
+    var weeklyGlobal: Int?
+    var weeklyPrivate: Int?
     
     var records: [BaseActivity] = [
         BaseActivity(id:"activeEnergyBurned", quantity: 0),
@@ -32,7 +32,6 @@ struct User: Codable, Hashable {
     mutating func setUsername(name: String) {
         self.username = name
     }
-    
 }
 
 enum Sex: String, Codable, CaseIterable {
