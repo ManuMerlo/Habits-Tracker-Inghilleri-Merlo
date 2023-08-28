@@ -3,7 +3,7 @@ import SwiftUI
 struct ProvidersDetailView: View {
     
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
-    @State var expandVerificationWithEmailFrom : Bool = false
+    @State var expandVerificationWithEmailForm : Bool = false
     @State var textFieldEmail: String = ""
     @State var textFieldPassword: String = ""
     
@@ -18,37 +18,40 @@ struct ProvidersDetailView: View {
                 HStack{
                     Button(action:{
                         withAnimation{
-                            self.expandVerificationWithEmailFrom.toggle()
+                            self.expandVerificationWithEmailForm.toggle()
                         }
                     },label: {
                         HStack{
                             //Image(systemName: "envelope.fill")
                             Text("Connect with Email")
                             Spacer()
-                            Image(systemName: self.expandVerificationWithEmailFrom ? "chevron.down": "chevron.up")
+                            Image(systemName: self.expandVerificationWithEmailForm ? "chevron.down": "chevron.up")
                         }
                     })
                     .disabled(authenticationViewModel.isEmailandPasswordLinked())
                 }.listRowBackground(Color("oxfordBlue"))
                 
-                if expandVerificationWithEmailFrom {
-                    Group{
-                        TextField("Insert email", text:$textFieldEmail)
-                        SecureField("Insert password", text:$textFieldPassword)
-                        Button("Accept"){
-                            authenticationViewModel.linkEmailAndPassword(email: textFieldEmail, password: textFieldPassword)
+                if expandVerificationWithEmailForm {
+                    HStack{
+                        VStack(spacing: 5){
+                            CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $textFieldEmail)
+                            CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $textFieldPassword)
+                            
+                            Button("Accept"){
+                                authenticationViewModel.linkEmailAndPassword(email: textFieldEmail, password: textFieldPassword)
+                            }
+                            .padding(10)
+                            .buttonStyle(.bordered)
+                            .tint(.blue)
+                            
+                            if let messageError = authenticationViewModel.messageError {
+                                Text(messageError)
+                                    .font(.body)
+                                    .foregroundColor(.red)
+                                    .padding()
+                            }
                         }
-                        .padding(5)
-                        .buttonStyle(.bordered)
-                        .tint(.blue)
-                        
-                        if let messageError = authenticationViewModel.messageError {
-                            Text(messageError)
-                                .font(.body)
-                                .foregroundColor(.red)
-                                .padding()
-                        }
-                    }
+                    }.listRowBackground(Color("delftBlue"))
                 }
                 
                 Button{
@@ -76,7 +79,7 @@ struct ProvidersDetailView: View {
                 Button("Accept"){
                     print("Dismiss alert")
                     if authenticationViewModel.isAccountLinked{
-                        expandVerificationWithEmailFrom = false
+                        expandVerificationWithEmailForm = false
                     }
                 }
             } message: {

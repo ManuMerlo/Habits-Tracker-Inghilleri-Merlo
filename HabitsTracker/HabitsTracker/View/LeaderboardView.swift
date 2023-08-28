@@ -90,10 +90,12 @@ struct LeaderboardView: View {
         .onAppear{
             users = global ? globalUsers : globalUsers.filter({ friend in
             firestoreViewModel.getFriendsIdsWithStatus(status: FriendStatus.Confirmed).contains(friend.id)
-        })
+            })
             users = leaderboardViewModel.sortUsers(users: users,timeFrame: selectedTimeFrame)
             isLandscape = orientationInfo.orientation == .landscape
             width = UIScreen.main.bounds.width
+            
+            UITabBar.appearance().barTintColor = UIColor(red: 0.1, green: 0.15, blue: 0.23, alpha: 0.9)
             
         }.onChange(of: globalUsers) { newValue in
             users = global ? globalUsers : globalUsers.filter({ friend in
@@ -129,7 +131,10 @@ struct RankingItemView: View {
         
         HStack(spacing: 15) {
             ZStack(alignment: .center){
-                ProfileImageView(path: user.image, size: 50, color: .white)
+                ProfileImageView(path: user.image,
+                                 systemName: "person.crop.circle",
+                                 size: 70, color: .white)
+                
                 ZStack{
                     Circle()
                         .frame(width: 25, height: 25)
@@ -147,7 +152,7 @@ struct RankingItemView: View {
             
             VStack(alignment: .leading, spacing: 15){
                 Text(user.username ?? user.email)
-                    .font(.custom("Open Sans", size: 21))
+                    .font(.custom("Open Sans", size: 18))
                     .fontWeight(.bold)
                 
                 HStack{

@@ -44,11 +44,17 @@ struct SettingsView: View {
                     
                     List {
                         Section() {
+                            
+                            NavigationLink {
+                                SecuritySettingsView(authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)
+                            } label: {
+                                Label("Security Settings", systemImage: "lock")
+                                
+                            }
                             NavigationLink {
                                 ModifyProfileView(firestoreViewModel: firestoreViewModel, settingsViewModel: settingsViewModel)
                             } label: {
                                 Label("Modify profile", systemImage: "person")
-                                
                             }
                             
                             NavigationLink {

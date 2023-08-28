@@ -4,6 +4,10 @@ struct SigninView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     
+    @State private var showResetPasswordModal: Bool = false
+    @State var email : String = ""
+    @State var sheetMessageError : String?
+    
     //Responsiveness
     @EnvironmentObject var orientationInfo: OrientationInfo
     @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
@@ -35,6 +39,72 @@ struct SigninView: View {
                             .fixedSize(horizontal: false, vertical: device == .iPad ? true : false)
                     }
                 }
+            }
+        }
+        .sheet(isPresented: $showResetPasswordModal) {
+            ZStack{
+                RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
+                    .edgesIgnoringSafeArea(.all)
+                VStack(spacing: 15) {
+                    Text("Enter your email to reset the Password")
+                        .font(.headline)
+                    
+                    TextField("Email", text: $email)
+                        .padding()
+                        .background(.gray.opacity(0.2))
+                        .cornerRadius(8)
+                    
+                    HStack(spacing: 15){
+                        Button(action: {
+                            self.showResetPasswordModal.toggle()
+                        }) {
+                            Text("Cancel")
+                                .font(.system(size:18))
+                                .fontWeight(.semibold)
+                                .frame(width: 120, height: 45)
+                                .background(.white)
+                                .foregroundColor(.gray)
+                                .cornerRadius(10)
+                                .contentTransition(.identity)
+                        }
+                        
+                        Button(action: {
+                            if !email.isEmpty {
+                                Task {
+                                    do {
+                                        try await authenticationViewModel.resetPassword(email: email)
+                                        print("Password Reset")
+                                        self.showResetPasswordModal.toggle() // close the modal after sending the request
+                                    } catch {
+                                        print(error)
+                                    }
+                                }
+                            } else {
+                                sheetMessageError = "Email cannot be empty"
+                            }
+                        }) {
+                            Text("Submit")
+                                .font(.system(size:18))
+                                .fontWeight(.semibold)
+                                .frame(width: 120, height: 45)
+                                .background(.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(10)
+                                .contentTransition(.identity)
+                        }
+                    }
+                    
+                    // Display error when email is empty
+                    if let error = sheetMessageError {
+                        Text(error)
+                            .foregroundColor(.red)
+                            .font(.body)
+                    }
+                }
+                .padding()
+            }
+            .onDisappear(){
+                sheetMessageError = nil
             }
         }
         .onAppear(){
@@ -78,17 +148,15 @@ struct SigninView: View {
                     .frame(width: getMaxWidth())
                 
                 
-                NavigationLink {
-                    //TODO recupera password
-                } label: {
-                    Text("Forgot the password?")
-                }
+                Button("Forgot the passowrd?") {
+                    showResetPasswordModal.toggle()
+                }.foregroundColor(.blue)
                 
                 Button {
                     guard authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmailSignin), !authenticationViewModel.textFieldPasswordSignin.isEmpty else {
-                                print("Empty email or password")
-                                return
-                            }
+                        print("Empty email or password")
+                        return
+                    }
                     authenticationViewModel.login()
                 } label: {
                     HStack() {
@@ -117,7 +185,7 @@ struct SigninView: View {
                 HStack(spacing: 20){
                     VStack{
                         Divider()
-                        .background(Color.gray)
+                            .background(Color.gray)
                     }
                     Text("or")
                         .foregroundColor(Color.white)
@@ -129,16 +197,16 @@ struct SigninView: View {
                 
                 Button {
                     Task {
-                                do {
-                                    let userGoogle = try await authenticationViewModel.loginGoogle()
-                                    let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id)
-                                    if (!isPresent) {
-                                        firestoreViewModel.addNewUser(user: userGoogle)
-                                    }
-                                } catch {
-                                    print(error.localizedDescription)
-                                }
+                        do {
+                            let userGoogle = try await authenticationViewModel.loginGoogle()
+                            let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id)
+                            if (!isPresent) {
+                                firestoreViewModel.addNewUser(user: userGoogle)
                             }
+                        } catch {
+                            print(error.localizedDescription)
+                        }
+                    }
                     
                 } label: {
                     HStack {
@@ -158,16 +226,16 @@ struct SigninView: View {
                 
                 Button {
                     Task {
-                                do {
-                                    let userFacebook = try await authenticationViewModel.loginFacebook()
-                                    let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id)
-                                    if (!isPresent) {
-                                        firestoreViewModel.addNewUser(user: userFacebook)
-                                    }
-                                } catch {
-                                    print(error.localizedDescription)
-                                }
+                        do {
+                            let userFacebook = try await authenticationViewModel.loginFacebook()
+                            let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id)
+                            if (!isPresent) {
+                                firestoreViewModel.addNewUser(user: userFacebook)
                             }
+                        } catch {
+                            print(error.localizedDescription)
+                        }
+                    }
                 } label: {
                     HStack {
                         ZStack {

@@ -68,6 +68,18 @@ final class AuthenticationViewModel: ObservableObject {
         return user
     }
     
+    func resetPassword(email: String) async throws {
+        try await authenticationRepository.resetPassword(email: email)
+    }
+    
+    func updateEmail(email: String) async throws {
+        try await authenticationRepository.updateEmail(email: email)
+    }
+    
+    func updatePassword(password: String) async throws {
+        try await authenticationRepository.updatePassword(password: password)
+    }
+    
     // TODO: reset password, update email/password
     func login() {
         guard !textFieldEmailSignin.isEmpty, !textFieldPasswordSignin.isEmpty else {

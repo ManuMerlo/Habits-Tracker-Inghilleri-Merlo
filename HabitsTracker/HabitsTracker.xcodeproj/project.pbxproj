@@ -35,6 +35,7 @@
 		09B7E8C82A86092A00FFD230 /* ScoreRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */; };
 		09B7E8CA2A86131000FFD230 /* ActivityStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8C92A86131000FFD230 /* ActivityStatusView.swift */; };
 		09B7E8CC2A867EE000FFD230 /* WaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8CB2A867EE000FFD230 /* WaveView.swift */; };
+		09B8FD852A9AAB8F00F51CAF /* SecuritySettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B8FD842A9AAB8F00F51CAF /* SecuritySettingsView.swift */; };
 		09C666E32A88AA0C006B5D38 /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C666E22A88AA0C006B5D38 /* RecordDetailView.swift */; };
 		DD09A10329D9FA0D00CEBE15 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD09A10229D9FA0D00CEBE15 /* Activity.swift */; };
 		DD127A3C2929475900075A8B /* SigninView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3B2929475900075A8B /* SigninView.swift */; };
@@ -125,6 +126,7 @@
 		09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreRingView.swift; sourceTree = "<group>"; };
 		09B7E8C92A86131000FFD230 /* ActivityStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStatusView.swift; sourceTree = "<group>"; };
 		09B7E8CB2A867EE000FFD230 /* WaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveView.swift; sourceTree = "<group>"; };
+		09B8FD842A9AAB8F00F51CAF /* SecuritySettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecuritySettingsView.swift; sourceTree = "<group>"; };
 		09C666E22A88AA0C006B5D38 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
 		DD07DFB529D0B99400633248 /* HabitsTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HabitsTracker.entitlements; sourceTree = "<group>"; };
 		DD09A10229D9FA0D00CEBE15 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
@@ -266,6 +268,7 @@
 				094A32442A798AF90008403C /* UserProfileView.swift */,
 				09316F692A8143B000E92B84 /* RequestListView.swift */,
 				DD4B90C42A97E65C00B8CC5C /* LoadingView.swift */,
+				09B8FD842A9AAB8F00F51CAF /* SecuritySettingsView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -548,6 +551,7 @@
 				09652B85293119F9002CC615 /* IntroView.swift in Sources */,
 				DD7C69B5292C254500E0D9ED /* ActivityPlanned.swift in Sources */,
 				09316F682A80D55200E92B84 /* Friend.swift in Sources */,
+				09B8FD852A9AAB8F00F51CAF /* SecuritySettingsView.swift in Sources */,
 				DDC33528292BA0A000C27566 /* VCard.swift in Sources */,
 				094A32432A796F570008403C /* SearchFriendView.swift in Sources */,
 				DDEACC0E29DB745700F39F4B /* FirestoreDataSource.swift in Sources */,

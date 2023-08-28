@@ -55,7 +55,8 @@ struct CustomTextField: View {
         .preferredColorScheme(.dark)
         .padding()
         .frame(height: 45)
-        .overlay(RoundedRectangle(cornerRadius: 10).stroke(lineWidth: 1.25))
+        .background(.gray.opacity(0.2))
+        .cornerRadius(8)
     }
 }
 

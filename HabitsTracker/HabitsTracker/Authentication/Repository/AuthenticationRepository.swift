@@ -13,6 +13,18 @@ final class AuthenticationRepository {
         return try await authenticationFirebaseDataSource.createNewUser(email: email, password: password)
     }
     
+    func resetPassword(email: String) async throws {
+        try await authenticationFirebaseDataSource.resetPassword(email: email)
+    }
+    
+    func updateEmail(email: String) async throws {
+        try await authenticationFirebaseDataSource.updateEmail(email: email)
+    }
+    
+    func updatePassword(password: String) async throws {
+        try await authenticationFirebaseDataSource.updatePassword(password: password)
+    }
+    
     func login(email: String, password: String) async throws -> User {
         return try await authenticationFirebaseDataSource.login(email: email, password: password)
     }
