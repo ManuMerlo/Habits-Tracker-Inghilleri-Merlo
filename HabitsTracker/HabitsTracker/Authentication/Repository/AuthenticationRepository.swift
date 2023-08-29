@@ -41,15 +41,11 @@ final class AuthenticationRepository {
         try await authenticationFirebaseDataSource.linkGoogle()
     }
     
-    func linkEmailAndPassword(email:String ,password:String,completionBlock: @escaping (Bool) -> Void){
-        authenticationFirebaseDataSource.linkEmailAndPassword(email:email,
-                                                              password: password,
-                                                              completionBlock: completionBlock)
+    func linkEmailAndPassword(email: String, password: String) async throws {
+        try await authenticationFirebaseDataSource.linkEmailAndPassword(email:email,
+                                                              password: password)
     }
-    
-    /*func deleteUser(completionBlock: @escaping (Result<Bool,Error>) -> Void) {
-        authenticationFirebaseDataSource.deleteUser(completionBlock: completionBlock)
-    }*/
+
     func deleteUser() async throws {
         try await authenticationFirebaseDataSource.deleteUser()
     }

@@ -145,7 +145,7 @@ final class FirestoreViewModel: ObservableObject {
                 try await firestoreRepository.updateDailyScores(uid: uid, newScore: newScore)
             } catch {
                 print(error)
-                // FIXME:error
+                // FIXME: error
             }
         }
         tasks.append(task)

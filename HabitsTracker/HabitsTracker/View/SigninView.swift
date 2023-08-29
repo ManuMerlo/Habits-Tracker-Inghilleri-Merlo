@@ -86,9 +86,9 @@ struct SigninView: View {
                 
                 Button {
                     guard authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmailSignin), !authenticationViewModel.textFieldPasswordSignin.isEmpty else {
-                                print("Empty email or password")
-                                return
-                            }
+                        authenticationViewModel.messageError = "Empty email or password"
+                        return
+                    }
                     authenticationViewModel.login()
                 } label: {
                     HStack() {
@@ -104,7 +104,6 @@ struct SigninView: View {
                     }
                 }
                 
-                // TODO: it must disappear.
                 if let messageError = authenticationViewModel.messageError {
                     Text(messageError)
                         .font(.body)
@@ -117,7 +116,7 @@ struct SigninView: View {
                 HStack(spacing: 20){
                     VStack{
                         Divider()
-                        .background(Color.gray)
+                            .background(Color.gray)
                     }
                     Text("or")
                         .foregroundColor(Color.white)
@@ -129,16 +128,16 @@ struct SigninView: View {
                 
                 Button {
                     Task {
-                                do {
-                                    let userGoogle = try await authenticationViewModel.loginGoogle()
-                                    let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id)
-                                    if (!isPresent) {
-                                        firestoreViewModel.addNewUser(user: userGoogle)
-                                    }
-                                } catch {
-                                    print(error.localizedDescription)
-                                }
+                        do {
+                            let userGoogle = try await authenticationViewModel.loginGoogle()
+                            let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userGoogle.id)
+                            if (!isPresent) {
+                                firestoreViewModel.addNewUser(user: userGoogle)
                             }
+                        } catch {
+                            authenticationViewModel.messageError = "Failed sign in with Google. Retry."
+                        }
+                    }
                     
                 } label: {
                     HStack {
@@ -158,16 +157,16 @@ struct SigninView: View {
                 
                 Button {
                     Task {
-                                do {
-                                    let userFacebook = try await authenticationViewModel.loginFacebook()
-                                    let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id)
-                                    if (!isPresent) {
-                                        firestoreViewModel.addNewUser(user: userFacebook)
-                                    }
-                                } catch {
-                                    print(error.localizedDescription)
-                                }
+                        do {
+                            let userFacebook = try await authenticationViewModel.loginFacebook()
+                            let isPresent = try await firestoreViewModel.fieldIsPresent(field: "id", value: userFacebook.id)
+                            if (!isPresent) {
+                                firestoreViewModel.addNewUser(user: userFacebook)
                             }
+                        } catch {
+                            authenticationViewModel.messageError = "Failed sign in with Facebook. Retry."
+                        }
+                    }
                 } label: {
                     HStack {
                         ZStack {

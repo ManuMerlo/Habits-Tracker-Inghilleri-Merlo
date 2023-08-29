@@ -59,8 +59,7 @@ final class AuthenticationViewModel: ObservableObject {
     
     func createNewUser() async throws -> User {
         guard !textFieldEmail.isEmpty, !textFieldPassword.isEmpty, !textFieldUsername.isEmpty, !repeatPassword.isEmpty else {
-            print("No username, email or password found.")
-            throw URLError(.badServerResponse)
+            throw ViewError.usernameEmailPasswordNotFound
         }
         let user = try await authenticationRepository.createNewUser(email: textFieldEmail, password: textFieldPassword)
         self.user = user // FIXME: need for login after signup
@@ -68,18 +67,17 @@ final class AuthenticationViewModel: ObservableObject {
         return user
     }
     
-    // TODO: reset password, update email/password
     func login() {
         guard !textFieldEmailSignin.isEmpty, !textFieldPasswordSignin.isEmpty else {
-            print("No username, email or password found.")
+            self.messageError = "No username, email or password found."
             return
         }
         let task = Task {
             do {
                 self.user = try await authenticationRepository.login(email: textFieldEmailSignin, password: textFieldPasswordSignin)
-                print("Success, user created with emal and password")
+                print("Success, user created with email and password")
             } catch {
-                print("Error: \(error.localizedDescription)")
+                self.messageError = "Login error. Retry."
             }
         }
         tasks.append(task)
@@ -106,7 +104,7 @@ final class AuthenticationViewModel: ObservableObject {
                 clearSignInParameter()
                 clearSignUpParameter()
             } catch {
-                print("Error logout")
+                self.messageError = "Logout error. Retry."
             }
         }
         tasks.append(task)
@@ -135,9 +133,11 @@ final class AuthenticationViewModel: ObservableObject {
             do {
                 try await authenticationRepository.linkFacebook()
                 self.isAccountLinked = true
+            } catch AuthenticationError.userNotLogged {
+                self.messageError = AuthenticationError.userNotLogged.description
             } catch {
                 self.isAccountLinked = false
-                print("Account not linked")
+                self.messageError = "Facebook account not linked"
             }
             self.showAlert.toggle()
             self.getCurrentProvider()
@@ -150,9 +150,11 @@ final class AuthenticationViewModel: ObservableObject {
             do {
                 try await authenticationRepository.linkGoogle()
                 self.isAccountLinked = true
+            } catch AuthenticationError.userNotLogged {
+                self.messageError = AuthenticationError.userNotLogged.description
             } catch {
                 self.isAccountLinked = false
-                print("Account not linked")
+                self.messageError = "Google account not linked"
             }
             self.showAlert.toggle()
             self.getCurrentProvider()
@@ -160,14 +162,23 @@ final class AuthenticationViewModel: ObservableObject {
         tasks.append(task)
     }
     
-    func linkEmailAndPassword(email:String, password:String) {
-        authenticationRepository.linkEmailAndPassword(email: email,
-                                                      password: password) { [weak self] isSuccess in
-            print("Linked Email and Password \(isSuccess.description)")
-            self?.isAccountLinked = isSuccess
-            self?.showAlert.toggle()
-            self?.getCurrentProvider()
+    func linkEmailAndPassword(email: String, password: String) {
+        let task = Task {
+            do {
+                try await authenticationRepository.linkEmailAndPassword(email: email, password: password)
+                self.isAccountLinked = true
+            } catch AuthenticationError.missingCredential {
+                self.messageError = AuthenticationError.missingCredential.description
+            } catch AuthenticationError.userNotLogged {
+                self.messageError = AuthenticationError.userNotLogged.description
+            } catch {
+                self.isAccountLinked = false
+                self.messageError = "Email and Password account not linked"
+            }
+            self.showAlert.toggle()
+            self.getCurrentProvider()
         }
+        tasks.append(task)
     }
     
     func deleteUser() async throws {
