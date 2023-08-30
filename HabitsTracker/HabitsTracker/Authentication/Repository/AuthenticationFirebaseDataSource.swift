@@ -1,7 +1,22 @@
 import Foundation
 import FirebaseAuth
 
-final class AuthenticationFirebaseDataSource {
+protocol AuthenticationDataSource {
+    func getAuthenticatedUser() throws -> User
+    func createNewUser(email: String, password: String) async throws -> User
+    func login(email: String, password: String) async throws -> User
+    func loginFacebook() async throws -> User
+    func loginGoogle() async throws -> User
+    func linkGoogle() async throws
+    func logout() throws
+    func getCurrentProvider() -> [LinkedAccounts]
+    func linkFacebook() async throws
+    func getCurrentCredential() -> AuthCredential?
+    func linkEmailAndPassword(email: String, password: String) async throws
+    func deleteUser() async throws
+}
+
+final class AuthenticationFirebaseDataSource: AuthenticationDataSource {
     private let facebookAuthentication = FacebookAuthentication()
     private let googleAuthentication = GoogleAuthentication()
     

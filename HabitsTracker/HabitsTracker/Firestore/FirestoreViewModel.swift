@@ -33,7 +33,7 @@ final class FirestoreViewModel: ObservableObject {
         tasks = []
     }
     
-    func addListenerForCurrentUser() {
+    func addListenerForCurrentUser(completion: @escaping (Error?) -> Void) {
         firestoreRepository.addListenerForCurrentUser { [weak self] result in
             switch result {
             case .success(let user):
@@ -43,8 +43,10 @@ final class FirestoreViewModel: ObservableObject {
                 } else {
                     self?.needUsername = true
                 }
+                completion(nil) // No error occurred
             case .failure(let error):
                 self?.messageError = error.localizedDescription
+                completion(DBError.failedUserRetrieval)
             }
         }
     }

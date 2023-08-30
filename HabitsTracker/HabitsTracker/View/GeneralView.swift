@@ -106,7 +106,11 @@ struct GeneralView: View {
             /*DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
              firestoreViewModel.addListenerForCurrentUser()
              }*/
-            firestoreViewModel.addListenerForCurrentUser()
+            firestoreViewModel.addListenerForCurrentUser { error in
+                if let error = error as? DBError, error == .failedUserRetrieval{
+                    authenticationViewModel.logout()
+                }
+            }
         }.onDisappear{
             firestoreViewModel.removeListenerForCurrentUser()
         }

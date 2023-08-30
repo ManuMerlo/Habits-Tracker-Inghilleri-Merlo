@@ -77,6 +77,11 @@ struct SigninView: View {
                 CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPasswordSignin)
                     .frame(width: getMaxWidth())
                 
+                if  let messageError = authenticationViewModel.messageError {
+                    Text(messageError)
+                        .font(.body)
+                        .foregroundColor(.red)
+                }
                 
                 NavigationLink {
                     //TODO recupera password
@@ -102,13 +107,6 @@ struct SigninView: View {
                             .contentTransition(.identity)
                         
                     }
-                }
-                
-                if let messageError = authenticationViewModel.messageError {
-                    Text(messageError)
-                        .font(.body)
-                        .foregroundColor(.red)
-                        .padding()
                 }
             }
             

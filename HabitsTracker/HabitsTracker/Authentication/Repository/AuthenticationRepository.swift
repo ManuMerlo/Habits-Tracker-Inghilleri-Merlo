@@ -1,9 +1,15 @@
 final class AuthenticationRepository {
-    private let authenticationFirebaseDataSource: AuthenticationFirebaseDataSource
+    private let authenticationFirebaseDataSource: AuthenticationDataSource
     
     init(authenticationFirebaseDataSource: AuthenticationFirebaseDataSource = AuthenticationFirebaseDataSource()) {
         self.authenticationFirebaseDataSource = authenticationFirebaseDataSource
     }
+    
+    //Second initializer for test purposes
+    init(withDataSource authenticationFirebaseDataSource: AuthenticationDataSource) {
+        self.authenticationFirebaseDataSource = authenticationFirebaseDataSource
+    }
+    
     
     func getAuthenticatedUser() throws -> User {
         return try authenticationFirebaseDataSource.getAuthenticatedUser()

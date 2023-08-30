@@ -2,7 +2,7 @@ import Foundation
 
 @MainActor
 final class AuthenticationViewModel: ObservableObject {
-    private var tasks: [Task<Void, Never>] = []
+    private(set) var tasks: [Task<Void, Never>] = []
     
     @Published var user: User?
     @Published var messageError: String? // FIXME: async await

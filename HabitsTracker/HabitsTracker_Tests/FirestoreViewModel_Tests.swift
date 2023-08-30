@@ -80,7 +80,11 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
             }
             .store(in: &cancellables)
         
-        vm.addListenerForCurrentUser()
+        vm.addListenerForCurrentUser { error in
+            if let error = error as? DBError, error == .failedUserRetrieval{
+                print("error")
+            }
+        }
         
         // Then
         wait(for: [expectation], timeout: 5)
@@ -105,7 +109,11 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
             }
             .store(in: &cancellables)
         
-        vm.addListenerForCurrentUser()
+        vm.addListenerForCurrentUser { error in
+            if let error = error as? DBError, error == .failedUserRetrieval{
+                print("error")
+            }
+        }
         
         // Then
         wait(for: [expectation], timeout: 5)

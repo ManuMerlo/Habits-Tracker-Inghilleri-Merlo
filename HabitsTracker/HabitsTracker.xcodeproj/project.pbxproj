@@ -32,6 +32,7 @@
 		09652B85293119F9002CC615 /* IntroView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09652B84293119F9002CC615 /* IntroView.swift */; };
 		09652B8729311B19002CC615 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09652B8629311B19002CC615 /* LottieView.swift */; };
 		097DB9BA2A8B66CC0017EAA2 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097DB9B92A8B66CC0017EAA2 /* RecordView.swift */; };
+		098651AD2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098651AC2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift */; };
 		099BCA3229D8782200E9836F /* LinkedAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099BCA3129D8782200E9836F /* LinkedAccounts.swift */; };
 		09B7E8C82A86092A00FFD230 /* ScoreRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */; };
 		09B7E8CA2A86131000FFD230 /* ActivityStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8C92A86131000FFD230 /* ActivityStatusView.swift */; };
@@ -129,6 +130,7 @@
 		09652B84293119F9002CC615 /* IntroView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntroView.swift; sourceTree = "<group>"; };
 		09652B8629311B19002CC615 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		097DB9B92A8B66CC0017EAA2 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
+		098651AC2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAuthenticationDataSource.swift; sourceTree = "<group>"; };
 		099BCA3129D8782200E9836F /* LinkedAccounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedAccounts.swift; sourceTree = "<group>"; };
 		09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreRingView.swift; sourceTree = "<group>"; };
 		09B7E8C92A86131000FFD230 /* ActivityStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStatusView.swift; sourceTree = "<group>"; };
@@ -241,6 +243,26 @@
 				09652B78293117B6002CC615 /* login.json */,
 			);
 			path = Lottie;
+			sourceTree = "<group>";
+		};
+		098651AE2A9F341100A3CC52 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				09C21A492A9929B700E18D61 /* Mockable.swift */,
+				098651AC2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift */,
+				09FF69FD2A9A4A8E0028CE72 /* MockUserNotificationCenter.swift */,
+				092785052A9878A100728DD2 /* MockFirestoreDataSource.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		098651AF2A9F343200A3CC52 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				09C21A472A99277800E18D61 /* Users.json */,
+				09C21A4C2A992C3100E18D61 /* FriendsSubcollection.json */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		DD127A38292946E100075A8B /* Model */ = {
@@ -373,15 +395,12 @@
 		DD71518E2A9865020023C814 /* HabitsTracker_Tests */ = {
 			isa = PBXGroup;
 			children = (
+				098651AF2A9F343200A3CC52 /* Data */,
+				098651AE2A9F341100A3CC52 /* Mock */,
 				DD71518F2A9865020023C814 /* HabitsTracker_Tests.swift */,
 				DD7151962A9865E60023C814 /* AuthenticationViewModel_Tests.swift */,
 				092785072A98921E00728DD2 /* FirestoreViewModel_Tests.swift */,
-				09C21A472A99277800E18D61 /* Users.json */,
-				092785052A9878A100728DD2 /* MockFirestoreDataSource.swift */,
-				09C21A492A9929B700E18D61 /* Mockable.swift */,
-				09C21A4C2A992C3100E18D61 /* FriendsSubcollection.json */,
 				09FF69FB2A9A460B0028CE72 /* SettingViewModel_Tests.swift */,
-				09FF69FD2A9A4A8E0028CE72 /* MockUserNotificationCenter.swift */,
 				09FF69FF2A9A55B00028CE72 /* LeaderboardViewModel_Tests.swift */,
 			);
 			path = HabitsTracker_Tests;
@@ -615,6 +634,7 @@
 			files = (
 				DD7151972A9865E60023C814 /* AuthenticationViewModel_Tests.swift in Sources */,
 				DD7151902A9865020023C814 /* HabitsTracker_Tests.swift in Sources */,
+				098651AD2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift in Sources */,
 				09FF69FE2A9A4A8E0028CE72 /* MockUserNotificationCenter.swift in Sources */,
 				09C21A4B2A992B9900E18D61 /* MockFirestoreDataSource.swift in Sources */,
 				09FF6A002A9A55B00028CE72 /* LeaderboardViewModel_Tests.swift in Sources */,
@@ -763,7 +783,6 @@
 				INFOPLIST_FILE = HabitsTracker/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app requires to access your Health Data";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -795,7 +814,6 @@
 				INFOPLIST_FILE = HabitsTracker/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.healthcare-fitness";
 				INFOPLIST_KEY_NSHealthShareUsageDescription = "This app requires to access your Health Data";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";

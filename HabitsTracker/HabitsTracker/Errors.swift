@@ -10,7 +10,7 @@ enum AuthenticationError: Error {
 }
 
 enum DBError: Error {
-    
+    case failedUserRetrieval
 }
 
 enum ViewError: Error {
@@ -28,6 +28,15 @@ extension AuthenticationError: CustomStringConvertible {
             return "You are not logged in."
         case .missingCredential:
             return "Missing credentials."
+        }
+    }
+}
+
+extension DBError: CustomStringConvertible {
+    public var description: String {
+        switch self {
+        case .failedUserRetrieval:
+            return "Failed to retrieve or convert current User information."
         }
     }
 }
