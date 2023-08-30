@@ -1,30 +1,23 @@
-//
-//  ScoreRingView.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 11/08/23.
-//
-
 import SwiftUI
 
 struct ScoreRingView: View {
-    var dailyScore : Int
+    var dailyScore: Int
     var weeklyScore: Int
-    var ringSize : CGFloat
-    var today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
+    var ringSize: CGFloat
+    var today = (Calendar.current.component(.weekday, from: Date()) + 5) % 7
     
     var body: some View {
         
-        let ringSize = max(290,ringSize)
+        let ringSize = max(290, ringSize)
         
         ZStack{
             
-            let maximumScoreW = 7000.0
+            let maximumScoreW = 1050.0
             let ratioWeekly = Double(weeklyScore) / maximumScoreW
             
-            RingView(progress: ratioWeekly, colors: [Color("skyBlue"),Color("magenta"),Color("phlox")], width: ringSize)
+            RingView(progress: ratioWeekly, colors: [Color("skyBlue"), Color("magenta"), Color("phlox")], width: ringSize)
             
-            let maximumScoreD = 1000.0
+            let maximumScoreD = 150.0
             let ratioDaily = Double(dailyScore) / maximumScoreD
             
             RingView(progress: ratioDaily, colors: [Color(red: 1, green: 1, blue: 0.8),Color(red: 0, green: 0.8, blue: 0.2),Color(red: 0, green: 0.4, blue: 0.28)], width: ringSize-60)
@@ -96,7 +89,7 @@ struct RingView: View {
             if progress > 1 {
                 Circle()
                     .trim(from: 0, to: progress - 1)
-                    .stroke( colors[2],
+                    .stroke(colors[2],
                              style: StrokeStyle(lineWidth: 20, lineCap: .round)
                     ).rotationEffect(.degrees(-90))
             }

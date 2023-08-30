@@ -88,11 +88,11 @@ struct HomeView: View {
             
             if let user = firestoreViewModel.firestoreUser {
                 if isLandscape{
-                    ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7],ringSize: width/2.3)
+                    ScoreRingView(dailyScore: healthViewModel.dailyScore, weeklyScore: user.dailyScores[7], ringSize: width/2.3)
                         .padding(.top)
                 }
                 else {
-                    ScoreRingView(dailyScore: healthViewModel.dailyScore ,weeklyScore: user.dailyScores[7],ringSize: width/1.7)
+                    ScoreRingView(dailyScore: healthViewModel.dailyScore, weeklyScore: user.dailyScores[7], ringSize: width/1.7)
                         .padding(.top)
                 }
             }
@@ -114,15 +114,16 @@ struct HomeView: View {
                     .frame(maxWidth: .infinity, alignment: .center)
                 
                 VStack(alignment:.center, spacing: 10) {
-                    ForEach( ExtendedActivity.allActivities(), id: \.self) { activity in
-                        if let baseActivity = healthViewModel.allMyTypes.first(where: { $0.id == activity.id }) {
+                    ForEach(ExtendedActivity.allActivities(), id: \.self) { activity in
+                        if let baseActivity = healthViewModel.allMyTypes.first(where: { $0.id == activity.id }), let user = firestoreViewModel.firestoreUser {
                             ActivityStatusView(
                                 activityType: activity.name,
                                 quantity: baseActivity.quantity ?? 0,
                                 score: healthViewModel.singleScore[activity.id] ?? 0,
                                 image: activity.image,
                                 measure: activity.measure,
-                                width: getMaxWidth()
+                                width: getMaxWidth(),
+                                record: user.records.first(where: { $0.id == activity.id })?.quantity ?? 0
                             )
                         }
                     }

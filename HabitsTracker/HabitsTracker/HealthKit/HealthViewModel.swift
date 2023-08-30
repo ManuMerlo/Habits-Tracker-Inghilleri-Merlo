@@ -9,22 +9,29 @@ final class HealthViewModel: ObservableObject {
     private var query: HKStatisticsQuery?
         
     @Published public var allMyTypes: [BaseActivity] = [
-        BaseActivity(id:"activeEnergyBurned", quantity: 0),
-        BaseActivity(id:"appleExerciseTime", quantity: 0),
-        BaseActivity(id:"appleStandTime", quantity: 0),
-        BaseActivity(id:"distanceWalkingRunning", quantity: 0),
-        BaseActivity(id:"stepCount", quantity: 0),
-        BaseActivity(id:"distanceCycling", quantity: 0),
-        
+        BaseActivity(id: "activeEnergyBurned", quantity: 0),
+        BaseActivity(id: "appleExerciseTime", quantity: 0),
+        BaseActivity(id: "appleStandTime", quantity: 0),
+        BaseActivity(id: "distanceWalkingRunning", quantity: 0),
+        BaseActivity(id: "stepCount", quantity: 0),
+        BaseActivity(id: "distanceCycling", quantity: 0),
     ]
     @Published var dailyScore: Int = 0
     @Published var singleScore: [String: Int] = [:]
     
+    private let pointValues: [String : Double] = [
+        "activeEnergyBurned" : 0.2,   // 0.2 points per kilocalorie
+        "appleExerciseTime" : 1,      // 1 point per minute
+        "appleStandTime" : 0.03,      // 0.03 points per minute
+        "distanceWalkingRunning" : 5, // 5 points per kilometer
+        "stepCount" : 0.005,          // 0.005 points per step
+        "distanceCycling" : 3         // 3 points per kilometer
+    ]
+    
     func computeSingleScore() {
         for activity in allMyTypes {
             if let quantity = activity.quantity {
-                //FIXME: better algorithm
-                singleScore[activity.id] = quantity / 100
+                singleScore[activity.id] = Int(round(Double(quantity) * (pointValues[activity.id] ?? 0)))
             } else {
                 singleScore[activity.id] = 0
             }
