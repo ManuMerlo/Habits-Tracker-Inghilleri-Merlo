@@ -46,16 +46,17 @@ struct SecuritySettingsView: View {
                                 if !authenticationViewModel.textFieldEmailSecurity.isEmpty {
                                     Task {
                                         do {
+                                            // TODO: error firstresponder
                                             try await authenticationViewModel.updateEmail()
-                                            expandEmail.toggle()
-                                            showSuccessAlert.toggle()
                                             firestoreViewModel.modifyUser(
                                                 uid: firestoreViewModel.firestoreUser?.id ?? "",
                                                 field: "email",
                                                 value: authenticationViewModel.textFieldEmailSecurity)
-                                    } catch {
-                                        print("error \(error.localizedDescription)")
-                                        showLoginAgainAlert = true
+                                            expandEmail.toggle()
+                                            showSuccessAlert.toggle()
+                                        } catch {
+                                            print("error \(error.localizedDescription)")
+                                            showLoginAgainAlert = true
                                         }
                                     }
                                     

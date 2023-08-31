@@ -148,7 +148,7 @@ struct SigninView: View {
                     .frame(width: getMaxWidth())
                 
                 
-                Button("Forgot the passowrd?") {
+                Button("Forgot the password?") {
                     showResetPasswordModal.toggle()
                 }.foregroundColor(.blue)
                 
