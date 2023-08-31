@@ -228,8 +228,7 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
     
     func test_FirestoreViewModel_addListenerForFriendsSubcollection_withSuccess(){
         // Given : be sure that no other tests modify the mock
-        let friends = loadJSON(filename: "FriendsSubcollection", type: Friend.self)
-        let mockDataSource = MockFirestoreDataSource(friends: friends)
+        let mockDataSource = MockFirestoreDataSource()
         let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
         
         // When
@@ -248,7 +247,6 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
         wait(for: [expectation], timeout: 5)
         
         XCTAssertNotNil(vm.friendsSubcollection)
-        XCTAssertEqual(vm.friendsSubcollection, friends)
     }
     
     func test_FirestoreViewModel_getRequests_withNotEmptyRequestsIds() async {

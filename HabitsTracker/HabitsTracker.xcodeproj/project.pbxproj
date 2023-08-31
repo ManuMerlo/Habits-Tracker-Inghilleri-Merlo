@@ -49,6 +49,10 @@
 		09C21A5F2A994CD600E18D61 /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 09C21A5E2A994CD600E18D61 /* FirebaseStorage */; };
 		09C21A612A994CF100E18D61 /* GoogleSignIn in Frameworks */ = {isa = PBXBuildFile; productRef = 09C21A602A994CF100E18D61 /* GoogleSignIn */; };
 		09C666E32A88AA0C006B5D38 /* RecordDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09C666E22A88AA0C006B5D38 /* RecordDetailView.swift */; };
+		09D4738C2AA069A4003DD80A /* MockHealthDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D4738B2AA069A3003DD80A /* MockHealthDataSource.swift */; };
+		09D4738E2AA0765E003DD80A /* HealthViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D4738D2AA0765E003DD80A /* HealthViewModel_Tests.swift */; };
+		09D473902AA0ABBC003DD80A /* HealthRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D4738F2AA0ABBC003DD80A /* HealthRepository.swift */; };
+		09D473932AA0AC13003DD80A /* HealthDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09D473922AA0AC13003DD80A /* HealthDataSource.swift */; };
 		09FF69FC2A9A460B0028CE72 /* SettingViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FF69FB2A9A460B0028CE72 /* SettingViewModel_Tests.swift */; };
 		09FF69FE2A9A4A8E0028CE72 /* MockUserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FF69FD2A9A4A8E0028CE72 /* MockUserNotificationCenter.swift */; };
 		09FF6A002A9A55B00028CE72 /* LeaderboardViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FF69FF2A9A55B00028CE72 /* LeaderboardViewModel_Tests.swift */; };
@@ -139,6 +143,10 @@
 		09C21A492A9929B700E18D61 /* Mockable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mockable.swift; sourceTree = "<group>"; };
 		09C21A4C2A992C3100E18D61 /* FriendsSubcollection.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = FriendsSubcollection.json; sourceTree = "<group>"; };
 		09C666E22A88AA0C006B5D38 /* RecordDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordDetailView.swift; sourceTree = "<group>"; };
+		09D4738B2AA069A3003DD80A /* MockHealthDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockHealthDataSource.swift; sourceTree = "<group>"; };
+		09D4738D2AA0765E003DD80A /* HealthViewModel_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthViewModel_Tests.swift; sourceTree = "<group>"; };
+		09D4738F2AA0ABBC003DD80A /* HealthRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthRepository.swift; sourceTree = "<group>"; };
+		09D473922AA0AC13003DD80A /* HealthDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthDataSource.swift; sourceTree = "<group>"; };
 		09FF69FB2A9A460B0028CE72 /* SettingViewModel_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewModel_Tests.swift; sourceTree = "<group>"; };
 		09FF69FD2A9A4A8E0028CE72 /* MockUserNotificationCenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserNotificationCenter.swift; sourceTree = "<group>"; };
 		09FF69FF2A9A55B00028CE72 /* LeaderboardViewModel_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewModel_Tests.swift; sourceTree = "<group>"; };
@@ -252,6 +260,7 @@
 				098651AC2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift */,
 				09FF69FD2A9A4A8E0028CE72 /* MockUserNotificationCenter.swift */,
 				092785052A9878A100728DD2 /* MockFirestoreDataSource.swift */,
+				09D4738B2AA069A3003DD80A /* MockHealthDataSource.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -263,6 +272,15 @@
 				09C21A4C2A992C3100E18D61 /* FriendsSubcollection.json */,
 			);
 			path = Data;
+			sourceTree = "<group>";
+		};
+		09D473912AA0ABC3003DD80A /* Reposiroty */ = {
+			isa = PBXGroup;
+			children = (
+				09D4738F2AA0ABBC003DD80A /* HealthRepository.swift */,
+				09D473922AA0AC13003DD80A /* HealthDataSource.swift */,
+			);
+			path = Reposiroty;
 			sourceTree = "<group>";
 		};
 		DD127A38292946E100075A8B /* Model */ = {
@@ -320,6 +338,7 @@
 			isa = PBXGroup;
 			children = (
 				DD1FAFD929D8DA2A0084178F /* HealthViewModel.swift */,
+				09D473912AA0ABC3003DD80A /* Reposiroty */,
 			);
 			path = HealthKit;
 			sourceTree = "<group>";
@@ -402,6 +421,7 @@
 				092785072A98921E00728DD2 /* FirestoreViewModel_Tests.swift */,
 				09FF69FB2A9A460B0028CE72 /* SettingViewModel_Tests.swift */,
 				09FF69FF2A9A55B00028CE72 /* LeaderboardViewModel_Tests.swift */,
+				09D4738D2AA0765E003DD80A /* HealthViewModel_Tests.swift */,
 			);
 			path = HabitsTracker_Tests;
 			sourceTree = "<group>";
@@ -589,6 +609,7 @@
 				09316F682A80D55200E92B84 /* Friend.swift in Sources */,
 				DDC33528292BA0A000C27566 /* VCard.swift in Sources */,
 				094A32432A796F570008403C /* SearchFriendView.swift in Sources */,
+				09D473902AA0ABBC003DD80A /* HealthRepository.swift in Sources */,
 				DDEACC0E29DB745700F39F4B /* FirestoreDataSource.swift in Sources */,
 				09652B8329311942002CC615 /* CardIntro.swift in Sources */,
 				DDEACC1129DB747200F39F4B /* FirestoreRepository.swift in Sources */,
@@ -600,6 +621,7 @@
 				0938459B2A8C93720081E1C5 /* LeaderboardViewModel.swift in Sources */,
 				09316F6A2A8143B000E92B84 /* RequestListView.swift in Sources */,
 				DDDDFA70292CEC290033B3D3 /* PlanningViewModel.swift in Sources */,
+				09D473932AA0AC13003DD80A /* HealthDataSource.swift in Sources */,
 				DDEB8AEB29D6F210001693C8 /* AuthenticationRepository.swift in Sources */,
 				090C998E2A8F4D1A00F8B339 /* OrientationInfo.swift in Sources */,
 				DDAA66A729D042E500219792 /* LeaderboardView.swift in Sources */,
@@ -634,7 +656,9 @@
 			files = (
 				DD7151972A9865E60023C814 /* AuthenticationViewModel_Tests.swift in Sources */,
 				DD7151902A9865020023C814 /* HabitsTracker_Tests.swift in Sources */,
+				09D4738C2AA069A4003DD80A /* MockHealthDataSource.swift in Sources */,
 				098651AD2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift in Sources */,
+				09D4738E2AA0765E003DD80A /* HealthViewModel_Tests.swift in Sources */,
 				09FF69FE2A9A4A8E0028CE72 /* MockUserNotificationCenter.swift in Sources */,
 				09C21A4B2A992B9900E18D61 /* MockFirestoreDataSource.swift in Sources */,
 				09FF6A002A9A55B00028CE72 /* LeaderboardViewModel_Tests.swift in Sources */,

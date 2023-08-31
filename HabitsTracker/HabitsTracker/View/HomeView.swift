@@ -123,7 +123,7 @@ struct HomeView: View {
                                 image: activity.image,
                                 measure: activity.measure,
                                 width: getMaxWidth(),
-                                record: user.records.first(where: { $0.id == activity.id })?.quantity ?? 0
+                                record: max ( user.records.first(where: { $0.id == activity.id })?.quantity ?? 0, getMinQuantity(activity: activity.id))
                             )
                         }
                     }
@@ -136,12 +136,29 @@ struct HomeView: View {
                         .frame(maxWidth: getMaxWidth())
                         .padding(.bottom,20)
                 }
-                
             }
             .background(Color("oxfordBlue"))
         }
         .padding(.top, 30)
-        
+    }
+    
+    func getMinQuantity(activity : String ) -> Int {
+        switch activity {
+        case "activeEnergyBurned":
+            return 200
+        case "appleExerciseTime":
+            return 45
+        case "appleStandTime":
+            return 8
+        case "distanceWalkingRunning":
+            return 10
+        case "stepCount":
+            return 2000
+        case "distanceCycling":
+            return 2
+        default:
+            return 300
+        }
     }
     
     func getMaxWidth() -> CGFloat{
