@@ -134,6 +134,7 @@ final class AuthenticationViewModel: ObservableObject {
                 try await authenticationRepository.linkFacebook()
                 self.isAccountLinked = true
             } catch AuthenticationError.userNotLogged {
+                self.isAccountLinked = false
                 self.messageError = AuthenticationError.userNotLogged.description
             } catch {
                 self.isAccountLinked = false
@@ -151,6 +152,7 @@ final class AuthenticationViewModel: ObservableObject {
                 try await authenticationRepository.linkGoogle()
                 self.isAccountLinked = true
             } catch AuthenticationError.userNotLogged {
+                self.isAccountLinked = false
                 self.messageError = AuthenticationError.userNotLogged.description
             } catch {
                 self.isAccountLinked = false
@@ -168,8 +170,10 @@ final class AuthenticationViewModel: ObservableObject {
                 try await authenticationRepository.linkEmailAndPassword(email: email, password: password)
                 self.isAccountLinked = true
             } catch AuthenticationError.missingCredential {
+                self.isAccountLinked = false
                 self.messageError = AuthenticationError.missingCredential.description
             } catch AuthenticationError.userNotLogged {
+                self.isAccountLinked = false
                 self.messageError = AuthenticationError.userNotLogged.description
             } catch {
                 self.isAccountLinked = false

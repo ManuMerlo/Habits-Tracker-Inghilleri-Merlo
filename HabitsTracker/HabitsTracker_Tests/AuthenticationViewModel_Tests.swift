@@ -462,7 +462,7 @@ final class AuthenticationViewModel_Tests: XCTestCase {
     
     func test_AuthenticationViewModel_isFacebookLinked_False(){
         //Given
-        let linkedAccounts : [LinkedAccounts] = [.emailAndPassword]
+        let linkedAccounts : [LinkedAccounts] = []
         let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser, linkedAccounts: linkedAccounts)
         let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
         
@@ -501,5 +501,125 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         //Then
         XCTAssertFalse(result)
     }
+    
+    func test_AuthenticationViewModel_linkFacebook_Sucess() async{
+        //Given
+        let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,linkedAccounts: [], throwErrors: false)
+        let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
+        //When
+        viewModel.linkFacebook()
+        
+        let task = viewModel.tasks.last
+        let _ = await task?.result
+        
+        // Then
+        XCTAssertTrue(viewModel.isAccountLinked)
+        XCTAssertTrue(viewModel.showAlert)
+    }
+    
+    func test_AuthenticationViewModel_LinkFacebook_FailureThrow() async {
+        //Given
+        let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,linkedAccounts: [], throwErrors: true)
+        let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
+        
+        //When
+        viewModel.linkFacebook()
+        
+        let task = viewModel.tasks.last
+        let _ = await task?.result
+        
+        // Then
+        XCTAssertFalse(viewModel.isAccountLinked)
+        XCTAssertTrue(viewModel.showAlert)
+        XCTAssertEqual(viewModel.messageError, AuthenticationError.userNotLogged.description)
+        
+    }
+    
+    
+    func test_AuthenticationViewModel_linkGoogle_Sucess() async{
+        //Given
+        let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,linkedAccounts: [], throwErrors: false)
+        let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
+        //When
+        viewModel.linkGoogle()
+        
+        let task = viewModel.tasks.last
+        let _ = await task?.result
+        
+        // Then
+        XCTAssertTrue(viewModel.isAccountLinked)
+        XCTAssertTrue(viewModel.showAlert)
+    }
+    
+    func test_AuthenticationViewModel_LinkGoogle_FailureThrow() async {
+        //Given
+        let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,linkedAccounts: [], throwErrors: true)
+        let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
+        
+        //When
+        viewModel.linkGoogle()
+        
+        let task = viewModel.tasks.last
+        let _ = await task?.result
+        
+        // Then
+        XCTAssertFalse(viewModel.isAccountLinked)
+        XCTAssertTrue(viewModel.showAlert)
+        XCTAssertEqual(viewModel.messageError, AuthenticationError.userNotLogged.description)
+        
+    }
+    
+    
+    func test_AuthenticationViewModel_linkEmailAndPassword_Sucess() async{
+        //Given
+        let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,linkedAccounts: [], throwErrors: false)
+        let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
+        //When
+        viewModel.linkEmailAndPassword(email: "tets@test.com", password: "test")
+        
+        let task = viewModel.tasks.last
+        let _ = await task?.result
+        
+        // Then
+        XCTAssertTrue(viewModel.isAccountLinked)
+        XCTAssertTrue(viewModel.showAlert)
+    }
+    
+    func test_AuthenticationViewModel_LinkEmailAndPassword_FailureThrowNotLOgged() async {
+        //Given
+        let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,linkedAccounts: [], throwErrors: true)
+        let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
+        
+        //When
+        viewModel.linkEmailAndPassword(email: "test@test.com", password: "test")
+        
+        let task = viewModel.tasks.last
+        let _ = await task?.result
+        
+        // Then
+        XCTAssertFalse(viewModel.isAccountLinked)
+        XCTAssertTrue(viewModel.showAlert)
+        XCTAssertEqual(viewModel.messageError, AuthenticationError.userNotLogged.description)
+        
+    }
+    
+    func test_AuthenticationViewModel_LinkEmailAndPassword_FailureThrowMissingCredential() async {
+        //Given
+        let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,linkedAccounts: [], throwErrors: true)
+        let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
+        
+        //When
+        viewModel.linkEmailAndPassword(email: "", password: "test")
+        
+        let task = viewModel.tasks.last
+        let _ = await task?.result
+        
+        // Then
+        XCTAssertFalse(viewModel.isAccountLinked)
+        XCTAssertTrue(viewModel.showAlert)
+        XCTAssertEqual(viewModel.messageError, AuthenticationError.missingCredential.description)
+        
+    }
+    
 }
 

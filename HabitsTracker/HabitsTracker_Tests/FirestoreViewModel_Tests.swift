@@ -27,11 +27,8 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
     
     func test_FirestoreViewModel_init_doesSetValuesCorrectly() {
         // Given
-        guard let vm = viewModel else {
-            XCTFail()
-            return
-        }
-        
+        let mockDataSource = MockFirestoreDataSource()
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
         // When
         
         // Then
@@ -42,91 +39,67 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
         XCTAssertEqual(vm.friendsSubcollection, [])
     }
     
-    func test_FirestoreViewModel_cancelTasks_tasksShouldBeEmpty() {
-        // Given
-        guard let vm = viewModel else {
-            XCTFail()
-            return
-        }
-        
-        //This should add a task to the tasks array
-        vm.getRequests()
-        
-        // The tasks array should not be empty
-        XCTAssertFalse(vm.tasks.isEmpty, "Tasks array should not be empty after adding a new user")
-        
-        // When
-        vm.cancelTasks()
-        
-        // Then
-        // Tasks should be canceled and the tasks array should be empty after calling cancelTasks
-        XCTAssertTrue(vm.tasks.isEmpty, "Tasks array should be empty after cancellation")
-    }
-    
     func test_FirestoreViewModel_addListenerForCurrentUser_noNeedUsername(){
         // Given
-        guard let vm = viewModel else {
-            XCTFail()
-            return
-        }
+        let mockDataSource = MockFirestoreDataSource()
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
         
         // When
-        let expectation = XCTestExpectation(description: "Should return first user after 3 seconds.")
-        
-        vm.$firestoreUser
-            .dropFirst()
-            .sink { returnedUser in
-                expectation.fulfill()
-            }
-            .store(in: &cancellables)
-        
         vm.addListenerForCurrentUser { error in
-            if let error = error as? DBError, error == .failedUserRetrieval{
-                print("error")
+            if let _ = error {
+                XCTFail()
+            } else {
+                // Then
+                XCTAssertNotNil(vm.firestoreUser)
+                XCTAssertEqual(vm.firestoreUser?.id, "1")
+                XCTAssertEqual(vm.firestoreUser?.email, "john.doe@example.com")
+                XCTAssertFalse(vm.needUsername)
             }
         }
-        
-        // Then
-        wait(for: [expectation], timeout: 5)
-        
-        XCTAssertNotNil(vm.firestoreUser)
-        XCTAssertFalse(vm.needUsername)
     }
     
     func test_FirestoreViewModel_addListenerForCurrentUser_needUsername(){
         // Given
-        let currentUser = User(id: UUID().uuidString, email: "example@email.com")
+        let id = UUID().uuidString
+        let currentUser = User(id: id, email: "example@email.com")
         let mockDataSource = MockFirestoreDataSource(users: [currentUser])
         let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
         
         // When
-        let expectation = XCTestExpectation(description: "Should return first user after 3 seconds.")
-        
-        vm.$firestoreUser
-            .dropFirst()
-            .sink { returnedUser in
-                expectation.fulfill()
-            }
-            .store(in: &cancellables)
-        
         vm.addListenerForCurrentUser { error in
-            if let error = error as? DBError, error == .failedUserRetrieval{
-                print("error")
+            if let _ = error {
+                XCTFail()
+            } else {
+                // Then
+                XCTAssertNotNil(vm.firestoreUser)
+                XCTAssertEqual(vm.firestoreUser?.id, id)
+                XCTAssertEqual(vm.firestoreUser?.email, "example@email.com")
+                XCTAssertTrue(vm.needUsername)
             }
         }
+    }
+    
+    func test_FirestoreViewModel_addListenerForCurrentUser_ErrorUserRetrieval(){
+        // Given
+        let mockDataSource = MockFirestoreDataSource(users: [])
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
         
-        // Then
-        wait(for: [expectation], timeout: 5)
-        
-        XCTAssertNotNil(vm.firestoreUser)
-        XCTAssertTrue(vm.needUsername)
+        // When
+        vm.addListenerForCurrentUser { error in
+            guard let error = error as? DBError, error == .failedUserRetrieval else {
+                XCTFail()
+                return
+            }
+            XCTAssertEqual(vm.messageError, DBError.failedUserRetrieval.description)
+            XCTAssertFalse(vm.needUsername)
+            XCTAssertNil(vm.firestoreUser)
+        }
     }
     
     func test_FirestoreViewModel_fieldIsPresent_shouldBeTrue() async {
-        guard let vm = viewModel else {
-            XCTFail()
-            return
-        }
+        //Given
+        let mockDataSource = MockFirestoreDataSource()
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
         
         let field = "email"
         let value = "john.doe@example.com"
@@ -137,17 +110,13 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
         } catch {
             XCTFail("Error: \(error)")
         }
-        
-       
     }
 
     
     func test_FirestoreViewModel_fieldIsPresent_shouldBeFalse() async {
-        guard let vm = viewModel else {
-            XCTFail()
-            return
-        }
-        
+        //Given
+        let mockDataSource = MockFirestoreDataSource()
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
         let field = "email"
         let value = "nonexistentemail@example.com"  //this value doesn't exist in the 'Users' JSON.
         
@@ -158,13 +127,30 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
                XCTFail("Error: \(error)")
            }
        }
+    
+    func test_FirestoreViewModel_fieldIsPresent_shouldThrowError() async {
+        //Given
+        let mockDataSource = MockFirestoreDataSource(throwError: true)
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        
+        let field = "email"
+        let value = "nonexistentemail@example.com"  //this value doesn't exist in the 'Users' JSON.
+        
+        do {
+            let _ = try await vm.fieldIsPresent(field: field, value: value)
+            XCTFail()
+           } catch {
+               if let error = error as? DBError{
+                   XCTAssertEqual(error, DBError.badDBResponse)
+               }
+           }
+       }
 
     
     func test_FirestoreViewModel_fieldIsPresent_injectedValue_stress() async {
-        guard let vm = viewModel else {
-            XCTFail()
-            return
-        }
+        //Given
+        let mockDataSource = MockFirestoreDataSource()
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
         
         let fields = ["id", "email", "username", "birthDate", "image", "sex", "height", "weight"]
         
@@ -175,33 +161,34 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
             knownValues[field] = extractKnownValues(field: field)
         }
 
-            let randomField = fields.randomElement() ?? "id"
-            
-            // Decide whether to use a known value or a random UUID.
-            let useKnownValue = Bool.random()
-            let valueToQuery: String
-            
-            if useKnownValue, let knownValueForField = knownValues[randomField]?.randomElement() {
-                valueToQuery = knownValueForField
-            } else {
-                valueToQuery = UUID().uuidString
-            }
-
+        let randomField = fields.randomElement() ?? "id"
         
-            do {
-                let result = try await vm.fieldIsPresent(field: randomField, value: valueToQuery)
-                if useKnownValue {
-                    XCTAssertTrue(result, "Failed for known value \(valueToQuery) in field \(randomField)")
-                }
-                else {
-                    XCTAssertFalse(result)
-                }
-            } catch {
-                XCTFail("Error: \(error)")
+        // Decide whether to use a known value or a random UUID.
+        let useKnownValue = Bool.random()
+        let valueToQuery: String
+        
+        if useKnownValue, let knownValueForField = knownValues[randomField]?.randomElement() {
+            valueToQuery = knownValueForField
+        } else {
+            valueToQuery = UUID().uuidString
+        }
+
+    
+        do {
+            let result = try await vm.fieldIsPresent(field: randomField, value: valueToQuery)
+            if useKnownValue {
+                XCTAssertTrue(result, "Failed for known value \(valueToQuery) in field \(randomField)")
             }
+            else {
+                XCTAssertFalse(result)
+            }
+        } catch {
+            XCTFail("Error: \(error)")
+        }
     }
 
     func extractKnownValues(field: String) -> [String] {
+
         let users = loadJSON(filename: "Users", type: User.self)
         
         var values: [String] = []
@@ -240,11 +227,10 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
     }
     
     func test_FirestoreViewModel_addListenerForFriendsSubcollection_withSuccess(){
-        // Given
-        guard let vm = viewModel else {
-            XCTFail()
-            return
-        }
+        // Given : be sure that no other tests modify the mock
+        let friends = loadJSON(filename: "FriendsSubcollection", type: Friend.self)
+        let mockDataSource = MockFirestoreDataSource(friends: friends)
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
         
         // When
         let expectation = XCTestExpectation(description: "Should return friendsSubcollection after 3 seconds.")
@@ -260,11 +246,12 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
         
         // Then
         wait(for: [expectation], timeout: 5)
+        
         XCTAssertNotNil(vm.friendsSubcollection)
-        XCTAssertEqual(vm.friendsSubcollection.count, 3)
+        XCTAssertEqual(vm.friendsSubcollection, friends)
     }
     
-    func test_FirestoreViewModel_getRequests_withNotEmptyRequestsIds() {
+    func test_FirestoreViewModel_getRequests_withNotEmptyRequestsIds() async {
         // Given
         let loopCount: Int = Int.random(in: 1..<100)
         
@@ -282,72 +269,440 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
         let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
 
         // When
-        let expectation1 = XCTestExpectation(description: "Should return friendsSubcollection after a delay.")
+        let expectation = XCTestExpectation(description: "Should return friendsSubcollection after 3 seconds.")
+        
+        //Retrieve firends
         vm.$friendsSubcollection
             .dropFirst()
             .sink { returnedList in
-                expectation1.fulfill()
+                expectation.fulfill()
             }
             .store(in: &cancellables)
         
         vm.addListenerForFriendsSubcollection()
-        wait(for: [expectation1], timeout: 5)
+        
+        // Then
+        await fulfillment(of: [expectation], timeout: 5)
         
         XCTAssertEqual(vm.friendsSubcollection, friendsArray)
-        
-        let expectation2 = XCTestExpectation(description: "Should return requests after a delay.")
-        vm.$requests
-            .dropFirst()
-            .sink { returnedList in
-                expectation2.fulfill()
-            }
-            .store(in: &cancellables)
-        
-        vm.getRequests()
-        wait(for: [expectation2], timeout: 10)
-            
-        // Then
-        XCTAssertNotEqual(vm.requests, [])
-        XCTAssertEqual(vm.requests.count, friendsArray.count)
-        XCTAssertGreaterThan(vm.tasks.count, 0)
-    }
 
-    /*func test_FirestoreViewModel_modifyUser_shouldModify() async {
-        // Given
-        guard let vm = viewModel else {
-            XCTFail()
-            return
+        vm.getRequests()
+        
+        let task_request = vm.tasks.last
+        let _ = await task_request?.result
+
+        // Then
+   
+        XCTAssertEqual(vm.requests, usersArray)
+    }
+    
+    func test_FirestoreViewModel_getRequests_withFailure() async {
+        // Given : simulate right environment
+        let loopCount: Int = Int.random(in: 1..<100)
+        
+        var friendsArray: [Friend] = []
+        var usersArray: [User] = []
+        for _ in 0..<loopCount {
+            let newFriendId = UUID().uuidString
+            let newFriend = Friend(id: newFriendId, status: .Request)
+            let newUser = User(id: newFriendId, email: "\(newFriendId)@fakedomain.com")
+            friendsArray.append(newFriend)
+            usersArray.append(newUser)
         }
+        
+        //Make the mock thorugh a DBError
+        let mockDataSource = MockFirestoreDataSource(users : usersArray, friends: friendsArray,throwError: true)
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
 
         // When
-        let newValue = "example@gmail.com"
-
-        // Create a Task and directly await it
-        let task = Task {
-            vm.modifyUser(uid: "1", field: "email", value: newValue)
-        }
+        let expectation = XCTestExpectation(description: "Should return friendsSubcollection after 3 seconds.")
         
-        await task.value
-        
-        let expectation = XCTestExpectation(description: "Should return first user after 3 seconds.")
-
-        vm.$firestoreUser
+        vm.$friendsSubcollection
             .dropFirst()
-            .sink { returnedUser in
+            .sink { returnedList in
                 expectation.fulfill()
             }
             .store(in: &cancellables)
+        
+        vm.addListenerForFriendsSubcollection()
+        
+        // Then
+        await fulfillment(of: [expectation], timeout: 5, enforceOrder: false)
+        
+        XCTAssertEqual(vm.friendsSubcollection, friendsArray)
 
-        vm.addListenerForCurrentUser()
+        vm.getRequests()
+        
+        let task_request = vm.tasks.last
+        let _ = await task_request?.result
 
         // Then
-        await fulfillment(of: [expectation], timeout: 5) // Replaced the traditional wait(for:timeout:) method
-
-        XCTAssertEqual(vm.firestoreUser?.email, newValue)
-    }*/
-
+        XCTAssertEqual(vm.requests,[])
+        XCTAssertEqual(vm.messageError, DBError.badDBResponse.description)
+        
+    }
     
+    func test_FirestoreViewModel_modifyUser_withSuccess() async {
+        // Given
+        let mockDataSource = MockFirestoreDataSource()
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        
+        //When
+        vm.modifyUser(uid: "1", field: "email", value: "test@test.com")
+        
+        let task_request = vm.tasks.last
+        let _ = await task_request?.result
+        
+        vm.addListenerForCurrentUser { error in
+            if let _ = error {
+                XCTFail()
+            } else {
+                XCTAssertEqual(vm.firestoreUser?.email, "test@test.com")
+                XCTAssertNil(vm.messageError)
+            }
+        }
+        
+    }
+    
+    func test_FirestoreViewModel_modifyUser_withFailure() async {
+        // Given
+        let mockDataSource = MockFirestoreDataSource(throwError: true)
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        
+        //When
+        vm.modifyUser(uid: "1", field: "email", value: "test@test.com")
+        
+        let task_request = vm.tasks.last
+        let _ = await task_request?.result
+        
+        vm.addListenerForCurrentUser { error in
+            if let _ = error {
+                XCTFail()
+            } else {
+                XCTAssertEqual(vm.firestoreUser?.email, "john.doe@example.com")
+                XCTAssertEqual(vm.messageError, DBError.badDBResponse.description)
+            }
+        }
+        
+    }
+    
+    func test_FirestoreViewModel_modifyUserRecord_withSuccess() async {
+        // Given
+        let mockDataSource = MockFirestoreDataSource()
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        //When
+        let records: [BaseActivity] = [
+            BaseActivity(id:"activeEnergyBurned", quantity: 400),
+            BaseActivity(id:"appleExerciseTime", quantity: 65),
+            BaseActivity(id:"appleStandTime", quantity: 23),
+            BaseActivity(id:"distanceWalkingRunning", quantity: 320),
+            BaseActivity(id:"stepCount", quantity: 3456),
+            BaseActivity(id:"distanceCycling", quantity: 12)
+        ]
+        
+        vm.modifyUser(uid: "1", field: "records", records: records)
+        
+        let task_request = vm.tasks.last
+        let _ = await task_request?.result
+        
+        vm.addListenerForCurrentUser { error in
+            if let _ = error {
+                XCTFail()
+            } else {
+                XCTAssertEqual(vm.firestoreUser?.records, records)
+                XCTAssertEqual(vm.messageError, nil)
+            }
+        }
+    }
+    
+    func test_FirestoreViewModel_addRequest_withSuccess() async {
+        //Given : no friends
+        let mockDataSource = MockFirestoreDataSource(friends: [])
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        
+        // When : add a user in .Waiting status
+        vm.addRequest(uid: "1", friendId: "2")
+        
+        let task_addRequest = vm.tasks.last
+        let _ = await task_addRequest?.result
+        
+        let expectation = XCTestExpectation(description: "Should return friendsSubcollection after 3 seconds.")
+        
+        vm.$friendsSubcollection
+            .dropFirst()
+            .sink { returnedList in
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        vm.addListenerForFriendsSubcollection()
+        
+        // Then
+        await fulfillment(of: [expectation], timeout: 5, enforceOrder: false)
+        
+        let result = vm.getFriendStatus(friendId: "2")
+        
+        XCTAssertEqual(result, .Waiting)
+        XCTAssertEqual(vm.friendsSubcollection.count, 1)
+    }
+    
+    
+    func test_FirestoreViewModel_addRequest_withFailure() async {
+        //Given : no friends, with error
+        let mockDataSource = MockFirestoreDataSource(friends: [],throwError: true)
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        
+        // When : try to add request
+        vm.addRequest(uid: "1", friendId: "2")
+        
+        let task_addRequest = vm.tasks.last
+        let _ = await task_addRequest?.result
+        
+        let expectation = XCTestExpectation(description: "Should return friendsSubcollection after 3 seconds.")
+        
+        vm.$friendsSubcollection
+            .dropFirst()
+            .sink { returnedList in
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        vm.addListenerForFriendsSubcollection()
+        
+        // Then
+        await fulfillment(of: [expectation], timeout: 5, enforceOrder: false)
+        
+        let result = vm.getFriendStatus(friendId: "2")
+        
+        XCTAssertEqual(result,nil)
+        XCTAssertEqual(vm.friendsSubcollection.count, 0)
+        XCTAssertEqual(vm.messageError, DBError.badDBResponse.description)
+    }
+    
+    func test_FirestoreViewModel_removeFriend_withSuccess() async {
+        // Given: 1 friends in .Confirmed status
+        let friend : Friend = Friend(id: "2", status: .Confirmed)
+        let mockDataSource = MockFirestoreDataSource(friends: [friend])
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        
+        // When
+        vm.removeFriend(uid: "1", friendId:"2")
+        
+        let task_removeFriend = vm.tasks.last
+        let _ = await task_removeFriend?.result
+        
+        let expectation = XCTestExpectation(description: "Should return friendsSubcollection after 3 seconds.")
+        
+        vm.$friendsSubcollection
+            .dropFirst()
+            .sink { returnedList in
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        vm.addListenerForFriendsSubcollection()
+        
+        // Then
+        await fulfillment(of: [expectation], timeout: 5, enforceOrder: false)
+        
+        XCTAssertEqual(vm.friendsSubcollection,[])
+    }
+    
+    func test_FirestoreViewModel_removeFriend_withFailure() async {
+        // Given: 1 friends in .Confirmed status
+        let friend : Friend = Friend(id: "2", status: .Confirmed)
+        let mockDataSource = MockFirestoreDataSource(friends: [friend],throwError: true)
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        
+        // When
+        vm.removeFriend(uid: "1", friendId:"2")
+        
+        let task_removeFriend = vm.tasks.last
+        let _ = await task_removeFriend?.result
+        
+        let expectation = XCTestExpectation(description: "Should return friendsSubcollection after 3 seconds.")
+        
+        vm.$friendsSubcollection
+            .dropFirst()
+            .sink { returnedList in
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        vm.addListenerForFriendsSubcollection()
+        
+        // Then
+        await fulfillment(of: [expectation], timeout: 5, enforceOrder: false)
+        
+        XCTAssertEqual(vm.friendsSubcollection.count, 1)
+        XCTAssertEqual(vm.getFriendStatus(friendId: "2"), .Confirmed)
+        XCTAssertEqual(vm.messageError, DBError.badDBResponse.description)
+    }
+    
+    func test_FirestoreViewModel_confirmFriend_withSuccess() async {
+        // Given: 1 friends in .Request status
+        let friend : Friend = Friend(id: "2", status: .Request)
+        let mockDataSource = MockFirestoreDataSource(friends: [friend],throwError: false)
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        
+        // When
+        vm.confirmFriend(uid: "1", friendId: "2")
+        
+        let task_confirmFriend = vm.tasks.last
+        let _ = await task_confirmFriend?.result
+        
+        let expectation = XCTestExpectation(description: "Should return friendsSubcollection after 3 seconds.")
+        
+        vm.$friendsSubcollection
+            .dropFirst()
+            .sink { returnedList in
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        vm.addListenerForFriendsSubcollection()
+        
+        // Then
+        await fulfillment(of: [expectation], timeout: 5, enforceOrder: false)
+        
+        let result = vm.getFriendStatus(friendId: "2")
+        
+        XCTAssertEqual(vm.friendsSubcollection.count, 1)
+        XCTAssertEqual(result, .Confirmed)
+    }
+    
+    func test_FirestoreViewModel_confirmFriend_withFailure() async {
+        //Given: 1 request and the data source that throw an error
+        let friend : Friend = Friend(id: "2", status: .Request)
+        let mockDataSource = MockFirestoreDataSource(friends: [friend],throwError: true)
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        
+        // When
+        vm.confirmFriend(uid: "1", friendId: "2")
+        
+        let task_confirmFriend = vm.tasks.last
+        let _ = await task_confirmFriend?.result
+        
+        let expectation = XCTestExpectation(description: "Should return friendsSubcollection after 3 seconds.")
+        
+        vm.$friendsSubcollection
+            .dropFirst()
+            .sink { returnedList in
+                expectation.fulfill()
+            }
+            .store(in: &cancellables)
+        
+        vm.addListenerForFriendsSubcollection()
+        
+        // Then
+        await fulfillment(of: [expectation], timeout: 5, enforceOrder: false)
+        
+        let result = vm.getFriendStatus(friendId: "2")
+        
+        XCTAssertEqual(vm.friendsSubcollection.count, 1)
+        XCTAssertEqual(result, .Request)
+        XCTAssertEqual(vm.messageError, DBError.badDBResponse.description)
+    }
+    
+    func test_FirestoreViewModel_updateDailyScore_withSuccess() async {
+        // Given
+        let mockDataSource = MockFirestoreDataSource(throwError: false)
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        
+        // When
+        let newScore = Int.random(in: 0...300)
+        let today = (Calendar.current.component(.weekday, from: Date()) + 5) % 7
+        vm.updateDailyScores(uid: "1", newScore: newScore)
+        
+        let task_updateScore = vm.tasks.last
+        let _ = await task_updateScore?.result
 
+        vm.addListenerForCurrentUser { error in
+            if let _ = error {
+                XCTFail()
+            } else {
+                // Then
+                XCTAssertEqual(vm.firestoreUser?.dailyScores[today],newScore)
+            }
+        }
+ 
+    }
+    
+    func test_FirestoreViewModel_updateDailyScore_withFailure() async {
+        // Given
+        let mockDataSource = MockFirestoreDataSource(throwError: true)
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        
+        // When
+        let oldScores = [10, 15, 12, 20, 14, 22, 13, 106]
+        let newScore = 23
+        let today = (Calendar.current.component(.weekday, from: Date()) + 5) % 7
+        vm.updateDailyScores(uid: "1", newScore: newScore)
+        
+        let task_updateScore = vm.tasks.last
+        let _ = await task_updateScore?.result
+        
+        vm.addListenerForCurrentUser { error in
+            if let _ = error {
+                XCTFail()
+            } else {
+                // Then
+                XCTAssertEqual(vm.firestoreUser?.dailyScores[today],oldScores[today])
+                XCTAssertEqual(vm.messageError, DBError.badDBResponse.description)
+            }
+        }
+    }
+    
+    func test_FirestoreViewModel_deleteUserData_withSuccess() async {
+        // Given
+        let user = User(id: "testId", email: "test@test.com")
+        let mockDataSource = MockFirestoreDataSource(users: [user], throwError: false)
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        
+        /// When
+        do {
+            
+            try await vm.deleteUserData(uid: "testId")
+
+            vm.addListenerForCurrentUser { error in
+                if let _ = error {
+                    XCTAssertNil(vm.firestoreUser)
+                } else {
+                    XCTFail()
+                }
+            }
+        } catch {
+            XCTFail("Unexpected error: \(error)")
+        }
+    }
+    
+    func test_FirestoreViewModel_deleteUserData_withFailure() async {
+        // Given
+        let user = User(id: "testId", email: "test@test.com")
+        let mockDataSource = MockFirestoreDataSource(users: [user], throwError: true)
+        let vm = FirestoreViewModel(firestoreRepository: FirestoreRepository(withDataSource: mockDataSource))
+        
+        // When
+        do {
+            try await vm.deleteUserData(uid: "testId")
+            XCTFail("Expected to throw DBError.badDBResponse, but it did not.")
+        } catch {
+            // Ensure the thrown error is the one we expect
+            XCTAssertEqual(error as? DBError, DBError.badDBResponse)
+        }
+
+        vm.addListenerForCurrentUser { error in
+            if let _ = error {
+                XCTFail()
+            } else {
+                // Then
+                XCTAssertNotNil(vm.firestoreUser)
+                XCTAssertEqual(vm.firestoreUser?.id, "testId")
+                XCTAssertEqual(vm.firestoreUser?.email, "test@test.com")
+            }
+        }
+    }
+    
     
     func test_FirestoreViewModel_getFriendStatus_injectedValues_shouldSuccess(){
         //Given
@@ -386,6 +741,8 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
         }
         
     }
+    
+    
     
     func test_FirestoreViewModel_getFriendsIdsWithStatus_injectedValues_injectedValues_shouldSuccess() {
         //Given

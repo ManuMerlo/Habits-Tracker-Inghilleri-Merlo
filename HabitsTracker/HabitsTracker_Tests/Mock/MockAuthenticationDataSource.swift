@@ -55,12 +55,7 @@ final class MockAuthenticationDataSource : AuthenticationDataSource{
         }
         return User(id: "googleId", email: "google@test.com")
     }
-    
-    func linkGoogle() async throws {
-        if throwErrors {
-            throw AuthenticationError.userNotLogged
-        }
-    }
+
     
     func logout() throws {
         if throwErrors {
@@ -78,14 +73,23 @@ final class MockAuthenticationDataSource : AuthenticationDataSource{
         }
     }
     
-    func getCurrentCredential() -> AuthCredential? {
-        return authCredential
+    func linkEmailAndPassword(email: String, password: String) async throws {
+        if email.isEmpty || password.isEmpty {
+            throw AuthenticationError.missingCredential
+        }
+        else if throwErrors {
+            throw AuthenticationError.userNotLogged
+        }
     }
     
-    func linkEmailAndPassword(email: String, password: String) async throws {
+    func linkGoogle() async throws {
         if throwErrors {
             throw AuthenticationError.userNotLogged
         }
+    }
+    
+    func getCurrentCredential() -> AuthCredential? {
+        return authCredential
     }
     
     func deleteUser() async throws {

@@ -11,6 +11,7 @@ enum AuthenticationError: Error {
 
 enum DBError: Error {
     case failedUserRetrieval
+    case badDBResponse
 }
 
 enum ViewError: Error {
@@ -37,7 +38,10 @@ extension DBError: CustomStringConvertible {
         switch self {
         case .failedUserRetrieval:
             return "Failed to retrieve or convert current User information."
+        case .badDBResponse:
+            return "Failed to to connect to the Database."
         }
+        
     }
 }
 

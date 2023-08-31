@@ -5,16 +5,20 @@ final class MockFirestoreDataSource : FirestoreDataSourceProtocol, Mockable{
     
     var inMemoryUsers: [User] = []
     var inMemoryFriends: [Friend] = []
-    
-    init(){
+    var throwError: Bool = false
+
+    // Default Initialization
+    init() {
         inMemoryUsers = loadJSON(filename: "Users", type: User.self)
         inMemoryFriends = loadJSON(filename: "FriendsSubcollection", type: Friend.self)
+        throwError = false
     }
-    
-    // Initialization with provided users and/or friends
-    init(users: [User]? = nil, friends: [Friend]? = nil) {
-        inMemoryUsers = users ?? loadJSON(filename: "Users", type: User.self)
-        inMemoryFriends = friends ?? loadJSON(filename: "FriendsSubcollection", type: Friend.self)
+
+    // Initialization with provided users, friends, and throwError value
+    init(users: [User]? = nil, friends: [Friend]? = nil, throwError: Bool? = false) {
+        self.inMemoryUsers = users ?? loadJSON(filename: "Users", type: User.self)
+        self.inMemoryFriends = friends ?? loadJSON(filename: "FriendsSubcollection", type: Friend.self)
+        self.throwError = throwError ?? false
     }
     
     // Add listener for current user
@@ -36,37 +40,42 @@ final class MockFirestoreDataSource : FirestoreDataSourceProtocol, Mockable{
     
     // Mock logic for checking if field is present
     func fieldIsPresent(field: String, value: String) async throws -> Bool {
-        for user in inMemoryUsers {
-            switch field {
-            case "id":
-                if user.id == value { return true }
-            case "email":
-                if user.email == value { return true }
-            case "username":
-                if user.username == value { return true }
-            case "birthDate":
-                if user.birthDate == value { return true }
-            case "image":
-                if user.image == value { return true }
-            case "dailyGlobal":
-                if let dailyGlobal = user.dailyGlobal, "\(dailyGlobal)" == value { return true }
-            case "dailyPrivate":
-                if let dailyPrivate = user.dailyPrivate, "\(dailyPrivate)" == value { return true }
-            case "weeklyGlobal":
-                if let weeklyGlobal = user.weeklyGlobal, "\(weeklyGlobal)" == value { return true }
-            case "weeklyPrivate":
-                if let weeklyPrivate = user.weeklyPrivate, "\(weeklyPrivate)" == value { return true }
-            case "sex":
-                if user.sex?.rawValue == value { return true }
-            case "height":
-                if let height = user.height, "\(height)" == value { return true }
-            case "weight":
-                if let weight = user.weight, "\(weight)" == value { return true }
-            default:
-                continue
+        if throwError{
+            throw DBError.badDBResponse
+        } else {
+            
+            for user in inMemoryUsers {
+                switch field {
+                case "id":
+                    if user.id == value { return true }
+                case "email":
+                    if user.email == value { return true }
+                case "username":
+                    if user.username == value { return true }
+                case "birthDate":
+                    if user.birthDate == value { return true }
+                case "image":
+                    if user.image == value { return true }
+                case "dailyGlobal":
+                    if let dailyGlobal = user.dailyGlobal, "\(dailyGlobal)" == value { return true }
+                case "dailyPrivate":
+                    if let dailyPrivate = user.dailyPrivate, "\(dailyPrivate)" == value { return true }
+                case "weeklyGlobal":
+                    if let weeklyGlobal = user.weeklyGlobal, "\(weeklyGlobal)" == value { return true }
+                case "weeklyPrivate":
+                    if let weeklyPrivate = user.weeklyPrivate, "\(weeklyPrivate)" == value { return true }
+                case "sex":
+                    if user.sex?.rawValue == value { return true }
+                case "height":
+                    if let height = user.height, "\(height)" == value { return true }
+                case "weight":
+                    if let weight = user.weight, "\(weight)" == value { return true }
+                default:
+                    continue
+                }
             }
+            return false
         }
-        return false
     }
     
     
@@ -88,10 +97,13 @@ final class MockFirestoreDataSource : FirestoreDataSourceProtocol, Mockable{
             return []
         }
         
-        try await Task.sleep(nanoseconds: 3_000_000_000)
-                
-        return inMemoryUsers.filter{ requestFriendsIDs.contains($0.id) }
-
+        if throwError {
+            throw DBError.badDBResponse
+        }
+        else {
+            try await Task.sleep(nanoseconds: 3_000_000_000)
+            return inMemoryUsers.filter{ requestFriendsIDs.contains($0.id) }
+        }
     }
     
     func addNewUser(user: User) {
@@ -101,23 +113,26 @@ final class MockFirestoreDataSource : FirestoreDataSourceProtocol, Mockable{
     func modifyUser(uid: String, field: String, value: Any) async throws {
         let encoder = JSONEncoder()
         let decoder = JSONDecoder()
-        
-        for (index, user) in inMemoryUsers.enumerated() where user.id == uid {
-            do {
-                let userData = try encoder.encode(user)
-                var userDict = try JSONSerialization.jsonObject(with: userData, options: .mutableContainers) as! [String: Any]
-                
-                userDict[field] = value
-                
-                let updatedUserData = try JSONSerialization.data(withJSONObject: userDict, options: .fragmentsAllowed)
-                let updatedUser = try decoder.decode(User.self, from: updatedUserData)
-                
-                try await Task.sleep(nanoseconds: 3_000_000_000)
-                inMemoryUsers[index] = updatedUser
-                return
-                
-            } catch {
-                throw error
+        if throwError{
+            throw DBError.badDBResponse
+        } else {
+            for (index, user) in inMemoryUsers.enumerated() where user.id == uid {
+                do {
+                    let userData = try encoder.encode(user)
+                    var userDict = try JSONSerialization.jsonObject(with: userData, options: .mutableContainers) as! [String: Any]
+                    
+                    userDict[field] = value
+                    
+                    let updatedUserData = try JSONSerialization.data(withJSONObject: userDict, options: .fragmentsAllowed)
+                    let updatedUser = try decoder.decode(User.self, from: updatedUserData)
+                    
+                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                    inMemoryUsers[index] = updatedUser
+                    return
+                    
+                } catch {
+                    throw error
+                }
             }
         }
     }
@@ -131,50 +146,65 @@ final class MockFirestoreDataSource : FirestoreDataSourceProtocol, Mockable{
     
     // Mock logic for adding friend request
     func addRequest(uid: String, friendId: String) async throws {
-        let friend = Friend(id: friendId, status: .Waiting)
-        try await Task.sleep(nanoseconds: 3_000_000_000)
-        inMemoryFriends.append(friend)
-        
+        if throwError{
+            throw DBError.badDBResponse
+        } else {
+            let friend = Friend(id: friendId, status: .Waiting)
+            try await Task.sleep(nanoseconds: 3_000_000_000)
+            inMemoryFriends.append(friend)
+        }
     }
     
     // Mock logic to remove a friend
     func removeFriend(uid: String, friendId: String) async throws {
-        try await Task.sleep(nanoseconds: 3_000_000_000)
-        inMemoryFriends.removeAll { $0.id == friendId }
-        
+        if throwError{
+            throw DBError.badDBResponse
+        } else {
+            try await Task.sleep(nanoseconds: 3_000_000_000)
+            if let index = inMemoryFriends.firstIndex(where: { $0.id == friendId && $0.status == .Confirmed }) {
+                inMemoryFriends.remove(at: index)
+            }
+        }
     }
     
     // Mock logic to confirm a friend
     func confirmFriend(uid: String, friendId: String) async throws {
+        if throwError{
+            throw DBError.badDBResponse
+        } else {
         // Find the friend with the given friendId
-        if let index = inMemoryFriends.firstIndex(where: { $0.id == friendId }) {
-            
-            // Sleep for 3 seconds
-            try await Task.sleep(nanoseconds: 3_000_000_000)
-            
-            // Modify the friend's status
-            inMemoryFriends[index].status = .Confirmed
-            
+            if let index = inMemoryFriends.firstIndex(where: { $0.id == friendId && $0.status == .Request }) {
+                
+                    // Sleep for 3 seconds
+                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                    
+                    // Modify the friend's status
+                  
+                    inMemoryFriends[index].status = .Confirmed
+                }
+            }
         }
-    }
-    
-    
+
     // Function to update/set an array in a user's document
     func updateDailyScores(uid: String, newScore: Int) async throws {
-        for (index, user) in inMemoryUsers.enumerated() {
-            // Search the user
-            if user.id == uid {
-                var scoresArray = user.dailyScores
-                let today = (Calendar.current.component(.weekday, from: Date()) + 5) % 7
-                scoresArray[today] = newScore
-                let scoresInRange = scoresArray[0...today]
-                scoresArray[7] = scoresInRange.reduce(0, +)
-                
-                // Simulate the delay in updating
-                try await Task.sleep(nanoseconds: 3_000_000_000)
-                
-                // Update the local variable
-                inMemoryUsers[index].dailyScores = scoresArray
+        if throwError {
+            throw DBError.badDBResponse
+        } else {
+            for (index, user) in inMemoryUsers.enumerated() {
+                // Search the user
+                if user.id == uid {
+                    var scoresArray = user.dailyScores
+                    let today = (Calendar.current.component(.weekday, from: Date()) + 5) % 7
+                    scoresArray[today] = newScore
+                    let scoresInRange = scoresArray[0...today]
+                    scoresArray[7] = scoresInRange.reduce(0, +)
+                    
+                    // Simulate the delay in updating
+                    try await Task.sleep(nanoseconds: 3_000_000_000)
+                    
+                    // Update the local variable
+                    inMemoryUsers[index].dailyScores = scoresArray
+                }
             }
         }
     }
@@ -182,11 +212,14 @@ final class MockFirestoreDataSource : FirestoreDataSourceProtocol, Mockable{
     
     // Fuction to delete user's document
     func deleteUserData(uid: String) async throws {
-        // Simulate the delay in deleting
-        try await Task.sleep(nanoseconds: 3_000_000_000)
-        
-        inMemoryUsers.removeAll { $0.id == uid }
-        
+        if throwError{
+            throw DBError.badDBResponse
+        } else {
+            // Simulate the delay in deleting
+            try await Task.sleep(nanoseconds: 3_000_000_000)
+            
+            inMemoryUsers.removeAll { $0.id == uid }
+        }
     }
     
     

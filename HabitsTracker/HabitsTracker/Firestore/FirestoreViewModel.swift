@@ -44,8 +44,8 @@ final class FirestoreViewModel: ObservableObject {
                     self?.needUsername = true
                 }
                 completion(nil) // No error occurred
-            case .failure(let error):
-                self?.messageError = error.localizedDescription
+            case .failure(_):
+                self?.messageError = DBError.failedUserRetrieval.description
                 completion(DBError.failedUserRetrieval)
             }
         }
@@ -74,6 +74,9 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 requests = try await firestoreRepository.getRequests(requestFriendsIDs: getFriendsIdsWithStatus(status: FriendStatus.Request))
             } catch {
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
                 print("!!! Error while fetching the requests: \( error.localizedDescription)")
             }
         }
@@ -90,6 +93,9 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.addRequest(uid: uid, friendId: friendId)
             } catch {
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
                 print(error.localizedDescription)
             }
         }
@@ -101,6 +107,9 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.removeFriend(uid: uid, friendId: friendId)
             } catch {
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
                 print(error.localizedDescription)
             }
         }
@@ -112,6 +121,9 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.confirmFriend(uid: uid, friendId: friendId)
             } catch {
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
                 print(error.localizedDescription)
             }
         }
@@ -123,6 +135,9 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.modifyUser(uid:uid, field: field, value: value)
             } catch {
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
                 print(error.localizedDescription)
             }
         }
@@ -135,6 +150,9 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.modifyUser(uid: uid, field: field, records: records)
             } catch {
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
                 print(error.localizedDescription)
             }
         }
@@ -146,6 +164,9 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.updateDailyScores(uid: uid, newScore: newScore)
             } catch {
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
                 print(error)
                 // FIXME: error
             }
