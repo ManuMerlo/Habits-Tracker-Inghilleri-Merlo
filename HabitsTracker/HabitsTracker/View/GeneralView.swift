@@ -9,6 +9,7 @@ struct GeneralView: View {
     
     @State var textFieldValue: String = ""
     @State private var didAppear: Bool = false
+    @State private var showAlerErrorUserRetrival: Bool = false
     
     var body: some View {
         Group {
@@ -108,11 +109,18 @@ struct GeneralView: View {
              }*/
             firestoreViewModel.addListenerForCurrentUser { error in
                 if let error = error as? DBError, error == .failedUserRetrieval{
-                    authenticationViewModel.logout()
+                    showAlerErrorUserRetrival.toggle()
                 }
             }
         }.onDisappear{
             firestoreViewModel.removeListenerForCurrentUser()
+        }.alert("Error", isPresented: $showAlerErrorUserRetrival ) {
+            Button("Ok", action: {
+                authenticationViewModel.logout()
+            }
+            )
+        } message: {
+            Text("An error occurred during user data recovery. Please try again later.")
         }
         
         

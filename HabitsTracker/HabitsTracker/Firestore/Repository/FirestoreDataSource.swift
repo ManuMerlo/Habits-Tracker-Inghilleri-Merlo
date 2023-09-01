@@ -56,6 +56,7 @@ final class FirestoreDataSource : FirestoreDataSourceProtocol {
                         }
                     } catch {
                         print(error)
+                        completionBlock(.failure(error))
                     }
                 }
             }
