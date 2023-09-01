@@ -140,13 +140,22 @@ struct SigninView: View {
                 Text("Sign in")
                     .font(.title)
                     .fontWeight(.semibold)
+                    .accessibilityIdentifier("SignInTitle")
                 
                 CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmailSignin)
                     .frame(width: getMaxWidth())
+                    .accessibilityIdentifier("SignInEmail")
                 
                 CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPasswordSignin)
                     .frame(width: getMaxWidth())
+                    .accessibilityIdentifier("SignInPassword")
                 
+                if let messageError = authenticationViewModel.messageError {
+                    Text(messageError)
+                        .font(.body)
+                        .foregroundColor(.red)
+                        .accessibilityIdentifier("MessageErrorSignIn")
+                }
                 
                 Button("Forgot the password?") {
                     showResetPasswordModal.toggle()
@@ -154,7 +163,7 @@ struct SigninView: View {
                 
                 Button {
                     guard authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmailSignin), !authenticationViewModel.textFieldPasswordSignin.isEmpty else {
-                        print("Empty email or password")
+                        authenticationViewModel.messageError = "Empty email or password"
                         return
                     }
                     authenticationViewModel.login()
@@ -168,16 +177,7 @@ struct SigninView: View {
                             .foregroundColor(.white)
                             .cornerRadius(10)
                             .contentTransition(.identity)
-                        
                     }
-                }
-                
-                // TODO: it must disappear.
-                if let messageError = authenticationViewModel.messageError {
-                    Text(messageError)
-                        .font(.body)
-                        .foregroundColor(.red)
-                        .padding()
                 }
             }
             
@@ -204,7 +204,7 @@ struct SigninView: View {
                                 firestoreViewModel.addNewUser(user: userGoogle)
                             }
                         } catch {
-                            print(error.localizedDescription)
+                            authenticationViewModel.messageError = "Failed sign in with Google. Retry."
                         }
                     }
                     
@@ -233,7 +233,7 @@ struct SigninView: View {
                                 firestoreViewModel.addNewUser(user: userFacebook)
                             }
                         } catch {
-                            print(error.localizedDescription)
+                            authenticationViewModel.messageError = "Failed sign in with Facebook. Retry."
                         }
                     }
                 } label: {
@@ -264,7 +264,7 @@ struct SigninView: View {
                 } label: {
                     Text("Don't have an account? Sign up")
                         .foregroundColor(.blue)
-                }
+                }.accessibilityIdentifier("navigationLinkSignUp")
             }
             
         }

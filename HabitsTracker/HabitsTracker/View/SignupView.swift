@@ -70,16 +70,21 @@ struct SignupView: View {
                 .multilineTextAlignment(.center)
                 .fontWeight(.semibold)
                 .lineSpacing(10)
+                .accessibilityIdentifier("SignUpTitle")
             
             Group{
                 
                 CustomTextField(isSecure: false, hint: "Username", imageName: "person", text: $authenticationViewModel.textFieldUsername)
+                    .accessibilityIdentifier("SignUpUsername")
                 
                 CustomTextField(isSecure: false, hint: "Email", imageName:"envelope", text: $authenticationViewModel.textFieldEmail)
+                    .accessibilityIdentifier("SignUpEmail")
                 
                 CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPassword)
+                    .accessibilityIdentifier("SignUpPassword")
                 
                 CustomTextField(isSecure:true,hint: "Repeat password", imageName: "lock",text: $authenticationViewModel.repeatPassword)
+                    .accessibilityIdentifier("SignUpRepeatPassword")
                 
             }.frame(width: getMaxWidth())
             
@@ -111,18 +116,17 @@ struct SignupView: View {
                                 }
                                 var user = try await authenticationViewModel.createNewUser()
                                 print("Success, user created with email and password")
-                                //try await Task.sleep(nanoseconds: 10_000_000_000)
-                                //print("!!!Fatto")
                                 user.setUsername(name: authenticationViewModel.textFieldUsername)
                                 firestoreViewModel.addNewUser(user: user)
-                                //authenticationViewModel.user = user
                                 print("Success, user added to firestore")
+                            } catch ViewError.usernameEmailPasswordNotFound {
+                                authenticationViewModel.messageError = ViewError.usernameEmailPasswordNotFound.description
                             } catch AuthenticationError.emailAlreadyExists {
                                 authenticationViewModel.messageError = AuthenticationError.emailAlreadyExists.description
                             } catch AuthenticationError.usernameAlreadyExists {
                                 authenticationViewModel.messageError = AuthenticationError.usernameAlreadyExists.description
                             } catch {
-                                print(error.localizedDescription)
+                                authenticationViewModel.messageError = "Failed to create the account. Retry."
                             }
                         }
             } label: {
@@ -142,6 +146,7 @@ struct SignupView: View {
                     .font(.body)
                     .foregroundColor(.red)
                     .padding()
+                    .accessibilityIdentifier("MessageErrorSignUp")
             }
             
         }.onAppear{

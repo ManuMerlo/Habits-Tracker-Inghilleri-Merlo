@@ -87,6 +87,7 @@ struct ProvidersDetailView: View {
             
             .scrollContentBackground(.hidden)
         }
+        .accessibilityIdentifier("ProvidersVStack")
         .frame(maxWidth: .infinity)
         .foregroundColor(.white.opacity(0.7))
         .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500))

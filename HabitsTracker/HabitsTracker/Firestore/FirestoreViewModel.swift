@@ -4,15 +4,28 @@ import Combine
 @MainActor
 final class FirestoreViewModel: ObservableObject {
     private let firestoreRepository: FirestoreRepository
-    private var tasks: [Task<Void, Never>] = []
+    // Changed from private to privite set for tests purposes
+    private(set) var tasks: [Task<Void, Never>] = []
     
+    //TODO: allUsers is not used ( in case we decide to use it we need to tests its initial value)
     @Published var allUsers: [User] = []
     @Published var messageError: String?
     @Published /*private(set)*/ var firestoreUser: User? = nil // TODO: set
     @Published var needUsername: Bool = false
     @Published var requests: [User] = []
+    @Published private(set) var friendsSubcollection: [Friend] = []
     
     //private var cancellables: Set<AnyCancellable> = []
+    
+    // Default initializer
+    init(firestoreRepository: FirestoreRepository = FirestoreRepository()) {
+        self.firestoreRepository = firestoreRepository
+    }
+    
+    // Initializer for test purposes
+    init(withRepository firestoreRepository: FirestoreRepository) {
+        self.firestoreRepository = firestoreRepository
+    }
     
     // function to cancel all tasks
     func cancelTasks() {
@@ -20,13 +33,7 @@ final class FirestoreViewModel: ObservableObject {
         tasks = []
     }
     
-    @Published private(set) var friendsSubcollection: [Friend] = []
-    
-    init(firestoreRepository: FirestoreRepository = FirestoreRepository()) {
-        self.firestoreRepository = firestoreRepository
-    }
-
-    func addListenerForCurrentUser() {
+    func addListenerForCurrentUser(completion: @escaping (Error?) -> Void) {
         firestoreRepository.addListenerForCurrentUser { [weak self] result in
             switch result {
             case .success(let user):
@@ -36,8 +43,10 @@ final class FirestoreViewModel: ObservableObject {
                 } else {
                     self?.needUsername = true
                 }
-            case .failure(let error):
-                self?.messageError = error.localizedDescription
+                completion(nil) // No error occurred
+            case .failure(_):
+                self?.messageError = DBError.failedUserRetrieval.description
+                completion(DBError.failedUserRetrieval)
             }
         }
     }
@@ -65,12 +74,15 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 requests = try await firestoreRepository.getRequests(requestFriendsIDs: getFriendsIdsWithStatus(status: FriendStatus.Request))
             } catch {
-                print(error.localizedDescription)
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
+                print("!!! Error while fetching the requests: \( error.localizedDescription)")
             }
         }
         tasks.append(task)
     }
-
+    
     func addNewUser(user: User) {
         firestoreRepository.addNewUser(user: user)
         print("User with email \(user.email) added to firestore")
@@ -81,6 +93,9 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.addRequest(uid: uid, friendId: friendId)
             } catch {
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
                 print(error.localizedDescription)
             }
         }
@@ -92,6 +107,9 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.removeFriend(uid: uid, friendId: friendId)
             } catch {
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
                 print(error.localizedDescription)
             }
         }
@@ -103,6 +121,9 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.confirmFriend(uid: uid, friendId: friendId)
             } catch {
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
                 print(error.localizedDescription)
             }
         }
@@ -114,6 +135,9 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.modifyUser(uid:uid, field: field, value: value)
             } catch {
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
                 print(error.localizedDescription)
             }
         }
@@ -126,6 +150,9 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.modifyUser(uid: uid, field: field, newScores: newScores)
             } catch {
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
                 print(error.localizedDescription)
             }
         }
@@ -137,8 +164,11 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.updateDailyScores(uid: uid, newScore: newScore)
             } catch {
+                if let error = error as? DBError, error == .badDBResponse{
+                    self.messageError = error.description
+                }
                 print(error)
-                // FIXME:error
+                // FIXME: error
             }
         }
         tasks.append(task)
@@ -151,12 +181,12 @@ final class FirestoreViewModel: ObservableObject {
     func getFriendStatus(friendId: String) -> FriendStatus? {
         return friendsSubcollection.first { friend in
             friend.id == friendId
-                }?.status
+        }?.status
     }
     
     func getFriendsIdsWithStatus(status: FriendStatus) -> [String] {
-            return friendsSubcollection.filter { friend in
-                friend.status == status
-            }.map { $0.id }
-        }
+        return friendsSubcollection.filter { friend in
+            friend.status == status
+        }.map { $0.id }
+    }
 }

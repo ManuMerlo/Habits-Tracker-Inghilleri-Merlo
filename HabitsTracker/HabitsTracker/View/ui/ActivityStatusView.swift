@@ -1,10 +1,3 @@
-//
-//  ActivityStatusView.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 11/08/23.
-//
-
 import SwiftUI
 
 struct ActivityStatusView: View {
@@ -17,6 +10,7 @@ struct ActivityStatusView: View {
     var image: String
     var measure: String
     var width: CGFloat
+    var record: Int
     
     var body: some View {
         
@@ -54,10 +48,10 @@ struct ActivityStatusView: View {
                                 .opacity(0.8)
                         
                             Spacer()
-                            
-                            let quantity = Double(quantity)
-                            let maximumQuantity = Double(width)*0.8
-                            let percentage = min(quantity, maximumQuantity)
+                            let maximumQuantity = Double(width) * 0.8
+                            let ratio = Double(abs(quantity)) / Double(abs(record))
+                            let actualQuantity = max(0, ratio) * Double(abs(maximumQuantity))
+                            let percentage = min(actualQuantity, maximumQuantity)
                             
                             VStack{
                                 RoundedRectangle(cornerRadius: 25.0)
@@ -87,8 +81,7 @@ struct ActivityStatusView: View {
 }
 
 struct ActivityStatusView_Previews: PreviewProvider {
-
     static var previews: some View {
-        ActivityStatusView(activityType: "Energy Burned", quantity: 40, score: 60, image: "flame", measure: "Kcal", width: 700)
+        ActivityStatusView(activityType: "Energy Burned", quantity: 40, score: 60, image: "flame", measure: "Kcal", width: 700, record: 100)
     }
 }

@@ -13,7 +13,6 @@ struct NotificationDetailView: View {
         VStack{
             Form {
                 Section {
-                    
                     Toggle(isOn: $settingsViewModel.agreedToTerms, label: {
                         Text("Allow Notification")
                     })
@@ -80,6 +79,7 @@ struct NotificationDetailView: View {
             .scrollContentBackground(.hidden)
             
         }.frame(maxWidth: .infinity)
+            .accessibilityIdentifier("NotificationVStack")
         .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500))
         .onAppear(){
                 isLandscape = orientationInfo.orientation == .landscape

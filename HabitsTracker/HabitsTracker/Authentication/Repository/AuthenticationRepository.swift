@@ -1,9 +1,15 @@
 final class AuthenticationRepository {
-    private let authenticationFirebaseDataSource: AuthenticationFirebaseDataSource
+    private let authenticationFirebaseDataSource: AuthenticationDataSource
     
     init(authenticationFirebaseDataSource: AuthenticationFirebaseDataSource = AuthenticationFirebaseDataSource()) {
         self.authenticationFirebaseDataSource = authenticationFirebaseDataSource
     }
+    
+    //Second initializer for test purposes
+    init(withDataSource authenticationFirebaseDataSource: AuthenticationDataSource) {
+        self.authenticationFirebaseDataSource = authenticationFirebaseDataSource
+    }
+    
     
     func getAuthenticatedUser() throws -> User {
         return try authenticationFirebaseDataSource.getAuthenticatedUser()
@@ -53,15 +59,11 @@ final class AuthenticationRepository {
         try await authenticationFirebaseDataSource.linkGoogle()
     }
     
-    func linkEmailAndPassword(email:String ,password:String,completionBlock: @escaping (Bool) -> Void){
-        authenticationFirebaseDataSource.linkEmailAndPassword(email:email,
-                                                              password: password,
-                                                              completionBlock: completionBlock)
+    func linkEmailAndPassword(email: String, password: String) async throws {
+        try await authenticationFirebaseDataSource.linkEmailAndPassword(email:email,
+                                                              password: password)
     }
-    
-    /*func deleteUser(completionBlock: @escaping (Result<Bool,Error>) -> Void) {
-        authenticationFirebaseDataSource.deleteUser(completionBlock: completionBlock)
-    }*/
+
     func deleteUser() async throws {
         try await authenticationFirebaseDataSource.deleteUser()
     }

@@ -35,7 +35,7 @@ struct SearchFriendView: View {
                         }
                     }
                     .padding(.top,15)
-                }
+                }.accessibilityIdentifier("SearchList")
             }
             .searchable(text: $searchTerm, prompt: "Search a friend")
             .navigationTitle("Friends")

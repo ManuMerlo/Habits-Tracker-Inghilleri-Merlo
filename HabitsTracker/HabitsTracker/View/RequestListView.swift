@@ -41,7 +41,9 @@ struct RequestListView: View {
                         }
                     }
                     .padding(.top, getMaxWidth())
-                }.edgesIgnoringSafeArea(.top)
+                }
+                .accessibilityIdentifier("RequestListScrollView")
+                .edgesIgnoringSafeArea(.top)
                 .navigationTitle("Requests")
                 .toolbarColorScheme(.dark, for: .navigationBar)
                 .toolbarBackground(
