@@ -47,6 +47,7 @@
 		09652B8729311B19002CC615 /* LottieView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09652B8629311B19002CC615 /* LottieView.swift */; };
 		097DB9BA2A8B66CC0017EAA2 /* RecordView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 097DB9B92A8B66CC0017EAA2 /* RecordView.swift */; };
 		0984001B2AA2112600F6BDCE /* SettingsView_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0984001A2AA2112600F6BDCE /* SettingsView_UITests.swift */; };
+		0984001D2AA21A2900F6BDCE /* ModifyProfileView_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0984001C2AA21A2900F6BDCE /* ModifyProfileView_UITests.swift */; };
 		098651AD2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098651AC2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift */; };
 		099BCA3229D8782200E9836F /* LinkedAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099BCA3129D8782200E9836F /* LinkedAccounts.swift */; };
 		09B7E8C82A86092A00FFD230 /* ScoreRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */; };
@@ -163,6 +164,7 @@
 		09652B8629311B19002CC615 /* LottieView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LottieView.swift; sourceTree = "<group>"; };
 		097DB9B92A8B66CC0017EAA2 /* RecordView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecordView.swift; sourceTree = "<group>"; };
 		0984001A2AA2112600F6BDCE /* SettingsView_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView_UITests.swift; sourceTree = "<group>"; };
+		0984001C2AA21A2900F6BDCE /* ModifyProfileView_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyProfileView_UITests.swift; sourceTree = "<group>"; };
 		098651AC2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAuthenticationDataSource.swift; sourceTree = "<group>"; };
 		099BCA3129D8782200E9836F /* LinkedAccounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedAccounts.swift; sourceTree = "<group>"; };
 		09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreRingView.swift; sourceTree = "<group>"; };
@@ -295,6 +297,7 @@
 				0916104D2AA1E8F100376500 /* SignUpView_UITest.swift */,
 				0916104F2AA201F800376500 /* GeneralView_UITests.swift */,
 				0984001A2AA2112600F6BDCE /* SettingsView_UITests.swift */,
+				0984001C2AA21A2900F6BDCE /* ModifyProfileView_UITests.swift */,
 			);
 			path = HabitsTracker_UITests;
 			sourceTree = "<group>";
@@ -699,6 +702,7 @@
 				0916104E2AA1E8F200376500 /* SignUpView_UITest.swift in Sources */,
 				0916104C2AA1C78900376500 /* SignInView_UITest.swift in Sources */,
 				0984001B2AA2112600F6BDCE /* SettingsView_UITests.swift in Sources */,
+				0984001D2AA21A2900F6BDCE /* ModifyProfileView_UITests.swift in Sources */,
 				091610452AA1C6C100376500 /* HabitsTracker_UITestsLaunchTests.swift in Sources */,
 				091610432AA1C6C100376500 /* HabitsTracker_UITests.swift in Sources */,
 			);

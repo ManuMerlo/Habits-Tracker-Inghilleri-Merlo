@@ -259,6 +259,7 @@ struct UserDetailRow: View {
                 Text(value)
             }
         }
+        .accessibilityIdentifier(title)
         .disabled(!isEnabled)
         .foregroundColor(isEnabled ? .white : Color("platinum").opacity(0.8))
         .listRowBackground(Color("oxfordBlue"))
