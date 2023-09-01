@@ -74,7 +74,7 @@ struct HomeView: View {
                         }
                         
                     }
-                }
+                }.accessibilityIdentifier("heartButton")
             }.padding(.horizontal,15)
             
             RoundedRectangle(cornerRadius: 10)

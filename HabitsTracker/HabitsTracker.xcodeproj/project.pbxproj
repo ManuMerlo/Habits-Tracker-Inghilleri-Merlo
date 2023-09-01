@@ -16,6 +16,7 @@
 		0902BD902AA2464900B56653 /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = 0902BD8F2AA2464900B56653 /* FirebaseFirestore */; };
 		0902BD922AA2465000B56653 /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0902BD912AA2465000B56653 /* FirebaseFirestoreSwift */; };
 		0902BD942AA2466200B56653 /* GoogleSignInSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 0902BD932AA2466200B56653 /* GoogleSignInSwift */; };
+		0902BD962AA2591400B56653 /* RequestListView_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0902BD952AA2591400B56653 /* RequestListView_UITests.swift */; };
 		090C998E2A8F4D1A00F8B339 /* OrientationInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = 090C998D2A8F4D1A00F8B339 /* OrientationInfo.swift */; };
 		090F1CA72A7B7CEB00FF5E4D /* FirebaseStorage in Frameworks */ = {isa = PBXBuildFile; productRef = 090F1CA62A7B7CEB00FF5E4D /* FirebaseStorage */; };
 		09115CEA2A7FC38000BE1254 /* ProfileImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09115CE92A7FC37F00BE1254 /* ProfileImageView.swift */; };
@@ -126,6 +127,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0902BD952AA2591400B56653 /* RequestListView_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestListView_UITests.swift; sourceTree = "<group>"; };
 		090C998D2A8F4D1A00F8B339 /* OrientationInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrientationInfo.swift; sourceTree = "<group>"; };
 		09115CE92A7FC37F00BE1254 /* ProfileImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileImageView.swift; sourceTree = "<group>"; };
 		09115CEB2A7FC97A00BE1254 /* NotificationDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NotificationDetailView.swift; sourceTree = "<group>"; };
@@ -284,6 +286,7 @@
 				0916104F2AA201F800376500 /* GeneralView_UITests.swift */,
 				0984001A2AA2112600F6BDCE /* SettingsView_UITests.swift */,
 				0984001C2AA21A2900F6BDCE /* ModifyProfileView_UITests.swift */,
+				0902BD952AA2591400B56653 /* RequestListView_UITests.swift */,
 			);
 			path = HabitsTracker_UITests;
 			sourceTree = "<group>";
@@ -677,6 +680,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0902BD962AA2591400B56653 /* RequestListView_UITests.swift in Sources */,
 				091610502AA201F800376500 /* GeneralView_UITests.swift in Sources */,
 				0916104E2AA1E8F200376500 /* SignUpView_UITest.swift in Sources */,
 				0916104C2AA1C78900376500 /* SignInView_UITest.swift in Sources */,
