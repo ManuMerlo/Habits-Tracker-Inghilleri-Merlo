@@ -70,17 +70,21 @@ struct SigninView: View {
                 Text("Sign in")
                     .font(.title)
                     .fontWeight(.semibold)
+                    .accessibilityIdentifier("SignInTitle")
                 
                 CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmailSignin)
                     .frame(width: getMaxWidth())
+                    .accessibilityIdentifier("SignInEmail")
                 
                 CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPasswordSignin)
                     .frame(width: getMaxWidth())
+                    .accessibilityIdentifier("SignInPassword")
                 
-                if  let messageError = authenticationViewModel.messageError {
+                if let messageError = authenticationViewModel.messageError {
                     Text(messageError)
                         .font(.body)
                         .foregroundColor(.red)
+                        .accessibilityIdentifier("MessageErrorSignIn")
                 }
                 
                 NavigationLink {
@@ -105,7 +109,6 @@ struct SigninView: View {
                             .foregroundColor(.white)
                             .cornerRadius(10)
                             .contentTransition(.identity)
-                        
                     }
                 }
             }
@@ -193,7 +196,7 @@ struct SigninView: View {
                 } label: {
                     Text("Don't have an account? Sign up")
                         .foregroundColor(.blue)
-                }
+                }.accessibilityIdentifier("navigationLinkSignUp")
             }
             
         }

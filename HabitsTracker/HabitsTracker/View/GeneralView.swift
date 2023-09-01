@@ -19,23 +19,24 @@ struct GeneralView: View {
                         .tabItem {
                             Label("Dashboard", systemImage: "house")
                         }
+                        .accessibilityIdentifier("HomeView")
                     
                     SearchFriendView(firestoreViewModel:firestoreViewModel)
                         .tabItem {
                             Label("Search", systemImage: "magnifyingglass")
-                        }
+                        }.accessibilityIdentifier("SearchFriendView")
                     
                     
                     LeaderboardView(firestoreViewModel: firestoreViewModel)
                         .tabItem {
                             Label("Leaderboard", systemImage: "trophy")
-                        }
+                        }.accessibilityIdentifier("LeaderboardView")
                     
                     //TODO: authentication is need to reauthenticate the user before deleting the account
                     SettingsView(authenticationViewModel: authenticationViewModel,firestoreViewModel : firestoreViewModel)
                         .tabItem {
                             Label("Settings", systemImage: "gear")
-                        }
+                        }.accessibilityIdentifier("SettingsView")
                 }
                 .accentColor(.white)
                 .task {
@@ -102,11 +103,9 @@ struct GeneralView: View {
                 }
             } else {
                 LoadingView()
+                    .accessibilityIdentifier("LoadingView")
             }
         }.onAppear{
-            /*DispatchQueue.main.asyncAfter(deadline: .now() + 3.0) {
-             firestoreViewModel.addListenerForCurrentUser()
-             }*/
             firestoreViewModel.addListenerForCurrentUser { error in
                 if let error = error as? DBError, error == .failedUserRetrieval{
                     showAlerErrorUserRetrival.toggle()

@@ -80,6 +80,7 @@ struct ModifyProfileView: View {
                 
                 
             }
+            .accessibilityIdentifier("ModifyProfileScrollView")
             
             if showDatePicker {
                 VStack(alignment:.center){

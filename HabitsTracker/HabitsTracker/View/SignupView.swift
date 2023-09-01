@@ -70,16 +70,21 @@ struct SignupView: View {
                 .multilineTextAlignment(.center)
                 .fontWeight(.semibold)
                 .lineSpacing(10)
+                .accessibilityIdentifier("SignUpTitle")
             
             Group{
                 
                 CustomTextField(isSecure: false, hint: "Username", imageName: "person", text: $authenticationViewModel.textFieldUsername)
+                    .accessibilityIdentifier("SignUpUsername")
                 
                 CustomTextField(isSecure: false, hint: "Email", imageName:"envelope", text: $authenticationViewModel.textFieldEmail)
+                    .accessibilityIdentifier("SignUpEmail")
                 
                 CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPassword)
+                    .accessibilityIdentifier("SignUpPassword")
                 
                 CustomTextField(isSecure:true,hint: "Repeat password", imageName: "lock",text: $authenticationViewModel.repeatPassword)
+                    .accessibilityIdentifier("SignUpRepeatPassword")
                 
             }.frame(width: getMaxWidth())
             
@@ -141,6 +146,7 @@ struct SignupView: View {
                     .font(.body)
                     .foregroundColor(.red)
                     .padding()
+                    .accessibilityIdentifier("MessageErrorSignUp")
             }
             
         }.onAppear{

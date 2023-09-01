@@ -51,6 +51,7 @@ struct HomeView: View {
                     .fontWeight(.bold)
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
+                    .accessibilityIdentifier("HomeTitle")
         
                 Spacer()
                 

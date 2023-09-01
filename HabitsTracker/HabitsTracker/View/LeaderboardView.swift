@@ -29,7 +29,6 @@ struct LeaderboardView: View {
     var body: some View {
         
         NavigationStack {
-            
             ZStack {
                 RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
                     .edgesIgnoringSafeArea(.all)
@@ -60,7 +59,7 @@ struct LeaderboardView: View {
                                 }
                             }
                         }
-                    }
+                    }.accessibilityIdentifier("LeaderboardList")
                 }
                 .padding(.top,15)
                 .toolbar {

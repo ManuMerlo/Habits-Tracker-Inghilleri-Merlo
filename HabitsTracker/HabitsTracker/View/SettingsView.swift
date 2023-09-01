@@ -32,6 +32,7 @@ struct SettingsView: View {
                             Text("\( firestoreViewModel.firestoreUser?.username ?? "User")")
                                 .font(.largeTitle)
                                 .foregroundColor(.white)
+                                .accessibilityIdentifier("SettingsTitle")
                             
                             Text("\( firestoreViewModel.firestoreUser?.email ?? "")")
                                 .font(.title3)
@@ -127,6 +128,7 @@ struct SettingsView: View {
                 
                 
             }
+            .accessibilityIdentifier("SettingsScrollView")
             .ignoresSafeArea()
             .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500).opacity(1))
             
