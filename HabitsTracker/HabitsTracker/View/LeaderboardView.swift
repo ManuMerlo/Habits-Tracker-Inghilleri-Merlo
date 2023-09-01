@@ -157,13 +157,14 @@ struct RankingItemView: View {
                 
                 HStack{
                     Image(systemName: "flame")
-                    Text("100")
-                        .font(.footnote)
+                    let activeEnergyBurned = user.actualScores.first(where: { $0.id == "activeEnergyBurned" })?.quantity ?? 0
+                    Text("\(activeEnergyBurned)")
+                            .font(.footnote)
                     Image(systemName: "figure.walk")
-                    Text("100")
+                    let distanceWalking = user.actualScores.first(where: { $0.id == "distanceWalkingRunning" })?.quantity ?? 0
+                    Text("\(distanceWalking)")
                         .font(.footnote)
                 }
-                
             }.frame(width:width/3, height: 70, alignment: .leading)
             
             Spacer()
