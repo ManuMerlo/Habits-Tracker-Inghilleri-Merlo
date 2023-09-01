@@ -24,6 +24,9 @@ struct SecuritySettingsView: View {
             List{
                 HStack{
                     Button(action:{
+                        if self.expandEmail{
+                            authenticationViewModel.textFieldEmailSecurity = ""
+                        }
                         withAnimation{
                             self.expandEmail.toggle()
                         }
@@ -46,17 +49,18 @@ struct SecuritySettingsView: View {
                                 if !authenticationViewModel.textFieldEmailSecurity.isEmpty {
                                     Task {
                                         do {
-                                            // TODO: error firstresponder
-                                            try await authenticationViewModel.updateEmail()
-                                            firestoreViewModel.modifyUser(
-                                                uid: firestoreViewModel.firestoreUser?.id ?? "",
-                                                field: "email",
-                                                value: authenticationViewModel.textFieldEmailSecurity)
+                                            try await authenticationViewModel.updateEmail(email: authenticationViewModel.textFieldEmailSecurity)
+                                            let uid = firestoreViewModel.firestoreUser?.id ?? ""
+                                            firestoreViewModel.modifyUser(uid: uid, field: "email", value: authenticationViewModel.textFieldEmailSecurity)
+                                            
                                             expandEmail.toggle()
                                             showSuccessAlert.toggle()
                                         } catch {
-                                            print("error \(error.localizedDescription)")
-                                            showLoginAgainAlert = true
+                                            // TO DO: Make a custom error
+                                            if let error = error as? URLError, error.code == .badServerResponse {
+                                                showLoginAgainAlert = true
+                                            }
+                                            print("Error: \(error.localizedDescription)")
                                         }
                                     }
                                     
@@ -80,6 +84,9 @@ struct SecuritySettingsView: View {
                 
                 HStack{
                     Button(action:{
+                        if self.expandPassword{
+                            authenticationViewModel.textFieldPasswordSecurity = ""
+                        }
                         withAnimation{
                             self.expandPassword.toggle()
                         }
@@ -101,13 +108,15 @@ struct SecuritySettingsView: View {
                                 if !authenticationViewModel.textFieldPasswordSecurity.isEmpty{
                                     Task {
                                         do {
-                                            try await authenticationViewModel.updatePassword()
+                                            try await authenticationViewModel.updatePassword(password: authenticationViewModel.textFieldPasswordSecurity)
                                             expandPassword.toggle()
                                             showSuccessAlert.toggle()
                                             
                                             
                                         } catch {
-                                            showLoginAgainAlert = true
+                                            if let error = error as? URLError, error.code == .badServerResponse {
+                                                showLoginAgainAlert = true
+                                            }
                                         }
                                     }
                                 }

@@ -78,12 +78,12 @@ final class AuthenticationViewModel: ObservableObject {
         try await authenticationRepository.resetPassword(email: email)
     }
     
-    func updateEmail() async throws {
-        try await authenticationRepository.updateEmail(email: textFieldEmailSecurity)
+    func updateEmail(email: String) async throws {
+        try await authenticationRepository.updateEmail(email: email)
     }
     
-    func updatePassword() async throws {
-        try await authenticationRepository.updatePassword(password: textFieldPasswordSecurity)
+    func updatePassword(password: String) async throws {
+        try await authenticationRepository.updatePassword(password: password)
     }
     
     // TODO: reset password, update email/password
