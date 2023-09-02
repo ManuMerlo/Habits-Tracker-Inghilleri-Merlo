@@ -75,7 +75,6 @@
 		09FF6A002A9A55B00028CE72 /* LeaderboardViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FF69FF2A9A55B00028CE72 /* LeaderboardViewModel_Tests.swift */; };
 		DD09A10329D9FA0D00CEBE15 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD09A10229D9FA0D00CEBE15 /* Activity.swift */; };
 		DD127A3C2929475900075A8B /* SigninView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3B2929475900075A8B /* SigninView.swift */; };
-		DD127A3E2929476800075A8B /* SigninViewModel_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3D2929476800075A8B /* SigninViewModel_old.swift */; };
 		DD127A402929477700075A8B /* GeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3F2929477700075A8B /* GeneralView.swift */; };
 		DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A41292947FA00075A8B /* CustomTextField.swift */; };
 		DD1FAFDA29D8DA2A0084178F /* HealthViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD1FAFD929D8DA2A0084178F /* HealthViewModel.swift */; };
@@ -93,25 +92,17 @@
 		DD7151902A9865020023C814 /* HabitsTracker_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD71518F2A9865020023C814 /* HabitsTracker_Tests.swift */; };
 		DD7151972A9865E60023C814 /* AuthenticationViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7151962A9865E60023C814 /* AuthenticationViewModel_Tests.swift */; };
 		DD7C45662A929D4E0026AF49 /* Errors.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C45652A929D4E0026AF49 /* Errors.swift */; };
-		DD7C69B5292C254500E0D9ED /* ActivityPlanned.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD7C69B4292C254500E0D9ED /* ActivityPlanned.swift */; };
 		DD8D0D5229D5E5ED0045009C /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = DD8D0D5129D5E5ED0045009C /* FacebookLogin */; };
 		DDAA66A729D042E500219792 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAA66A629D042E500219792 /* LeaderboardView.swift */; };
 		DDC2F89329311548003653F1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2F89229311548003653F1 /* User.swift */; };
-		DDC2F89529311CAD003653F1 /* Goal.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2F89429311CAD003653F1 /* Goal.swift */; };
-		DDC33528292BA0A000C27566 /* VCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33527292BA0A000C27566 /* VCard.swift */; };
-		DDC33531292BB96C00C27566 /* HCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33530292BB96C00C27566 /* HCard.swift */; };
-		DDC33533292BF38A00C27566 /* PlanningView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33532292BF38A00C27566 /* PlanningView.swift */; };
-		DDC33537292BFC8700C27566 /* DateValue.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC33536292BFC8700C27566 /* DateValue.swift */; };
 		DDD723AF292A73AC00012461 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD723AE292A73AC00012461 /* SettingsView.swift */; };
 		DDD723B1292A87E100012461 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD723B0292A87E100012461 /* HomeView.swift */; };
-		DDDDFA70292CEC290033B3D3 /* PlanningViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDDDFA6F292CEC290033B3D3 /* PlanningViewModel.swift */; };
 		DDEACC0E29DB745700F39F4B /* FirestoreDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEACC0D29DB745700F39F4B /* FirestoreDataSource.swift */; };
 		DDEACC1129DB747200F39F4B /* FirestoreRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEACC1029DB747200F39F4B /* FirestoreRepository.swift */; };
 		DDEACC1329DB748800F39F4B /* FirestoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEACC1229DB748800F39F4B /* FirestoreViewModel.swift */; };
 		DDEB8AE929D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEB8AE829D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift */; };
 		DDEB8AEB29D6F210001693C8 /* AuthenticationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEB8AEA29D6F210001693C8 /* AuthenticationRepository.swift */; };
 		DDEB8AED29D6F301001693C8 /* AuthenticationViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDEB8AEC29D6F301001693C8 /* AuthenticationViewModel.swift */; };
-		DDF9364529C76330002B965A /* UserViewModel_old.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDF9364429C76330002B965A /* UserViewModel_old.swift */; };
 		DDF9364829C76518002B965A /* FirebaseFirestore in Frameworks */ = {isa = PBXBuildFile; productRef = DDF9364729C76518002B965A /* FirebaseFirestore */; };
 		DDF9364A29C76521002B965A /* FirebaseFirestoreSwift in Frameworks */ = {isa = PBXBuildFile; productRef = DDF9364929C76521002B965A /* FirebaseFirestoreSwift */; };
 /* End PBXBuildFile section */
@@ -193,7 +184,6 @@
 		DD07DFB529D0B99400633248 /* HabitsTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HabitsTracker.entitlements; sourceTree = "<group>"; };
 		DD09A10229D9FA0D00CEBE15 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
 		DD127A3B2929475900075A8B /* SigninView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninView.swift; sourceTree = "<group>"; };
-		DD127A3D2929476800075A8B /* SigninViewModel_old.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninViewModel_old.swift; sourceTree = "<group>"; };
 		DD127A3F2929477700075A8B /* GeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralView.swift; sourceTree = "<group>"; };
 		DD127A41292947FA00075A8B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
 		DD1FAFD929D8DA2A0084178F /* HealthViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthViewModel.swift; sourceTree = "<group>"; };
@@ -210,24 +200,16 @@
 		DD71518F2A9865020023C814 /* HabitsTracker_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HabitsTracker_Tests.swift; sourceTree = "<group>"; };
 		DD7151962A9865E60023C814 /* AuthenticationViewModel_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel_Tests.swift; sourceTree = "<group>"; };
 		DD7C45652A929D4E0026AF49 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
-		DD7C69B4292C254500E0D9ED /* ActivityPlanned.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityPlanned.swift; sourceTree = "<group>"; };
 		DDAA66A629D042E500219792 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		DDC2F89229311548003653F1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		DDC2F89429311CAD003653F1 /* Goal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Goal.swift; sourceTree = "<group>"; };
-		DDC33527292BA0A000C27566 /* VCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = VCard.swift; sourceTree = "<group>"; };
-		DDC33530292BB96C00C27566 /* HCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HCard.swift; sourceTree = "<group>"; };
-		DDC33532292BF38A00C27566 /* PlanningView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanningView.swift; sourceTree = "<group>"; };
-		DDC33536292BFC8700C27566 /* DateValue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateValue.swift; sourceTree = "<group>"; };
 		DDD723AE292A73AC00012461 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DDD723B0292A87E100012461 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
-		DDDDFA6F292CEC290033B3D3 /* PlanningViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlanningViewModel.swift; sourceTree = "<group>"; };
 		DDEACC0D29DB745700F39F4B /* FirestoreDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDataSource.swift; sourceTree = "<group>"; };
 		DDEACC1029DB747200F39F4B /* FirestoreRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreRepository.swift; sourceTree = "<group>"; };
 		DDEACC1229DB748800F39F4B /* FirestoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreViewModel.swift; sourceTree = "<group>"; };
 		DDEB8AE829D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationFirebaseDataSource.swift; sourceTree = "<group>"; };
 		DDEB8AEA29D6F210001693C8 /* AuthenticationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationRepository.swift; sourceTree = "<group>"; };
 		DDEB8AEC29D6F301001693C8 /* AuthenticationViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationViewModel.swift; sourceTree = "<group>"; };
-		DDF9364429C76330002B965A /* UserViewModel_old.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserViewModel_old.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -278,8 +260,6 @@
 			children = (
 				DD127A41292947FA00075A8B /* CustomTextField.swift */,
 				09652B8629311B19002CC615 /* LottieView.swift */,
-				DDC33530292BB96C00C27566 /* HCard.swift */,
-				DDC33527292BA0A000C27566 /* VCard.swift */,
 				09115CE92A7FC37F00BE1254 /* ProfileImageView.swift */,
 				09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */,
 				09B7E8C92A86131000FFD230 /* ActivityStatusView.swift */,
@@ -353,10 +333,7 @@
 			isa = PBXGroup;
 			children = (
 				099BCA3129D8782200E9836F /* LinkedAccounts.swift */,
-				DDC33536292BFC8700C27566 /* DateValue.swift */,
-				DD7C69B4292C254500E0D9ED /* ActivityPlanned.swift */,
 				DDC2F89229311548003653F1 /* User.swift */,
-				DDC2F89429311CAD003653F1 /* Goal.swift */,
 				09652B8229311942002CC615 /* CardIntro.swift */,
 				DD09A10229D9FA0D00CEBE15 /* Activity.swift */,
 				09316F672A80D55200E92B84 /* Friend.swift */,
@@ -376,7 +353,6 @@
 				DDAA66A629D042E500219792 /* LeaderboardView.swift */,
 				09115CEF2A7FCB9800BE1254 /* ModifyProfileView.swift */,
 				09115CEB2A7FC97A00BE1254 /* NotificationDetailView.swift */,
-				DDC33532292BF38A00C27566 /* PlanningView.swift */,
 				09115CED2A7FCA4600BE1254 /* ProvidersDetailView.swift */,
 				094A32422A796F570008403C /* SearchFriendView.swift */,
 				DDD723AE292A73AC00012461 /* SettingsView.swift */,
@@ -395,9 +371,6 @@
 		DD127A3A292946EF00075A8B /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				DD127A3D2929476800075A8B /* SigninViewModel_old.swift */,
-				DDDDFA6F292CEC290033B3D3 /* PlanningViewModel.swift */,
-				DDF9364429C76330002B965A /* UserViewModel_old.swift */,
 				0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */,
 				0938459A2A8C93720081E1C5 /* LeaderboardViewModel.swift */,
 				09A28EAD2AA3110C00422735 /* PointOfInterestViewModel.swift */,
@@ -723,15 +696,12 @@
 				094A32452A798AF90008403C /* UserProfileView.swift in Sources */,
 				DD7C45662A929D4E0026AF49 /* Errors.swift in Sources */,
 				09115CEE2A7FCA4600BE1254 /* ProvidersDetailView.swift in Sources */,
-				DDC33531292BB96C00C27566 /* HCard.swift in Sources */,
 				099BCA3229D8782200E9836F /* LinkedAccounts.swift in Sources */,
 				09C666E32A88AA0C006B5D38 /* RecordDetailView.swift in Sources */,
 				09652B8729311B19002CC615 /* LottieView.swift in Sources */,
 				09652B85293119F9002CC615 /* IntroView.swift in Sources */,
-				DD7C69B5292C254500E0D9ED /* ActivityPlanned.swift in Sources */,
 				09316F682A80D55200E92B84 /* Friend.swift in Sources */,
 				09B8FD852A9AAB8F00F51CAF /* SecuritySettingsView.swift in Sources */,
-				DDC33528292BA0A000C27566 /* VCard.swift in Sources */,
 				094A32432A796F570008403C /* SearchFriendView.swift in Sources */,
 				09D473902AA0ABBC003DD80A /* HealthRepository.swift in Sources */,
 				DDEACC0E29DB745700F39F4B /* FirestoreDataSource.swift in Sources */,
@@ -741,24 +711,20 @@
 				DDD723AF292A73AC00012461 /* SettingsView.swift in Sources */,
 				09A28EA62AA303BC00422735 /* MapView.swift in Sources */,
 				DDEB8AE929D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift in Sources */,
-				DD127A3E2929476800075A8B /* SigninViewModel_old.swift in Sources */,
 				DD4FC73829D7EDDC00414C2B /* FacebookAuthentication.swift in Sources */,
 				09B7E8CC2A867EE000FFD230 /* WaveView.swift in Sources */,
 				0938459B2A8C93720081E1C5 /* LeaderboardViewModel.swift in Sources */,
 				09316F6A2A8143B000E92B84 /* RequestListView.swift in Sources */,
-				DDDDFA70292CEC290033B3D3 /* PlanningViewModel.swift in Sources */,
 				09A28EA82AA303E800422735 /* PlaceListView.swift in Sources */,
 				09D473932AA0AC13003DD80A /* HealthDataSource.swift in Sources */,
 				DDEB8AEB29D6F210001693C8 /* AuthenticationRepository.swift in Sources */,
 				090C998E2A8F4D1A00F8B339 /* OrientationInfo.swift in Sources */,
 				DDAA66A729D042E500219792 /* LeaderboardView.swift in Sources */,
-				DDC33537292BFC8700C27566 /* DateValue.swift in Sources */,
 				DDEACC1329DB748800F39F4B /* FirestoreViewModel.swift in Sources */,
 				DDEB8AED29D6F301001693C8 /* AuthenticationViewModel.swift in Sources */,
 				09A28EA22AA302CD00422735 /* Landmark.swift in Sources */,
 				097DB9BA2A8B66CC0017EAA2 /* RecordView.swift in Sources */,
 				09B7E8CA2A86131000FFD230 /* ActivityStatusView.swift in Sources */,
-				DDC2F89529311CAD003653F1 /* Goal.swift in Sources */,
 				09B7E8C82A86092A00FFD230 /* ScoreRingView.swift in Sources */,
 				DDC2F89329311548003653F1 /* User.swift in Sources */,
 				DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */,
@@ -771,8 +737,6 @@
 				09A28EA02AA3002300422735 /* PointOfInterestView.swift in Sources */,
 				09115CEC2A7FC97A00BE1254 /* NotificationDetailView.swift in Sources */,
 				DD09A10329D9FA0D00CEBE15 /* Activity.swift in Sources */,
-				DDC33533292BF38A00C27566 /* PlanningView.swift in Sources */,
-				DDF9364529C76330002B965A /* UserViewModel_old.swift in Sources */,
 				DD127A3C2929475900075A8B /* SigninView.swift in Sources */,
 				09115CF02A7FCB9800BE1254 /* ModifyProfileView.swift in Sources */,
 				0944AB2D2A7AB61900C73278 /* SettingsViewModel.swift in Sources */,
@@ -980,8 +944,9 @@
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to display it on the map.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1012,8 +977,9 @@
 				INFOPLIST_KEY_NSLocationWhenInUseUsageDescription = "This app needs your location to display it on the map.";
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIRequiresFullScreen = YES;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
