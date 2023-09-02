@@ -25,7 +25,10 @@ struct PointsOfInterestView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .accessibilityIdentifier("HomeTitle")
-                    .padding(15)
+                    .padding(.top,30)
+                    .padding(.bottom,15)
+                    .padding(.horizontal,15)
+                    
                 
                 RoundedRectangle(cornerRadius: 10)
                     .frame(height: 1)

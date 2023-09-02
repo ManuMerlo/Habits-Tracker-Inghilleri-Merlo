@@ -7,21 +7,13 @@ final class AuthenticationViewModel: ObservableObject {
     @Published var user: User?
     @Published var messageError: String?
     @Published var isAccountLinked: Bool = false
-    // SigninView
-    @Published var textFieldEmailSignin: String = ""
-    @Published var textFieldPasswordSignin: String = ""
-    // SignupView
+    
+    // Account parameters
     @Published var textFieldUsername: String = ""
     @Published var textFieldEmail: String = ""
     @Published var textFieldPassword: String = ""
     @Published var repeatPassword: String = ""
-    // ProvidersView
-    @Published var textFieldEmailProviders: String = ""
-    @Published var textFieldPasswordProviders: String = ""
-    // SecuritySettingsView
-    @Published var textFieldEmailSecurity: String = ""
-    @Published var textFieldPasswordSecurity: String = ""
-    
+
     @Published var linkedAccounts: [LinkedAccounts] = []
     @Published var showAlert: Bool = false
     
@@ -44,17 +36,11 @@ final class AuthenticationViewModel: ObservableObject {
         return emailPredicate.evaluate(with: email)
     }
     
-    func clearSignUpParameter() {
+    func clearAccountParameter() {
         self.textFieldUsername = ""
         self.textFieldEmail = ""
         self.textFieldPassword = ""
         self.repeatPassword = ""
-        self.messageError = nil
-    }
-    
-    func clearSignInParameter() {
-        self.textFieldEmailSignin = ""
-        self.textFieldPasswordSignin = ""
         self.messageError = nil
     }
     
@@ -104,13 +90,13 @@ final class AuthenticationViewModel: ObservableObject {
     }
     
     func login() {
-        guard !textFieldEmailSignin.isEmpty, !textFieldPasswordSignin.isEmpty else {
+        guard !textFieldEmail.isEmpty, !textFieldPassword.isEmpty else {
             self.messageError = "No username, email or password found."
             return
         }
         let task = Task {
             do {
-                self.user = try await authenticationRepository.login(email: textFieldEmailSignin, password: textFieldPasswordSignin)
+                self.user = try await authenticationRepository.login(email: textFieldEmail, password: textFieldPassword)
                 print("Success, user logged with email and password")
             } catch {
                 self.messageError = "Login error. Retry."
@@ -199,7 +185,7 @@ final class AuthenticationViewModel: ObservableObject {
     func linkEmailAndPassword() {
         let task = Task {
             do {
-                try await authenticationRepository.linkEmailAndPassword(email: textFieldEmailProviders, password: textFieldPasswordProviders)
+                try await authenticationRepository.linkEmailAndPassword(email: textFieldEmail, password: textFieldPassword)
                 self.isAccountLinked = true
             } catch AuthenticationError.missingCredential {
                 self.isAccountLinked = false

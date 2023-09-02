@@ -33,8 +33,8 @@ struct ProvidersDetailView: View {
                 if expandVerificationWithEmailForm {
                     HStack{
                         VStack(spacing: 5){
-                            CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmailProviders)
-                            CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPasswordProviders)
+                            CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmail)
+                            CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPassword)
                             
                             Button("Accept"){
                                 authenticationViewModel.linkEmailAndPassword()
@@ -92,6 +92,7 @@ struct ProvidersDetailView: View {
         .foregroundColor(.white.opacity(0.7))
         .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500))
         .onAppear(){
+            authenticationViewModel.clearAccountParameter()
             isLandscape = orientationInfo.orientation == .landscape
             width = UIScreen.main.bounds.width
         }

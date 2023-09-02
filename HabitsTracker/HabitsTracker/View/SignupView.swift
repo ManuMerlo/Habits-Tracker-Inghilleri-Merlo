@@ -139,7 +139,7 @@ struct SignupView: View {
             }
             
         }.onAppear{
-            authenticationViewModel.clearSignUpParameter()
+            authenticationViewModel.clearAccountParameter()
         }.padding(.vertical, isLandscape ? 20 : 0)
     }
     

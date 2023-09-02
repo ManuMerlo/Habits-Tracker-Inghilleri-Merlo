@@ -34,8 +34,6 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         XCTAssertEqual(viewModel.user?.email, "test@test.com")
         XCTAssertNil(viewModel.messageError)
         XCTAssertFalse(viewModel.isAccountLinked)
-        XCTAssertEqual(viewModel.textFieldEmailSignin, "")
-        XCTAssertEqual(viewModel.textFieldPasswordSignin, "")
         XCTAssertEqual(viewModel.textFieldUsername, "")
         XCTAssertEqual(viewModel.textFieldEmail, "")
         XCTAssertEqual(viewModel.textFieldPassword, "")
@@ -58,8 +56,6 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         XCTAssertNil(viewModel.user)
         XCTAssertNil(viewModel.messageError)
         XCTAssertFalse(viewModel.isAccountLinked)
-        XCTAssertEqual(viewModel.textFieldEmailSignin, "")
-        XCTAssertEqual(viewModel.textFieldPasswordSignin, "")
         XCTAssertEqual(viewModel.textFieldUsername, "")
         XCTAssertEqual(viewModel.textFieldEmail, "")
         XCTAssertEqual(viewModel.textFieldPassword, "")
@@ -102,7 +98,7 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         }
     }
     
-    func test_AuthenticationViewModel_clearSignUpParameter(){
+    func test_AuthenticationViewModel_clearAccountParameter(){
         // Given
         guard let vm = viewModel else {
             XCTFail()
@@ -116,7 +112,7 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         vm.repeatPassword = "test"
         vm.messageError = "invalid email"
         
-        vm.clearSignUpParameter()
+        vm.clearAccountParameter()
         
         //Then
         XCTAssertEqual(vm.textFieldUsername, "")
@@ -124,26 +120,6 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         XCTAssertEqual(vm.textFieldPassword, "")
         XCTAssertEqual(vm.repeatPassword, "")
         XCTAssertNil( vm.messageError)
-        
-    }
-    
-    func test_AuthenticationViewModel_clearSignInParameter(){
-        // Given
-        guard let vm = viewModel else {
-            XCTFail()
-            return
-        }
-        
-        //When
-        vm.textFieldEmailSignin = "tets@gmail.com"
-        vm.textFieldPasswordSignin = "test"
-        vm.messageError = "invalid email"
-        
-        vm.clearSignInParameter()
-        
-        //Then
-        XCTAssertEqual(vm.textFieldEmailSignin, "")
-        XCTAssertEqual(vm.textFieldPasswordSignin, "")
         
     }
     
@@ -218,11 +194,10 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         }
         
         viewModel.messageError = ""
-        viewModel.textFieldEmailSignin = "test@test.com"
-        viewModel.textFieldPasswordSignin = "password"
+        viewModel.textFieldEmail = "test@test.com"
+        viewModel.textFieldPassword = "password"
         
         // When
-        
         
         viewModel.login()
         let task = viewModel.tasks.last
@@ -240,8 +215,8 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,throwErrors: true)
         let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
         viewModel.messageError = ""
-        viewModel.textFieldEmailSignin = "test@test.com"
-        viewModel.textFieldPasswordSignin = "password"
+        viewModel.textFieldEmail = "test@test.com"
+        viewModel.textFieldPassword = "password"
         
         // When
         viewModel.login()
@@ -262,8 +237,8 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
         
         viewModel.messageError = ""
-        viewModel.textFieldEmailSignin = ""
-        viewModel.textFieldPasswordSignin = ""
+        viewModel.textFieldEmail = ""
+        viewModel.textFieldPassword = ""
         
         // When
         viewModel.login()
@@ -362,10 +337,8 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         
         
         XCTAssertNotNil(viewModel.user)
-        viewModel.textFieldEmailSignin = "tets@gmail.com"
-        viewModel.textFieldPasswordSignin = "test"
-        viewModel.textFieldEmail = "test@test.com"
-        viewModel.textFieldPassword = "password"
+        viewModel.textFieldEmail = "tets@gmail.com"
+        viewModel.textFieldPassword = "test"
         viewModel.textFieldUsername = "testUser"
         viewModel.repeatPassword = "password"
         
@@ -377,13 +350,6 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         let _ = await task?.result
         
         XCTAssertNil(viewModel.user)
-        XCTAssertEqual(viewModel.textFieldUsername, "")
-        XCTAssertEqual(viewModel.textFieldEmail, "")
-        XCTAssertEqual(viewModel.textFieldPassword, "")
-        XCTAssertEqual(viewModel.repeatPassword, "")
-        XCTAssertNil( viewModel.messageError)
-        XCTAssertEqual(viewModel.textFieldEmailSignin, "")
-        XCTAssertEqual(viewModel.textFieldPasswordSignin, "")
     }
     
     func test_AuthenticationViewModel_Logout_FailureThrow() async {
@@ -575,8 +541,8 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,linkedAccounts: [], throwErrors: false)
         let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
         //When
-        viewModel.textFieldEmailProviders = "test@test.com"
-        viewModel.textFieldPasswordProviders = "test"
+        viewModel.textFieldEmail = "test@test.com"
+        viewModel.textFieldPassword = "test"
         
         viewModel.linkEmailAndPassword()
         
@@ -594,8 +560,8 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
         
         //When
-        viewModel.textFieldEmailProviders = "test@test.com"
-        viewModel.textFieldPasswordProviders = "test"
+        viewModel.textFieldEmail = "test@test.com"
+        viewModel.textFieldPassword = "test"
         
         viewModel.linkEmailAndPassword()
         
@@ -615,7 +581,7 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
         
         //When
-        viewModel.textFieldEmailProviders = ""
+        viewModel.textFieldEmail = ""
         viewModel.textFieldPassword = "test"
         viewModel.linkEmailAndPassword()
         

@@ -142,11 +142,11 @@ struct SigninView: View {
                     .fontWeight(.semibold)
                     .accessibilityIdentifier("SignInTitle")
                 
-                CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmailSignin)
+                CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmail)
                     .frame(width: getMaxWidth())
                     .accessibilityIdentifier("SignInEmail")
                 
-                CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPasswordSignin)
+                CustomTextField(isSecure:true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPassword)
                     .frame(width: getMaxWidth())
                     .accessibilityIdentifier("SignInPassword")
                 
@@ -162,7 +162,7 @@ struct SigninView: View {
                 }.foregroundColor(.blue)
                 
                 Button {
-                    guard authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmailSignin), !authenticationViewModel.textFieldPasswordSignin.isEmpty else {
+                    guard authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmail), !authenticationViewModel.textFieldPassword.isEmpty else {
                         authenticationViewModel.messageError = "Empty email or password"
                         return
                     }
@@ -270,7 +270,7 @@ struct SigninView: View {
         }
         .padding(.top, isLandscape ? 20 : 0)
         .onAppear{
-            authenticationViewModel.clearSignInParameter()
+            authenticationViewModel.clearAccountParameter()
         }
     }
     

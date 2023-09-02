@@ -46,8 +46,6 @@ final class PointsOfInterestViewModel: ObservableObject {
     func getNearByLandmarks(search: String) {
         let task = Task {
             self.landmarks = await pointsOfInterestRepository.getNearByLandmarks(search: search)
-            print("nearbylandmark")
-            print(self.landmarks)
         }
         tasks.append(task)
     }
@@ -55,8 +53,6 @@ final class PointsOfInterestViewModel: ObservableObject {
     func getNearByDefaultLandmarks() {
         let task = Task {
             self.landmarks = await pointsOfInterestRepository.getNearByDefaultLandmarks()
-            print("default!!!!!!!!")
-            print(self.landmarks)
         }
         tasks.append(task)
     }

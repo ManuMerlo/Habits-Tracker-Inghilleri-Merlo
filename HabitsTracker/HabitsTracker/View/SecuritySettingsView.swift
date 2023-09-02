@@ -25,7 +25,7 @@ struct SecuritySettingsView: View {
                 HStack{
                     Button(action:{
                         if self.expandEmail{
-                            authenticationViewModel.textFieldEmailSecurity = ""
+                            authenticationViewModel.textFieldEmail = ""
                         }
                         withAnimation{
                             self.expandEmail.toggle()
@@ -43,15 +43,15 @@ struct SecuritySettingsView: View {
                 if expandEmail{
                     HStack{
                         VStack(spacing: 10){
-                            CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmailSecurity)
+                            CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmail)
                             
                             Button("Submit"){
-                                if !authenticationViewModel.textFieldEmailSecurity.isEmpty {
+                                if !authenticationViewModel.textFieldEmail.isEmpty {
                                     Task {
                                         do {
-                                            try await authenticationViewModel.updateEmail(email: authenticationViewModel.textFieldEmailSecurity)
+                                            try await authenticationViewModel.updateEmail(email: authenticationViewModel.textFieldEmail)
                                             let uid = firestoreViewModel.firestoreUser?.id ?? ""
-                                            firestoreViewModel.modifyUser(uid: uid, field: "email", value: authenticationViewModel.textFieldEmailSecurity)
+                                            firestoreViewModel.modifyUser(uid: uid, field: "email", value: authenticationViewModel.textFieldEmail)
                                             expandEmail.toggle()
                                             showSuccessAlert.toggle()
                                         } catch {
@@ -84,7 +84,7 @@ struct SecuritySettingsView: View {
                 HStack{
                     Button(action:{
                         if self.expandPassword{
-                            authenticationViewModel.textFieldPasswordSecurity = ""
+                            authenticationViewModel.textFieldPassword = ""
                         }
                         withAnimation{
                             self.expandPassword.toggle()
@@ -101,13 +101,13 @@ struct SecuritySettingsView: View {
                 if expandPassword{
                     HStack{
                         VStack(spacing: 10){
-                            CustomTextField(isSecure: true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPasswordSecurity)
+                            CustomTextField(isSecure: true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPassword)
                             
                             Button("Submit"){
-                                if !authenticationViewModel.textFieldPasswordSecurity.isEmpty{
+                                if !authenticationViewModel.textFieldPassword.isEmpty{
                                     Task {
                                         do {
-                                            try await authenticationViewModel.updatePassword(password: authenticationViewModel.textFieldPasswordSecurity)
+                                            try await authenticationViewModel.updatePassword(password: authenticationViewModel.textFieldPassword)
                                             expandPassword.toggle()
                                             showSuccessAlert.toggle()
                                             
@@ -157,6 +157,7 @@ struct SecuritySettingsView: View {
         .foregroundColor(.white.opacity(0.7))
         .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500))
         .onAppear(){
+            authenticationViewModel.clearAccountParameter()
             isLandscape = orientationInfo.orientation == .landscape
             width = UIScreen.main.bounds.width
         }
