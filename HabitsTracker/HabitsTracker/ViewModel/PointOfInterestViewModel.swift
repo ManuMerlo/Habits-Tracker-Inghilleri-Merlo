@@ -12,59 +12,25 @@ final class PointOfInterestViewModel: NSObject, ObservableObject, CLLocationMana
     @Published var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 45.4655, longitude: 9.1865), span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
     
     @Published var landmarks: [Landmark] = []
-    
-    override init() {
-           super.init()
-           self.setupLocationManager()
-           //self.getNearByDefaultLandmarks()
-       }
 
+    override init() {
+              super.init()
+              self.setupLocationManager()
+              //self.getNearByDefaultLandmarks()
+          }
+    
     private func setupLocationManager() {
        locationManager = CLLocationManager()
        locationManager.delegate = self
        locationManager.desiredAccuracy = kCLLocationAccuracyBest
        locationManager.distanceFilter = kCLDistanceFilterNone
-       //checkIfLocationServiceIsEnabled()
     }
     
-    /*func checkIfLocationServiceIsEnabled() {
-        if locationManager.authorizationStatus == .authorizedAlways || locationManager.authorizationStatus == .authorizedWhenInUse {
-            locationManager.startUpdatingLocation()
-        } else {
-            locationManager.requestWhenInUseAuthorization()
-        }
-    }*/
-    
-    /*func startLocationServices() {
-       locationManager = CLLocationManager()
-       locationManager!.delegate = self
-       if locationManager!.authorizationStatus == .notDetermined {
-          locationManager!.requestWhenInUseAuthorization()
-       } else if locationManager!.authorizationStatus == .authorizedAlways || locationManager!.authorizationStatus == .authorizedWhenInUse {
-           locationManager!.startUpdatingLocation()
-       }
-    }*/
-    
-    /*func checkIfLocationServiceIsEnabled() {
-        //DispatchQueue.global().async {
-            if CLLocationManager.locationServicesEnabled() {
-                self.locationManager = CLLocationManager()
-                self.locationManager!.delegate = self
-                self.locationManager!.desiredAccuracy = kCLLocationAccuracyBest
-                self.locationManager!.distanceFilter = kCLDistanceFilterNone
-            } else {
-                print("")
-            }
-        //}
-    }*/
-    
-    /*private func checkLocationAuthorization() {
-        guard let locationManager = locationManager else {
-            return
-        }
-        switch locationManager.authorizationStatus {
+    private func checkLocationAuthorization() {
+        DispatchQueue.global().async {
+            switch self.locationManager.authorizationStatus {
             case .notDetermined:
-                locationManager.requestWhenInUseAuthorization()
+                self.locationManager.requestWhenInUseAuthorization()
             case .restricted:
                 //TODO: show an alert
                 print("You're location is restricted")
@@ -72,27 +38,10 @@ final class PointOfInterestViewModel: NSObject, ObservableObject, CLLocationMana
                 //TODO: show an alert
                 print("You're location is denied")
             case .authorizedAlways, .authorizedWhenInUse:
-                locationManager.startUpdatingLocation()
+                self.locationManager.startUpdatingLocation()
             @unknown default:
                 break
-        }
-        
-    }*/
-    
-    private func checkLocationAuthorization() {
-        switch locationManager.authorizationStatus {
-        case .notDetermined:
-            locationManager.requestWhenInUseAuthorization()
-        case .restricted:
-            //TODO: show an alert
-            print("You're location is restricted")
-        case .denied:
-            //TODO: show an alert
-            print("You're location is denied")
-        case .authorizedAlways, .authorizedWhenInUse:
-            locationManager.startUpdatingLocation()
-        @unknown default:
-            break
+            }
         }
     }
     
