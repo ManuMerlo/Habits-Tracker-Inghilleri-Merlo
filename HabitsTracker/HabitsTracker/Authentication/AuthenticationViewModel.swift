@@ -5,7 +5,7 @@ final class AuthenticationViewModel: ObservableObject {
     private(set) var tasks: [Task<Void, Never>] = []
     
     @Published var user: User?
-    @Published var messageError: String? // FIXME: async await
+    @Published var messageError: String?
     @Published var isAccountLinked: Bool = false
     // SigninView
     @Published var textFieldEmailSignin: String = ""
@@ -58,6 +58,24 @@ final class AuthenticationViewModel: ObservableObject {
         self.messageError = nil
     }
     
+    func validateFieldsSignUp() -> Bool {
+        guard isValidEmail(email:textFieldEmail), !textFieldPassword.isEmpty, !repeatPassword.isEmpty else {
+            messageError = "Not valid email or empty password"
+            return false
+        }
+        guard textFieldPassword == repeatPassword else {
+            messageError =  "Passwords do not match"
+            return false
+        }
+        
+        guard !textFieldUsername.isEmpty else {
+            messageError =  "Username is empty"
+            return false
+        }
+        return true
+    }
+    
+    
     // MARK: Not async because we want the result before the app loading.
     func getAuthenticatedUser() {
         self.user = try? authenticationRepository.getAuthenticatedUser()
@@ -68,7 +86,7 @@ final class AuthenticationViewModel: ObservableObject {
             throw ViewError.usernameEmailPasswordNotFound
         }
         let user = try await authenticationRepository.createNewUser(email: textFieldEmail, password: textFieldPassword)
-        self.user = user // FIXME: need for login after signup
+        self.user = user
         print("Success, user created with email and password")
         return user
     }
@@ -85,7 +103,6 @@ final class AuthenticationViewModel: ObservableObject {
         try await authenticationRepository.updatePassword(password: password)
     }
     
-    // TODO: reset password, update email/password
     func login() {
         guard !textFieldEmailSignin.isEmpty, !textFieldPasswordSignin.isEmpty else {
             self.messageError = "No username, email or password found."
@@ -118,10 +135,7 @@ final class AuthenticationViewModel: ObservableObject {
         let task = Task {
             do {
                 try authenticationRepository.logout()
-                // FIXME: can it be avoided?
                 self.user = nil
-                clearSignInParameter()
-                clearSignUpParameter()
             } catch {
                 self.messageError = "Logout error. Retry."
             }
@@ -129,7 +143,6 @@ final class AuthenticationViewModel: ObservableObject {
         tasks.append(task)
     }
     
-    //FIXME: it can be
     func getCurrentProvider() {
         linkedAccounts = authenticationRepository.getCurrentProvider()
         print("User Provider \(linkedAccounts)")

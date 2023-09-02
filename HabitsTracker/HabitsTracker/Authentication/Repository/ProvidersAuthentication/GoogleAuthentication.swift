@@ -51,7 +51,6 @@ final class GoogleAuthentication {
         }
     }
     
-    //FIXME: is a good way??
     @MainActor
     func getRootController() -> UIViewController {
         return UIApplication.shared.rootController()

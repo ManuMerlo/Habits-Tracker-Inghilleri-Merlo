@@ -108,9 +108,6 @@ struct SettingsView: View {
                                                     firestoreViewModel.firestoreUser = nil
                                                     authenticationViewModel.user = nil
                                                     try await authenticationViewModel.deleteUser()
-                                                    // FIXME: can it be avoided?
-                                                    authenticationViewModel.clearSignUpParameter()
-                                                    authenticationViewModel.clearSignInParameter()
                                                 } catch {
                                                     print(error.localizedDescription)
                                                 }

@@ -57,7 +57,7 @@ struct SignupView: View {
     @ViewBuilder
     func content() -> some View {
         VStack(alignment: .center, spacing: 15) {
-
+            
             if !isLandscape{
                 LottieView(filename: "register")
                     .frame(width:width, height: height/3)
@@ -89,59 +89,48 @@ struct SignupView: View {
             }.frame(width: getMaxWidth())
             
             Button {
-                // Maybe these checks are not necessary
-                        guard authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmail), !authenticationViewModel.textFieldPassword.isEmpty, !authenticationViewModel.repeatPassword.isEmpty else {
-                            authenticationViewModel.messageError = "Not valid email or empty password"
-                            return
+                if !authenticationViewModel.validateFieldsSignUp() {
+                    return
+                }
+                
+                Task {
+                    do {
+                        let emailIsPresent = try await firestoreViewModel.fieldIsPresent(field: "email", value: authenticationViewModel.textFieldEmail)
+                        if emailIsPresent {
+                            throw AuthenticationError.emailAlreadyExists
                         }
-                        guard authenticationViewModel.textFieldPassword == authenticationViewModel.repeatPassword else {
-                            authenticationViewModel.messageError =  "Passwords do not match"
-                            return
+                        let usernameIsPresent = try await firestoreViewModel.fieldIsPresent(field: "username", value: authenticationViewModel.textFieldUsername)
+                        if usernameIsPresent {
+                            throw AuthenticationError.usernameAlreadyExists
                         }
-                        
-                        guard !authenticationViewModel.textFieldUsername.isEmpty else {
-                            authenticationViewModel.messageError =  "Username is empty"
-                            return
-                        }
-                        
-                        Task {
-                            do {
-                                let emailIsPresent = try await firestoreViewModel.fieldIsPresent(field: "email", value: authenticationViewModel.textFieldEmail)
-                                if emailIsPresent {
-                                    throw AuthenticationError.emailAlreadyExists
-                                }
-                                let usernameIsPresent = try await firestoreViewModel.fieldIsPresent(field: "username", value: authenticationViewModel.textFieldUsername)
-                                if usernameIsPresent {
-                                    throw AuthenticationError.usernameAlreadyExists
-                                }
-                                var user = try await authenticationViewModel.createNewUser()
-                                print("Success, user created with email and password")
-                                user.setUsername(name: authenticationViewModel.textFieldUsername)
-                                firestoreViewModel.addNewUser(user: user)
-                                print("Success, user added to firestore")
-                            } catch ViewError.usernameEmailPasswordNotFound {
-                                authenticationViewModel.messageError = ViewError.usernameEmailPasswordNotFound.description
-                            } catch AuthenticationError.emailAlreadyExists {
-                                authenticationViewModel.messageError = AuthenticationError.emailAlreadyExists.description
-                            } catch AuthenticationError.usernameAlreadyExists {
-                                authenticationViewModel.messageError = AuthenticationError.usernameAlreadyExists.description
-                            } catch {
-                                authenticationViewModel.messageError = "Failed to create the account. Retry."
-                            }
-                        }
+                        var user = try await authenticationViewModel.createNewUser()
+                        // print("Success, user created with email and password")
+                        user.setUsername(name: authenticationViewModel.textFieldUsername)
+                        firestoreViewModel.addNewUser(user: user)
+                        // print("Success, user added to firestore")
+                    } catch ViewError.usernameEmailPasswordNotFound {
+                        authenticationViewModel.messageError = ViewError.usernameEmailPasswordNotFound.description
+                    } catch AuthenticationError.emailAlreadyExists {
+                        authenticationViewModel.messageError = AuthenticationError.emailAlreadyExists.description
+                    } catch AuthenticationError.usernameAlreadyExists {
+                        authenticationViewModel.messageError = AuthenticationError.usernameAlreadyExists.description
+                    } catch {
+                        authenticationViewModel.messageError = "Failed to create the account. Retry."
+                    }
+                }
             } label: {
-                    Text("Sign up")
-                        .font(.system(size:22))
-                        .fontWeight(.semibold)
-                        .frame(width: 120, height: 45)
-                        .background(.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(10)
-                        .contentTransition(.identity)
+                Text("Sign up")
+                    .font(.system(size:22))
+                    .fontWeight(.semibold)
+                    .frame(width: 120, height: 45)
+                    .background(.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(10)
+                    .contentTransition(.identity)
                 
             }
             
-            if let messageError = authenticationViewModel.messageError {
+            if let messageError = authenticationViewModel.messageError{
                 Text(messageError)
                     .font(.body)
                     .foregroundColor(.red)

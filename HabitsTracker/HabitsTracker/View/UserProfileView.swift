@@ -105,7 +105,7 @@ struct UserProfileView: View {
                         )
                         .symbolSize(30)
                     }
-                }.environment(\.colorScheme, .dark) //FIXME: temporary fix
+                }.environment(\.colorScheme, .dark)
                     .chartForegroundStyleScale([
                         "Current Week": Color(hue: 0.33, saturation: 0.81, brightness: 0.76),
                     ])

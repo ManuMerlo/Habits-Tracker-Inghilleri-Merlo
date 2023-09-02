@@ -1,14 +1,6 @@
-//
-//  OrientationInfo.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 18/08/23.
-//
-
 import Foundation
 import SwiftUI
 
-//TODO: no multitasking iPad
 
 final class OrientationInfo: ObservableObject {
     

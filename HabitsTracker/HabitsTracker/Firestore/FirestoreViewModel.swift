@@ -4,18 +4,13 @@ import Combine
 @MainActor
 final class FirestoreViewModel: ObservableObject {
     private let firestoreRepository: FirestoreRepository
-    // Changed from private to privite set for tests purposes
     private(set) var tasks: [Task<Void, Never>] = []
     
-    //TODO: allUsers is not used ( in case we decide to use it we need to tests its initial value)
-    @Published var allUsers: [User] = []
     @Published var messageError: String?
-    @Published /*private(set)*/ var firestoreUser: User? = nil // TODO: set
+    @Published var firestoreUser: User? = nil
     @Published var needUsername: Bool = false
     @Published var requests: [User] = []
     @Published private(set) var friendsSubcollection: [Friend] = []
-    
-    //private var cancellables: Set<AnyCancellable> = []
     
     // Default initializer
     init(firestoreRepository: FirestoreRepository = FirestoreRepository()) {
@@ -74,10 +69,7 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 requests = try await firestoreRepository.getRequests(requestFriendsIDs: getFriendsIdsWithStatus(status: FriendStatus.Request))
             } catch {
-                if let error = error as? DBError, error == .badDBResponse{
-                    self.messageError = error.description
-                }
-                print("!!! Error while fetching the requests: \( error.localizedDescription)")
+                self.messageError = DBError.badDBResponse.description
             }
         }
         tasks.append(task)
@@ -93,10 +85,7 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.addRequest(uid: uid, friendId: friendId)
             } catch {
-                if let error = error as? DBError, error == .badDBResponse{
-                    self.messageError = error.description
-                }
-                print(error.localizedDescription)
+                self.messageError = DBError.badDBResponse.description
             }
         }
         tasks.append(task)
@@ -107,10 +96,7 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.removeFriend(uid: uid, friendId: friendId)
             } catch {
-                if let error = error as? DBError, error == .badDBResponse{
-                    self.messageError = error.description
-                }
-                print(error.localizedDescription)
+                self.messageError = DBError.badDBResponse.description
             }
         }
         tasks.append(task)
@@ -121,10 +107,7 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.confirmFriend(uid: uid, friendId: friendId)
             } catch {
-                if let error = error as? DBError, error == .badDBResponse{
-                    self.messageError = error.description
-                }
-                print(error.localizedDescription)
+                self.messageError = DBError.badDBResponse.description
             }
         }
         tasks.append(task)
@@ -135,10 +118,7 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.modifyUser(uid:uid, field: field, value: value)
             } catch {
-                if let error = error as? DBError, error == .badDBResponse{
-                    self.messageError = error.description
-                }
-                print(error.localizedDescription)
+                self.messageError = DBError.badDBResponse.description
             }
         }
         tasks.append(task)
@@ -150,10 +130,7 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.modifyUser(uid: uid, field: field, newScores: newScores)
             } catch {
-                if let error = error as? DBError, error == .badDBResponse{
-                    self.messageError = error.description
-                }
-                print(error.localizedDescription)
+                self.messageError = DBError.badDBResponse.description
             }
         }
         tasks.append(task)
@@ -164,11 +141,7 @@ final class FirestoreViewModel: ObservableObject {
             do {
                 try await firestoreRepository.updateDailyScores(uid: uid, newScore: newScore)
             } catch {
-                if let error = error as? DBError, error == .badDBResponse{
-                    self.messageError = error.description
-                }
-                print(error)
-                // FIXME: error
+                self.messageError = DBError.badDBResponse.description
             }
         }
         tasks.append(task)

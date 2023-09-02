@@ -6,25 +6,10 @@ struct RequestListView: View {
     
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     
-    //@FirestoreQuery(
-    //collectionPath: "users"
-    //) var globalUsers: [User] //FIXME: se non usiamo tutto lo user, basta prendere solo un id
-    
-    //var requests: [User] {
-    //if let friends = firestoreViewModel.firestoreUser?.friends, !friends.isEmpty{
-    // Filter friends with status "Request" and get their IDs
-    //let requestFriendIds = friends.filter { $0.status == "Request" }.map{ $0.id }
-    //return globalUsers.filter { requestFriendIds.contains($0.id!)}
-    //return globalUsers.filter { firestoreViewModel.requestsIds.contains($0.id!)}
-    //} else {
-    //    return []
-    //}
-    //}
-    
     //Responsiveness
     @EnvironmentObject var orientationInfo: OrientationInfo
     @State private var isLandscape: Bool = false
-    @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
+    @State private var device: Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
     @State var width = UIScreen.main.bounds.width
  
     var body: some View {
@@ -68,8 +53,7 @@ struct RequestListView: View {
             width = UIScreen.main.bounds.width
         }
     }
-    
-    //FIXME: function in view
+
     func getMaxWidth() -> CGFloat{
         if device == .iPad {
             return 90

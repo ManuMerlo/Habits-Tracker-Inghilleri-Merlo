@@ -1,7 +1,6 @@
 import Foundation
 import FirebaseFirestore
 import FirebaseFirestoreSwift
-
 import FirebaseAuth
 
 protocol FirestoreDataSourceProtocol {
@@ -119,7 +118,7 @@ final class FirestoreDataSource : FirestoreDataSourceProtocol {
     }
     
     // Function to add a new user to firestore
-    func addNewUser(user: User) { // FIXME: async trows and try await?? not necessary here
+    func addNewUser(user: User) { 
         db.collection("users")
             .document(user.id)
             .setData(user.asDictionary(), merge: false)
@@ -137,7 +136,6 @@ final class FirestoreDataSource : FirestoreDataSourceProtocol {
         try await modifyUser(uid: uid, field: field, value: dictionaryRecords)
     }
 
-    
     // Function to add a single friend to the 'friends' subcollection for a user in Firestore
     func addRequest(uid: String, friendId: String) async throws {
         let batch = db.batch()

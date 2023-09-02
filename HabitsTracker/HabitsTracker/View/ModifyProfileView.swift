@@ -128,7 +128,7 @@ struct ModifyProfileView: View {
                     }label: {
                         Text("Done")
                             .foregroundColor(.white)
-                            .frame(maxWidth: .infinity) // Makes the button full width
+                            .frame(maxWidth: .infinity)
                                     .padding(.vertical, 10)
                             }
                             .background(Color("oxfordBlue"))
@@ -189,7 +189,6 @@ struct ModifyProfileView: View {
             
         }
         .onAppear(){
-        // TODO: check if there is a better way for this and for the picker (inconsistencies)
             selectedDate = settingsViewModel.stringToDate((firestoreViewModel.firestoreUser?.birthDate)) ?? Date()
             selectedHeight = firestoreViewModel.firestoreUser?.height ?? 150
             selectedWeight = firestoreViewModel.firestoreUser?.weight ?? 60

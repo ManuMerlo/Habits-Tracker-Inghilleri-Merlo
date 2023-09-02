@@ -3,7 +3,6 @@ import FirebaseFirestoreSwift
 
 struct LeaderboardView: View {
     @ObservedObject var firestoreViewModel: FirestoreViewModel
-    //FIXME: merge refactor
     @StateObject var leaderboardViewModel = LeaderBoardViewModel()
     
     @State private var global : Bool = true
@@ -14,7 +13,6 @@ struct LeaderboardView: View {
     @State private var isLandscape: Bool = false
     @State var width = UIScreen.main.bounds.width
     
-    // TODO: it is a listener, check how to do the cancellation
     @FirestoreQuery(
         collectionPath: "users"
     ) var globalUsers: [User]
@@ -115,14 +113,15 @@ enum TimeFrame: String, CaseIterable {
 
 
 struct RankingItemView: View {
-    //FIXME: merge refactor i viewmodels dovrebbero essere observedobject, no?
-    var leaderboardViewModel : LeaderBoardViewModel
-    var firestoreViewModel : FirestoreViewModel
-    var user : User
-    var selectedTimeFrame : TimeFrame
-    var global : Bool
-    var position : Int
-    var width : CGFloat
+    
+    @ObservedObject var leaderboardViewModel: LeaderBoardViewModel
+    @ObservedObject var firestoreViewModel: FirestoreViewModel
+    
+    var user: User
+    var selectedTimeFrame: TimeFrame
+    var global: Bool
+    var position: Int
+    var width: CGFloat
     let today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     var body: some View {
