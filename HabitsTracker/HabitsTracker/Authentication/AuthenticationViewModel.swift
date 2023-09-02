@@ -145,7 +145,7 @@ final class AuthenticationViewModel: ObservableObject {
     
     func getCurrentProvider() {
         linkedAccounts = authenticationRepository.getCurrentProvider()
-        print("User Provider \(linkedAccounts)")
+        //print("User Provider \(linkedAccounts)")
     }
     
     func isEmailandPasswordLinked() -> Bool {

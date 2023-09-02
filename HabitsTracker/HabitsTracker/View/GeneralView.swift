@@ -70,7 +70,7 @@ struct GeneralView: View {
                     if device == .iPhone{
                         healthViewModel.computeSingleScore()
                         healthViewModel.computeTotalScore()
-                        print("updating records")
+                        // print("updating records")
                         if healthViewModel.updateRecords(records: &(currentUser.records)) {
                             firestoreViewModel.modifyUser(
                                 uid: currentUser.id,
@@ -92,7 +92,7 @@ struct GeneralView: View {
                     if device == .iPhone {
                         healthViewModel.computeSingleScore()
                         healthViewModel.computeTotalScore()
-                        print("updating records")
+                        // print("updating records")
                         if healthViewModel.updateRecords(records: &(currentUser.records)) {
                             firestoreViewModel.modifyUser(
                                 uid: currentUser.id,

@@ -24,13 +24,13 @@ struct NotificationDetailView: View {
                             if settingsViewModel.weeklyNotification {
                                 settingsViewModel.weeklyNotification.toggle()
                             }
-                        }else{
-                            UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.badge,.sound]){ success, error in
-                                if success {
-                                    print("success")
-                                }
-                                else if let error = error {
-                                    print(error.localizedDescription)
+                        } else {
+                            Task {
+                                do {
+                                    try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.badge,.sound])
+                                } catch {
+                                    print("\(error)")
+                                    //TODO: mettere un alert
                                 }
                             }
                         }

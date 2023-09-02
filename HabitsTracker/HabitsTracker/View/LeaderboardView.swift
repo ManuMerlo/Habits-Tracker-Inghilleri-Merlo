@@ -185,8 +185,8 @@ struct RankingItemView: View {
                 switch (selectedTimeFrame, global) {
                 case (.daily, true):
                     if let oldPosition = user.dailyGlobal, oldPosition < newPosition {
-                        print("oldposition \(oldPosition)")
-                        print("newPosition \(newPosition)")
+                        // print("oldposition \(oldPosition)")
+                        // print("newPosition \(newPosition)")
                         leaderboardViewModel.sendPositionChangeNotification()
                     }
                     firestoreViewModel.modifyUser(uid: user.id, field: "dailyGlobal", value: newPosition)

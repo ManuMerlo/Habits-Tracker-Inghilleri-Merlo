@@ -142,14 +142,16 @@ struct SecuritySettingsView: View {
         }.alert("Sensitive operation", isPresented: $showLoginAgainAlert) {
             Button("Ok"){
                 print("Dismiss alert")
-                showLoginAgainAlert.toggle()
+                showLoginAgainAlert.toggle()  //TODO: forse si può togliere
             }
         } message: {
             Text("This operation is sensitive and requires recent authentication. Log in again before retrying this request.")
         }
-        
         .alert("Successfull update", isPresented: $showSuccessAlert) {
-            Button("Ok"){print("Dismiss alert")}
+            Button("Ok")
+            {
+                print("Dismiss alert")
+            }
         }
         .frame(maxWidth: .infinity)
         .foregroundColor(.white.opacity(0.7))
