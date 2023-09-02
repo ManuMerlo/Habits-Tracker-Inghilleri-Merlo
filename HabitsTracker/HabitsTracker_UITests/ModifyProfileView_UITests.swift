@@ -22,7 +22,7 @@ class ModifyProfileView_UITests: XCTestCase {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launch()
-        goToMofidyProfile()
+        goToModifyProfile()
     }
     
     override func tearDownWithError() throws {
@@ -98,6 +98,7 @@ class ModifyProfileView_UITests: XCTestCase {
     func test_ModifyProfileView_ChangeProfilePictureOpensImagePicker() {
         //Given : we are in the settings view
         //Go to the modify profile view
+        
         let modifyProfileButton = app.scrollViews.otherElements.collectionViews.buttons["Modify profile"]
         
         Thread.sleep(forTimeInterval: 2)
@@ -106,8 +107,8 @@ class ModifyProfileView_UITests: XCTestCase {
         
         Thread.sleep(forTimeInterval: 2)
         
-        
         let changePhotoButton = app.scrollViews["ModifyProfileScrollView"].otherElements.buttons["Change photo"]
+        
         changePhotoButton.tap()
         
         let sheet = app.otherElements["Photos"].children(matching: .other).element.children(matching: .scrollView).element
@@ -178,7 +179,7 @@ extension ModifyProfileView_UITests {
         app.buttons["Sign in"].tap()
     }
 
-    func goToMofidyProfile (){
+    func goToModifyProfile (){
         signIn(email: "tony.stark@gmail.com", password: "tony.stark")
         
         app.tabBars["Tab Bar"].buttons["Settings"].tap()

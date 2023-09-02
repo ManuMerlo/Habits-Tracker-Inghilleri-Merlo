@@ -100,7 +100,6 @@ struct GeneralView: View {
                         firestoreViewModel.updateDailyScores(uid: currentUser.id, newScore: healthViewModel.dailyScore)
                     }
                     
-                    
                     UITabBar.appearance().barTintColor = UIColor(red: 0.1, green: 0.15, blue: 0.23, alpha: 0.9)
                 }
                 .onDisappear() {
@@ -128,8 +127,6 @@ struct GeneralView: View {
         } message: {
             Text("An error occurred during user data recovery. Please try again later.")
         }
-        
-        
     }
 }
 

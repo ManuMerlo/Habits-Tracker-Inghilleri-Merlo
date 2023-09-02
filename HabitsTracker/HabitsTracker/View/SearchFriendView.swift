@@ -92,7 +92,6 @@ struct ListItemView: View {
     }
 }
 
-
 struct SearchFriendView_Previews: PreviewProvider {
     static var previews: some View {
         SearchFriendView( firestoreViewModel: FirestoreViewModel())

@@ -124,7 +124,7 @@ struct HomeView: View {
                                 image: activity.image,
                                 measure: activity.measure,
                                 width: getMaxWidth(),
-                                record: max ( user.records.first(where: { $0.id == activity.id })?.quantity ?? 0, getMinQuantity(activity: activity.id))
+                                record: max ( currentUser.records.first(where: { $0.id == activity.id })?.quantity ?? 0, getMinQuantity(activity: activity.id))
                             )
                         }
                     }

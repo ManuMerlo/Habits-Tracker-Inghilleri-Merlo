@@ -398,7 +398,7 @@ final class FirestoreViewModelTests: XCTestCase, Mockable {
             BaseActivity(id:"distanceCycling", quantity: 12)
         ]
         
-        vm.modifyUser(uid: "1", field: "records", records: records)
+        vm.modifyUser(uid: "1", field: "records", newScores: records)
         
         let task_request = vm.tasks.last
         let _ = await task_request?.result

@@ -14,6 +14,9 @@ protocol AuthenticationDataSource {
     func getCurrentCredential() -> AuthCredential?
     func linkEmailAndPassword(email: String, password: String) async throws
     func deleteUser() async throws
+    func resetPassword(email: String) async throws
+    func updateEmail(email: String) async throws
+    func updatePassword(password: String) async throws
 }
 
 final class AuthenticationFirebaseDataSource: AuthenticationDataSource {

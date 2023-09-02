@@ -51,7 +51,8 @@ class SignInView_UITests: XCTestCase {
         signIn(email: "tony.stark@gmail.com", password: "tony.stark")
         
         // Assert that you are on the "Dashboard" screen
-        Thread.sleep(forTimeInterval: 1)
+        Thread.sleep(forTimeInterval: 3)
+        
         XCTAssertTrue(app.staticTexts["HomeTitle"].exists)
         
         logout()

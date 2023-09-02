@@ -183,10 +183,10 @@ final class AuthenticationViewModel: ObservableObject {
         tasks.append(task)
     }
     
-    func linkEmailAndPassword(email: String, password: String) {
+    func linkEmailAndPassword() {
         let task = Task {
             do {
-                try await authenticationRepository.linkEmailAndPassword(email: email, password: password)
+                try await authenticationRepository.linkEmailAndPassword(email: textFieldEmailProviders, password: textFieldPasswordProviders)
                 self.isAccountLinked = true
             } catch AuthenticationError.missingCredential {
                 self.isAccountLinked = false

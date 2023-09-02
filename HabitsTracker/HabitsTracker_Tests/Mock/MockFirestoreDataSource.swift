@@ -139,8 +139,8 @@ final class MockFirestoreDataSource : FirestoreDataSourceProtocol, Mockable{
 
     
     // Overload for arrays of BaseActivity
-    func modifyUser(uid: String, field: String, records: [BaseActivity]) async throws {
-        let dictionaryRecords = records.map { $0.asDictionary() }
+    func modifyUser(uid: String, field: String, newScores: [BaseActivity]) async throws {
+        let dictionaryRecords = newScores.map { $0.asDictionary() }
         try await modifyUser(uid: uid, field: field, value: dictionaryRecords)
     }
     

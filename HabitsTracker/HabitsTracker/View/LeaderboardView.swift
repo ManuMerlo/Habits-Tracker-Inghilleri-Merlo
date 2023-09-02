@@ -43,7 +43,6 @@ struct LeaderboardView: View {
                         users = leaderboardViewModel.sortUsers(users:users, timeFrame: newValue)
                     })
                     .frame(width : isLandscape ? width/1.5 : width/1.1)
-                    
                     ScrollView {
                         VStack(spacing: 10){
                             ForEach(users, id: \.self) { user in
@@ -176,7 +175,6 @@ struct RankingItemView: View {
                     .font(.body)
                 
             }.frame( width: width/5, height: 70)
-            
         }
         .padding(.vertical,10)
         .padding(.horizontal,20)
@@ -204,15 +202,13 @@ struct RankingItemView: View {
                     }
                     firestoreViewModel.modifyUser(uid: user.id, field: "weeklyGlobal", value: newPosition)
                 case (.weekly, false):
-                    if let oldPosition = user.weeklyPrivate, oldPosition < newPosition{
+                    if let oldPosition = user.weeklyPrivate, oldPosition < newPosition {
                         leaderboardViewModel.sendPositionChangeNotification()
                     }
                     firestoreViewModel.modifyUser(uid: user.id, field: "weeklyPrivate", value: newPosition)
                 }
             }
         }
-        
-        
     }
 }
 

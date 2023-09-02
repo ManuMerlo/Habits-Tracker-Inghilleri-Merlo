@@ -15,7 +15,7 @@ protocol FirestoreDataSourceProtocol {
     // CRUD for User
     func addNewUser(user: User)
     func modifyUser(uid: String, field: String, value: Any) async throws
-    func modifyUser(uid: String, field: String, records: [BaseActivity]) async throws
+    func modifyUser(uid: String, field: String, newScores: [BaseActivity]) async throws
     func deleteUserData(uid: String) async throws
     
     // User operations

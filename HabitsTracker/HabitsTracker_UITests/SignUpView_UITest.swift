@@ -57,7 +57,7 @@ class SignUpView_UITests: XCTestCase {
         XCTAssertEqual(errorText.label, "Not valid email or empty password")
         
         // textFieldPassword == repeatPassword else {
-        // error ; "Passwords do not match"
+        // error : "Passwords do not match"
         
         signUp(username: "username", email: "username@gmail.com", password: "password", repeatPassword: "pass")
         
@@ -86,6 +86,7 @@ class SignUpView_UITests: XCTestCase {
         
         //Wait for the API
         Thread.sleep(forTimeInterval: 5)
+        
         XCTAssertEqual(errorText.label, "The username already exists.")
         
         app.navigationBars["_TtGC7SwiftUI32NavigationStackHosting"].buttons["Back"].tap()

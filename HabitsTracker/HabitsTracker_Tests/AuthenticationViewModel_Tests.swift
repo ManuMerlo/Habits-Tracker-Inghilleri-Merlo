@@ -575,7 +575,10 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,linkedAccounts: [], throwErrors: false)
         let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
         //When
-        viewModel.linkEmailAndPassword(email: "tets@test.com", password: "test")
+        viewModel.textFieldEmailProviders = "test@test.com"
+        viewModel.textFieldPasswordProviders = "test"
+        
+        viewModel.linkEmailAndPassword()
         
         let task = viewModel.tasks.last
         let _ = await task?.result
@@ -591,7 +594,10 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
         
         //When
-        viewModel.linkEmailAndPassword(email: "test@test.com", password: "test")
+        viewModel.textFieldEmailProviders = "test@test.com"
+        viewModel.textFieldPasswordProviders = "test"
+        
+        viewModel.linkEmailAndPassword()
         
         let task = viewModel.tasks.last
         let _ = await task?.result
@@ -609,7 +615,9 @@ final class AuthenticationViewModel_Tests: XCTestCase {
         let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
         
         //When
-        viewModel.linkEmailAndPassword(email: "", password: "test")
+        viewModel.textFieldEmailProviders = ""
+        viewModel.textFieldPassword = "test"
+        viewModel.linkEmailAndPassword()
         
         let task = viewModel.tasks.last
         let _ = await task?.result

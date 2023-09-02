@@ -14,6 +14,14 @@
         "dailyPrivate": 50,
         "weeklyGlobal": 250,
         "weeklyPrivate": 75,
+        "actualScores": [
+            {"id": "activeEnergyBurned", "quantity": 150},
+            {"id": "appleExerciseTime", "quantity": 306},
+            {"id": "appleStandTime", "quantity": 160},
+            {"id": "distanceWalkingRunning", "quantity": 58},
+            {"id": "stepCount", "quantity": 700},
+            {"id": "distanceCycling", "quantity": 70}
+        ],
         "records": [
             {"id": "activeEnergyBurned", "quantity": 250},
             {"id": "appleExerciseTime", "quantity": 30},
@@ -37,6 +45,14 @@
         "dailyPrivate": 45,
         "weeklyGlobal": 240,
         "weeklyPrivate": 70,
+        "actualScores": [
+            {"id": "activeEnergyBurned", "quantity": 250},
+            {"id": "appleExerciseTime", "quantity": 255},
+            {"id": "appleStandTime", "quantity": 90},
+            {"id": "distanceWalkingRunning", "quantity": 44},
+            {"id": "stepCount", "quantity": 650},
+            {"id": "distanceCycling", "quantity": 0}
+        ],
         "records": [
             {"id": "activeEnergyBurned", "quantity": 200},
             {"id": "appleExerciseTime", "quantity": 25},
@@ -60,6 +76,14 @@
         "dailyPrivate": 42,
         "weeklyGlobal": 230,
         "weeklyPrivate": 65,
+        "actualScores": [
+            {"id": "activeEnergyBurned", "quantity": 260},
+            {"id": "appleExerciseTime", "quantity": 205},
+            {"id": "appleStandTime", "quantity": 54},
+            {"id": "distanceWalkingRunning", "quantity": 104},
+            {"id": "stepCount", "quantity": 430},
+            {"id": "distanceCycling", "quantity": 0}
+        ],
         "records": [
             {"id": "activeEnergyBurned", "quantity": 270},
             {"id": "appleExerciseTime", "quantity": 32},
@@ -83,6 +107,14 @@
         "dailyPrivate": 40,
         "weeklyGlobal": 220,
         "weeklyPrivate": 60,
+        "actualScores": [
+            {"id": "activeEnergyBurned", "quantity": 50},
+            {"id": "appleExerciseTime", "quantity": 175},
+            {"id": "appleStandTime", "quantity": 32},
+            {"id": "distanceWalkingRunning", "quantity": 89},
+            {"id": "stepCount", "quantity": 346},
+            {"id": "distanceCycling", "quantity": 10}
+        ],
         "records": [
             {"id": "activeEnergyBurned", "quantity": 220},
             {"id": "appleExerciseTime", "quantity": 28},
@@ -106,6 +138,14 @@
         "dailyPrivate": 44,
         "weeklyGlobal": 235,
         "weeklyPrivate": 63,
+        "actualScores": [
+            {"id": "activeEnergyBurned", "quantity": 150},
+            {"id": "appleExerciseTime", "quantity": 255},
+            {"id": "appleStandTime", "quantity": 90},
+            {"id": "distanceWalkingRunning", "quantity": 44},
+            {"id": "stepCount", "quantity": 650},
+            {"id": "distanceCycling", "quantity": 0}
+        ],
         "records": [
             {"id": "activeEnergyBurned", "quantity": 260},
             {"id": "appleExerciseTime", "quantity": 30},
