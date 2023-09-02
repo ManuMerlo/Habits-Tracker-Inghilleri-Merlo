@@ -51,6 +51,12 @@
 		0984001D2AA21A2900F6BDCE /* ModifyProfileView_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0984001C2AA21A2900F6BDCE /* ModifyProfileView_UITests.swift */; };
 		098651AD2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098651AC2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift */; };
 		099BCA3229D8782200E9836F /* LinkedAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099BCA3129D8782200E9836F /* LinkedAccounts.swift */; };
+		09A28EA02AA3002300422735 /* PointOfInterestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28E9F2AA3002300422735 /* PointOfInterestView.swift */; };
+		09A28EA22AA302CD00422735 /* Landmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28EA12AA302CD00422735 /* Landmark.swift */; };
+		09A28EA42AA302EA00422735 /* LandmarkAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28EA32AA302EA00422735 /* LandmarkAnnotation.swift */; };
+		09A28EA62AA303BC00422735 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28EA52AA303BC00422735 /* MapView.swift */; };
+		09A28EA82AA303E800422735 /* PlaceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28EA72AA303E800422735 /* PlaceListView.swift */; };
+		09A28EAC2AA305B100422735 /* LocationManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28EAB2AA305B100422735 /* LocationManager.swift */; };
 		09B7E8C82A86092A00FFD230 /* ScoreRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */; };
 		09B7E8CA2A86131000FFD230 /* ActivityStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8C92A86131000FFD230 /* ActivityStatusView.swift */; };
 		09B7E8CC2A867EE000FFD230 /* WaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8CB2A867EE000FFD230 /* WaveView.swift */; };
@@ -163,6 +169,12 @@
 		0984001C2AA21A2900F6BDCE /* ModifyProfileView_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyProfileView_UITests.swift; sourceTree = "<group>"; };
 		098651AC2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAuthenticationDataSource.swift; sourceTree = "<group>"; };
 		099BCA3129D8782200E9836F /* LinkedAccounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedAccounts.swift; sourceTree = "<group>"; };
+		09A28E9F2AA3002300422735 /* PointOfInterestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointOfInterestView.swift; sourceTree = "<group>"; };
+		09A28EA12AA302CD00422735 /* Landmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Landmark.swift; sourceTree = "<group>"; };
+		09A28EA32AA302EA00422735 /* LandmarkAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandmarkAnnotation.swift; sourceTree = "<group>"; };
+		09A28EA52AA303BC00422735 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
+		09A28EA72AA303E800422735 /* PlaceListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceListView.swift; sourceTree = "<group>"; };
+		09A28EAB2AA305B100422735 /* LocationManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationManager.swift; sourceTree = "<group>"; };
 		09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreRingView.swift; sourceTree = "<group>"; };
 		09B7E8C92A86131000FFD230 /* ActivityStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStatusView.swift; sourceTree = "<group>"; };
 		09B7E8CB2A867EE000FFD230 /* WaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveView.swift; sourceTree = "<group>"; };
@@ -274,6 +286,8 @@
 				09B7E8CB2A867EE000FFD230 /* WaveView.swift */,
 				09C666E22A88AA0C006B5D38 /* RecordDetailView.swift */,
 				097DB9B92A8B66CC0017EAA2 /* RecordView.swift */,
+				09A28EA52AA303BC00422735 /* MapView.swift */,
+				09A28EA72AA303E800422735 /* PlaceListView.swift */,
 			);
 			path = ui;
 			sourceTree = "<group>";
@@ -347,6 +361,8 @@
 				DD09A10229D9FA0D00CEBE15 /* Activity.swift */,
 				09316F672A80D55200E92B84 /* Friend.swift */,
 				090C998D2A8F4D1A00F8B339 /* OrientationInfo.swift */,
+				09A28EA12AA302CD00422735 /* Landmark.swift */,
+				09A28EA32AA302EA00422735 /* LandmarkAnnotation.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -371,6 +387,7 @@
 				09316F692A8143B000E92B84 /* RequestListView.swift */,
 				DD4B90C42A97E65C00B8CC5C /* LoadingView.swift */,
 				09B8FD842A9AAB8F00F51CAF /* SecuritySettingsView.swift */,
+				09A28E9F2AA3002300422735 /* PointOfInterestView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -383,6 +400,7 @@
 				DDF9364429C76330002B965A /* UserViewModel_old.swift */,
 				0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */,
 				0938459A2A8C93720081E1C5 /* LeaderboardViewModel.swift */,
+				09A28EAB2AA305B100422735 /* LocationManager.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -700,6 +718,7 @@
 			files = (
 				DD4FC73B29D8291300414C2B /* GoogleAuthentication.swift in Sources */,
 				09179CD529314D3700B389C2 /* SignupView.swift in Sources */,
+				09A28EA42AA302EA00422735 /* LandmarkAnnotation.swift in Sources */,
 				09115CEA2A7FC38000BE1254 /* ProfileImageView.swift in Sources */,
 				094A32452A798AF90008403C /* UserProfileView.swift in Sources */,
 				DD7C45662A929D4E0026AF49 /* Errors.swift in Sources */,
@@ -719,6 +738,7 @@
 				09652B8329311942002CC615 /* CardIntro.swift in Sources */,
 				DDEACC1129DB747200F39F4B /* FirestoreRepository.swift in Sources */,
 				DDD723AF292A73AC00012461 /* SettingsView.swift in Sources */,
+				09A28EA62AA303BC00422735 /* MapView.swift in Sources */,
 				DDEB8AE929D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift in Sources */,
 				DD127A3E2929476800075A8B /* SigninViewModel_old.swift in Sources */,
 				DD4FC73829D7EDDC00414C2B /* FacebookAuthentication.swift in Sources */,
@@ -726,13 +746,16 @@
 				0938459B2A8C93720081E1C5 /* LeaderboardViewModel.swift in Sources */,
 				09316F6A2A8143B000E92B84 /* RequestListView.swift in Sources */,
 				DDDDFA70292CEC290033B3D3 /* PlanningViewModel.swift in Sources */,
+				09A28EA82AA303E800422735 /* PlaceListView.swift in Sources */,
 				09D473932AA0AC13003DD80A /* HealthDataSource.swift in Sources */,
+				09A28EAC2AA305B100422735 /* LocationManager.swift in Sources */,
 				DDEB8AEB29D6F210001693C8 /* AuthenticationRepository.swift in Sources */,
 				090C998E2A8F4D1A00F8B339 /* OrientationInfo.swift in Sources */,
 				DDAA66A729D042E500219792 /* LeaderboardView.swift in Sources */,
 				DDC33537292BFC8700C27566 /* DateValue.swift in Sources */,
 				DDEACC1329DB748800F39F4B /* FirestoreViewModel.swift in Sources */,
 				DDEB8AED29D6F301001693C8 /* AuthenticationViewModel.swift in Sources */,
+				09A28EA22AA302CD00422735 /* Landmark.swift in Sources */,
 				097DB9BA2A8B66CC0017EAA2 /* RecordView.swift in Sources */,
 				09B7E8CA2A86131000FFD230 /* ActivityStatusView.swift in Sources */,
 				DDC2F89529311CAD003653F1 /* Goal.swift in Sources */,
@@ -745,6 +768,7 @@
 				093D33B32A7BA53B000C8ECF /* Utils.swift in Sources */,
 				DDD723B1292A87E100012461 /* HomeView.swift in Sources */,
 				DD25AA2629293E7300EF2FEB /* HabitsTrackerApp.swift in Sources */,
+				09A28EA02AA3002300422735 /* PointOfInterestView.swift in Sources */,
 				09115CEC2A7FC97A00BE1254 /* NotificationDetailView.swift in Sources */,
 				DD09A10329D9FA0D00CEBE15 /* Activity.swift in Sources */,
 				DDC33533292BF38A00C27566 /* PlanningView.swift in Sources */,

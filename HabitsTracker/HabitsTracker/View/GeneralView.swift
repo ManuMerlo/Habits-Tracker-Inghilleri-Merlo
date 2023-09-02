@@ -32,6 +32,11 @@ struct GeneralView: View {
                             Label("Leaderboard", systemImage: "trophy")
                         }.accessibilityIdentifier("LeaderboardView")
                     
+                    PointOfInterestView()
+                        .tabItem {
+                            Label("Map", systemImage: "map")
+                        }.accessibilityIdentifier("MapView")
+                    
                     //TODO: authentication is need to reauthenticate the user before deleting the account
                     SettingsView(authenticationViewModel: authenticationViewModel,firestoreViewModel : firestoreViewModel)
                         .tabItem {
