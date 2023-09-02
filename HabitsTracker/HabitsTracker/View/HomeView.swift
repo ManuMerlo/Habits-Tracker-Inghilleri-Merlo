@@ -181,7 +181,7 @@ struct HomeView: View {
 }
 struct HomeView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel(),firestoreViewModel: FirestoreViewModel())
+        HomeView(healthViewModel: HealthViewModel(),firestoreViewModel: FirestoreViewModel())
             .environmentObject(OrientationInfo())
     }
 }

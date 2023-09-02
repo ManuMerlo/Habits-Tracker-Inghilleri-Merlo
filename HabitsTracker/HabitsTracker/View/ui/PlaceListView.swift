@@ -5,41 +5,35 @@ import Contacts
 struct PlaceListView: View {
     
     let landmarks: [Landmark]
-    var onTap: () -> ()
     
+    @Binding var selectedLandmark: Landmark?
+
     var body: some View {
         VStack(alignment: .leading,spacing: 0) {
-            HStack {
-                Text("Open Details")
-                    .font(.title)
-                    .foregroundColor(.white)
-            }.frame(width: UIScreen.main.bounds.size.width, height: 60)
-                .background(Color("oxfordBlue"))
-                .gesture(TapGesture()
-                    .onEnded(self.onTap)
-            )
             List {
                 ForEach(self.landmarks, id: \.id) { landmark in
-                    
-                    VStack(alignment: .leading) {
+                    VStack(alignment: .leading, spacing: 10) {
                         Text(landmark.name)
                             .fontWeight(.bold)
-                        
                         Text(landmark.title)
+                    }.onTapGesture {
+                        selectedLandmark = landmark
                     }
                 }
+                .listRowBackground(Color("oxfordBlue"))
+                .listRowSeparatorTint(.white.opacity(0.8))
+                .foregroundColor(.white.opacity(0.8))
                 
-            }.scrollContentBackground(.hidden)
+            }
+            .listStyle(PlainListStyle())
+            .listRowInsets(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 0))
+            .scrollContentBackground(.hidden)
         }
-        .background(Color("delftBlue"))
-        .cornerRadius(10)
+        .cornerRadius(15)
+        .background(
+            RoundedRectangle(cornerRadius: 15) //
+                .stroke(Color.white.opacity(0.2), lineWidth: 2)
+                .shadow(color: .black, radius: 5)
+        )
     }
-}
-
-struct PlaceListView_Previews: PreviewProvider {
-    static var previews: some View {
-            let coordinate = CLLocationCoordinate2D(latitude: 37.7749, longitude: -122.4194) // San Francisco's coordinates
-            let mockPlacemark = MKPlacemark(coordinate: coordinate, addressDictionary: [CNPostalAddressStreetKey: "San Francisco"])
-            return PlaceListView(landmarks: [Landmark(placemark: mockPlacemark)], onTap: {})
-        }
 }
