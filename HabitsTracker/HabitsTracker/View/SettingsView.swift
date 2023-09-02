@@ -46,12 +46,15 @@ struct SettingsView: View {
                     List {
                         Section() {
                             
-                            NavigationLink {
-                                SecuritySettingsView(authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)
-                            } label: {
-                                Label("Security Settings", systemImage: "lock")
-                                
+                            if authenticationViewModel.isEmailandPasswordLinked(){
+                                NavigationLink {
+                                    SecuritySettingsView(authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)
+                                } label: {
+                                    Label("Security Settings", systemImage: "lock")
+                                }
                             }
+                            
+                            
                             NavigationLink {
                                 ModifyProfileView(firestoreViewModel: firestoreViewModel, settingsViewModel: settingsViewModel)
                             } label: {
@@ -142,6 +145,8 @@ struct SettingsView: View {
         .onAppear(){
             isLandscape = orientationInfo.orientation == .landscape
             width = UIScreen.main.bounds.width
+            authenticationViewModel.getCurrentProvider()
+               
         }
         .onChange(of: orientationInfo.orientation) { orientation in
             isLandscape = orientation == .landscape

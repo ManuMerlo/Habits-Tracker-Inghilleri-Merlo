@@ -52,7 +52,6 @@ struct SecuritySettingsView: View {
                                             try await authenticationViewModel.updateEmail(email: authenticationViewModel.textFieldEmailSecurity)
                                             let uid = firestoreViewModel.firestoreUser?.id ?? ""
                                             firestoreViewModel.modifyUser(uid: uid, field: "email", value: authenticationViewModel.textFieldEmailSecurity)
-                                            
                                             expandEmail.toggle()
                                             showSuccessAlert.toggle()
                                         } catch {
