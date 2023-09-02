@@ -97,13 +97,13 @@ struct HomeView: View {
                         .padding(.top)
                 }
             }
-            
+            //FIXME: 
             if isLandscape{
                 WaveView(upsideDown: false, repeatAnimation: false, base: 40, amplitude: 110)
                     .offset(y:20)
                     
             } else {
-                WaveView(upsideDown: false, repeatAnimation: device == .iPhone ? true : false, base: 40, amplitude: 110)
+                WaveView(upsideDown: false, repeatAnimation: false, base: 40, amplitude: 110)
                     .offset(y:20)
                 
             }

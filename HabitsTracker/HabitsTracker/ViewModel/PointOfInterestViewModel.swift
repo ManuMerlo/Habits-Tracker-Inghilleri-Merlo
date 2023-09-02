@@ -3,53 +3,94 @@ import MapKit
 import SwiftUI
 import CoreLocation
 
-final class PointOfInterestViewModel: NSObject, ObservableObject, CLLocationManagerDelegate{
+final class PointOfInterestViewModel: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     var locationManager = CLLocationManager()
+    //var locationManager: CLLocationManager?
     
     @Published var location: CLLocation? = nil
-    @Published var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 45.4655, longitude: 9.1865), span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+    @Published var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 45.4655, longitude: 9.1865), span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
     
     @Published var landmarks: [Landmark] = []
     
     override init() {
            super.init()
            self.setupLocationManager()
-           self.getNearByDefaultLandmarks()
+           //self.getNearByDefaultLandmarks()
        }
 
     private func setupLocationManager() {
-           locationManager = CLLocationManager()
-           locationManager.delegate = self
-           locationManager.desiredAccuracy = kCLLocationAccuracyBest
-           locationManager.distanceFilter = kCLDistanceFilterNone
-           checkIfLocationServiceIsEnabled()
+       locationManager = CLLocationManager()
+       locationManager.delegate = self
+       locationManager.desiredAccuracy = kCLLocationAccuracyBest
+       locationManager.distanceFilter = kCLDistanceFilterNone
+       //checkIfLocationServiceIsEnabled()
     }
     
-    func checkIfLocationServiceIsEnabled(){
+    /*func checkIfLocationServiceIsEnabled() {
         if locationManager.authorizationStatus == .authorizedAlways || locationManager.authorizationStatus == .authorizedWhenInUse {
             locationManager.startUpdatingLocation()
-            
         } else {
             locationManager.requestWhenInUseAuthorization()
         }
-    }
+    }*/
     
-    private func checkLocationAuthorization(){
+    /*func startLocationServices() {
+       locationManager = CLLocationManager()
+       locationManager!.delegate = self
+       if locationManager!.authorizationStatus == .notDetermined {
+          locationManager!.requestWhenInUseAuthorization()
+       } else if locationManager!.authorizationStatus == .authorizedAlways || locationManager!.authorizationStatus == .authorizedWhenInUse {
+           locationManager!.startUpdatingLocation()
+       }
+    }*/
+    
+    /*func checkIfLocationServiceIsEnabled() {
+        //DispatchQueue.global().async {
+            if CLLocationManager.locationServicesEnabled() {
+                self.locationManager = CLLocationManager()
+                self.locationManager!.delegate = self
+                self.locationManager!.desiredAccuracy = kCLLocationAccuracyBest
+                self.locationManager!.distanceFilter = kCLDistanceFilterNone
+            } else {
+                print("")
+            }
+        //}
+    }*/
+    
+    /*private func checkLocationAuthorization() {
+        guard let locationManager = locationManager else {
+            return
+        }
+        switch locationManager.authorizationStatus {
+            case .notDetermined:
+                locationManager.requestWhenInUseAuthorization()
+            case .restricted:
+                //TODO: show an alert
+                print("You're location is restricted")
+            case .denied:
+                //TODO: show an alert
+                print("You're location is denied")
+            case .authorizedAlways, .authorizedWhenInUse:
+                locationManager.startUpdatingLocation()
+            @unknown default:
+                break
+        }
+        
+    }*/
+    
+    private func checkLocationAuthorization() {
         switch locationManager.authorizationStatus {
         case .notDetermined:
             locationManager.requestWhenInUseAuthorization()
-            
         case .restricted:
             //TODO: show an alert
             print("You're location is restricted")
-            
         case .denied:
             //TODO: show an alert
             print("You're location is denied")
-            
         case .authorizedAlways, .authorizedWhenInUse:
-           print("ok")
+            locationManager.startUpdatingLocation()
         @unknown default:
             break
         }
@@ -67,9 +108,7 @@ final class PointOfInterestViewModel: NSObject, ObservableObject, CLLocationMana
         self.location = location
         self.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
         
-        if landmarks.isEmpty {
-            getNearByDefaultLandmarks()
-        }
+        getNearByDefaultLandmarks()
     }
     
     func getNearByLandmarks(search: String) {
@@ -78,7 +117,7 @@ final class PointOfInterestViewModel: NSObject, ObservableObject, CLLocationMana
         
         let request = MKLocalSearch.Request()
         request.naturalLanguageQuery = search
-        request.region = MKCoordinateRegion(center: userLocation.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+        request.region = MKCoordinateRegion(center: userLocation.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
         
         let search = MKLocalSearch(request: request)
         search.start { (response, error) in
@@ -105,7 +144,7 @@ final class PointOfInterestViewModel: NSObject, ObservableObject, CLLocationMana
             
             let request = MKLocalSearch.Request()
             request.naturalLanguageQuery = term
-            request.region = MKCoordinateRegion(center: userLocation.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.5, longitudeDelta: 0.5))
+            request.region = MKCoordinateRegion(center: userLocation.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
             
             let search = MKLocalSearch(request: request)
             

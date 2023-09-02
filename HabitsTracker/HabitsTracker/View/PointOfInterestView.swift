@@ -40,9 +40,7 @@ struct PointOfInterestView: View {
 
                 // MapView
                 MapView(landmarks: pointOfInterestViewModel.landmarks, region: $pointOfInterestViewModel.region, selectedLandmark: $selectedLandmark)
-                    .onAppear(perform: {
-                        pointOfInterestViewModel.checkIfLocationServiceIsEnabled()
-                    }).frame(height: height/2)
+                    .frame(height: height/2)
                     .cornerRadius(15)
                     .background(
                         RoundedRectangle(cornerRadius: 15) //
@@ -120,11 +118,17 @@ struct PointOfInterestView: View {
                 }.cornerRadius(15)
                     
             }
-
-            PlaceListView(landmarks: pointOfInterestViewModel.landmarks, selectedLandmark: $selectedLandmark)
-                .padding(.horizontal,15)
-
+            if !pointOfInterestViewModel.landmarks.isEmpty {
+                PlaceListView(landmarks: pointOfInterestViewModel.landmarks, selectedLandmark: $selectedLandmark)
+                    .padding(.horizontal,15)
+            } else {
+                Spacer()
+            }
+            
         }
+        /*.onAppear {
+            pointOfInterestViewModel.setupLocationManager()
+        }*/
         .ignoresSafeArea()
         .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
             .edgesIgnoringSafeArea(.all))
