@@ -42,11 +42,11 @@ final class HealthViewModel: ObservableObject {
     }
 
     private func subscribeToUpdates() {
-           healthRepository.getActivitiesPublisher()
-               .sink { [weak self] activities in
-                   self?.allMyTypes = activities
-               }
-               .store(in: &cancellables)
+        healthRepository.getActivitiesPublisher()
+            .sink { [weak self] activities in
+                self?.allMyTypes = activities
+            }
+            .store(in: &cancellables)
     }
     
     func computeSingleScore() {

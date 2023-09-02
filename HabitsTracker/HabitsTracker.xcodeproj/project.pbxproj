@@ -51,12 +51,12 @@
 		0984001D2AA21A2900F6BDCE /* ModifyProfileView_UITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0984001C2AA21A2900F6BDCE /* ModifyProfileView_UITests.swift */; };
 		098651AD2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 098651AC2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift */; };
 		099BCA3229D8782200E9836F /* LinkedAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099BCA3129D8782200E9836F /* LinkedAccounts.swift */; };
-		09A28EA02AA3002300422735 /* PointOfInterestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28E9F2AA3002300422735 /* PointOfInterestView.swift */; };
+		09A28EA02AA3002300422735 /* PointsOfInterestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28E9F2AA3002300422735 /* PointsOfInterestView.swift */; };
 		09A28EA22AA302CD00422735 /* Landmark.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28EA12AA302CD00422735 /* Landmark.swift */; };
 		09A28EA42AA302EA00422735 /* LandmarkAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28EA32AA302EA00422735 /* LandmarkAnnotation.swift */; };
 		09A28EA62AA303BC00422735 /* MapView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28EA52AA303BC00422735 /* MapView.swift */; };
 		09A28EA82AA303E800422735 /* PlaceListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28EA72AA303E800422735 /* PlaceListView.swift */; };
-		09A28EAE2AA3110C00422735 /* PointOfInterestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28EAD2AA3110C00422735 /* PointOfInterestViewModel.swift */; };
+		09A28EAE2AA3110C00422735 /* PointsOfInterestViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09A28EAD2AA3110C00422735 /* PointsOfInterestViewModel.swift */; };
 		09B7E8C82A86092A00FFD230 /* ScoreRingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */; };
 		09B7E8CA2A86131000FFD230 /* ActivityStatusView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8C92A86131000FFD230 /* ActivityStatusView.swift */; };
 		09B7E8CC2A867EE000FFD230 /* WaveView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09B7E8CB2A867EE000FFD230 /* WaveView.swift */; };
@@ -74,6 +74,8 @@
 		09FF69FE2A9A4A8E0028CE72 /* MockUserNotificationCenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FF69FD2A9A4A8E0028CE72 /* MockUserNotificationCenter.swift */; };
 		09FF6A002A9A55B00028CE72 /* LeaderboardViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09FF69FF2A9A55B00028CE72 /* LeaderboardViewModel_Tests.swift */; };
 		DD09A10329D9FA0D00CEBE15 /* Activity.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD09A10229D9FA0D00CEBE15 /* Activity.swift */; };
+		DD11E4D42AA3C65900A39EDD /* PointsOfInterestRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD11E4D32AA3C65900A39EDD /* PointsOfInterestRepository.swift */; };
+		DD11E4D62AA3C6A400A39EDD /* PointsOfInterestDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD11E4D52AA3C6A400A39EDD /* PointsOfInterestDataSource.swift */; };
 		DD127A3C2929475900075A8B /* SigninView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3B2929475900075A8B /* SigninView.swift */; };
 		DD127A402929477700075A8B /* GeneralView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A3F2929477700075A8B /* GeneralView.swift */; };
 		DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD127A41292947FA00075A8B /* CustomTextField.swift */; };
@@ -160,12 +162,12 @@
 		0984001C2AA21A2900F6BDCE /* ModifyProfileView_UITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModifyProfileView_UITests.swift; sourceTree = "<group>"; };
 		098651AC2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockAuthenticationDataSource.swift; sourceTree = "<group>"; };
 		099BCA3129D8782200E9836F /* LinkedAccounts.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedAccounts.swift; sourceTree = "<group>"; };
-		09A28E9F2AA3002300422735 /* PointOfInterestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointOfInterestView.swift; sourceTree = "<group>"; };
+		09A28E9F2AA3002300422735 /* PointsOfInterestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsOfInterestView.swift; sourceTree = "<group>"; };
 		09A28EA12AA302CD00422735 /* Landmark.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Landmark.swift; sourceTree = "<group>"; };
 		09A28EA32AA302EA00422735 /* LandmarkAnnotation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LandmarkAnnotation.swift; sourceTree = "<group>"; };
 		09A28EA52AA303BC00422735 /* MapView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapView.swift; sourceTree = "<group>"; };
 		09A28EA72AA303E800422735 /* PlaceListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceListView.swift; sourceTree = "<group>"; };
-		09A28EAD2AA3110C00422735 /* PointOfInterestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointOfInterestViewModel.swift; sourceTree = "<group>"; };
+		09A28EAD2AA3110C00422735 /* PointsOfInterestViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsOfInterestViewModel.swift; sourceTree = "<group>"; };
 		09B7E8C72A86092A00FFD230 /* ScoreRingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScoreRingView.swift; sourceTree = "<group>"; };
 		09B7E8C92A86131000FFD230 /* ActivityStatusView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityStatusView.swift; sourceTree = "<group>"; };
 		09B7E8CB2A867EE000FFD230 /* WaveView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveView.swift; sourceTree = "<group>"; };
@@ -183,6 +185,8 @@
 		09FF69FF2A9A55B00028CE72 /* LeaderboardViewModel_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewModel_Tests.swift; sourceTree = "<group>"; };
 		DD07DFB529D0B99400633248 /* HabitsTracker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = HabitsTracker.entitlements; sourceTree = "<group>"; };
 		DD09A10229D9FA0D00CEBE15 /* Activity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Activity.swift; sourceTree = "<group>"; };
+		DD11E4D32AA3C65900A39EDD /* PointsOfInterestRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsOfInterestRepository.swift; sourceTree = "<group>"; };
+		DD11E4D52AA3C6A400A39EDD /* PointsOfInterestDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsOfInterestDataSource.swift; sourceTree = "<group>"; };
 		DD127A3B2929475900075A8B /* SigninView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SigninView.swift; sourceTree = "<group>"; };
 		DD127A3F2929477700075A8B /* GeneralView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralView.swift; sourceTree = "<group>"; };
 		DD127A41292947FA00075A8B /* CustomTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTextField.swift; sourceTree = "<group>"; };
@@ -329,6 +333,24 @@
 			path = Reposiroty;
 			sourceTree = "<group>";
 		};
+		DD11E4D12AA3C5FA00A39EDD /* MapKit */ = {
+			isa = PBXGroup;
+			children = (
+				09A28EAD2AA3110C00422735 /* PointsOfInterestViewModel.swift */,
+				DD11E4D22AA3C61E00A39EDD /* Repository */,
+			);
+			path = MapKit;
+			sourceTree = "<group>";
+		};
+		DD11E4D22AA3C61E00A39EDD /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				DD11E4D32AA3C65900A39EDD /* PointsOfInterestRepository.swift */,
+				DD11E4D52AA3C6A400A39EDD /* PointsOfInterestDataSource.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
 		DD127A38292946E100075A8B /* Model */ = {
 			isa = PBXGroup;
 			children = (
@@ -363,7 +385,7 @@
 				09316F692A8143B000E92B84 /* RequestListView.swift */,
 				DD4B90C42A97E65C00B8CC5C /* LoadingView.swift */,
 				09B8FD842A9AAB8F00F51CAF /* SecuritySettingsView.swift */,
-				09A28E9F2AA3002300422735 /* PointOfInterestView.swift */,
+				09A28E9F2AA3002300422735 /* PointsOfInterestView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -373,7 +395,6 @@
 			children = (
 				0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */,
 				0938459A2A8C93720081E1C5 /* LeaderboardViewModel.swift */,
-				09A28EAD2AA3110C00422735 /* PointOfInterestViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -419,6 +440,7 @@
 				DDBDA92C29D778F900B81D6F /* Authentication */,
 				DDEACC0C29DB740400F39F4B /* Firestore */,
 				DD1FAFD829D8DA0E0084178F /* HealthKit */,
+				DD11E4D12AA3C5FA00A39EDD /* MapKit */,
 				DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */,
 				DD7C45652A929D4E0026AF49 /* Errors.swift */,
 				093D33B22A7BA53B000C8ECF /* Utils.swift */,
@@ -705,7 +727,7 @@
 				094A32432A796F570008403C /* SearchFriendView.swift in Sources */,
 				09D473902AA0ABBC003DD80A /* HealthRepository.swift in Sources */,
 				DDEACC0E29DB745700F39F4B /* FirestoreDataSource.swift in Sources */,
-				09A28EAE2AA3110C00422735 /* PointOfInterestViewModel.swift in Sources */,
+				09A28EAE2AA3110C00422735 /* PointsOfInterestViewModel.swift in Sources */,
 				09652B8329311942002CC615 /* CardIntro.swift in Sources */,
 				DDEACC1129DB747200F39F4B /* FirestoreRepository.swift in Sources */,
 				DDD723AF292A73AC00012461 /* SettingsView.swift in Sources */,
@@ -713,6 +735,7 @@
 				DDEB8AE929D6EEF8001693C8 /* AuthenticationFirebaseDataSource.swift in Sources */,
 				DD4FC73829D7EDDC00414C2B /* FacebookAuthentication.swift in Sources */,
 				09B7E8CC2A867EE000FFD230 /* WaveView.swift in Sources */,
+				DD11E4D62AA3C6A400A39EDD /* PointsOfInterestDataSource.swift in Sources */,
 				0938459B2A8C93720081E1C5 /* LeaderboardViewModel.swift in Sources */,
 				09316F6A2A8143B000E92B84 /* RequestListView.swift in Sources */,
 				09A28EA82AA303E800422735 /* PlaceListView.swift in Sources */,
@@ -731,10 +754,11 @@
 				DD4B90C52A97E65C00B8CC5C /* LoadingView.swift in Sources */,
 				DD127A402929477700075A8B /* GeneralView.swift in Sources */,
 				DD1FAFDA29D8DA2A0084178F /* HealthViewModel.swift in Sources */,
+				DD11E4D42AA3C65900A39EDD /* PointsOfInterestRepository.swift in Sources */,
 				093D33B32A7BA53B000C8ECF /* Utils.swift in Sources */,
 				DDD723B1292A87E100012461 /* HomeView.swift in Sources */,
 				DD25AA2629293E7300EF2FEB /* HabitsTrackerApp.swift in Sources */,
-				09A28EA02AA3002300422735 /* PointOfInterestView.swift in Sources */,
+				09A28EA02AA3002300422735 /* PointsOfInterestView.swift in Sources */,
 				09115CEC2A7FC97A00BE1254 /* NotificationDetailView.swift in Sources */,
 				DD09A10329D9FA0D00CEBE15 /* Activity.swift in Sources */,
 				DD127A3C2929475900075A8B /* SigninView.swift in Sources */,

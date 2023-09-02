@@ -32,7 +32,7 @@ struct GeneralView: View {
                             Label("Leaderboard", systemImage: "trophy")
                         }.accessibilityIdentifier("LeaderboardView")
                     
-                    PointOfInterestView()
+                    PointsOfInterestView()
                         .tabItem {
                             Label("Map", systemImage: "map")
                         }.accessibilityIdentifier("MapView")

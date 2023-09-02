@@ -3,8 +3,8 @@ import Foundation
 import MapKit
 
 
-struct PointOfInterestView: View {
-    @StateObject var pointOfInterestViewModel = PointOfInterestViewModel()
+struct PointsOfInterestView: View {
+    @StateObject var pointsOfInterestViewModel = PointsOfInterestViewModel()
     
     @State private var search: String = ""
     @State private var selectedLandmark: Landmark?
@@ -39,7 +39,7 @@ struct PointOfInterestView: View {
             ZStack(alignment: .top){
 
                 // MapView
-                MapView(landmarks: pointOfInterestViewModel.landmarks, region: $pointOfInterestViewModel.region, selectedLandmark: $selectedLandmark)
+                MapView(landmarks: pointsOfInterestViewModel.landmarks, region: $pointsOfInterestViewModel.region, selectedLandmark: $selectedLandmark)
                     .frame(height: height/2)
                     .cornerRadius(15)
                     .background(
@@ -50,9 +50,9 @@ struct PointOfInterestView: View {
                 TextField("Search", text: $search, onEditingChanged: { _ in })
                 {
                     if search != "" {
-                        pointOfInterestViewModel.getNearByLandmarks(search: search)
+                        pointsOfInterestViewModel.getNearByLandmarks(search: search)
                     } else if search == "" {
-                        pointOfInterestViewModel.getNearByDefaultLandmarks()
+                        pointsOfInterestViewModel.getNearByDefaultLandmarks()
                     }
                 }
                 .padding(20)
@@ -118,17 +118,16 @@ struct PointOfInterestView: View {
                 }.cornerRadius(15)
                     
             }
-            if !pointOfInterestViewModel.landmarks.isEmpty {
-                PlaceListView(landmarks: pointOfInterestViewModel.landmarks, selectedLandmark: $selectedLandmark)
+            if !pointsOfInterestViewModel.landmarks.isEmpty {
+                PlaceListView(landmarks: pointsOfInterestViewModel.landmarks, selectedLandmark: $selectedLandmark)
                     .padding(.horizontal,15)
             } else {
                 Spacer()
             }
             
+        }.onDisappear {
+            pointsOfInterestViewModel.cancelTasks()
         }
-        /*.onAppear {
-            pointOfInterestViewModel.setupLocationManager()
-        }*/
         .ignoresSafeArea()
         .background(RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
             .edgesIgnoringSafeArea(.all))
@@ -149,6 +148,6 @@ extension String {
 
 struct PointOfInterestView_Previews: PreviewProvider {
     static var previews: some View {
-        PointOfInterestView()
+        PointsOfInterestView()
     }
 }

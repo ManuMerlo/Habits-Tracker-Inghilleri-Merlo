@@ -1,10 +1,3 @@
-//
-//  HealthDataSource.swift
-//  HabitsTracker
-//
-//  Created by Manuela Merlo on 31/08/23.
-//
-
 import Foundation
 import HealthKit
 import SwiftUI
@@ -34,7 +27,7 @@ final class HealthDataSource : HealthDataSourceProtocol, ObservableObject {
     var publisher: PassthroughSubject<[BaseActivity], Never> = PassthroughSubject()
 
     func getActivitiesPublisher() -> AnyPublisher<[BaseActivity], Never> {
-            return publisher.eraseToAnyPublisher()
+        return publisher.eraseToAnyPublisher()
     }
 
     
