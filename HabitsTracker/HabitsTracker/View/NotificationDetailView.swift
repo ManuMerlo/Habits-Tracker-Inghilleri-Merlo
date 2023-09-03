@@ -49,7 +49,7 @@ struct NotificationDetailView: View {
                     .onChange(of: settingsViewModel.dailyNotification, perform: { newValue in
                         print("success daily")
                         if(newValue){
-                            settingsViewModel.dailyNotificationIdentifier = settingsViewModel.scheduleNotifications(title: "Daily Notification", subtitle: "you are doing great", timeInterval: 86400, repeats: true)
+                            settingsViewModel.dailyNotificationIdentifier = settingsViewModel.scheduleNotifications(title: "Daily Notification", subtitle: "You are doing great", timeInterval: 86400, repeats: true)
                         }else{
                             print("Stop Notification")
                             settingsViewModel.dailyNotificationIdentifier = settingsViewModel.stopNotifications(identifier: settingsViewModel.dailyNotificationIdentifier)
@@ -61,9 +61,9 @@ struct NotificationDetailView: View {
                     })
                     .onChange(of: settingsViewModel.weeklyNotification, perform: { newValue in
                         if(newValue){
-                            settingsViewModel.weeklyNotificationIdentifier = settingsViewModel.scheduleNotifications(title: "Daily Notification", subtitle: "you are doing great", timeInterval: 86400*7, repeats: true)
+                            settingsViewModel.weeklyNotificationIdentifier = settingsViewModel.scheduleNotifications(title: "Weekly Notification", subtitle: "You are doing great", timeInterval: 86400*7, repeats: true)
                         }
-                        else{
+                        else {
                             settingsViewModel.weeklyNotificationIdentifier = settingsViewModel.stopNotifications(identifier: settingsViewModel.weeklyNotificationIdentifier)
                         }
                     })

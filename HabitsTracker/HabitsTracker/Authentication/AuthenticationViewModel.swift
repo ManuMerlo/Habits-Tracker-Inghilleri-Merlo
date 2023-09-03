@@ -5,7 +5,7 @@ final class AuthenticationViewModel: ObservableObject {
     private(set) var tasks: [Task<Void, Never>] = []
     
     @Published var user: User?
-    @Published var messageError: String?
+    @Published var messageError: String? = nil
     @Published var isAccountLinked: Bool = false
     
     // Account parameters
