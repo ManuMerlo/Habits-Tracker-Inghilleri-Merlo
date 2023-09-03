@@ -121,7 +121,7 @@ struct PointsOfInterestView: View {
                 }.cornerRadius(15)
                     
             }
-            if !pointsOfInterestViewModel.landmarks.isEmpty {
+            if !pointsOfInterestViewModel.landmarks.isEmpty && selectedLandmark == nil {
                 PlaceListView(landmarks: pointsOfInterestViewModel.landmarks, selectedLandmark: $selectedLandmark)
                     .padding(.horizontal,15)
             } else {

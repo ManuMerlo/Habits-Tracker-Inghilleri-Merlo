@@ -6,7 +6,7 @@ struct SettingsView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     @StateObject var settingsViewModel = SettingsViewModel()
-    
+        
     @State var showAlert: Bool = false
     
     //Responsiveness
@@ -87,6 +87,7 @@ struct SettingsView: View {
                         .listRowSeparatorTint(.white.opacity(0.8))
                         .foregroundColor(.red)
                         .alert(isPresented: $showAlert) {
+                            // TODO: fixme alert
                             Alert(
                                 title: Text("Delete Account"),
                                 message: Text("Deleting your account will delete all content and remove your information from the database."),
