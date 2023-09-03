@@ -3,14 +3,24 @@ import HealthKit
 import SwiftUI
 import Combine
 
+/// Protocol to define essential methods for health data access.
 protocol HealthDataSourceProtocol {
+    
+    /// Request access to specific health data types.
+    /// - Parameter completion: Callback containing the result of the request.
     func requestAccessToHealthData(completion: @escaping (Result<Bool, Error>) -> Void)
+    
+    /// Fetch the statistics of a specific health data type for today.
+    /// - Parameter category: The health data type category as a string.
     func getTodayStats(by category: String)
-    func getActivitiesPublisher() -> AnyPublisher<[BaseActivity], Never> 
+    
+    /// Get a publisher for activities.
+    /// - Returns: A publisher for a list of `BaseActivity` items.
+    func getActivitiesPublisher() -> AnyPublisher<[BaseActivity], Never>
 }
 
 final class HealthDataSource : HealthDataSourceProtocol, ObservableObject {
-
+    
     private let healthStore: HKHealthStore = HKHealthStore()
     private var observerQuery: HKObserverQuery?
     private var query: HKStatisticsQuery?
@@ -25,12 +35,15 @@ final class HealthDataSource : HealthDataSourceProtocol, ObservableObject {
     ]
     
     var publisher: PassthroughSubject<[BaseActivity], Never> = PassthroughSubject()
-
+    
+    /// Get a publisher for activities.
+    /// - Returns: A publisher for a list of `BaseActivity` items.
     func getActivitiesPublisher() -> AnyPublisher<[BaseActivity], Never> {
         return publisher.eraseToAnyPublisher()
     }
-
     
+    /// Request access to specific health data types.
+    /// - Parameter completion: Callback containing the result of the request.
     func requestAccessToHealthData(completion: @escaping (Result<Bool, Error>) -> Void) {
         let readableTypes: Set<HKSampleType> = [
             HKQuantityType.quantityType(forIdentifier: .activeEnergyBurned)!,
@@ -54,6 +67,8 @@ final class HealthDataSource : HealthDataSourceProtocol, ObservableObject {
         }
     }
     
+    /// Fetch the statistics of a specific health data type for today.
+    /// - Parameter category: The health data type category as a string.
     func getTodayStats(by category: String) {
         guard let type = HKQuantityType.quantityType(forIdentifier: typeByCategory(category: category)) else {
             print("Error: Identifier .stepCount")
@@ -69,37 +84,42 @@ final class HealthDataSource : HealthDataSourceProtocol, ObservableObject {
         })
         observerQuery.map(healthStore.execute)
     }
-        
+    
+    /// Fetch the statistics of a specific health data type for today.
+    /// - Parameter category: The health data type category as a string.
     private func getMyStats(by category: String) {
         let type = HKQuantityType.quantityType(forIdentifier: typeByCategory(category: category))!
-            
+        
         let now = Date()
         let startOfDay = Calendar.current.startOfDay(for: now)
         let predicate = HKQuery.predicateForSamples(withStart: startOfDay, end: now, options: .strictStartDate)
-            
+        
         self.query = HKStatisticsQuery(quantityType: type,
                                        quantitySamplePredicate: predicate,
                                        options: .cumulativeSum,
                                        completionHandler: { _, result, _ in
-                guard let result = result, let sum = result.sumQuantity() else {
-                    DispatchQueue.main.async {
-                        if let index = self.allMyTypes.firstIndex(where: { $0.id == category }) {
-                            self.allMyTypes[index].quantity = 0
-                            self.publisher.send(self.allMyTypes)
-                        }
-                    }
-                    return
-                }
+            guard let result = result, let sum = result.sumQuantity() else {
                 DispatchQueue.main.async {
                     if let index = self.allMyTypes.firstIndex(where: { $0.id == category }) {
-                        self.allMyTypes[index].quantity = self.value(from: sum)
+                        self.allMyTypes[index].quantity = 0
                         self.publisher.send(self.allMyTypes)
                     }
                 }
+                return
+            }
+            DispatchQueue.main.async {
+                if let index = self.allMyTypes.firstIndex(where: { $0.id == category }) {
+                    self.allMyTypes[index].quantity = self.value(from: sum)
+                    self.publisher.send(self.allMyTypes)
+                }
+            }
         })
         query.map(healthStore.execute)
     }
-
+    
+    /// Convert a category string into a HealthKit data type identifier.
+    /// - Parameter category: The health data type category as a string.
+    /// - Returns: The corresponding HealthKit data type identifier.
     private func typeByCategory(category: String) -> HKQuantityTypeIdentifier {
         switch category {
         case "activeEnergyBurned":
@@ -117,6 +137,9 @@ final class HealthDataSource : HealthDataSourceProtocol, ObservableObject {
         }
     }
     
+    /// Convert a `HKQuantity` object into an integer value.
+    /// - Parameter stat: The `HKQuantity` object.
+    /// - Returns: The integer representation of the quantity.
     private func value(from stat: HKQuantity) -> Int {
         if stat.is(compatibleWith: .kilocalorie()) {
             return Int(stat.doubleValue(for: .kilocalorie()))
