@@ -6,7 +6,7 @@ struct ModifyProfileView: View {
     
     @State var modify: Bool = false
     @State var isListEnabled: Bool = true
-    
+    @State var showAlert: Bool = false
     @State var showSheet: Bool = false
     @State var showDatePicker: Bool = false
     @State var showHeightPicker: Bool = false
@@ -211,14 +211,14 @@ struct ModifyProfileView: View {
                         value: path
                     )
                     
-                case .failure(let error):
-                    print("\(error.localizedDescription)")
-                    //TODO: handle message on screen
+                case .failure(_):
+                    showAlert.toggle()
                 }
             }
         }) {
             ImagePicker(selectedImage: $settingsViewModel.image)
         }
+        .alert(Text("Error. Retry."), isPresented: $showAlert) {}
     }
     
     

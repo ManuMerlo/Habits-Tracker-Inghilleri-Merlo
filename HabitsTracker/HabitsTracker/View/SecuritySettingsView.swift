@@ -13,39 +13,40 @@ struct SecuritySettingsView: View {
     
     @State var expandEmail: Bool = false
     @State var expandPassword: Bool = false
-    @State var showLoginAgainAlert: Bool = false
-    @State var showSuccessAlert: Bool = false
     
-    @State var messageErrorEmail: String?
-    @State var messageErrorPassword: String?
+    @State var showAlert: Bool = false
+    @State var alertTitle: String = ""
+    @State var alertMessage: String = ""
+    @State var messageError: String?
     
     var body: some View {
-        VStack{
-            List{
-                HStack{
-                    Button(action:{
-                        if self.expandEmail{
+        VStack {
+            List {
+                HStack {
+                    Button(action: {
+                        if expandEmail {
                             authenticationViewModel.textFieldEmail = ""
+                            messageError = nil
                         }
-                        withAnimation{
-                            self.expandEmail.toggle()
+                        withAnimation {
+                            expandEmail.toggle()
                         }
-                    },label: {
+                    }, label: {
                         HStack{
                             Text("Update Email")
                             Spacer()
-                            Image(systemName: self.expandEmail ? "chevron.down": "chevron.up")
+                            Image(systemName: expandEmail ? "chevron.down": "chevron.up")
                         }
                     })
                 }.listRowBackground(Color("oxfordBlue"))
                 
                 
-                if expandEmail{
+                if expandEmail {
                     HStack{
                         VStack(spacing: 10){
                             CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmail)
                             
-                            Button("Submit"){
+                            Button("Submit") {
                                 if !authenticationViewModel.textFieldEmail.isEmpty {
                                     Task {
                                         do {
@@ -53,25 +54,25 @@ struct SecuritySettingsView: View {
                                             let uid = firestoreViewModel.firestoreUser?.id ?? ""
                                             firestoreViewModel.modifyUser(uid: uid, field: "email", value: authenticationViewModel.textFieldEmail)
                                             expandEmail.toggle()
-                                            showSuccessAlert.toggle()
+                                            showAlert.toggle()
+                                            alertTitle = "Success"
+                                            alertMessage = "Email updated."
                                         } catch {
-                                            // TO DO: Make a custom error
-                                            if let error = error as? URLError, error.code == .badServerResponse {
-                                                showLoginAgainAlert = true
-                                            }
-                                            print("Error: \(error.localizedDescription)")
+                                            showAlert.toggle()
+                                            alertTitle = "Sensitive operation"
+                                            alertMessage = "This operation is sensitive and requires recent authentication. Log in again before retrying this request."
                                         }
                                     }
                                     
                                 } else {
-                                    messageErrorEmail = "Email can't be empty"
+                                    messageError = "Email can't be empty"
                                 }
                             }
                             .padding(10)
                             .background(.blue)
                             .cornerRadius(8)
                             
-                            if let messageError = messageErrorEmail {
+                            if let messageError = messageError {
                                 Text(messageError)
                                     .font(.body)
                                     .foregroundColor(.red)
@@ -81,54 +82,54 @@ struct SecuritySettingsView: View {
                     }.listRowBackground(Color("delftBlue"))
                 }
                 
-                HStack{
-                    Button(action:{
-                        if self.expandPassword{
+                HStack {
+                    Button(action: {
+                        if expandPassword {
                             authenticationViewModel.textFieldPassword = ""
+                            messageError = nil
                         }
                         withAnimation{
-                            self.expandPassword.toggle()
+                            expandPassword.toggle()
                         }
                     },label: {
                         HStack{
                             Text("Update Password")
                             Spacer()
-                            Image(systemName: self.expandEmail ? "chevron.down": "chevron.up")
+                            Image(systemName: expandPassword ? "chevron.down": "chevron.up")
                         }
                     })
                 }.listRowBackground(Color("oxfordBlue"))
                 
-                if expandPassword{
-                    HStack{
-                        VStack(spacing: 10){
+                if expandPassword {
+                    HStack {
+                        VStack(spacing: 10) {
                             CustomTextField(isSecure: true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPassword)
                             
-                            Button("Submit"){
-                                if !authenticationViewModel.textFieldPassword.isEmpty{
+                            Button("Submit") {
+                                if !authenticationViewModel.textFieldPassword.isEmpty {
                                     Task {
                                         do {
                                             try await authenticationViewModel.updatePassword(password: authenticationViewModel.textFieldPassword)
                                             expandPassword.toggle()
-                                            showSuccessAlert.toggle()
-                                            
-                                            
+                                            showAlert.toggle()
+                                            alertTitle = "Success"
+                                            alertMessage = "Password updated."
                                         } catch {
-                                            if let error = error as? URLError, error.code == .badServerResponse {
-                                                showLoginAgainAlert = true
-                                            }
+                                            showAlert.toggle()
+                                            alertTitle = "Sensitive operation"
+                                            alertMessage = "This operation is sensitive and requires recent authentication. Log in again before retrying this request."
                                         }
                                     }
                                 }
                                 else {
-                                    messageErrorPassword = "Password can't be empty"
+                                    messageError = "Password can't be empty"
                                 }
                             }
-                            
                             .padding(10)
                             .background(.blue)
                             .cornerRadius(8)
                             
-                            if let messageError = messageErrorPassword {
+                            if let messageError = messageError {
                                 Text(messageError)
                                     .font(.body)
                                     .foregroundColor(.red)
@@ -139,19 +140,8 @@ struct SecuritySettingsView: View {
                 }
             }.scrollContentBackground(.hidden)
             
-        }.alert("Sensitive operation", isPresented: $showLoginAgainAlert) {
-            Button("Ok"){
-                print("Dismiss alert")
-                showLoginAgainAlert.toggle()  //TODO: forse si può togliere
-            }
-        } message: {
-            Text("This operation is sensitive and requires recent authentication. Log in again before retrying this request.")
-        }
-        .alert("Successfull update", isPresented: $showSuccessAlert) {
-            Button("Ok")
-            {
-                print("Dismiss alert")
-            }
+        }.alert(alertTitle, isPresented: $showAlert) {} message: {
+            Text(alertMessage)
         }
         .frame(maxWidth: .infinity)
         .foregroundColor(.white.opacity(0.7))
@@ -166,6 +156,7 @@ struct SecuritySettingsView: View {
             width = UIScreen.main.bounds.width
         }
     }
+    
 }
 
 struct SecuritySettingsView_Previews: PreviewProvider {

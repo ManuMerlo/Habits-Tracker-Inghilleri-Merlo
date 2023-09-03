@@ -42,7 +42,7 @@ final class AuthenticationFirebaseDataSource: AuthenticationDataSource {
     
     func updatePassword(password: String) async throws {
         guard let user = Auth.auth().currentUser else {
-            throw URLError(.badServerResponse)
+            throw AuthenticationError.userNotLogged
         }
 
         try await user.updatePassword(to: password)
@@ -50,7 +50,7 @@ final class AuthenticationFirebaseDataSource: AuthenticationDataSource {
     
     func updateEmail(email: String) async throws {
         guard let user = Auth.auth().currentUser else {
-            throw URLError(.badServerResponse)
+            throw AuthenticationError.userNotLogged
         }
         
         try await user.updateEmail(to: email)

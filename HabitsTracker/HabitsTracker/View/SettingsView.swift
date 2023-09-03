@@ -98,7 +98,7 @@ struct SettingsView: View {
                                     Text("Continue"),
                                     action:
                                         {
-                                            guard let uid =  firestoreViewModel.firestoreUser?.id else{
+                                            guard let uid =  firestoreViewModel.firestoreUser?.id else {
                                                 print("Null uid before deleting a user")
                                                 return
                                             }
@@ -110,6 +110,7 @@ struct SettingsView: View {
                                                     authenticationViewModel.user = nil
                                                     try await authenticationViewModel.deleteUser()
                                                 } catch {
+                                                    // TODO: error manu
                                                     print(error.localizedDescription)
                                                 }
                                             }

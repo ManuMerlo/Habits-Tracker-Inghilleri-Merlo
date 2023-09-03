@@ -1,10 +1,3 @@
-//
-//  ModifyProfileView_UITests.swift
-//  HabitsTracker_UITests
-//
-//  Created by Manuela Merlo on 01/09/23.
-//
-
 @testable import HabitsTracker
 
 import XCTest
@@ -30,8 +23,8 @@ class ModifyProfileView_UITests: XCTestCase {
     }
     
     func test_ModifyProfileView_ToggleEdit_Todo_ButtonChanges() {
-        //Given : we are in the settings view
-        //Go to the modify profile view
+        // Given: we are in the settings view
+        // Go to the modify profile view
         let modifyProfileButton = app.scrollViews.otherElements.collectionViews.buttons["Modify profile"]
         
         Thread.sleep(forTimeInterval: 2)
