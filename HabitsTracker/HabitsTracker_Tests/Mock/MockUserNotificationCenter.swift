@@ -11,10 +11,34 @@ import UserNotifications
 
 
 class MockUserNotificationCenter: UserNotificationCenterProtocol {
-    var addedRequest: UNNotificationRequest?
+
+    var addedRequests: [UNNotificationRequest] = []
+    var notificationSettings: UNNotificationSettings?
+    var identifiers: [String] = []
     
-    func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?){
-        self.addedRequest = request
-        completionHandler?(nil)
+    init(notificationSettings: UNNotificationSettings? = nil) {
+           self.notificationSettings = notificationSettings
+    }
+
+
+    func add(_ request: UNNotificationRequest, withCompletionHandler completionHandler: ((Error?) -> Void)?) {
+        addedRequests.append(request)
+        completionHandler?(nil) // Simulate success
+    }
+    
+    func getNotificationSettings(completionHandler: @escaping (UNNotificationSettings) -> Void) {
+        if let settings = notificationSettings {
+            completionHandler(settings)
+        }
+    }
+    
+    func removePendingNotificationRequests(withIdentifiers identifiers: [String]) {
+        for identifier in identifiers {
+            self.identifiers.removeAll { $0 == identifier }
+        }
+    }
+    
+    func removeAllPendingNotificationRequests() {
+        identifiers = []
     }
 }

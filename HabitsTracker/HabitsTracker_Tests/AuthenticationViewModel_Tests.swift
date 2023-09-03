@@ -312,7 +312,7 @@ final class AuthenticationViewModel_Tests: XCTestCase {
     
     func test_AuthenticationViewModel_LoginGoogle_FailureThrow() async {
         //Given
-        let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,throwErrors: true)
+        let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser, throwErrors: true)
         let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
         
         viewModel.messageError = ""
@@ -328,6 +328,93 @@ final class AuthenticationViewModel_Tests: XCTestCase {
                 XCTFail()
             }
         }
+    }
+    
+    func test_AuthenticationViewModel_UpdateEmail_Success() async {
+        //Given
+        let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,throwErrors: false)
+        let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
+        
+        //When
+        do {
+            try await viewModel.updateEmail(email: "test_update@test.com")
+            //Then
+            viewModel.getAuthenticatedUser()
+            XCTAssertEqual(viewModel.user?.email, "test_update@test.com")
+        } catch {
+            XCTFail()
+        }
+        
+        
+    }
+    
+    func test_AuthenticationViewModel_UpdateEmail_Failure() async {
+        //Given
+        let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,throwErrors: true)
+        let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
+        
+        do {
+            try await viewModel.updateEmail(email: "test_update@test.com")
+            XCTFail()
+        } catch {
+        }
+    }
+    
+    func test_AuthenticationViewModel_UpdatePassword_Success() async {
+        //Given
+        guard let viewModel = viewModel else{
+            XCTFail()
+            return
+        }
+        //When
+        do {
+            try await viewModel.updatePassword(password: "password")
+        } catch {
+            XCTFail()
+        }
+        
+    }
+    
+    func test_AuthenticationViewModel_UpdatePassword_Failure() async {
+        //Given
+        let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,throwErrors: true)
+        let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
+        
+        do {
+            try await viewModel.updateEmail(email: "test_update@test.com")
+            XCTFail()
+        } catch {
+        }
+        
+    }
+    
+    func test_AuthenticationViewModel_ResetPassword_Success() async {
+        //Given
+        guard let viewModel = viewModel else{
+            XCTFail()
+            return
+        }
+        //When
+        do {
+            try await viewModel.resetPassword(email: expectedUser.email)
+        } catch {
+            XCTFail()
+        }
+        
+        
+    }
+    
+    func test_AuthenticationViewModel_ResetPassword_Failure() async {
+        //Given
+        let mockAuthDataSource = MockAuthenticationDataSource(authenticatedUser: expectedUser,throwErrors: true)
+        let viewModel = AuthenticationViewModel(authenticationRepository: AuthenticationRepository(withDataSource: mockAuthDataSource))
+        
+        do {
+            try await viewModel.resetPassword(email: expectedUser.email)
+            XCTFail()
+        } catch {
+        }
+        
     }
     
     func test_AuthenticationViewModel_Logout_Success() async {

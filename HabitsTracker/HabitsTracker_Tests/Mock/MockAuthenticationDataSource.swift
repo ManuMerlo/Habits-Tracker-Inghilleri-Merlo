@@ -67,6 +67,8 @@ final class MockAuthenticationDataSource : AuthenticationDataSource{
     func updateEmail(email: String) async throws {
         if throwErrors {
             throw AuthenticationError.userNotLogged
+        } else {
+            authenticatedUser = User(id: "mockId", email: email)
         }
     }
     

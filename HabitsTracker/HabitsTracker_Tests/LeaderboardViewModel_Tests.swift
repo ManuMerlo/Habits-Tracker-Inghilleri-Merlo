@@ -19,22 +19,18 @@ class LeaderBoardViewModelTests: XCTestCase {
     
     func test_LeaderBoardViewModel_SendPositionChangeNotification(){
         
-        //Given
-        guard let vm = viewModel else {
-            XCTFail()
-            return
-        }
+        
         let mockNotificationCenter = MockUserNotificationCenter()
+        let vm = LeaderBoardViewModel(notificationCenter: mockNotificationCenter)
         
         //When
-        vm.sendPositionChangeNotification(notificationCenter: mockNotificationCenter)
+        vm.sendPositionChangeNotification()
         
         //Then
-        
-        XCTAssertEqual(mockNotificationCenter.addedRequest?.content.title, "Ranking Position Change", "Titles do not match")
-        XCTAssertEqual(mockNotificationCenter.addedRequest?.content.subtitle, "You are losing positions in the rankings! Hurry up!!", "Subtitles do not match")
-        XCTAssertNotNil(mockNotificationCenter.addedRequest?.trigger as? UNTimeIntervalNotificationTrigger, "Trigger type is incorrect")
-        XCTAssertEqual((mockNotificationCenter.addedRequest?.trigger as? UNTimeIntervalNotificationTrigger)?.timeInterval, 20, "Time intervals do not match")
+        XCTAssertEqual(mockNotificationCenter.addedRequests.last?.content.title, "Ranking Position Change", "Titles do not match")
+        XCTAssertEqual(mockNotificationCenter.addedRequests.last?.content.subtitle, "You are losing positions in the rankings! Hurry up!!", "Subtitles do not match")
+        XCTAssertNotNil(mockNotificationCenter.addedRequests.last?.trigger as? UNTimeIntervalNotificationTrigger, "Trigger type is incorrect")
+        XCTAssertEqual((mockNotificationCenter.addedRequests.last?.trigger as? UNTimeIntervalNotificationTrigger)?.timeInterval, 20, "Time intervals do not match")
         
     }
     

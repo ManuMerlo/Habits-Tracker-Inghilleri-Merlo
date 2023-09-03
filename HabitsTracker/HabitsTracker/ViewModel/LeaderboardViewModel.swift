@@ -6,7 +6,23 @@ import SwiftUI
 final class LeaderBoardViewModel: ObservableObject {
     let today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
-    func sendPositionChangeNotification(notificationCenter: UserNotificationCenterProtocol = UNUserNotificationCenter.current()) {
+    @State var notificationCenter: UserNotificationCenterProtocol
+
+    // Default constructor
+    init(notificationCenter: UserNotificationCenterProtocol = UNUserNotificationCenter.current()) {
+        self.notificationCenter = notificationCenter
+    }
+
+    // Testing purposes
+    init(notificationCenter: UserNotificationCenterProtocol? = nil) {
+        if let providedNotificationCenter = notificationCenter {
+            self.notificationCenter = providedNotificationCenter
+        } else {
+            self.notificationCenter = UNUserNotificationCenter.current()
+        }
+    }
+    
+    func sendPositionChangeNotification() {
         let content = UNMutableNotificationContent()
         content.title = "Ranking Position Change"
         content.subtitle = "You are losing positions in the rankings! Hurry up!!"
@@ -19,9 +35,7 @@ final class LeaderBoardViewModel: ObservableObject {
         print("sending notification ranking")
         
         notificationCenter.add(request){ _ in
-            
         }
-        
     }
     
     func sortUsers(users:[User], timeFrame: TimeFrame) -> [User] {
