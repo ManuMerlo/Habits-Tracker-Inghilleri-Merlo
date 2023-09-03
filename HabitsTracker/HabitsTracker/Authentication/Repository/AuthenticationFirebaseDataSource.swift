@@ -32,7 +32,6 @@ final class AuthenticationFirebaseDataSource: AuthenticationDataSource {
     
     func createNewUser(email: String, password: String) async throws -> User {
         let authDataResult = try await Auth.auth().createUser(withEmail: email, password: password)
-        //FIXME: if email is nil
         return User(id: authDataResult.user.uid, email: authDataResult.user.email ?? "")
     }
     
@@ -59,7 +58,6 @@ final class AuthenticationFirebaseDataSource: AuthenticationDataSource {
     
     func login(email: String, password: String) async throws -> User {
         let authDataResult = try await Auth.auth().signIn(withEmail: email, password: password)
-        //FIXME: if email is nil
         return User(id: authDataResult.user.uid, email: authDataResult.user.email ?? "")
     }
     
@@ -67,7 +65,6 @@ final class AuthenticationFirebaseDataSource: AuthenticationDataSource {
         let accessToken = try await facebookAuthentication.loginFacebook()
         let credential = FacebookAuthProvider.credential(withAccessToken: accessToken)
         let authDataResult: AuthDataResult = try await Auth.auth().signIn(with: credential)
-        //FIXME: if email is nil
         return User(id: authDataResult.user.uid, email: authDataResult.user.email ?? "")
     }
     
@@ -77,7 +74,6 @@ final class AuthenticationFirebaseDataSource: AuthenticationDataSource {
         let accessToken = user.authentication.accessToken
         let credential: AuthCredential = GoogleAuthProvider.credential(withIDToken: idToken, accessToken: accessToken)
         let authDataResult: AuthDataResult = try await Auth.auth().signIn(with: credential)
-        //FIXME: if email is nil
         return User(id: authDataResult.user.uid, email: authDataResult.user.email ?? "")
     }
     

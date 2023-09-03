@@ -47,44 +47,7 @@ struct GeneralView: View {
                     if device == .iPhone {
                         healthViewModel.requestAccessToHealthData()
                     }
-                }/*.alert("Enter your username", isPresented: $firestoreViewModel.needUsername ) {
-                    
-                    Text("\(currentUser.email)")
-                    
-                    TextField("Enter your name", text: $textFieldValue)
-                        .autocorrectionDisabled(true)
-                        .autocapitalization(.none)
-                    if let messageError = authenticationViewModel.messageError {
-                        Text(messageError)
-                            .font(.body)
-                            .foregroundColor(.red)
-                            .padding()
-                            .accessibilityIdentifier("MessageErrorSignIn")
-                    }
-                    Button("Save", action: {
-                        Task {
-                            do {
-                                let usernameIsPresent = try await firestoreViewModel.fieldIsPresent(field: "username", value: textFieldValue)
-                                if usernameIsPresent {
-                                    throw AuthenticationError.usernameAlreadyExists
-                                }
-                                firestoreViewModel.modifyUser(
-                                    uid:  currentUser.id,
-                                    field: "username",
-                                    value: textFieldValue)
-                                firestoreViewModel.needUsername = false
-                                authenticationViewModel.messageError = nil
-                            } catch AuthenticationError.usernameAlreadyExists {
-                                authenticationViewModel.messageError = AuthenticationError.usernameAlreadyExists.description
-                            } catch {
-                                authenticationViewModel.messageError = "Error. Retry."
-                            }
-                        }
-                    }
-                    )
-                } message: {
-                    Text("To start using the app, you first need to set your username.")
-                }*/
+                }
                 .sheet(isPresented: $firestoreViewModel.needUsername, content: {
                     ZStack {
                         RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
@@ -97,6 +60,7 @@ struct GeneralView: View {
                                 .padding()
                                 .background(.gray.opacity(0.2))
                                 .cornerRadius(8)
+                                .autocapitalization(.none)
                             
                             Button{
                                 Task {

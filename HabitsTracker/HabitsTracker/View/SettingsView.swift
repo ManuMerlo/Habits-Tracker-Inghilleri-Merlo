@@ -16,14 +16,14 @@ struct SettingsView: View {
     @State var width = UIScreen.main.bounds.width
     
     var body: some View {
-        NavigationStack{
-            ScrollView{
-                VStack(alignment: .center,spacing: 15){
-                    ZStack(alignment: .top){
+        NavigationStack {
+            ScrollView {
+                VStack(alignment: .center,spacing: 15) {
+                    ZStack(alignment: .top) {
                         WaveView(upsideDown: true,repeatAnimation: false, base: isLandscape ? 250 : 280, amplitude: 70)
                         
-                        VStack{
-                            ProfileImageView(
+                        VStack {
+                            ProfileImageView (
                                 path: firestoreViewModel.firestoreUser?.image,
                                 systemName: "person.circle.fill",
                                 size: 90,
@@ -87,7 +87,6 @@ struct SettingsView: View {
                         .listRowSeparatorTint(.white.opacity(0.8))
                         .foregroundColor(.red)
                         .alert(isPresented: $showAlert) {
-                            // TODO: fixme alert
                             Alert(
                                 title: Text("Delete Account"),
                                 message: Text("Deleting your account will delete all content and remove your information from the database."),

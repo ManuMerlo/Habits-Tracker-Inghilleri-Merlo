@@ -42,7 +42,6 @@ struct SigninView: View {
             }
         }
         .sheet(isPresented: $showResetPasswordModal) {
-            // TODO: change text color to white 
             ZStack {
                 RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
                     .edgesIgnoringSafeArea(.all)

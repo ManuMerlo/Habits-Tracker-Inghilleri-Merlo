@@ -133,8 +133,6 @@ struct RequestItemView: View {
 
 struct RequestItemView_Previews: PreviewProvider {
     static var previews: some View {
-    /*RequestListView(firestoreViewModel: FirestoreViewModel())
-            .environmentObject(OrientationInfo())*/
         RequestItemView(firestoreViewModel: FirestoreViewModel(),user: User(
             id: "12345",
             email: "lulu@gmail.com",

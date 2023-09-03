@@ -85,7 +85,6 @@ struct RecordDetailView: View {
                 }
         }
         .alert(isPresented: $showAlert) {
-        //TODO: fixme alert
             Alert(
                 title: Text("Congratulations!"),
                 message: Text("You have exceeded your Record"),

@@ -56,14 +56,12 @@ final class MockAuthenticationDataSource : AuthenticationDataSource{
         return User(id: "googleId", email: "google@test.com")
     }
     
-    //TODO: da testare
     func resetPassword(email: String) async throws {
         if throwErrors {
             throw AuthenticationError.userNotLogged
         }
     }
     
-    //TODO: da testare
     func updateEmail(email: String) async throws {
         if throwErrors {
             throw AuthenticationError.userNotLogged
@@ -72,14 +70,12 @@ final class MockAuthenticationDataSource : AuthenticationDataSource{
         }
     }
     
-    //TODO: da testare
     func updatePassword(password: String) async throws {
         if throwErrors {
             throw AuthenticationError.userNotLogged
         }
     }
  
-
     func logout() throws {
         if throwErrors {
             throw AuthenticationError.userNotLogged
