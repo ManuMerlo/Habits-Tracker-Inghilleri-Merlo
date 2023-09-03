@@ -8,6 +8,7 @@ struct NotificationDetailView: View {
     @EnvironmentObject var orientationInfo: OrientationInfo
     @State private var isLandscape: Bool = false
     @State var width = UIScreen.main.bounds.width
+    @State var showAlert: Bool = false
     
     var body: some View {
         VStack{
@@ -29,8 +30,7 @@ struct NotificationDetailView: View {
                                 do {
                                     try await UNUserNotificationCenter.current().requestAuthorization(options: [.alert,.badge,.sound])
                                 } catch {
-                                    print("\(error)")
-                                    //TODO: mettere un alert
+                                    showAlert.toggle()
                                 }
                             }
                         }
@@ -88,7 +88,7 @@ struct NotificationDetailView: View {
         .onChange(of: orientationInfo.orientation) { orientation in
                 isLandscape = orientation == .landscape
                 width = UIScreen.main.bounds.width
-        }
+        }.alert(Text("Error. Retry."), isPresented: $showAlert) {}
     }
 }
 

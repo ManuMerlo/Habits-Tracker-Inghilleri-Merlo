@@ -54,8 +54,9 @@ struct GeneralView: View {
                     TextField("Enter your name", text: $textFieldValue)
                         .autocorrectionDisabled(true)
                         .autocapitalization(.none)
-                    
+                   
                     Button("Save", action: {
+                        // TODO: se c'è un errore qui?
                         firestoreViewModel.modifyUser(
                             uid:  currentUser.id,
                             field: "username",
@@ -126,8 +127,7 @@ struct GeneralView: View {
         }.alert("Error", isPresented: $showAlerErrorUserRetrival ) {
             Button("Ok", action: {
                 authenticationViewModel.logout()
-            }
-            )
+            })
         } message: {
             Text("An error occurred during user data recovery. Please try again later.")
         }

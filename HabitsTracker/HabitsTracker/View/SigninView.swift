@@ -5,20 +5,20 @@ struct SigninView: View {
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     
     @State private var showResetPasswordModal: Bool = false
-    @State var email : String = ""
-    @State var sheetMessageError : String?
-    
+    @State var email: String = ""
+    @State var sheetMessageError: String? = nil
+
     //Responsiveness
     @EnvironmentObject var orientationInfo: OrientationInfo
-    @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
+    @State private var device: Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
     @State private var isLandscape: Bool = false
     @State var height = UIScreen.main.bounds.height
     @State var width = UIScreen.main.bounds.width
     
     
     var body: some View {
-        NavigationStack{
-            ZStack{
+        NavigationStack {
+            ZStack {
                 RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
                     .edgesIgnoringSafeArea(.all)
                 
@@ -33,7 +33,7 @@ struct SigninView: View {
                             .shadow(color: .orange, radius: 1, x: 0, y: 0)
                             .frame(maxWidth: width/3)
                         
-                        ScrollView(.vertical, showsIndicators: false){
+                        ScrollView(.vertical, showsIndicators: false) {
                             content()
                         }.foregroundColor(.white)
                             .fixedSize(horizontal: false, vertical: device == .iPad ? true : false)
@@ -42,7 +42,7 @@ struct SigninView: View {
             }
         }
         .sheet(isPresented: $showResetPasswordModal) {
-            ZStack{
+            ZStack {
                 RadialGradient(gradient: Gradient(colors: [Color("delftBlue"), Color("oxfordBlue")]), center: .center, startRadius: 5, endRadius: 500)
                     .edgesIgnoringSafeArea(.all)
                 VStack(spacing: 15) {
@@ -67,16 +67,15 @@ struct SigninView: View {
                                 .cornerRadius(10)
                                 .contentTransition(.identity)
                         }
-                        
                         Button(action: {
                             if !email.isEmpty {
                                 Task {
                                     do {
                                         try await authenticationViewModel.resetPassword(email: email)
                                         print("Password Reset")
-                                        self.showResetPasswordModal.toggle() // close the modal after sending the request
+                                        self.showResetPasswordModal.toggle()
                                     } catch {
-                                        print(error)
+                                        sheetMessageError = "An error occurred. Retry later."
                                     }
                                 }
                             } else {
@@ -158,6 +157,7 @@ struct SigninView: View {
                 }
                 
                 Button("Forgot the password?") {
+                    email = ""
                     showResetPasswordModal.toggle()
                 }.foregroundColor(.blue)
                 
@@ -258,6 +258,7 @@ struct SigninView: View {
                     .cornerRadius(8)
                     .frame(height: 40)
                 }
+           
                 
                 NavigationLink {
                     SignupView(authenticationViewModel: authenticationViewModel, firestoreViewModel: firestoreViewModel)

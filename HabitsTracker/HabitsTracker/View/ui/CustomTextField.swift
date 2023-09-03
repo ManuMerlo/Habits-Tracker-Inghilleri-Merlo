@@ -1,14 +1,7 @@
-//
-//  CustomTextField.swift
-//  HabitsTracker
-//
-//  Created by Riccardo Inghilleri on 19/11/22.
-//
-
 import SwiftUI
 
 struct CustomTextField: View {
-    @State var isSecure : Bool
+    @State var isSecure: Bool
     var hint: String
     var imageName: String
     @Binding var text: String
@@ -39,7 +32,6 @@ struct CustomTextField: View {
                             isSecure.toggle()
                         }, label: {
                             Image(systemName: !isSecure ? "eye.slash" : "eye" )
-                            
                         })}
                 } else {
                     TextField(hint, text: $text)

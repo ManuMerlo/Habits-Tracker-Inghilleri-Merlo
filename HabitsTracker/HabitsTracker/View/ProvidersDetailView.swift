@@ -5,7 +5,6 @@ struct ProvidersDetailView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     @State var expandVerificationWithEmailForm: Bool = false
 
-    
     //Responsiveness
     @EnvironmentObject var orientationInfo: OrientationInfo
     @State private var isLandscape: Bool = false
@@ -74,15 +73,14 @@ struct ProvidersDetailView: View {
             .onAppear {
                 authenticationViewModel.getCurrentProvider()
             }
-            .alert(authenticationViewModel.isAccountLinked ? "Link successful" : "Error", isPresented: $authenticationViewModel.showAlert) {
+            .alert(authenticationViewModel.isAccountLinked ? "Success" : "Error", isPresented: $authenticationViewModel.showAlert) {
                 Button("Accept"){
-                    print("Dismiss alert")
-                    if authenticationViewModel.isAccountLinked{
+                    if authenticationViewModel.isAccountLinked {
                         expandVerificationWithEmailForm = false
                     }
                 }
             } message: {
-                Text(authenticationViewModel.isAccountLinked ? "Success" : "Error")
+                Text(authenticationViewModel.isAccountLinked ? "Account linked" : "Error")
             }
             
             .scrollContentBackground(.hidden)
