@@ -99,6 +99,7 @@
 		DD8D0D5229D5E5ED0045009C /* FacebookLogin in Frameworks */ = {isa = PBXBuildFile; productRef = DD8D0D5129D5E5ED0045009C /* FacebookLogin */; };
 		DDAA66A729D042E500219792 /* LeaderboardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDAA66A629D042E500219792 /* LeaderboardView.swift */; };
 		DDADB7602AA52BAC00853C5F /* AuthenticationDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDADB75F2AA52BAC00853C5F /* AuthenticationDataSourceProtocol.swift */; };
+		DDADB7622AA5336300853C5F /* FirestoreDataSourceProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDADB7612AA5336300853C5F /* FirestoreDataSourceProtocol.swift */; };
 		DDC2F89329311548003653F1 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDC2F89229311548003653F1 /* User.swift */; };
 		DDD723AF292A73AC00012461 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD723AE292A73AC00012461 /* SettingsView.swift */; };
 		DDD723B1292A87E100012461 /* HomeView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DDD723B0292A87E100012461 /* HomeView.swift */; };
@@ -211,6 +212,7 @@
 		DD7C45652A929D4E0026AF49 /* Errors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errors.swift; sourceTree = "<group>"; };
 		DDAA66A629D042E500219792 /* LeaderboardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardView.swift; sourceTree = "<group>"; };
 		DDADB75F2AA52BAC00853C5F /* AuthenticationDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthenticationDataSourceProtocol.swift; sourceTree = "<group>"; };
+		DDADB7612AA5336300853C5F /* FirestoreDataSourceProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreDataSourceProtocol.swift; sourceTree = "<group>"; };
 		DDC2F89229311548003653F1 /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		DDD723AE292A73AC00012461 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		DDD723B0292A87E100012461 /* HomeView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeView.swift; sourceTree = "<group>"; };
@@ -526,6 +528,7 @@
 			children = (
 				DDEACC1029DB747200F39F4B /* FirestoreRepository.swift */,
 				DDEACC0D29DB745700F39F4B /* FirestoreDataSource.swift */,
+				DDADB7612AA5336300853C5F /* FirestoreDataSourceProtocol.swift */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -759,6 +762,7 @@
 				09B7E8CA2A86131000FFD230 /* ActivityStatusView.swift in Sources */,
 				09B7E8C82A86092A00FFD230 /* ScoreRingView.swift in Sources */,
 				DDC2F89329311548003653F1 /* User.swift in Sources */,
+				DDADB7622AA5336300853C5F /* FirestoreDataSourceProtocol.swift in Sources */,
 				DD127A42292947FA00075A8B /* CustomTextField.swift in Sources */,
 				DD4B90C52A97E65C00B8CC5C /* LoadingView.swift in Sources */,
 				DD127A402929477700075A8B /* GeneralView.swift in Sources */,
