@@ -44,7 +44,7 @@ final class GoogleAuthentication {
     func getRootController() -> UIViewController {
         return UIApplication.shared.rootController()
     }
-
+    
     /// Retrieves the current Google user.
     ///
     /// - Returns: The current `GIDGoogleUser` if there is one; otherwise, `nil`.

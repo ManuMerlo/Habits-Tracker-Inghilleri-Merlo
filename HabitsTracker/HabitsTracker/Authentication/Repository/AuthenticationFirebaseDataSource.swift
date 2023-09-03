@@ -1,65 +1,6 @@
 import Foundation
 import FirebaseAuth
 
-// MARK: - AuthenticationDataSource Protocol
-
-protocol AuthenticationDataSource {
-    
-    /// Retrieves the currently authenticated user.
-    ///
-    /// - Throws: `AuthenticationError.userNotLogged` if the user is not currently logged in.
-    ///
-    /// - Returns: An authenticated `User` object.
-    func getAuthenticatedUser() throws -> User
-    
-    /// Creates a new user with the specified email and password.
-    ///
-    /// - Parameters:
-    ///     - email: The email address of the user to create.
-    ///     - password: The password for the new user.
-    ///
-    /// - Throws: Any errors encountered during user creation.
-    ///
-    /// - Returns: The newly created `User` object.
-    func createNewUser(email: String, password: String) async throws -> User
-
-    /// Sends a password reset email to the specified email address.
-    ///
-    /// - Parameter email: The email address to send the reset password email to.
-    ///
-    /// - Throws: Any errors encountered during the reset password operation.
-    func resetPassword(email: String) async throws
-    
-    /// Updates the password of the currently authenticated user.
-    ///
-    /// - Parameter password: The new password for the user.
-    ///
-    /// - Throws: `AuthenticationError.userNotLogged` if the user is not
-    /// currently logged in or any other errors encountered during the update operation.
-    func updatePassword(password: String) async throws
-    
-    /// Updates the email of the currently authenticated user.
-    ///
-    /// - Parameter email: The new email address for the user.
-    ///
-    /// - Throws: `AuthenticationError.userNotLogged` if the user is not
-    /// currently logged in or any other errors encountered during the update operation.
-    func updateEmail(email: String) async throws
-    
-    func login(email: String, password: String) async throws -> User
-    func loginFacebook() async throws -> User
-    func loginGoogle() async throws -> User
-    func linkGoogle() async throws
-    func logout() throws
-    func getCurrentProvider() -> [LinkedAccounts]
-    func linkFacebook() async throws
-    func getCurrentCredential() -> AuthCredential?
-    func linkEmailAndPassword(email: String, password: String) async throws
-    func deleteUser() async throws
-
-
-}
-
 // MARK: - AuthenticationFirebaseDataSource Class
 
 final class AuthenticationFirebaseDataSource: AuthenticationDataSource {
@@ -110,10 +51,10 @@ final class AuthenticationFirebaseDataSource: AuthenticationDataSource {
         guard let user = Auth.auth().currentUser else {
             throw AuthenticationError.userNotLogged
         }
-
+        
         try await user.updatePassword(to: password)
     }
-
+    
     /// Updates the email of the currently authenticated user.
     ///
     /// - Parameter email: The new email address for the user.
