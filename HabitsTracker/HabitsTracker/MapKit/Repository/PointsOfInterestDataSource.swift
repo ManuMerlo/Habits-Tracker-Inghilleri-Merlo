@@ -4,7 +4,7 @@ import CoreLocation
 import Combine
 
 protocol PointOfInterestDataSourceProtocol {
-    func getLocationPublisher() -> AnyPublisher<CLLocation, Never>
+    func getLocationPublisher() -> AnyPublisher<CLLocation?, Never>
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager)
     func getNearByLandmarks(search: String) async -> [Landmark]
     func getNearByDefaultLandmarks() async -> [Landmark]
@@ -16,14 +16,14 @@ final class PointsOfInterestDataSource: NSObject, CLLocationManagerDelegate, Poi
     
     private var location: CLLocation?
     
-    var publisher: PassthroughSubject<CLLocation, Never> = PassthroughSubject()
+    var publisher: PassthroughSubject<CLLocation?, Never> = PassthroughSubject()
     
     override init() {
         super.init()
         self.setupLocationManager()
     }
 
-    func getLocationPublisher() -> AnyPublisher<CLLocation, Never> {
+    func getLocationPublisher() -> AnyPublisher<CLLocation?, Never> {
         return publisher.eraseToAnyPublisher()
     }
     
@@ -40,10 +40,11 @@ final class PointsOfInterestDataSource: NSObject, CLLocationManagerDelegate, Poi
             case .notDetermined:
                 self.locationManager.requestWhenInUseAuthorization()
             case .restricted:
-                //TODO: show an alert
+                self.publisher.send(nil)
                 print("You're location is restricted")
             case .denied:
-                //TODO: show an alert
+                self.publisher.send(nil)
+                self.location = nil
                 print("You're location is denied")
             case .authorizedAlways, .authorizedWhenInUse:
                 self.locationManager.startUpdatingLocation()
@@ -70,7 +71,7 @@ final class PointsOfInterestDataSource: NSObject, CLLocationManagerDelegate, Poi
         if let location = self.location {
             let request = MKLocalSearch.Request()
             request.naturalLanguageQuery = search
-            request.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
+            request.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
             let search = MKLocalSearch(request: request)
             let response = try? await search.start()
             if let res = response {
@@ -92,7 +93,7 @@ final class PointsOfInterestDataSource: NSObject, CLLocationManagerDelegate, Poi
             for term in searchTerms {
                 let request = MKLocalSearch.Request()
                 request.naturalLanguageQuery = term
-                request.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
+                request.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
                 let search = MKLocalSearch(request: request)
                 let response = try? await search.start()
                 if let res = response {

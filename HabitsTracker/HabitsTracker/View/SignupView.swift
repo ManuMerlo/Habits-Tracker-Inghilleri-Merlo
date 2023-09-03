@@ -95,11 +95,11 @@ struct SignupView: View {
                 
                 Task {
                     do {
-                        let emailIsPresent = try await firestoreViewModel.fieldIsPresent(field: "email", value: authenticationViewModel.textFieldEmail.lowercased())
+                        let emailIsPresent = try await firestoreViewModel.fieldIsPresent(field: "email", value: authenticationViewModel.textFieldEmail)
                         if emailIsPresent {
                             throw AuthenticationError.emailAlreadyExists
                         }
-                        let usernameIsPresent = try await firestoreViewModel.fieldIsPresent(field: "username", value: authenticationViewModel.textFieldUsername.lowercased())
+                        let usernameIsPresent = try await firestoreViewModel.fieldIsPresent(field: "username", value: authenticationViewModel.textFieldUsername)
                         if usernameIsPresent {
                             throw AuthenticationError.usernameAlreadyExists
                         }

@@ -73,6 +73,21 @@ struct PointsOfInterestView: View {
                 .padding(.horizontal,30)
             }
             
+            if pointsOfInterestViewModel.location == nil {
+                VStack(){
+                    Text("You have to allow User's locatioin sharing in your phone settings.")
+                        .multilineTextAlignment(.center)
+                        .font(.body)
+                        .foregroundColor(.white)
+                        .padding(10)
+                }
+                .padding(15)
+                .frame(width: isLandscape ? width/1.3 : width - 30)
+                .background(.white.opacity(0.1))
+                .cornerRadius(15)
+                
+            }
+            
             // Conditionally show the VStack with landmark details at the bottom
             if let landmark = selectedLandmark {
                 VStack {

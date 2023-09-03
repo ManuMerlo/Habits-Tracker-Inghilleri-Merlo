@@ -16,9 +16,16 @@ class SignInView_UITests: XCTestCase {
 //        app.launchArguments = ["-UITest_startSignIn"]
 //        app.launchEnvironment = ["-UITest_startSignedIn2" : "true"]
         app.launch()
+        if app.tabBars["Tab Bar"].buttons["Settings"].exists{
+            logout()
+        }
+        Thread.sleep(forTimeInterval: 3)
     }
 
     override func tearDownWithError() throws {
+        if app.tabBars["Tab Bar"].buttons["Settings"].exists{
+            logout()
+        }
     }
 
     func test_SignInView_signUpButton_shouldNotSignInWithEmptyFields() {

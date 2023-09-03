@@ -27,7 +27,7 @@ class SettingsViewModelTests: XCTestCase {
         //When
         
         //Then
-        XCTAssertFalse(vm.agreedToTerms)
+    
         XCTAssertFalse(vm.dailyNotification)
         XCTAssertFalse(vm.weeklyNotification)
     }

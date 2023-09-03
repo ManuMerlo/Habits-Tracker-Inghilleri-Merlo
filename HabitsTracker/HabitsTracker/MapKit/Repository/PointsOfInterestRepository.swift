@@ -16,7 +16,7 @@ final class PointsOfInterestRepository {
         self.pointsOfInterestDataSource = pointsOfInterestDataSource
     }
     
-    func getLocationPublisher() -> AnyPublisher<CLLocation, Never> {
+    func getLocationPublisher() -> AnyPublisher<CLLocation?, Never> {
            return pointsOfInterestDataSource.getLocationPublisher()
     }
     

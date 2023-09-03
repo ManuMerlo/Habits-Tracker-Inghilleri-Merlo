@@ -73,7 +73,7 @@ final class SettingsViewModel: ObservableObject {
       }
    
     
-    private func scheduleNotifications(title: String, subtitle: String, timeInterval: TimeInterval, repeats: Bool, notificationCenter: UserNotificationCenterProtocol = UNUserNotificationCenter.current()) -> String? {
+    func scheduleNotifications(title: String, subtitle: String, timeInterval: TimeInterval, repeats: Bool, notificationCenter: UserNotificationCenterProtocol = UNUserNotificationCenter.current()) -> String? {
         let identifier : String
         let content = UNMutableNotificationContent()
         content.title = title

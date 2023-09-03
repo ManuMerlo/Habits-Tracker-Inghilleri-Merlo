@@ -65,7 +65,7 @@ class LeaderBoardViewModelTests: XCTestCase {
         )
         
         let sortedUsers = vm.sortUsers(users: [user1,user2,user3], timeFrame: .daily)
-        let today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
+        let today = (Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
         switch today {
         case 0:
             XCTAssertEqual(sortedUsers.first?.dailyScores[0],190)
@@ -86,7 +86,7 @@ class LeaderBoardViewModelTests: XCTestCase {
             XCTAssertEqual(sortedUsers.first?.dailyScores[5],675)
             XCTAssertEqual(sortedUsers.first?.email, "user3@example.com")
         case 6:
-            XCTAssertEqual(sortedUsers.first?.dailyScores[0],987)
+            XCTAssertEqual(sortedUsers.first?.dailyScores[6],987)
             XCTAssertEqual(sortedUsers.first?.email, "user3@example.com")
         default:
             XCTFail()

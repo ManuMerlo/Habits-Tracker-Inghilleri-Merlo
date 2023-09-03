@@ -15,9 +15,17 @@ class GeneralView_UITests: XCTestCase {
         continueAfterFailure = false
         app = XCUIApplication()
         app.launch()
+        if app.tabBars["Tab Bar"].buttons["Settings"].exists{
+            logout()
+        }
+        
+        Thread.sleep(forTimeInterval: 3)
     }
 
     override func tearDownWithError() throws {
+        if app.tabBars["Tab Bar"].buttons["Settings"].exists{
+            logout()
+        }
     }
     
     func test_GeneralView_GeneralFlow() {

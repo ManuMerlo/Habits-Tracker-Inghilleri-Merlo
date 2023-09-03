@@ -32,7 +32,9 @@ struct CustomTextField: View {
                             isSecure.toggle()
                         }, label: {
                             Image(systemName: !isSecure ? "eye.slash" : "eye" )
-                        })}
+                        }).buttonStyle(PlainButtonStyle())
+                        
+                    }
                 } else {
                     TextField(hint, text: $text)
                         .keyboardType(.emailAddress)

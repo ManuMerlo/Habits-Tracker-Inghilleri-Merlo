@@ -65,7 +65,7 @@ struct NotificationDetailView: View {
             
             if !settingsViewModel.settingsNotifications {
                 VStack(){
-                    Text("You have to allow notifications in your phone settings")
+                    Text("You have to allow notifications in your phone settings.")
                         .multilineTextAlignment(.center)
                         .font(.body)
                         .foregroundColor(.white)

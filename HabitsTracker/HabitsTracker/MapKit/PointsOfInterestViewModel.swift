@@ -7,7 +7,7 @@ import Combine
 final class PointsOfInterestViewModel: ObservableObject {
     private let pointsOfInterestRepository: PointsOfInterestRepository
     @Published var location: CLLocation? = nil
-    @Published var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 45.4655, longitude: 9.1865), span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
+    @Published var region = MKCoordinateRegion(center: CLLocationCoordinate2D(latitude: 45.4655, longitude: 9.1865), span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
     
     @Published var landmarks: [Landmark] = []
 
@@ -35,10 +35,15 @@ final class PointsOfInterestViewModel: ObservableObject {
 
     private func subscribeToUpdates() {
         pointsOfInterestRepository.getLocationPublisher()
+            .receive(on: DispatchQueue.main) // Switch to the main thread
             .sink { [weak self] location in
                 self?.location = location
-                self?.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
-                self?.getNearByDefaultLandmarks()
+                if let location = location {
+                    self?.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
+                    self?.getNearByDefaultLandmarks()
+                } else {
+                    self?.landmarks = []
+                }
             }
             .store(in: &cancellables)
     }
