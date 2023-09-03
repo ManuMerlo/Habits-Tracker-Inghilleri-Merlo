@@ -21,6 +21,11 @@ final class SettingsViewModel: ObservableObject {
     
     @Published var image: UIImage?
     
+    init() {
+        dailyNotificationIdentifier = UserDefaults.standard.string(forKey: "DailyNotificationIdentifier")
+        weeklyNotificationIdentifier = UserDefaults.standard.string(forKey: "WeeklyNotificationIdentifier")
+    }
+    
     func checkNotificationPermissionGanted() async {
         let settings = await checkNotificationSettings()
         if settings.authorizationStatus == .authorized {
@@ -29,6 +34,7 @@ final class SettingsViewModel: ObservableObject {
             self.notificationPermissionGranted = UserDefaults.standard.bool(forKey: "NotificationPermissionGranted")
         } else {
             // Notifications are not enabled
+            UNUserNotificationCenter.current().removeAllPendingNotificationRequests()
             self.settingsNotifications = false
             self.notificationPermissionGranted = false
         }
@@ -44,7 +50,6 @@ final class SettingsViewModel: ObservableObject {
                 //}
             }
         }
-        
     }
     
     func saveNotificationPermission(value: Bool) {
@@ -53,28 +58,32 @@ final class SettingsViewModel: ObservableObject {
     }
     
     func startDailyNotifications() {
-          UserDefaults.standard.set(true, forKey: "DailyNotification")
-          dailyNotificationIdentifier = scheduleNotifications(title: "Daily Notification", subtitle: "You are doing great!!", timeInterval: 86400, repeats: true)
-      }
-      
-      func stopDailyNotifications() {
-          UserDefaults.standard.set(false, forKey: "DailyNotification")
-          dailyNotificationIdentifier = stopNotifications(identifier:dailyNotificationIdentifier)
-      }
-      
+        UserDefaults.standard.set(true, forKey: "DailyNotification")
+        dailyNotificationIdentifier = scheduleNotifications(title: "Daily Notification", subtitle: "You are doing great!!", timeInterval: 60 /*86400*/, repeats: true)
+        UserDefaults.standard.set(dailyNotificationIdentifier, forKey: "DailyNotificationIdentifier")
+    }
+    
+    func stopDailyNotifications() {
+        UserDefaults.standard.set(false, forKey: "DailyNotification")
+        dailyNotificationIdentifier = stopNotifications(identifier:dailyNotificationIdentifier)
+        UserDefaults.standard.set("", forKey: "DailyNotificationIdentifier")
+    }
+    
       func startWeeklyNotifications() {
           UserDefaults.standard.set(true, forKey: "WeeklyNotification")
           weeklyNotificationIdentifier = scheduleNotifications(title: "Weekly Notification", subtitle: "You are doing great!!", timeInterval: 86400*7, repeats: true)
+          UserDefaults.standard.set(weeklyNotificationIdentifier, forKey: "WeeklyNotificationIdentifier")
       }
       
       func stopWeeklyNotifications() {
           UserDefaults.standard.set(false, forKey: "WeeklyNotification")
-          weeklyNotificationIdentifier = stopNotifications(identifier:weeklyNotificationIdentifier)
+          weeklyNotificationIdentifier = stopNotifications(identifier: weeklyNotificationIdentifier)
+          UserDefaults.standard.set("", forKey: "WeeklyNotificationIdentifier")
       }
    
     
     func scheduleNotifications(title: String, subtitle: String, timeInterval: TimeInterval, repeats: Bool, notificationCenter: UserNotificationCenterProtocol = UNUserNotificationCenter.current()) -> String? {
-        let identifier : String
+        let identifier: String
         let content = UNMutableNotificationContent()
         content.title = title
         content.subtitle = subtitle
@@ -84,10 +93,11 @@ final class SettingsViewModel: ObservableObject {
         let request = UNNotificationRequest(identifier: identifier, content: content, trigger: trigger)
         notificationCenter.add(request){ _ in
         }
+
         return identifier
     }
     
-    private func stopNotifications(identifier : String?) -> String? {
+    private func stopNotifications(identifier: String?) -> String? {
         if let id = identifier {
             UNUserNotificationCenter.current().removePendingNotificationRequests(withIdentifiers: [id])
             return nil // Clear the stored identifier

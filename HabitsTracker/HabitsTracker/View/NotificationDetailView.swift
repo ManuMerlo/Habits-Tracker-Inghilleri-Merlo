@@ -2,7 +2,7 @@ import SwiftUI
 
 struct NotificationDetailView: View {
     
-    @ObservedObject var settingsViewModel : SettingsViewModel
+    @ObservedObject var settingsViewModel: SettingsViewModel
     
     //Responsiveness
     @EnvironmentObject var orientationInfo: OrientationInfo
@@ -36,9 +36,9 @@ struct NotificationDetailView: View {
                     })
                     .disabled(!settingsViewModel.notificationPermissionGranted)
                     .onChange(of: settingsViewModel.dailyNotification) { newValue in
-                        if newValue {
+                        if (newValue && (settingsViewModel.dailyNotificationIdentifier == nil || settingsViewModel.dailyNotificationIdentifier == "")) {
                             settingsViewModel.startDailyNotifications()
-                        } else {
+                        } else if !newValue {
                             settingsViewModel.stopDailyNotifications()
                         }
                     }
@@ -48,9 +48,9 @@ struct NotificationDetailView: View {
                     })
                     .disabled(!settingsViewModel.notificationPermissionGranted)
                     .onChange(of: settingsViewModel.weeklyNotification) { newValue in
-                        if newValue {
+                        if (newValue && (settingsViewModel.weeklyNotificationIdentifier == nil || settingsViewModel.weeklyNotificationIdentifier == "")) {
                             settingsViewModel.startWeeklyNotifications()
-                        } else {
+                        } else if !newValue {
                             settingsViewModel.stopWeeklyNotifications()
                         }
                     }
