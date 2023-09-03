@@ -6,7 +6,7 @@ struct SettingsView: View {
     @ObservedObject var authenticationViewModel: AuthenticationViewModel
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     @StateObject var settingsViewModel = SettingsViewModel()
-        
+    
     @State var showAlert: Bool = false
     
     //Responsiveness
@@ -97,7 +97,7 @@ struct SettingsView: View {
                                     Text("Continue"),
                                     action:
                                         {
-                                            guard let uid =  firestoreViewModel.firestoreUser?.id else {
+                                            guard let uid = firestoreViewModel.firestoreUser?.id else {
                                                 print("Null uid before deleting a user")
                                                 return
                                             }
@@ -118,7 +118,7 @@ struct SettingsView: View {
                                 )
                             )
                         }
-                        Button{
+                        Button {
                             authenticationViewModel.logout()
                             firestoreViewModel.firestoreUser = nil
                         } label: {
@@ -144,7 +144,7 @@ struct SettingsView: View {
             isLandscape = orientationInfo.orientation == .landscape
             width = UIScreen.main.bounds.width
             authenticationViewModel.getCurrentProvider()
-               
+            
         }
         .onChange(of: orientationInfo.orientation) { orientation in
             isLandscape = orientation == .landscape

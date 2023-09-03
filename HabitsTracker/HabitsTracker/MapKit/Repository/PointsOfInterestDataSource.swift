@@ -71,7 +71,7 @@ final class PointsOfInterestDataSource: NSObject, CLLocationManagerDelegate, Poi
         if let location = self.location {
             let request = MKLocalSearch.Request()
             request.naturalLanguageQuery = search
-            request.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.003, longitudeDelta: 0.003))
+            request.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
             let search = MKLocalSearch(request: request)
             let response = try? await search.start()
             if let res = response {
@@ -93,7 +93,7 @@ final class PointsOfInterestDataSource: NSObject, CLLocationManagerDelegate, Poi
             for term in searchTerms {
                 let request = MKLocalSearch.Request()
                 request.naturalLanguageQuery = term
-                request.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.005, longitudeDelta: 0.005))
+                request.region = MKCoordinateRegion(center: location.coordinate, span: MKCoordinateSpan(latitudeDelta: 0.1, longitudeDelta: 0.1))
                 let search = MKLocalSearch(request: request)
                 let response = try? await search.start()
                 if let res = response {
