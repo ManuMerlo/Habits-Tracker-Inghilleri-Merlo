@@ -98,7 +98,7 @@ struct GeneralView: View {
                                 .background(.gray.opacity(0.2))
                                 .cornerRadius(8)
                             
-                            Button("Save", action: {
+                            Button{
                                 Task {
                                     do {
                                         let usernameIsPresent = try await firestoreViewModel.fieldIsPresent(field: "username", value: textFieldValue.lowercased())
@@ -117,8 +117,16 @@ struct GeneralView: View {
                                         authenticationViewModel.messageError = "Error. Retry."
                                     }
                                 }
+                            }label: {
+                                Text("Accept")
+                                    .font(.system(size:18))
+                                    .fontWeight(.semibold)
+                                    .frame(width: 120, height: 45)
+                                    .background(.blue)
+                                    .foregroundColor(.white)
+                                    .cornerRadius(10)
+                                    .contentTransition(.identity)
                             }
-                            )
                             
                             // Display error when email is empty
                             if let error = authenticationViewModel.messageError {
@@ -127,6 +135,7 @@ struct GeneralView: View {
                                     .font(.body)
                             }
                         }
+                        .foregroundColor(.white)
                         .padding()
                     }
                     .onDisappear(){
@@ -204,6 +213,8 @@ struct GeneralView: View {
 
 struct GeneralView_Previews: PreviewProvider {
     static var previews: some View {
-        GeneralView(healthViewModel: HealthViewModel(), authenticationViewModel: AuthenticationViewModel(), firestoreViewModel: FirestoreViewModel())
+        return GeneralView(healthViewModel: HealthViewModel(),
+                           authenticationViewModel: AuthenticationViewModel(),
+                           firestoreViewModel: FirestoreViewModel())
     }
 }
