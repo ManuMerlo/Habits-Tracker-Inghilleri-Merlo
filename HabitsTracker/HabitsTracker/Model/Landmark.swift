@@ -21,3 +21,4 @@ struct Landmark : Identifiable, Equatable{
         self.placemark.coordinate
     }
 }
+

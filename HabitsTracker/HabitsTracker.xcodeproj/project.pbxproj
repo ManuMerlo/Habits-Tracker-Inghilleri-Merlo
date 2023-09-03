@@ -32,6 +32,8 @@
 		092785082A98921E00728DD2 /* FirestoreViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 092785072A98921E00728DD2 /* FirestoreViewModel_Tests.swift */; };
 		09316F682A80D55200E92B84 /* Friend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09316F672A80D55200E92B84 /* Friend.swift */; };
 		09316F6A2A8143B000E92B84 /* RequestListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 09316F692A8143B000E92B84 /* RequestListView.swift */; };
+		0936CBCE2AA50D2B00526D0B /* MockPointsOfInterestsDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0936CBCD2AA50D2B00526D0B /* MockPointsOfInterestsDataSource.swift */; };
+		0936CBD02AA50FC100526D0B /* PointsOfInterestsViewModel_Tests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0936CBCF2AA50FC100526D0B /* PointsOfInterestsViewModel_Tests.swift */; };
 		0938459B2A8C93720081E1C5 /* LeaderboardViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0938459A2A8C93720081E1C5 /* LeaderboardViewModel.swift */; };
 		093D33B32A7BA53B000C8ECF /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 093D33B22A7BA53B000C8ECF /* Utils.swift */; };
 		0944AB2D2A7AB61900C73278 /* SettingsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */; };
@@ -144,6 +146,8 @@
 		092785072A98921E00728DD2 /* FirestoreViewModel_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FirestoreViewModel_Tests.swift; sourceTree = "<group>"; };
 		09316F672A80D55200E92B84 /* Friend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Friend.swift; sourceTree = "<group>"; };
 		09316F692A8143B000E92B84 /* RequestListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RequestListView.swift; sourceTree = "<group>"; };
+		0936CBCD2AA50D2B00526D0B /* MockPointsOfInterestsDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPointsOfInterestsDataSource.swift; sourceTree = "<group>"; };
+		0936CBCF2AA50FC100526D0B /* PointsOfInterestsViewModel_Tests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PointsOfInterestsViewModel_Tests.swift; sourceTree = "<group>"; };
 		0938459A2A8C93720081E1C5 /* LeaderboardViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeaderboardViewModel.swift; sourceTree = "<group>"; };
 		093D33B22A7BA53B000C8ECF /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
 		0944AB2C2A7AB61900C73278 /* SettingsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewModel.swift; sourceTree = "<group>"; };
@@ -311,6 +315,7 @@
 				09FF69FD2A9A4A8E0028CE72 /* MockUserNotificationCenter.swift */,
 				092785052A9878A100728DD2 /* MockFirestoreDataSource.swift */,
 				09D4738B2AA069A3003DD80A /* MockHealthDataSource.swift */,
+				0936CBCD2AA50D2B00526D0B /* MockPointsOfInterestsDataSource.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -490,6 +495,7 @@
 				09FF69FB2A9A460B0028CE72 /* SettingViewModel_Tests.swift */,
 				09FF69FF2A9A55B00028CE72 /* LeaderboardViewModel_Tests.swift */,
 				09D4738D2AA0765E003DD80A /* HealthViewModel_Tests.swift */,
+				0936CBCF2AA50FC100526D0B /* PointsOfInterestsViewModel_Tests.swift */,
 			);
 			path = HabitsTracker_Tests;
 			sourceTree = "<group>";
@@ -771,9 +777,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0936CBCE2AA50D2B00526D0B /* MockPointsOfInterestsDataSource.swift in Sources */,
 				DD7151972A9865E60023C814 /* AuthenticationViewModel_Tests.swift in Sources */,
 				DD7151902A9865020023C814 /* HabitsTracker_Tests.swift in Sources */,
 				09D4738C2AA069A4003DD80A /* MockHealthDataSource.swift in Sources */,
+				0936CBD02AA50FC100526D0B /* PointsOfInterestsViewModel_Tests.swift in Sources */,
 				098651AD2A9F31D800A3CC52 /* MockAuthenticationDataSource.swift in Sources */,
 				09D4738E2AA0765E003DD80A /* HealthViewModel_Tests.swift in Sources */,
 				09FF69FE2A9A4A8E0028CE72 /* MockUserNotificationCenter.swift in Sources */,
