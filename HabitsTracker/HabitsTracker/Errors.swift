@@ -1,5 +1,6 @@
 import Foundation
 
+/// Enum representing possible errors during authentication.
 enum AuthenticationError: Error {
     case emailAlreadyExists
     case usernameAlreadyExists
@@ -7,14 +8,18 @@ enum AuthenticationError: Error {
     case missingCredential
 }
 
+/// Enum representing possible errors when interacting with Firestore.
 enum DBError: Error {
     case failedUserRetrieval
     case badDBResponse
 }
 
+/// Enum representing possible errors on the view or user interface level.
 enum ViewError: Error {
     case usernameEmailPasswordNotFound
 }
+
+// MARK: - Authentication Error Descriptions
 
 extension AuthenticationError: CustomStringConvertible {
     public var description: String {
@@ -31,6 +36,8 @@ extension AuthenticationError: CustomStringConvertible {
     }
 }
 
+// MARK: - Database Error Descriptions
+
 extension DBError: CustomStringConvertible {
     public var description: String {
         switch self {
@@ -42,6 +49,8 @@ extension DBError: CustomStringConvertible {
         
     }
 }
+
+// MARK: - View Error Descriptions
 
 extension ViewError: CustomStringConvertible {
     public var description: String {
