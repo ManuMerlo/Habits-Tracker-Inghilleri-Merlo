@@ -5,7 +5,7 @@ struct LeaderboardView: View {
     @ObservedObject var firestoreViewModel: FirestoreViewModel
     @StateObject var leaderboardViewModel = LeaderBoardViewModel()
     
-    @State private var global : Bool = true
+    @State private var global: Bool = true
     @State private var selectedTimeFrame : TimeFrame = .daily
     @State var users: [User] = []
     
@@ -47,7 +47,7 @@ struct LeaderboardView: View {
                                 NavigationLink(value: user){
                                     RankingItemView(leaderboardViewModel: leaderboardViewModel,
                                                     firestoreViewModel: firestoreViewModel,
-                                                    user : user,
+                                                    user: user,
                                                     selectedTimeFrame: selectedTimeFrame,
                                                     global:global,
                                                     position: ((users.isEmpty ? globalUsers : users).firstIndex(of: user) ?? 0) + 1,
@@ -177,35 +177,9 @@ struct RankingItemView: View {
         }
         .padding(.vertical,10)
         .padding(.horizontal,20)
-        .background(ItemColor(number:position).opacity(0.65))
+        .background(ItemColor(number: position).opacity(0.65))
         .foregroundColor(.white)
         .mask(RoundedRectangle(cornerRadius: 20, style: .continuous))
-        .onChange(of: position) { newPosition in
-            if(user.id == firestoreViewModel.firestoreUser!.id){
-                switch (selectedTimeFrame, global) {
-                case (.daily, true):
-                    if let oldPosition = user.dailyGlobal, oldPosition < newPosition {
-                        leaderboardViewModel.sendPositionChangeNotification()
-                    }
-                    firestoreViewModel.modifyUser(uid: user.id, field: "dailyGlobal", value: newPosition)
-                case (.daily, false):
-                    if let oldPosition = user.dailyPrivate, oldPosition < newPosition{
-                        leaderboardViewModel.sendPositionChangeNotification()
-                    }
-                    firestoreViewModel.modifyUser(uid: user.id, field: "dailyPrivate", value: newPosition)
-                case (.weekly, true):
-                    if let oldPosition = user.weeklyGlobal, oldPosition < newPosition{
-                        leaderboardViewModel.sendPositionChangeNotification()
-                    }
-                    firestoreViewModel.modifyUser(uid: user.id, field: "weeklyGlobal", value: newPosition)
-                case (.weekly, false):
-                    if let oldPosition = user.weeklyPrivate, oldPosition < newPosition {
-                        leaderboardViewModel.sendPositionChangeNotification()
-                    }
-                    firestoreViewModel.modifyUser(uid: user.id, field: "weeklyPrivate", value: newPosition)
-                }
-            }
-        }
     }
 }
 

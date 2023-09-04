@@ -74,7 +74,7 @@ final class HealthDataSource : HealthDataSourceProtocol, ObservableObject {
         }
         // This query listens changes when a user does more steps
         observerQuery = HKObserverQuery(sampleType: type, predicate: nil, updateHandler: { query, completionHandler, error in
-            if let error = error {
+            if let _ = error {
                 return
             }
             self.getMyStats(by: category)

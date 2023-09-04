@@ -6,42 +6,7 @@ import SwiftUI
 final class LeaderBoardViewModel: ObservableObject {
     
     /// A computed property representing the index for today in the week (0 is Monday, 6 is Sunday).
-    let today = ( Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
-    
-    @State var notificationCenter: UserNotificationCenterProtocol
-    
-    /// Initializes a new instance of `LeaderBoardViewModel`.
-    ///
-    /// - Parameter notificationCenter: The notification center to use. Defaults to the system's current user notification center.
-    init(notificationCenter: UserNotificationCenterProtocol = UNUserNotificationCenter.current()) {
-        self.notificationCenter = notificationCenter
-    }
-    
-    /// Initializes a new instance of `LeaderBoardViewModel` for testing purposes.
-    ///
-    /// - Parameter notificationCenter: The optional notification center to use.
-    init(notificationCenter: UserNotificationCenterProtocol? = nil) {
-        if let providedNotificationCenter = notificationCenter {
-            self.notificationCenter = providedNotificationCenter
-        } else {
-            self.notificationCenter = UNUserNotificationCenter.current()
-        }
-    }
-    
-    /// Sends a notification to the user about their position change in the leaderboard.
-    func sendPositionChangeNotification() {
-        let content = UNMutableNotificationContent()
-        content.title = "Ranking Position Change"
-        content.subtitle = "You are losing positions in the rankings! Hurry up!!"
-        content.sound = .default
-        
-        let trigger = UNTimeIntervalNotificationTrigger (timeInterval: 20, repeats: false)
-        
-        let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
-        
-        notificationCenter.add(request){ _ in
-        }
-    }
+    let today = (Calendar.current.component(.weekday, from: Date()) + 5 ) % 7
     
     /// Sorts the provided users based on their scores for the given time frame.
     ///
