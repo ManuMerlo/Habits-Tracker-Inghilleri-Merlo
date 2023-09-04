@@ -51,7 +51,6 @@ final class AuthenticationFirebaseDataSource: AuthenticationDataSource {
         guard let user = Auth.auth().currentUser else {
             throw AuthenticationError.userNotLogged
         }
-        
         try await user.updatePassword(to: password)
     }
     

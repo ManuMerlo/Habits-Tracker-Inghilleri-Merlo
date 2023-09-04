@@ -47,9 +47,13 @@ struct SecuritySettingsView: View {
                             CustomTextField(isSecure: false, hint: "Email", imageName: "envelope", text: $authenticationViewModel.textFieldEmail)
                             
                             Button("Submit") {
-                                if !authenticationViewModel.textFieldEmail.isEmpty {
+                                if !authenticationViewModel.textFieldEmail.isEmpty && authenticationViewModel.isValidEmail(email: authenticationViewModel.textFieldEmail) {
                                     Task {
                                         do {
+                                            let emailIsPresent = try await firestoreViewModel.fieldIsPresent(field: "email", value: authenticationViewModel.textFieldEmail)
+                                            if emailIsPresent {
+                                                throw AuthenticationError.emailAlreadyExists
+                                            }
                                             try await authenticationViewModel.updateEmail(email: authenticationViewModel.textFieldEmail)
                                             let uid = firestoreViewModel.firestoreUser?.id ?? ""
                                             firestoreViewModel.modifyUser(uid: uid, field: "email", value: authenticationViewModel.textFieldEmail)
@@ -57,6 +61,8 @@ struct SecuritySettingsView: View {
                                             showAlert.toggle()
                                             alertTitle = "Success"
                                             alertMessage = "Email updated."
+                                        } catch AuthenticationError.emailAlreadyExists {
+                                            messageError = AuthenticationError.emailAlreadyExists.description
                                         } catch {
                                             showAlert.toggle()
                                             alertTitle = "Sensitive operation"
@@ -65,7 +71,7 @@ struct SecuritySettingsView: View {
                                     }
                                     
                                 } else {
-                                    messageError = "Email can't be empty"
+                                    messageError = "Please insert a valid email."
                                 }
                             }
                             .padding(10)
@@ -106,7 +112,7 @@ struct SecuritySettingsView: View {
                             CustomTextField(isSecure: true, hint: "Password", imageName: "lock", text: $authenticationViewModel.textFieldPassword)
                             
                             Button("Submit") {
-                                if !authenticationViewModel.textFieldPassword.isEmpty {
+                                if !authenticationViewModel.textFieldPassword.isEmpty && !(authenticationViewModel.textFieldPassword.count < 6){
                                     Task {
                                         do {
                                             try await authenticationViewModel.updatePassword(password: authenticationViewModel.textFieldPassword)
@@ -122,7 +128,7 @@ struct SecuritySettingsView: View {
                                     }
                                 }
                                 else {
-                                    messageError = "Password can't be empty"
+                                    messageError = "The password must be at least 6 characters long."
                                 }
                             }
                             .padding(10)
