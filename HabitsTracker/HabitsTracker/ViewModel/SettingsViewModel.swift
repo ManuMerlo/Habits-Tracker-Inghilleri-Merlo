@@ -162,32 +162,6 @@ final class SettingsViewModel: ObservableObject {
         }
     }
     
-    /// Persists the user's image to the Firebase storage.
-    ///
-    /// - Parameter completionBlock: A closure to handle the result of the image persistence operation.
-    func persistimageToStorage (completionBlock: @escaping (Result<String,Error>) -> Void){
-        guard let uid = Auth.auth().currentUser?.uid
-        else { return }
-        let ref = Storage.storage().reference(withPath: uid)
-        guard let imageData = self.image?.jpegData(compressionQuality:
-                                                    0.5) else { return }
-        ref.putData (imageData, metadata: nil) { metadata, error in
-            if let error = error {
-                print("error putData: \(error.localizedDescription)")
-                completionBlock(.failure(error))
-            }
-            ref.downloadURL {url, error in
-                if let error = error {
-                    print("Error downloadURL: \(error.localizedDescription)")
-                    completionBlock(.failure(error))
-                }
-                print("Successfully stored image with url: \(url?.absoluteString ?? "")")
-                completionBlock(.success(url?.absoluteString ?? ""))
-                
-            }
-        }
-    }
-    
     // MARK: - Private Methods
     
     /// Retrieves the current notification settings.

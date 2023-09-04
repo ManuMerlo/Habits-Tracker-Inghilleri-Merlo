@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 /// `FirestoreRepository` is a high-level class that abstracts the interactions with the Firestore database.
 /// It utilizes a data source to perform the CRUD (Create, Read, Update, Delete) operations and other Firebase interactions.
@@ -117,4 +118,12 @@ final class FirestoreRepository {
     func deleteUserData(uid:String) async throws {
         try await firestoreDataSource.deleteUserData(uid: uid)
     }
+    
+    /// Persists the user's image to the Firebase storage.
+    ///
+    /// - Parameter completionBlock: A closure to handle the result of the image persistence operation.
+    func persistimageToStorage (image: UIImage?,completionBlock: @escaping (Result<String,Error>) -> Void){
+        firestoreDataSource.persistimageToStorage(image: image, completionBlock: completionBlock)
+    }
+    
 }

@@ -129,9 +129,9 @@ struct ModifyProfileView: View {
                         Text("Done")
                             .foregroundColor(.white)
                             .frame(maxWidth: .infinity)
-                                    .padding(.vertical, 10)
-                            }
-                            .background(Color("oxfordBlue"))
+                            .padding(.vertical, 10)
+                    }
+                    .background(Color("oxfordBlue"))
                     
                     Picker(selection: $selectedSex, label: Text("Select your sex" )) {
                         ForEach(Sex.allCases, id: \.self) { item in
@@ -202,7 +202,7 @@ struct ModifyProfileView: View {
             width = UIScreen.main.bounds.width
         }
         .fullScreenCover(isPresented: $showSheet, onDismiss: {
-            settingsViewModel.persistimageToStorage { result in
+            firestoreViewModel.persistimageToStorage(image: settingsViewModel.image) { result in
                 switch result {
                 case .success(let path):
                     firestoreViewModel.modifyUser(
@@ -210,7 +210,6 @@ struct ModifyProfileView: View {
                         field: "image",
                         value: path
                     )
-                    
                 case .failure(_):
                     showAlert.toggle()
                 }

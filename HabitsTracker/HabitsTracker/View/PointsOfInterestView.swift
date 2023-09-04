@@ -8,13 +8,7 @@ struct PointsOfInterestView: View {
     
     @State private var search: String = ""
     @State private var selectedLandmark: Landmark?
-    
-    //Responsiveness
-    @EnvironmentObject var orientationInfo: OrientationInfo
-    @State private var isLandscape: Bool = false
-    @State private var device : Device = UIDevice.current.userInterfaceIdiom == .pad ? .iPad : .iPhone
     @State var width = UIScreen.main.bounds.width
-    @State var height = UIScreen.main.bounds.height
     
     var body: some View {
         VStack(spacing: 20){
@@ -43,7 +37,7 @@ struct PointsOfInterestView: View {
 
                 // MapView
                 MapView(landmarks: pointsOfInterestViewModel.landmarks, region: $pointsOfInterestViewModel.region, selectedLandmark: $selectedLandmark)
-                    .frame(height: height/2)
+                    .frame(height: UIScreen.main.bounds.height/2)
                     .cornerRadius(15)
                     .background(
                         RoundedRectangle(cornerRadius: 15) //
@@ -75,14 +69,14 @@ struct PointsOfInterestView: View {
             
             if pointsOfInterestViewModel.location == nil {
                 VStack(){
-                    Text("You have to allow User's locatioin sharing in your phone settings.")
+                    Text("You have to allow User's location sharing in your phone settings.")
                         .multilineTextAlignment(.center)
                         .font(.body)
                         .foregroundColor(.white)
                         .padding(10)
                 }
                 .padding(15)
-                .frame(width: isLandscape ? width/1.3 : width - 30)
+                .frame(width: width - 30)
                 .background(.white.opacity(0.1))
                 .cornerRadius(15)
                 

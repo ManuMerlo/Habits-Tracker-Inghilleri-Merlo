@@ -1,4 +1,6 @@
 import Foundation
+import FirebaseStorage
+import UIKit
 import FirebaseFirestore
 import FirebaseFirestoreSwift
 import FirebaseAuth
@@ -189,21 +191,33 @@ final class FirestoreDataSource : FirestoreDataSourceProtocol {
         try await userRef.updateData(["dailyScores": scoresArray])
     }
     
+    /// Persists the user's image to the Firebase storage.
+    ///
+    /// - Parameter completionBlock: A closure to handle the result of the image persistence operation.
+    func persistimageToStorage (image: UIImage?, completionBlock: @escaping (Result<String,Error>) -> Void){
+        guard let uid = Auth.auth().currentUser?.uid
+        else { return }
+        let ref = Storage.storage().reference(withPath: uid)
+        guard let imageData = image?.jpegData(compressionQuality:
+                                                    0.5) else { return }
+        ref.putData (imageData, metadata: nil) { metadata, error in
+            if let error = error {
+                completionBlock(.failure(error))
+            }
+            ref.downloadURL {url, error in
+                if let error = error {
+                    completionBlock(.failure(error))
+                }
+                completionBlock(.success(url?.absoluteString ?? ""))
+            }
+        }
+    }
+    
     /// Deletes a user's document from the 'users' collection in Firestore.
     /// - Parameter uid: The ID of the user to be deleted.
     func deleteUserData(uid: String) async throws {
         try await db.collection("users")
             .document(uid)
             .delete()
-    }
-    
-    /// A utility method to handle the result of Firestore update operations and print relevant messages.
-    /// - Parameter err: The error, if any, from the update operation.
-    func handleUpdateResult(err: Error?) {
-        if let err = err {
-            print("Error updating document: \(err)")
-        } else {
-            print("Document successfully updated")
-        }
     }
 }

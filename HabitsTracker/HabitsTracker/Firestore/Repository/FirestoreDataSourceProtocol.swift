@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 
 // MARK: - FirestoreDataSourceProtocol
 
@@ -81,7 +82,8 @@ protocol FirestoreDataSourceProtocol {
     /// - Parameter requestFriendsIDs: An array of user IDs who have sent friend requests.
     func getRequests(requestFriendsIDs: [String]) async throws -> [User]
     
-    /// Helper function to handle and print errors from Firestore update operations.
-    /// - Parameter err: The error, if any, from the update operation.
-    func handleUpdateResult(err: Error?)
+    /// Persists the user's image to the Firebase storage.
+    ///
+    /// - Parameter completionBlock: A closure to handle the result of the image persistence operation.
+    func persistimageToStorage (image: UIImage?,completionBlock: @escaping (Result<String,Error>) -> Void)
 }

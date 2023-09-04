@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 import Combine
 
 /// `FirestoreViewModel` is responsible for managing and binding Firestore data operations
@@ -187,6 +188,20 @@ final class FirestoreViewModel: ObservableObject {
             }
         }
         tasks.append(task)
+    }
+    
+    /// Persists the user's image to the Firebase storage.
+    ///
+    /// - Parameter completionBlock: A closure to handle the result of the image persistence operation.
+    func persistimageToStorage (image: UIImage?,completionBlock: @escaping (Result<String,Error>) -> Void){
+        firestoreRepository.persistimageToStorage(image: image) { result in
+            switch result {
+            case .success(let url):
+                completionBlock(.success(url))
+            case .failure(_):
+                completionBlock(.failure(DBError.badDBResponse))
+            }
+        }
     }
     
     /// Deletes all data associated with a user.

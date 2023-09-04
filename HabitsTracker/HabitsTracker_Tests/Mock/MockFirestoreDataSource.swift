@@ -1,4 +1,5 @@
 import Foundation
+import UIKit
 @testable import HabitsTracker
 
 final class MockFirestoreDataSource : FirestoreDataSourceProtocol, Mockable{
@@ -209,6 +210,14 @@ final class MockFirestoreDataSource : FirestoreDataSourceProtocol, Mockable{
         }
     }
     
+    func persistimageToStorage(image: UIImage?, completionBlock: @escaping (Result<String, Error>) -> Void) {
+        if throwError {
+            completionBlock(.failure(DBError.badDBResponse))
+        } else {
+            completionBlock(.success("fakeUrl"))
+        }
+    }
+    
     
     // Fuction to delete user's document
     func deleteUserData(uid: String) async throws {
@@ -222,14 +231,5 @@ final class MockFirestoreDataSource : FirestoreDataSourceProtocol, Mockable{
         }
     }
     
-    
-    
-    func handleUpdateResult(err: Error?) {
-        if let err = err {
-            print("Error updating document: \(err)")
-        } else {
-            print("Document successfully updated")
-        }
-    }
 }
 
