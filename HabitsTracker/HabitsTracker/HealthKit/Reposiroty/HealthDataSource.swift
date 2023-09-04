@@ -61,7 +61,6 @@ final class HealthDataSource : HealthDataSourceProtocol, ObservableObject {
         
         healthStore.requestAuthorization(toShare: nil, read: readableTypes) { success, error in
             if success {
-                print("Request Authorization \(success.description)")
                 completion(.success(true))
             }
         }
@@ -71,13 +70,11 @@ final class HealthDataSource : HealthDataSourceProtocol, ObservableObject {
     /// - Parameter category: The health data type category as a string.
     func getTodayStats(by category: String) {
         guard let type = HKQuantityType.quantityType(forIdentifier: typeByCategory(category: category)) else {
-            print("Error: Identifier .stepCount")
             return
         }
         // This query listens changes when a user does more steps
         observerQuery = HKObserverQuery(sampleType: type, predicate: nil, updateHandler: { query, completionHandler, error in
             if let error = error {
-                print("Error: \(error.localizedDescription)")
                 return
             }
             self.getMyStats(by: category)
@@ -144,7 +141,7 @@ final class HealthDataSource : HealthDataSourceProtocol, ObservableObject {
         if stat.is(compatibleWith: .kilocalorie()) {
             return Int(stat.doubleValue(for: .kilocalorie()))
         } else if stat.is(compatibleWith: .mile()) {
-            return Int(stat.doubleValue(for: .meter()))
+            return Int(stat.doubleValue(for: .meter()))/1000
         } else if stat.is(compatibleWith: .meter()) {
             return Int(stat.doubleValue(for: .meter()))
         } else if stat.is(compatibleWith: .count()) {

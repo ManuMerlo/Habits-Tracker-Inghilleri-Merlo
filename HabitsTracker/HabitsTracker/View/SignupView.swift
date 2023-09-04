@@ -104,10 +104,8 @@ struct SignupView: View {
                             throw AuthenticationError.usernameAlreadyExists
                         }
                         var user = try await authenticationViewModel.createNewUser()
-                        // print("Success, user created with email and password")
                         user.setUsername(name: authenticationViewModel.textFieldUsername)
                         firestoreViewModel.addNewUser(user: user)
-                        // print("Success, user added to firestore")
                     } catch ViewError.usernameEmailPasswordNotFound {
                         authenticationViewModel.messageError = ViewError.usernameEmailPasswordNotFound.description
                     } catch AuthenticationError.emailAlreadyExists {

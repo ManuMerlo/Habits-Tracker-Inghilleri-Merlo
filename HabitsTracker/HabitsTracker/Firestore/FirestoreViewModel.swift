@@ -95,7 +95,6 @@ final class FirestoreViewModel: ObservableObject {
     /// - Parameter user: The user object to add.
     func addNewUser(user: User) {
         firestoreRepository.addNewUser(user: user)
-        print("User with email \(user.email) added to firestore")
     }
     
     /// Sends a friend request.

@@ -39,8 +39,6 @@ final class LeaderBoardViewModel: ObservableObject {
         
         let request = UNNotificationRequest(identifier: UUID().uuidString, content: content, trigger: trigger)
         
-        print("sending notification ranking")
-        
         notificationCenter.add(request){ _ in
         }
     }

@@ -83,11 +83,10 @@ final class HealthViewModel: ObservableObject {
     }
     
     /// Requests access to health data and starts fetching health metrics if access is granted.
-    func requestAccessToHealthData(){
+    func requestAccessToHealthData() {
         healthRepository.requestAccessToHealthData { result in
             switch result {
             case .success(_):
-                print("Successfully obtained authorization")
                 for activity in ExtendedActivity.allActivities() {
                     self.healthRepository.getTodayStats(by: activity.id)
                 }

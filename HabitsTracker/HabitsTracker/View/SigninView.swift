@@ -72,7 +72,6 @@ struct SigninView: View {
                                 Task {
                                     do {
                                         try await authenticationViewModel.resetPassword(email: email)
-                                        print("Password Reset")
                                         self.showResetPasswordModal.toggle()
                                     } catch {
                                         sheetMessageError = "An error occurred. Retry later."

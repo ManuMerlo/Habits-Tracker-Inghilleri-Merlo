@@ -382,19 +382,19 @@
 				DDD723B0292A87E100012461 /* HomeView.swift */,
 				09652B84293119F9002CC615 /* IntroView.swift */,
 				DDAA66A629D042E500219792 /* LeaderboardView.swift */,
+				DD4B90C42A97E65C00B8CC5C /* LoadingView.swift */,
 				09115CEF2A7FCB9800BE1254 /* ModifyProfileView.swift */,
 				09115CEB2A7FC97A00BE1254 /* NotificationDetailView.swift */,
+				09A28E9F2AA3002300422735 /* PointsOfInterestView.swift */,
 				09115CED2A7FCA4600BE1254 /* ProvidersDetailView.swift */,
+				09316F692A8143B000E92B84 /* RequestListView.swift */,
 				094A32422A796F570008403C /* SearchFriendView.swift */,
+				09B8FD842A9AAB8F00F51CAF /* SecuritySettingsView.swift */,
 				DDD723AE292A73AC00012461 /* SettingsView.swift */,
 				DD127A3B2929475900075A8B /* SigninView.swift */,
 				09179CD429314D3700B389C2 /* SignupView.swift */,
 				09115CE82A7FC31200BE1254 /* ui */,
 				094A32442A798AF90008403C /* UserProfileView.swift */,
-				09316F692A8143B000E92B84 /* RequestListView.swift */,
-				DD4B90C42A97E65C00B8CC5C /* LoadingView.swift */,
-				09B8FD842A9AAB8F00F51CAF /* SecuritySettingsView.swift */,
-				09A28E9F2AA3002300422735 /* PointsOfInterestView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -441,22 +441,22 @@
 		DD25AA2429293E7300EF2FEB /* HabitsTracker */ = {
 			isa = PBXGroup;
 			children = (
+				DD25AA2929293E7300EF2FEB /* Assets.xcassets */,
+				DDBDA92C29D778F900B81D6F /* Authentication */,
+				DD7C45652A929D4E0026AF49 /* Errors.swift */,
+				DDEACC0C29DB740400F39F4B /* Firestore */,
+				DD25AA33292940EC00EF2FEB /* GoogleService-Info.plist */,
 				DD07DFB529D0B99400633248 /* HabitsTracker.entitlements */,
+				DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */,
+				DD1FAFD829D8DA0E0084178F /* HealthKit */,
+				DD33E5F42929457C00B299BD /* Info.plist */,
 				09652B7729311723002CC615 /* Lottie */,
+				DD11E4D12AA3C5FA00A39EDD /* MapKit */,
 				DD127A38292946E100075A8B /* Model */,
+				DD25AA2B29293E7300EF2FEB /* Preview Content */,
+				093D33B22A7BA53B000C8ECF /* Utils.swift */,
 				DD127A39292946E800075A8B /* View */,
 				DD127A3A292946EF00075A8B /* ViewModel */,
-				DDBDA92C29D778F900B81D6F /* Authentication */,
-				DDEACC0C29DB740400F39F4B /* Firestore */,
-				DD1FAFD829D8DA0E0084178F /* HealthKit */,
-				DD11E4D12AA3C5FA00A39EDD /* MapKit */,
-				DD25AA2529293E7300EF2FEB /* HabitsTrackerApp.swift */,
-				DD7C45652A929D4E0026AF49 /* Errors.swift */,
-				093D33B22A7BA53B000C8ECF /* Utils.swift */,
-				DD33E5F42929457C00B299BD /* Info.plist */,
-				DD25AA33292940EC00EF2FEB /* GoogleService-Info.plist */,
-				DD25AA2929293E7300EF2FEB /* Assets.xcassets */,
-				DD25AA2B29293E7300EF2FEB /* Preview Content */,
 			);
 			path = HabitsTracker;
 			sourceTree = "<group>";

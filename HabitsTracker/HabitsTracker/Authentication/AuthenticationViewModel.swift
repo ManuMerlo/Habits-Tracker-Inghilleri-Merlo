@@ -106,7 +106,6 @@ final class AuthenticationViewModel: ObservableObject {
         }
         let user = try await authenticationRepository.createNewUser(email: textFieldEmail, password: textFieldPassword)
         self.user = user
-        print("Success, user created with email and password")
         return user
     }
     
@@ -144,7 +143,6 @@ final class AuthenticationViewModel: ObservableObject {
         let task = Task {
             do {
                 self.user = try await authenticationRepository.login(email: textFieldEmail, password: textFieldPassword)
-                print("Success, user logged with email and password")
             } catch {
                 self.messageError = "Login error. Retry."
             }

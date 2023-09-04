@@ -25,16 +25,11 @@ final class FirestoreDataSource : FirestoreDataSourceProtocol {
                     completionBlock(.failure(error))
                 } else if let document = documentSnapshot, document.exists {
                     do {
-                        print("Document retrieved")
                         let user = try document.data(as: User.self)
-                        
                         if userAuth.uid == user.id {
-                            print("user Auth id: \(userAuth.uid)")
-                            print("user retrieved \(user)")
                             completionBlock(.success(user))
                         }
                     } catch {
-                        print(error)
                         completionBlock(.failure(error))
                     }
                 }
@@ -55,7 +50,6 @@ final class FirestoreDataSource : FirestoreDataSourceProtocol {
             let friendsRef = self.db.collection("users").document(userAuth.uid).collection("friends")
             self.friendsSubcollectionListener = friendsRef.addSnapshotListener{ querySnapshot, error in
                 guard let documents = querySnapshot?.documents else {
-                    print("Error fetching friend documents: \(error!)")
                     return
                 }
                 var updatedFriends: [Friend] = []
