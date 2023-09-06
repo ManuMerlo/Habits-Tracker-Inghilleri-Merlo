@@ -220,7 +220,7 @@ final class MockFirestoreDataSource : FirestoreDataSourceProtocol, Mockable{
     
     
     // Fuction to delete user's document
-    func deleteUserData(uid: String) async throws {
+    func deleteUserData(uid: String, friendsSubcollection: [Friend]) async throws {
         if throwError{
             throw DBError.badDBResponse
         } else {

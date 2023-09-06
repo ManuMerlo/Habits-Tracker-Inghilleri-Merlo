@@ -206,7 +206,7 @@ final class FirestoreViewModel: ObservableObject {
     /// Deletes all data associated with a user.
     /// - Parameter uid: The user's ID.
     func deleteUserData(uid: String) async throws {
-        try await firestoreRepository.deleteUserData(uid: uid)
+        try await firestoreRepository.deleteUserData(uid: uid, friendsSubcollection: friendsSubcollection)
     }
     
     /// Retrieves the status of a friend.

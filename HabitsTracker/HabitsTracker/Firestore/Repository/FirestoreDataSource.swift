@@ -209,9 +209,18 @@ final class FirestoreDataSource : FirestoreDataSourceProtocol {
     
     /// Deletes a user's document from the 'users' collection in Firestore.
     /// - Parameter uid: The ID of the user to be deleted.
-    func deleteUserData(uid: String) async throws {
+    func deleteUserData(uid: String, friendsSubcollection: [Friend]) async throws {
+        try await cleanFriends(uid: uid, friendsSubcollection: friendsSubcollection)
+        
         try await db.collection("users")
             .document(uid)
             .delete()
+    }
+    
+    private func cleanFriends(uid: String, friendsSubcollection: [Friend]) async throws {
+        for friend in friendsSubcollection {
+            let friendId = friend.id
+            try await removeFriend(uid: friendId, friendId: uid)
+        }
     }
 }

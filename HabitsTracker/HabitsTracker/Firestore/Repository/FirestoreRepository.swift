@@ -114,9 +114,11 @@ final class FirestoreRepository {
     }
     
     /// Deletes a user's data from Firestore.
-    /// - Parameter uid: The ID of the user to be deleted.
-    func deleteUserData(uid:String) async throws {
-        try await firestoreDataSource.deleteUserData(uid: uid)
+    /// - Parameters:
+    ///   - uid: The ID of the user to be deleted.
+    ///   - friendsSubcollection: The friends of the user
+    func deleteUserData(uid: String, friendsSubcollection: [Friend]) async throws {
+        try await firestoreDataSource.deleteUserData(uid: uid, friendsSubcollection: friendsSubcollection)
     }
     
     /// Persists the user's image to the Firebase storage.

@@ -44,7 +44,7 @@ protocol FirestoreDataSourceProtocol {
     
     /// Deletes a User document from Firestore.
     /// - Parameter uid: The ID of the user to be deleted.
-    func deleteUserData(uid: String) async throws
+    func deleteUserData(uid: String, friendsSubcollection: [Friend]) async throws
     
     /// Updates the daily scores for a User in Firestore.
     /// - Parameters:
