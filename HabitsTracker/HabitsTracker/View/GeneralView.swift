@@ -65,12 +65,12 @@ struct GeneralView: View {
                             Button{
                                 Task {
                                     do {
-                                        let usernameIsPresent = try await firestoreViewModel.fieldIsPresent(field: "username", value: textFieldValue.lowercased())
+                                        let usernameIsPresent = try await firestoreViewModel.fieldIsPresent(field: "username", value: textFieldValue)
                                         if usernameIsPresent {
                                             throw AuthenticationError.usernameAlreadyExists
                                         }
                                         firestoreViewModel.modifyUser(
-                                            uid:  currentUser.id,
+                                            uid: currentUser.id,
                                             field: "username",
                                             value: textFieldValue)
                                         firestoreViewModel.needUsername = false
