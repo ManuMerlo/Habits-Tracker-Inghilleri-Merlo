@@ -153,7 +153,8 @@ struct GeneralView: View {
                 LoadingView()
                     .accessibilityIdentifier("LoadingView")
             }
-        }.onAppear{
+        }.preferredColorScheme(.dark)
+        .onAppear{
             firestoreViewModel.addListenerForCurrentUser { error in
                 if let error = error as? DBError, error == .failedUserRetrieval{
                     showAlerErrorUserRetrival.toggle()
