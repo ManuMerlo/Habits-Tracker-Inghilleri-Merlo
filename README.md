@@ -52,31 +52,35 @@ Habits-Tracker comes loaded with a suite of features designed for both **iPhone*
 
 ## Photos
 ### iPHone
-<img width="190" alt="intro" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/c8d5b40e-c614-42e1-b827-aa6d35538524">
-<img width="190" alt="signin" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/1f862d18-2368-4831-996d-2394ea4f4654">
-<img width="190" alt="dashboard" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/6bc1c49c-a101-4142-91e7-36f49e0b6d93">
-<img width="190" alt="search" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/cbf69100-daa3-40c7-998d-3b607cc6b477">
-<img width="190" alt="leaderboard" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/4e96ffa5-ef60-45c3-9c96-9ab350bcfcea">
-<img width="190" alt="map" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/c3cbc672-47bb-4c96-bae9-065b6b23186d">
-<img width="190" alt="settings" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/8c21b781-6bbb-42f9-be01-b34d64abd9a1">
+<img width="190" alt="login1" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/b293ae5e-4ffc-4995-8b8b-ab1fb0de2d98">
+<img width="190" alt="signIn" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/fddc3838-bca2-4137-9b8c-6699ac6beea4">
+<img width="190" alt="dashboard" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/a09ab522-5be5-479e-8175-d769bb916bb9">
+<img width="190" alt="leaderboard" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/c75695ca-d8da-40b9-b372-02e2fe321770">
+<img width="190" alt="search" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/a8a9c1db-245e-4874-ac92-46bfd5d5d504">
+<img width="190" alt="map" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/27ddba9b-7834-420e-bd56-929c66d474b9">
+<img width="190" alt="settings" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/09cf440b-e339-4cc9-ba33-23f1154ef5f1">
+
 
 ### iPad - portrait
-<img width="230" alt="intro" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/e63d1b4c-5652-4a9b-83c7-558fcd5aa9f0">
-<img width="230" alt="signin" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/b8810baf-8b53-4798-b180-f6c89c927121">
-<img width="230" alt="dashboard" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/5f5b7201-829f-4f24-88d4-a80d588e637c">
-<img width="230" alt="search" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/a101f656-a40a-47f8-b954-7b9f9890aee1">
-<img width="230" alt="leaderboard" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/c029eb13-5ee1-4377-811e-a7ab1560c275">
-<img width="230" alt="map" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/74b8cbba-83e0-4be2-8654-76e75bb19bfc">
-<img width="230" alt="settings" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/da68a890-86cc-41de-8fe9-80656c9fff14">
+<img width="230" alt="intro1" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/015edb04-8136-4e08-b251-e598004b6172">
+<img width="230" alt="signin" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/cbf91935-6670-45b4-980a-4995c44eb5bb">
+<img width="230" alt="dashboard" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/02fe7143-2533-4030-b23c-ba3a3160e4ef">
+<img width="230" alt="leaderboard" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/aa22c614-15ff-473d-8151-baaba67edae5">
+<img width="230" alt="search" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/68f4dd61-47fa-47cd-bee8-f812f86a2f23">
+<img width="230" alt="map" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/39ed0815-fd49-4c7e-9771-d20027604778">
+<img width="230" alt="settings" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/093a4de0-5c07-47c0-a75b-e47036246578">
 
 ### iPad - landscape
-<img width="300" alt="intro3_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/11ad6e66-9ede-4e0b-a3e5-a061820470e6">
-<img width="300" alt="signin_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/5bb6c379-a184-4f29-b598-334018b18c1b">
-<img width="300" alt="dashboard_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/eebd3195-eab9-4d88-b1f9-2c6180879966">
-<img width="300" alt="search_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/bb95b7ce-d913-4e7f-9b5a-343e5dbcabfd">
-<img width="300" alt="leaderboard_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/f2316fa3-d02f-45e6-ae3a-30da608ea093">
-<img width="300" alt="map_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/f3e5ca71-1717-40ce-90e1-125a163c28b8">
-<img width="300" alt="settings_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/c3a20d56-dda8-4372-b84a-ebb0bfc2482e">
+<img width="300" alt="intro1_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/0551990f-0556-4b57-9bda-2e0fd7e8ab95">
+<img width="300" alt="signin_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/7f0fa66b-df19-415e-b1d5-f8f688f482a5">
+<img width="300" alt="dashboard_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/130a9a77-1033-4b46-9ff8-2f5d5ee92556">
+<img width="300" alt="search_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/ed7f200a-8df3-471f-934d-a0f722d316ae">
+<img width="300" alt="leaderboard_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/342e8589-42e1-4696-b506-25125c1e5b6c">
+<img width="300" alt="map_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/14db27e1-cfd2-4e88-b702-2a4b05897959">
+<img width="300" alt="settings_landscape" src="https://github.com/ManuMerlo/Habits-Tracker-Inghilleri-Merlo/assets/100409388/fdaac4ed-e6ab-4f3b-9cdf-e33aebbd03f8">
+
+
+
 
 
 ## Copyright and license
